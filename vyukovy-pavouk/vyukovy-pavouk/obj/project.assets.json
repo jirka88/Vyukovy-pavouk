@@ -7965,11 +7965,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk.csproj",
+      "projectUniqueName": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk.csproj",
       "projectName": "vyukovy-pavouk",
-      "projectPath": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk.csproj",
+      "projectPath": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk.csproj",
       "packagesPath": "C:\\Users\\jn88\\.nuget\\packages\\",
-      "outputPath": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\",
+      "outputPath": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

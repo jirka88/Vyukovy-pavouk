@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "SNwlKcLVK5l/wzYC2NdCMyPiLoo481RNOcYikV+zdgzXzoJ034HFlljXYHQ9ri+QqeiW0U4SQrzqDdujxj/clw==",
+  "dgSpecHash": "7r4x1kmxkVfDCblPCPUULQhYNiu2XT1SNEWkxjx3x6ko6okavNoQqTpcsx9Sv2DqqRat0AH6Q47a4r//yKtWPg==",
   "success": true,
-  "projectFilePath": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk.csproj",
+  "projectFilePath": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jn88\\.nuget\\packages\\azure.core\\1.18.0\\azure.core.1.18.0.nupkg.sha512",
     "C:\\Users\\jn88\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.0\\microsoft.aspnetcore.authentication.jwtbearer.6.0.0.nupkg.sha512",

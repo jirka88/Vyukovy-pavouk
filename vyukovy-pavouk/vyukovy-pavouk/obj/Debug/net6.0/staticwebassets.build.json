@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "OprKVA2DXJ8ZI9ozDljAhlWGteQxAjjB8diw7f+aedU=",
+  "Hash": "wqAGO+bm5kLLh0JQoMl9QrXaB+LgJdyZAmOwIjDsPro=",
   "Source": "vyukovy-pavouk",
   "BasePath": "_content/vyukovy-pavouk",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "vyukovy-pavouk\\wwwroot",
       "Source": "vyukovy-pavouk",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "Pattern": "**"
     }
@@ -37,7 +37,7 @@
       "Identity": "C:\\Users\\jn88\\.nuget\\packages\\microsoft.teamsfx\\1.0.0\\contentFiles\\any\\net6.0\\wwwroot\\jsInterop.js",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "jsInterop.js",
       "AssetKind": "All",
@@ -68,10 +68,10 @@
       "OriginalItemSpec": "C:\\Users\\jn88\\.nuget\\packages\\microsoft.teamsfx\\1.0.0\\staticwebassets\\jsInterop.js"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\jsmodules\\jsmodules.build.manifest.json",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\jsmodules\\jsmodules.build.manifest.json",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Computed",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\jsmodules\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\jsmodules\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "vyukovy-pavouk.modules.json",
       "AssetKind": "Build",
@@ -85,10 +85,10 @@
       "OriginalItemSpec": "obj\\Debug\\net6.0\\jsmodules\\jsmodules.build.manifest.json"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\scopedcss\\bundle\\vyukovy-pavouk.styles.css",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\scopedcss\\bundle\\vyukovy-pavouk.styles.css",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Computed",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "vyukovy-pavouk.styles.css",
       "AssetKind": "All",
@@ -99,13 +99,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\scopedcss\\bundle\\vyukovy-pavouk.styles.css"
+      "OriginalItemSpec": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\scopedcss\\bundle\\vyukovy-pavouk.styles.css"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\vyukovy-pavouk.bundle.scp.css",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\vyukovy-pavouk.bundle.scp.css",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Computed",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "vyukovy-pavouk.bundle.scp.css",
       "AssetKind": "All",
@@ -116,13 +116,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\vyukovy-pavouk.bundle.scp.css"
+      "OriginalItemSpec": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\vyukovy-pavouk.bundle.scp.css"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "css/open-iconic/font/css/open-iconic-bootstrap.min.css",
       "AssetKind": "All",
@@ -136,10 +136,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.eot",
       "AssetKind": "All",
@@ -153,10 +153,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.otf",
       "AssetKind": "All",
@@ -170,10 +170,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.svg",
       "AssetKind": "All",
@@ -187,10 +187,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.ttf",
       "AssetKind": "All",
@@ -204,10 +204,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.woff",
       "AssetKind": "All",
@@ -221,10 +221,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "css/open-iconic/FONT-LICENSE",
       "AssetKind": "All",
@@ -238,10 +238,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "css/open-iconic/ICON-LICENSE",
       "AssetKind": "All",
@@ -255,10 +255,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\ICON-LICENSE"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\README.md",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\README.md",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "css/open-iconic/README.md",
       "AssetKind": "All",
@@ -272,10 +272,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\README.md"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\site.css",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\site.css",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "css/site.css",
       "AssetKind": "All",
@@ -289,10 +289,10 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\favicon.ico",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\favicon.ico",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "favicon.ico",
       "AssetKind": "All",
@@ -306,10 +306,10 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\hello.png",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\hello.png",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "hello.png",
       "AssetKind": "All",
@@ -323,10 +323,10 @@
       "OriginalItemSpec": "wwwroot\\hello.png"
     },
     {
-      "Identity": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\js\\TeamsJsBlazorInterop.js",
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\js\\TeamsJsBlazorInterop.js",
       "SourceId": "vyukovy-pavouk",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Develop\\Maturitní-práce\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
       "BasePath": "_content/vyukovy-pavouk",
       "RelativePath": "js/TeamsJsBlazorInterop.js",
       "AssetKind": "All",
