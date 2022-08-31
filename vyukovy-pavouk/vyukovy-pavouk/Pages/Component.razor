@@ -1,0 +1,15 @@
+﻿@page "/"
+@using vyukovy_pavouk.Components;
+<h3>Component</h3>
+<button class="btn btn-primary" @onclick="Navigate">
+  Navigate to products
+</button>
+@code {
+	[Inject]
+	public NavigationManager NavigationManager { get; set; }
+
+	private void Navigate()
+	{
+		NavigationManager.NavigateTo("tab");
+	}
+}

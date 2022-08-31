@@ -1,0 +1,14 @@
+h1[b-yxcngcz929], h5[b-yxcngcz929] {
+	font-weight: bold;
+	text-align: center;
+}
+svg[b-yxcngcz929] {
+	width: 50%;
+	height: 40%;
+}
+@media only screen and (max-width: 420px) {
+svg[b-yxcngcz929] {
+	width: 60%;
+	height: 30%;
+}
+}
