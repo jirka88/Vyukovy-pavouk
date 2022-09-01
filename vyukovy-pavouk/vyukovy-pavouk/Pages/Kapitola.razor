@@ -1,0 +1,44 @@
+﻿@page "/kapitola"
+@using vyukovy_pavouk.Components;
+
+@if(!IsLoaded) {
+	<div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+		<FluentProgressRing />
+	</div>
+}
+else {
+	<div class="container">
+		<div class="kapitola">
+			<h1 class="pt-5 pb-3 text-left font-weight-bold">Název Kapitoly</h1>
+			<h5 class="pb-3">Perex It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution</h5>
+			<p class="pb-3">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32</p>
+			<h3 class="pb-3">Videa:</h3>
+			<div class="d-grid flex-wrap">
+				<div class="row">
+					<a href="#" class="col-6 col-md-4">odkaz</a>
+					<a href="#" class="col-6 col-md-4">odkaz</a>
+					<a href="#" class="col-6 col-md-4">odkaz</a>
+				</div>
+			</div>
+			<hr class="pb-3" />
+			<FluentButton style="display: grid; justify-content: center;" Appearance="@Appearance.Accent">Vzít cvičení</FluentButton>
+			<div class="popis text-center">
+				<p class="h5">0/1</p>
+				<p>Při potvrzení tlačítka Vám bude odesláno cvičení na dané téma ve formě testu. Po následné korekci Vašeho testu bude zpřístupněna další kapitola.</p>
+			</div>
+		</div>
+
+	</div>
+}
+
+@code {
+	bool IsLoaded = false;
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			IsLoaded = true;
+			StateHasChanged();
+		}
+	}
+}

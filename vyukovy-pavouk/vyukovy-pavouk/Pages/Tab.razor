@@ -1,14 +1,41 @@
 ﻿@page "/tab"
 @using vyukovy_pavouk.Components;
-
+@inject NavigationManager MyNavigationManager
 
 <div>
-	<Vytvoreni_Teamu/>
+	@if (!IsLoaded) {
+		<div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+		<FluentProgressRing/>
+	</div>
+	}
+	else {
+		<Vytvoreni_Teamu/>
+	}
+
 </div>
 @code {
+	bool IsLoaded = false;
 	[Inject]
 	public NavigationManager NavigationManager { get; set; }
 
+	protected override async Task OnAfterRenderAsync(bool firstRender){
+		if (firstRender)
+		{
+			IsLoaded = true;
+			StateHasChanged();
+		}
+	}
+	//tohle bude sloužit až bude vytvořen Team v databázi 
+	/*protected override void OnInitialized()
+	{
+		try
+		{
+			MyNavigationManager.NavigateTo("/");
+		}
+		catch(Exception) {
+
+		}
+	}*/
 }
 
 

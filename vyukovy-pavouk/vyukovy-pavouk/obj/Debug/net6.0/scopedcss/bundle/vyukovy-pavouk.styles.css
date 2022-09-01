@@ -43,15 +43,9 @@ svg[b-yxcngcz929] {
 }
 }
 /* _content/vyukovy-pavouk/Components/Vytvoreni-Teamu.razor.rz.scp.css */
-.main-box[b-95mo1ckv8l] {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-}
+
 .main-box h2[b-95mo1ckv8l], .main-box h1[b-95mo1ckv8l] {
     font-weight: bold;
-    text-align: center;
 }
 .main-box .card[b-95mo1ckv8l] {
     border: dashed 1px black;
@@ -109,5 +103,40 @@ svg[b-yxcngcz929] {
 
 .error[b-0stk77q098] {
     color: red;
+}
+/* _content/vyukovy-pavouk/Pages/Kapitola.razor.rz.scp.css */
+h1[b-pkvnducani] {
+	font-size: 4em;
+}
+hr[b-pkvnducani] {
+	color: black;
+	height: 4px;
+}
+a[b-pkvnducani] {
+	padding-bottom: 1rem;
+	font-size: 1.5em;
+    text-decoration: none;
+}
+.popis > *[b-pkvnducani]{
+	margin-top: 0.5em;
+	margin-bottom: 0;
+}
+.popis p:last-child[b-pkvnducani] {
+	color: gray;
+}
+.row a:nth-child(2n+0)[b-pkvnducani] {
+	text-align: center;
+}
+.row a:nth-child(3n+0)[b-pkvnducani] {
+	text-align: right;
+}
+
+@media only screen and (max-width: 767px) {
+	h1[b-pkvnducani] {
+		font-size: 2.5em;
+	}
+	.row a[b-pkvnducani], h3[b-pkvnducani] {
+		text-align: center !important;
+	}
 }
 /* _content/vyukovy-pavouk/Pages/Tab.razor.rz.scp.css */

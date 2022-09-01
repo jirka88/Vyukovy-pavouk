@@ -20,7 +20,7 @@
     },
     "description": {
         "short": "Short description of {{config.manifest.appName.short}}",
-        "full": "Aplikace sloužící pro výuku {{config.manifest.appName.short}}"
+        "full": "Full description of {{config.manifest.appName.short}}"
     },
     "accentColor": "#FFFFFF",
     "bots": [],

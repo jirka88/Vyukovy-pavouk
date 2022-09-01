@@ -1,30 +1,27 @@
 ﻿@using Microsoft.Extensions.Configuration
-@inject NavigationManager MyNavigationManager
-
-
+@using Microsoft.Fast.Components.FluentUI
 	<div class="container">
-		<div class="main-box py-2">
-			<h1 class="py-5">Je potřeba vytvořit team</h1>
+		<div class="main-box py-2 d-flex flex-column align-items-center">
+			<h1 class="py-5 text-center">Je potřeba vytvořit team</h1>
 			<div class="card">
 				<div class="card-body gap-4">
 					<h2 class="card-title">Vytvořit nový team</h2>
 					<FluentTextField Placeholder="Název předmětu"></FluentTextField>
-					<FluentButton Appearance="@Appearance.Accent">Vytvořit</FluentButton>
-				</div>
-				
+					<FluentButton Appearance="@Appearance.Accent" @onclick="vytvor">Vytvořit</FluentButton>
+				</div>	
 			</div>
 			<h2 class="py-4">Nebo</h2>
 			<div class="card">
 				<div class="card-body gap-4">
-					<h2 class="card-title pt-2">Vytvořit z existujícího teamu</h2>
+					<h2 class="card-title pt-2 text-center">Vytvořit z existujícího teamu</h2>
 					<div class="d-grid justify-content-center">
-						<FluentCombobox Value="Název předmětu">
-							<FluentOption>Extra Small</FluentOption>
-							<FluentOption>Extra Small</FluentOption>
-							<FluentOption>Extra Small</FluentOption>
-							<FluentOption>Extra Small</FluentOption>
-
-						</FluentCombobox>
+					<FluentSelect Position="Position.Below" Placeholder="Název Předmětu" @bind-Value="@predmet">
+						<FluentOption>Extra Small</FluentOption>
+						<FluentOption>Small</FluentOption>
+						<FluentOption>Medium</FluentOption>
+						<FluentOption>Large</FluentOption>
+						<FluentOption>Extra Large</FluentOption>
+					</FluentSelect>
 					</div>
 					<FluentButton style="display: grid; justify-content: center;" Appearance="@Appearance.Accent">Vytvořit</FluentButton>
 				</div>
@@ -33,5 +30,15 @@
 	</div>
 
 @code {
-	
+	string? predmet = "";
+
+	[Inject]
+	public NavigationManager NavigationManager { get; set; }
+
+	public void vytvor() {
+		NavigationManager.NavigateTo("kapitola");
+	}
+
+
+}
 }

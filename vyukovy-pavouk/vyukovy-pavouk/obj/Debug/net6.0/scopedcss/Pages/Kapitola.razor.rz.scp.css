@@ -1,0 +1,34 @@
+h1[b-pkvnducani] {
+	font-size: 4em;
+}
+hr[b-pkvnducani] {
+	color: black;
+	height: 4px;
+}
+a[b-pkvnducani] {
+	padding-bottom: 1rem;
+	font-size: 1.5em;
+    text-decoration: none;
+}
+.popis > *[b-pkvnducani]{
+	margin-top: 0.5em;
+	margin-bottom: 0;
+}
+.popis p:last-child[b-pkvnducani] {
+	color: gray;
+}
+.row a:nth-child(2n+0)[b-pkvnducani] {
+	text-align: center;
+}
+.row a:nth-child(3n+0)[b-pkvnducani] {
+	text-align: right;
+}
+
+@media only screen and (max-width: 767px) {
+	h1[b-pkvnducani] {
+		font-size: 2.5em;
+	}
+	.row a[b-pkvnducani], h3[b-pkvnducani] {
+		text-align: center !important;
+	}
+}
