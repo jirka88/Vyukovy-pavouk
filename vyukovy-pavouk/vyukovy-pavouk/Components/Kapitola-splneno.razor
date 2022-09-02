@@ -1,0 +1,26 @@
+﻿@inject NavigationManager MyNavigationManager
+
+<div class="card d-grid justify-content-center" id="" @onclick=zobraz>
+	<div class="d-flex align-items-center justify-content-center main-body">
+		<div class="icon px-4">
+			<div class="circle d-flex justify-content-center align-items-center">
+				<svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m8.5 16.586-3.793-3.793a1 1 0 0 0-1.414 1.414l4.5 4.5a1 1 0 0 0 1.414 0l11-11a1 1 0 0 0-1.414-1.414L8.5 16.586Z" fill="#ffffff" /></svg>
+			</div>
+		</div>
+		<div class="card-body">
+			<div class="card-title">Název Kapitoly</div>
+			<p class="perex">Perex Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+			<p class="uvod">Úvodní kapitola</p>
+			<p class="status">Splněno</p>
+		</div>
+	</div>
+</div>
+
+<link rel="stylesheet" href="css/Main-Kapitoly.css" />
+@code {
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public void zobraz() => NavigationManager.NavigateTo("kapitola");
+
+}

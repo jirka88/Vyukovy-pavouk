@@ -19,12 +19,14 @@
     <None Remove="Components\Vytvoreni-teamu-student.razor.css" />
     <None Remove="Components\Vytvoreni-Teamu.razor.css" />
     <None Remove="Pages\Kapitola.razor.css" />
+    <None Remove="Pages\Main.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Components\Vytvoreni-teamu-student.razor.css" />
     <Content Include="Components\Vytvoreni-Teamu.razor.css" />
     <Content Include="Pages\Kapitola.razor.css" />
+    <Content Include="Pages\Main.razor.css" />
   </ItemGroup>
 
   <ItemGroup>

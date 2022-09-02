@@ -1,0 +1,57 @@
+﻿.circle {
+		border-radius: 50%;
+		background: #23E370;
+		width: 8.5em;
+		height: 8.5em;
+	}
+.orange {
+	background: orange;
+}
+.red {
+	background: red;
+}
+.card {
+	background: #E8E8E8;
+	border: none;
+	width: 80%;
+	min-height: 200px;
+	cursor: pointer;
+}
+.locked {
+	cursor: auto;
+}
+.card-body {
+	padding-left: 0;
+}
+.card-body .card-title {
+	font-size: 2em;
+	font-weight: bold;
+}
+.card-body .status, .card-body .uvod {
+	font-weight: bold;
+}
+svg {
+	width: 65%;
+	height: auto;
+}
+p {
+	margin-bottom: 0.4em;
+}
+@media only screen and (max-width: 600px) {
+	.main-body {
+		flex-direction: column;
+	}
+	.card {
+		text-align: center;
+	}
+	.card-body {
+		padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x) !important;
+	}
+	.icon {
+		padding-top: 1.5em;
+	}
+	.circle {
+		width: 5em; 
+		height: 5em;
+	}
+}
