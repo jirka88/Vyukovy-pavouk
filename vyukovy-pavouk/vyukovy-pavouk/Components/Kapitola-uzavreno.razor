@@ -1,4 +1,4 @@
-﻿<div class="card locked d-grid justify-content-center" id="hotovo">
+﻿<div class="card locked d-grid justify-content-center" id="@ID">
 	<div class="d-flex align-items-center justify-content-center main-body">
 		<div class="icon px-4">
 			<div class="circle red d-flex justify-content-center align-items-center">
@@ -8,11 +8,12 @@
 		<div class="card-body">
 			<div class="card-title">Název Kapitoly</div>
 			<p class="perex">Perex Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-			<p class="status">Potřeba splnit: </p>
+			<div class="d-flex gap-2"><p class="status">Potřeba splnit: </p><a href="#1">Název Kapitoly</a></div>
 		</div>
 	</div>
 </div>
 <link rel="stylesheet" href="css/Main-Kapitoly.css" />
 @code {
-
+	[Parameter]
+	public int ID { get; set; }
 }

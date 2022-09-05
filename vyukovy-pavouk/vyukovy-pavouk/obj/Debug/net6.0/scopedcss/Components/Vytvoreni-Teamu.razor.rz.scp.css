@@ -14,6 +14,24 @@
     flex-direction: column;
     height: 100%;
 }
-
-
+fluent-button[b-95mo1ckv8l] {
+    width: 15em;
+    height: 40px;
+}
+input[type=text][b-95mo1ckv8l], select[b-95mo1ckv8l] {
+    width: 50%;
+    outline: none;
+    height: 50px;
+}
+@media only screen and (max-width: 767px) {
+    .main-box .card[b-95mo1ckv8l] {
+        width: 80%;
+    }
+    fluent-button[b-95mo1ckv8l] {
+        width: 30vw;
+    }
+    input[type=text][b-95mo1ckv8l] {
+        width: 80%;
+    }
+}
  

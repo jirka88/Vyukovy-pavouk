@@ -23,12 +23,51 @@ a[b-pkvnducani] {
 .row a:nth-child(3n+0)[b-pkvnducani] {
 	text-align: right;
 }
+.btn[b-pkvnducani] {
+	display: grid;
+	justify-content: center;
 
+}
+.main-btn[b-pkvnducani] {
+	width: 40em;
+	height: 3em;
+}
+.btn-set[b-pkvnducani] {
+	display: grid;
+	width: 4.5em;
+	height: 4.5em;
+}
+.btn-set svg[b-pkvnducani] {
+	width: 100%;
+	height: 100%;
+}
+fluent-anchor[b-pkvnducani] {
+	width: 10em;
+}
 @media only screen and (max-width: 767px) {
 	h1[b-pkvnducani] {
 		font-size: 2.5em;
 	}
 	.row a[b-pkvnducani], h3[b-pkvnducani] {
 		text-align: center !important;
+	}
+	.main-btn[b-pkvnducani] {
+		width: 20em;
+	}
+	.main-title[b-pkvnducani] {
+		flex-direction: column-reverse;
+		padding-top: 1em !important;
+	}
+	.admin-btn[b-pkvnducani] {
+		padding-bottom: 1em;
+	}
+}
+@media only screen and (max-width: 320px) {
+	.main-btn[b-pkvnducani] {
+		width: 10em;
+	}
+	.btn-set[b-pkvnducani] {
+		width: 20vw;
+		height: 20vw;
 	}
 }

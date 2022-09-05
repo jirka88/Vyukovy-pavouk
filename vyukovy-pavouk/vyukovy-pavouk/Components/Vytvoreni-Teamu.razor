@@ -1,44 +1,39 @@
-﻿@using Microsoft.Extensions.Configuration
-
+﻿@using Microsoft.AspNetCore.Components.Forms
 	<div class="container">
 		<div class="main-box py-2 d-flex flex-column align-items-center">
 			<h1 class="py-5 text-center">Je potřeba vytvořit team</h1>
 			<div class="card">
 				<div class="card-body gap-4">
-					<h2 class="card-title">Vytvořit nový team</h2>
-					<FluentTextField Placeholder="Název předmětu"></FluentTextField>
-					<FluentButton Appearance="@Appearance.Accent" @onclick="vytvor">Vytvořit</FluentButton>
+					<h2 class="card-title text-center">Vytvořit nový team</h2>
+						<input type="text" placeholder="Název předmětu" @bind-value=@NazevPredmetu>
+						<fluent-button appearance="accent" @onclick="vytvor">Vytvořit</fluent-button>			
 				</div>	
 			</div>
 			<h2 class="py-4">Nebo</h2>
 			<div class="card">
 				<div class="card-body gap-4">
-					<h2 class="card-title pt-2 text-center">Vytvořit z existujícího teamu</h2>
-					<div class="d-grid justify-content-center">
-					<FluentSelect Position="Position.Below" Placeholder="Název Předmětu" @bind-Value="@predmet">
-						<FluentOption>Extra Small</FluentOption>
-						<FluentOption>Small</FluentOption>
-						<FluentOption>Medium</FluentOption>
-						<FluentOption>Large</FluentOption>
-						<FluentOption>Extra Large</FluentOption>
-					</FluentSelect>
-					</div>
-					<FluentButton style="display: grid; justify-content: center;" Appearance="@Appearance.Accent">Vytvořit</FluentButton>
+					<h2 class="card-title pt-2 text-center">Vytvořit z existujícího teamu</h2>			
+					<select @bind-Value=predmet @bind-Value:event="onchange">
+						<option>Extra Small</option>
+						<option>Extra Small</option>
+						<option>Extra Small</option>
+						<option>Extra Small</option>
+					</select>	
+					<fluent-button appearance="accent" type="submit">Vytvořit</fluent-button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 @code {
-	string? predmet = "";
+	string predmet = "Extra Small";
+	string NazevPredmetu = "";
 
 	[Inject]
 	public NavigationManager NavigationManager { get; set; }
 
 	public void vytvor() {
-		NavigationManager.NavigateTo("kapitola");
-	}
+		NavigationManager.NavigateTo("/");
+	}		
 
-
-}
 }

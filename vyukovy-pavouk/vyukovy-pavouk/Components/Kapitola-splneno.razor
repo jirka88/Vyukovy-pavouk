@@ -1,6 +1,6 @@
 ﻿@inject NavigationManager MyNavigationManager
 
-<div class="card d-grid justify-content-center" id="" @onclick=zobraz>
+<div class="card d-grid justify-content-center" id="@ID" @onclick=zobraz>
 	<div class="d-flex align-items-center justify-content-center main-body">
 		<div class="icon px-4">
 			<div class="circle d-flex justify-content-center align-items-center">
@@ -20,6 +20,8 @@
 @code {
     [Inject]
     public NavigationManager NavigationManager { get; set; }
+	[Parameter]
+	public int ID { get; set; }
 
     public void zobraz() => NavigationManager.NavigateTo("kapitola");
 

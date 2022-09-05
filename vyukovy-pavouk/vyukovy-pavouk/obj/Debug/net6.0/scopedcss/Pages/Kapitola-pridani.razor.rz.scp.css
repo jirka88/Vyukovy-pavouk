@@ -1,0 +1,21 @@
+h1[b-ummi2zx0lv] {
+	font-size: 4em;
+	font-weight: bold;
+}
+.container[b-ummi2zx0lv] {
+	max-width: 940px;
+}
+.First-label[b-ummi2zx0lv] {
+	margin-bottom: -15px;
+}
+.cancel[b-ummi2zx0lv] {
+	font-weight: bold;
+}
+@media only screen and (max-width: 767px) {
+	.container[b-ummi2zx0lv] {
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+	
+}
+

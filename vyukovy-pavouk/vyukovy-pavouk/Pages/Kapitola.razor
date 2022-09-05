@@ -1,5 +1,7 @@
 ﻿@page "/kapitola"
 @using vyukovy_pavouk.Components;
+@inject NavigationManager MyNavigationManager
+
 
 @if(!IsLoaded) {
 	<div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
@@ -9,11 +11,13 @@
 else {
 	<div class="container">
 		<div class="kapitola">
-			<div class="d-flex pt-5 pb-3 align-items-center">
+			<div class="d-flex pt-5 pb-3 align-items-center main-title">
 				<h1 class="text-left font-weight-bold flex-grow-1">Název Kapitoly</h1>
-				<FluentButton style="display: grid; justify-content: center;" Appearance="@Appearance.Accent"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.94 5 19 10.06 9.062 20a2.25 2.25 0 0 1-.999.58l-5.116 1.395a.75.75 0 0 1-.92-.921l1.395-5.116a2.25 2.25 0 0 1 .58-.999L13.938 5Zm7.09-2.03a3.578 3.578 0 0 1 0 5.06l-.97.97L15 3.94l.97-.97a3.578 3.578 0 0 1 5.06 0Z" fill="#ffffff" /></svg></FluentButton>
-				<FluentButton style="display: grid; justify-content: center;" Appearance="@Appearance.Accent"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21.5 6a1 1 0 0 1-.883.993L20.5 7h-.845l-1.231 12.52A2.75 2.75 0 0 1 15.687 22H8.313a2.75 2.75 0 0 1-2.737-2.48L4.345 7H3.5a1 1 0 0 1 0-2h5a3.5 3.5 0 1 1 7 0h5a1 1 0 0 1 1 1Zm-7.25 3.25a.75.75 0 0 0-.743.648L13.5 10v7l.007.102a.75.75 0 0 0 1.486 0L15 17v-7l-.007-.102a.75.75 0 0 0-.743-.648Zm-4.5 0a.75.75 0 0 0-.743.648L9 10v7l.007.102a.75.75 0 0 0 1.486 0L10.5 17v-7l-.007-.102a.75.75 0 0 0-.743-.648ZM12 3.5A1.5 1.5 0 0 0 10.5 5h3A1.5 1.5 0 0 0 12 3.5Z" fill="#ffffff" /></svg></FluentButton>
+				<div class="admin-btn d-flex gap-3">
+				<fluent-button class="btn-set" appearance="accent" @onclick=edit><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.94 5 19 10.06 9.062 20a2.25 2.25 0 0 1-.999.58l-5.116 1.395a.75.75 0 0 1-.92-.921l1.395-5.116a2.25 2.25 0 0 1 .58-.999L13.938 5Zm7.09-2.03a3.578 3.578 0 0 1 0 5.06l-.97.97L15 3.94l.97-.97a3.578 3.578 0 0 1 5.06 0Z" fill="#ffffff" /></svg></fluent-button>
+				<fluent-button class="btn-set" appearance="accent"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21.5 6a1 1 0 0 1-.883.993L20.5 7h-.845l-1.231 12.52A2.75 2.75 0 0 1 15.687 22H8.313a2.75 2.75 0 0 1-2.737-2.48L4.345 7H3.5a1 1 0 0 1 0-2h5a3.5 3.5 0 1 1 7 0h5a1 1 0 0 1 1 1Zm-7.25 3.25a.75.75 0 0 0-.743.648L13.5 10v7l.007.102a.75.75 0 0 0 1.486 0L15 17v-7l-.007-.102a.75.75 0 0 0-.743-.648Zm-4.5 0a.75.75 0 0 0-.743.648L9 10v7l.007.102a.75.75 0 0 0 1.486 0L10.5 17v-7l-.007-.102a.75.75 0 0 0-.743-.648ZM12 3.5A1.5 1.5 0 0 0 10.5 5h3A1.5 1.5 0 0 0 12 3.5Z" fill="#ffffff" /></svg></fluent-button>
 				</div>
+			</div>
 			<h5 class="pb-3">Perex It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution</h5>
 			<p class="pb-3">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32</p>
 			<h3 class="pb-3">Videa:</h3>
@@ -25,10 +29,13 @@ else {
 				</div>
 			</div>
 			<hr class="pb-3" />
-			<FluentButton style="display: grid; justify-content: center;" Appearance="@Appearance.Accent">Vzít cvičení</FluentButton>
-			<div class="popis text-center">
+			<div class="d-flex justify-content-center align-items-center flex-column w-100">
+			<fluent-button class="main-btn" appearance="accent">Vzít cvičení</fluent-button>
+			<div class="popis text-center pb-3">
 				<p class="h5">0/1</p>
 				<p>Při potvrzení tlačítka Vám bude odesláno cvičení na dané téma ve formě testu. Po následné korekci Vašeho testu bude zpřístupněna další kapitola.</p>
+			</div>
+			<fluent-anchor href="#" appearance="stealth" class="d-flex justify-content-center">zpátky<svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 5a1 1 0 0 1 1-1h5c2.242 0 4.01.778 5.218 2.023C19.414 7.256 20 8.887 20 10.5c0 1.613-.586 3.244-1.782 4.477C17.01 16.222 15.242 17 13 17H8.414l2.043 2.043a1 1 0 0 1-1.414 1.414l-3.75-3.75a1 1 0 0 1 0-1.414l3.75-3.75a1 1 0 0 1 1.414 1.414L8.414 15H13c1.758 0 2.99-.597 3.782-1.415.804-.83 1.218-1.948 1.218-3.085s-.414-2.256-1.218-3.085C15.99 6.597 14.758 6 13 6H8a1 1 0 0 1-1-1Z" fill="#212121" /></svg></fluent-anchor>
 			</div>
 		</div>
 
@@ -36,6 +43,9 @@ else {
 }
 
 @code {
+	[Inject]
+	public NavigationManager NavigationManager { get; set; }
+
 	bool IsLoaded = false;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -44,5 +54,8 @@ else {
 			IsLoaded = true;
 			StateHasChanged();
 		}
+	}
+	public void edit() {
+		NavigationManager.NavigateTo("edit");
 	}
 }

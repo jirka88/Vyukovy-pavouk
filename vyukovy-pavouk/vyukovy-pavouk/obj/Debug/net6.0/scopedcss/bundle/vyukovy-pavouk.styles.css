@@ -59,8 +59,26 @@ svg[b-yxcngcz929] {
     flex-direction: column;
     height: 100%;
 }
-
-
+fluent-button[b-95mo1ckv8l] {
+    width: 15em;
+    height: 40px;
+}
+input[type=text][b-95mo1ckv8l], select[b-95mo1ckv8l] {
+    width: 50%;
+    outline: none;
+    height: 50px;
+}
+@media only screen and (max-width: 767px) {
+    .main-box .card[b-95mo1ckv8l] {
+        width: 80%;
+    }
+    fluent-button[b-95mo1ckv8l] {
+        width: 30vw;
+    }
+    input[type=text][b-95mo1ckv8l] {
+        width: 80%;
+    }
+}
  
 /* _content/vyukovy-pavouk/Components/Welcome.razor.rz.scp.css */
 .narrow[b-0stk77q098] {
@@ -104,6 +122,28 @@ svg[b-yxcngcz929] {
 .error[b-0stk77q098] {
     color: red;
 }
+/* _content/vyukovy-pavouk/Pages/Kapitola-pridani.razor.rz.scp.css */
+h1[b-ummi2zx0lv] {
+	font-size: 4em;
+	font-weight: bold;
+}
+.container[b-ummi2zx0lv] {
+	max-width: 940px;
+}
+.First-label[b-ummi2zx0lv] {
+	margin-bottom: -15px;
+}
+.cancel[b-ummi2zx0lv] {
+	font-weight: bold;
+}
+@media only screen and (max-width: 767px) {
+	.container[b-ummi2zx0lv] {
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+	
+}
+
 /* _content/vyukovy-pavouk/Pages/Kapitola.razor.rz.scp.css */
 h1[b-pkvnducani] {
 	font-size: 4em;
@@ -130,7 +170,27 @@ a[b-pkvnducani] {
 .row a:nth-child(3n+0)[b-pkvnducani] {
 	text-align: right;
 }
+.btn[b-pkvnducani] {
+	display: grid;
+	justify-content: center;
 
+}
+.main-btn[b-pkvnducani] {
+	width: 40em;
+	height: 3em;
+}
+.btn-set[b-pkvnducani] {
+	display: grid;
+	width: 4.5em;
+	height: 4.5em;
+}
+.btn-set svg[b-pkvnducani] {
+	width: 100%;
+	height: 100%;
+}
+fluent-anchor[b-pkvnducani] {
+	width: 10em;
+}
 @media only screen and (max-width: 767px) {
 	h1[b-pkvnducani] {
 		font-size: 2.5em;
@@ -138,9 +198,30 @@ a[b-pkvnducani] {
 	.row a[b-pkvnducani], h3[b-pkvnducani] {
 		text-align: center !important;
 	}
+	.main-btn[b-pkvnducani] {
+		width: 20em;
+	}
+	.main-title[b-pkvnducani] {
+		flex-direction: column-reverse;
+		padding-top: 1em !important;
+	}
+	.admin-btn[b-pkvnducani] {
+		padding-bottom: 1em;
+	}
+}
+@media only screen and (max-width: 320px) {
+	.main-btn[b-pkvnducani] {
+		width: 10em;
+	}
+	.btn-set[b-pkvnducani] {
+		width: 20vw;
+		height: 20vw;
+	}
 }
 /* _content/vyukovy-pavouk/Pages/Main.razor.rz.scp.css */
 h1[b-5juggsglmn] {
 	font-weight: bold;
+	font-size: 4em;
 }
 /* _content/vyukovy-pavouk/Pages/Tab.razor.rz.scp.css */
+/* _content/vyukovy-pavouk/Shared/MainLayout.razor.rz.scp.css */

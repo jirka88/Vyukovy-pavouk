@@ -1,0 +1,67 @@
+﻿@page "/edit"
+<div class="container">
+	<h1 class="text-center py-5">Přidání kapitoly</h1>
+	<label for="shirt-size">Nutno splnit</label>
+    <br />
+    <div class="form d-flex flex-column gap-4">
+        @foreach( string item in Splneni) {
+            <div class="d-flex gap-4 justify-content-center align-items-center">
+              <select class="w-100" id=@item>
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+               </select>
+               <Fluent-Button class="cancel" appearance="accent" @onclick="() => odeber(item)">X</Fluent-Button>
+             </div>
+        }
+        <fast-button  appearance="accent" @onclick=PridejSplneni>test</fast-button>
+        <div class="d-flex flex-column">
+            <label for="NazevKapitoly">Název Kapitoly</label>
+            <input type="text" id="NazevKapitoly" @bind-value=@NazevKapitoly>
+        </div>
+        <div class="d-flex flex-column">
+            <label for="perex">Perex</label>
+            <input type="text" id="perex" @bind-value=@Perex>
+        </div>
+        <div class="d-flex flex-column">
+            <label for="obsah">Obsah</label>
+            <textarea id="obsah" resize="vertical" @bind-value=@Obsah @bind-value:event="oninput"></textarea>
+        </div>
+        <label class="First-label">Odkazy na videa</label>
+           <div class="d-flex gap-4 justify-content-center align-items-center">
+            <input type="text" class="flex-grow-1">
+            <Fluent-Button appearance="accent"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-Button>
+        </div>
+
+        <label class="First-label">Testy</label>
+        <div class="d-flex gap-4 justify-content-center align-items-center">
+            <input type="text" class="flex-grow-1">
+            <Fluent-Button appearance="accent"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-Button>
+        </div>
+        <input type="number" @bind-value=@exampleInt>
+     </div>
+</div>
+
+@code {
+    //bindy se převede do EditForm --> model
+    int exampleInt = 0;
+    string NazevKapitoly = "";
+    string Perex = "";
+    string Obsah = "";
+    List <string> Splneni = new List<string>();
+    int PocetSplneni = 1;
+    public void PridejSplneni() {
+        PocetSplneni++;
+        Splneni.Add(PocetSplneni.ToString());
+    }
+    public void odeber(string i) {
+        
+        if(Splneni.Count() > 1) {
+            Splneni.Remove(i);
+        }
+    }
+    protected override void OnInitialized()
+    {
+        Splneni.Add("1");
+    }
+}

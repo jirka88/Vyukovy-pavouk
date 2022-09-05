@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "9HlOcMPoIA5gTmmhDUKMHNUu7SZov8F/PiXeNlIa+jc=",
+  "Hash": "nQDfSxv5laH2SP/GYawEKPu2ctqX+SlmIvFghYrOIUI=",
   "Source": "vyukovy-pavouk",
   "BasePath": "_content/vyukovy-pavouk",
   "Mode": "Default",
@@ -338,6 +338,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\hello.png"
+    },
+    {
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\js\\SettingStyles.js",
+      "SourceId": "vyukovy-pavouk",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "BasePath": "_content/vyukovy-pavouk",
+      "RelativePath": "js/SettingStyles.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\SettingStyles.js"
     },
     {
       "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\js\\TeamsJsBlazorInterop.js",
