@@ -1,14 +1,14 @@
 ﻿@page "/"
+@layout UserLayout
 @using vyukovy_pavouk.Components;
-<div class="container">
+
 	<h1 class="text-center py-5">Obsah</h1>
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
-	<Kapitola_splneno ID="2"/>
-		<Kapitola_ucitel />
+		<Kapitola_splneno ID="2" Nazev="Název Kapitoly" Perex="Text TlOEdofaj" />
+		<Kapitola_ucitel ID="3" Nazev="Název Kapitoly" Perex="Text TlOEdofaj" />
 	<Kapitola_odemceno ID="3" Nazev="Název Kapitoly" Perex="Text TlOEdofaj" />
-		<Kapitola_uzavreno ID="4" />
+		<Kapitola_uzavreno ID="4" Nazev="Název Kapitoly" Perex="Text TlOEdofaj"  />
 	</div>
-</div>
 @code {
 	[Inject]
 	public NavigationManager NavigationManager { get; set; }

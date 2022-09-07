@@ -1,4 +1,4 @@
-﻿<div class="card d-grid justify-content-center" >
+﻿<div class="card d-grid" id="@ID" >
 	<div class="d-flex align-items-center justify-content-center main-body">
 		<div class="icon px-4">
 			<div class="circle d-flex justify-content-center align-items-center">
@@ -6,12 +6,19 @@
 			</div>
 		</div>
 		<div class="card-body">
-			<div class="card-title">Název Kapitoly</div>
-			<p class="perex">Perex Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Perex Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+			<div class="card-title">@Nazev</div>
+			<p class="perex">@Perex</p>
 		</div>
 	</div>
 </div>
 <link rel="stylesheet" href="css/Main-Kapitoly.css" />
 @code {
-	
+	[Parameter]
+	public int ID { get; set; }
+
+	[Parameter]
+	public string Nazev { get; set; }
+
+	[Parameter]
+	public string Perex { get; set; }
 }

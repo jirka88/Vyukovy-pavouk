@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "nQDfSxv5laH2SP/GYawEKPu2ctqX+SlmIvFghYrOIUI=",
+  "Hash": "FEEemhbBGcG3itk+zYkO8PA9tTzKC6S5ot+1uYh1rsE=",
   "Source": "vyukovy-pavouk",
   "BasePath": "_content/vyukovy-pavouk",
   "Mode": "Default",
@@ -134,6 +134,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\Main-Kapitoly.css"
+    },
+    {
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\main-styly-inputs.css",
+      "SourceId": "vyukovy-pavouk",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "BasePath": "_content/vyukovy-pavouk",
+      "RelativePath": "css/main-styly-inputs.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\main-styly-inputs.css"
     },
     {
       "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
