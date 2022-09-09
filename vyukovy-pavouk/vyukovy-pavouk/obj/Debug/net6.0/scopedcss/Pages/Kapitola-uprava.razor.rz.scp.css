@@ -1,0 +1,30 @@
+h1[b-xkt7tqk4tm] {
+	font-size: 4em;
+	font-weight: bold;
+}
+.container[b-xkt7tqk4tm] {
+	max-width: 940px;
+}
+.First-label[b-xkt7tqk4tm] {
+	margin-bottom: -15px;
+}
+.cancel[b-xkt7tqk4tm] {
+	font-weight: bold;
+}
+input[type=number][b-xkt7tqk4tm] {
+	width: 50px;
+	height: 50px;
+	font-size: 1.2em;
+}
+.counter fluent-button[b-xkt7tqk4tm]{
+	width: 50px; 
+	height: 50px;
+}
+@media only screen and (max-width: 767px) {
+	.container[b-xkt7tqk4tm] {
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+	
+}
+

@@ -1,9 +1,9 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager MyNavigationManager
 <div class="container">
-<Fluent-Tabs>
+<Fluent-Tabs class="py-4">
 	<Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/")'>Pavouk</Fluent-Tab>
-    <Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/edit")'>Přidání</Fluent-Tab>
+    <Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/add")'>Přidání</Fluent-Tab>
     <Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/")'>Statistiky</Fluent-Tab>
 	 <Fluent-Tab-Panel>
     </Fluent-Tab-Panel>
