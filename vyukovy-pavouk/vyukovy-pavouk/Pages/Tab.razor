@@ -1,11 +1,13 @@
 ﻿@page "/tab"
 @using vyukovy_pavouk.Components;
-@using Azure.Core
-@using Microsoft.Graph
+@using Azure.Core;
+@using Microsoft.Graph;
+@using Newtonsoft.Json;
 @inject MicrosoftTeams MicrosoftTeams
 @inject NavigationManager MyNavigationManager
 @inject TeamsFx teamsfx
 @inject TeamsUserCredential teamsUserCredential
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 <div>
 	@if (!IsLoaded) {
@@ -14,8 +16,9 @@
 	</div>
 	}
 	else {
-		@if( Profile.JobTitle == null) {
+		@if(@Profile.JobTitle == null) {
 		<Vytvoreni_Teamu/>
+		<p>@Profile.DisplayName</p>
 			}
 		else {
 			<Vytvoreni_teamu_student />
@@ -30,6 +33,8 @@
 	public User Profile { get; set; }
 	public string ErrorMessage { get; set; }
 	public bool NeedConsent { get; set; }
+	const string UserToken = "UserInfo";
+	private string user { get; set; }
 	private readonly string _scope = "User.Read";
 
 	protected override async Task OnAfterRenderAsync(bool firstRender){
@@ -38,10 +43,17 @@
 			if (await HasPermission(_scope))
 			{
 				await ShowProfile();
+				SetLocalUser();
+				//await GetItem();
 			}
 			IsLoaded = true;
 		}
-			StateHasChanged();
+		StateHasChanged();
+	}
+	//uložení uživatele --> ověřování pak bude probíhat přes toto uložení  
+	public async void SetLocalUser() {
+		string json = JsonConvert.SerializeObject(Profile);
+		await sessionStorage.SetItemAsync<string>(UserToken, json);
 	}
 	//tohle bude sloužit až bude vytvořen Team v databázi 
 	/*protected override void OnInitialized()
@@ -54,7 +66,10 @@
 
 		}
 	}*/
-
+	public async Task GetItem() {
+		string json = await sessionStorage.GetItemAsync<string>(UserToken);
+		Profile = JsonConvert.DeserializeObject<User>(json);
+	}
 	private async Task<bool> HasPermission(string scope)
 	{
 		try

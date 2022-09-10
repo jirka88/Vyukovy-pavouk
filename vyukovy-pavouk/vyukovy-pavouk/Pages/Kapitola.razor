@@ -2,7 +2,9 @@
 @using vyukovy_pavouk.Components;
 @inject NavigationManager MyNavigationManager
 @layout UserLayout
-
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@using Microsoft.Graph;
+@using Newtonsoft.Json;
 
 @if(!IsLoaded) {
 	<div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
@@ -46,16 +48,23 @@ else {
 @code {
 	[Inject]
 	public NavigationManager NavigationManager { get; set; }
-
+	public User Profile { get; set; }
 	bool IsLoaded = false;
+	const string UserToken = "UserInfo";
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)
 		{
 			IsLoaded = true;
+			await GetItem();
 			StateHasChanged();
 		}
 	}
+	/*public async Task GetItem()
+	{
+		string json = await sessionStorage.GetItemAsync<string>(UserToken);
+		Profile = JsonConvert.DeserializeObject<User>(json);
+	}*/
 	public void edit() {
 		NavigationManager.NavigateTo("edit");
 	}
