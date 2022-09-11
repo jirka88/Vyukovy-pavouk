@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "FEEemhbBGcG3itk+zYkO8PA9tTzKC6S5ot+1uYh1rsE=",
+  "Hash": "T8AlKzLp+qffMWjd8yq3I718eO5KKBwcbg0Z1+WrnX0=",
   "Source": "vyukovy-pavouk",
   "BasePath": "_content/vyukovy-pavouk",
   "Mode": "Default",
@@ -66,6 +66,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\jn88\\.nuget\\packages\\microsoft.teamsfx\\1.0.0\\staticwebassets\\jsInterop.js"
+    },
+    {
+      "Identity": "C:\\Users\\jn88\\.nuget\\packages\\solutaris.infoware.protectedbrowserstorage\\1.0.0\\staticwebassets\\config.js",
+      "SourceId": "Solutaris.InfoWARE.ProtectedBrowserStorage",
+      "SourceType": "Package",
+      "ContentRoot": "C:\\Users\\jn88\\.nuget\\packages\\solutaris.infoware.protectedbrowserstorage\\1.0.0\\staticwebassets\\",
+      "BasePath": "_content/Solutaris.InfoWARE.ProtectedBrowserStorage",
+      "RelativePath": "config.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\jn88\\.nuget\\packages\\solutaris.infoware.protectedbrowserstorage\\1.0.0\\staticwebassets\\config.js"
     },
     {
       "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\obj\\Debug\\net6.0\\jsmodules\\jsmodules.build.manifest.json",

@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
+using Solutaris.InfoWARE.ProtectedBrowserStorage.Extensions;
 using vyukovy_pavouk.Interop.TeamsSDK;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddSingleton<IUserToken, UserToken>();
+builder.Services.AddIWProtectedBrowserStorage();
 
 var app = builder.Build();
 

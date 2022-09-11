@@ -43,6 +43,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Microsoft.Fast.Components.FluentUI" Version="1.0.0" />
     <PackageReference Include="Microsoft.TeamsFx" Version="1.0.0" />
+    <PackageReference Include="Solutaris.InfoWARE.ProtectedBrowserStorage" Version="1.0.0" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties permissions_1json__JsonSchema="https://bitbucket.org/atlassianlabs/atlascode/raw/main/resources/schemas/pipelines-schema.json" /></VisualStudio></ProjectExtensions>

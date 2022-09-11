@@ -24,6 +24,7 @@
     </Content>
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)solutaris.infoware.protectedbrowserstorage\1.0.0\buildTransitive\Solutaris.InfoWARE.ProtectedBrowserStorage.props" Condition="Exists('$(NuGetPackageRoot)solutaris.infoware.protectedbrowserstorage\1.0.0\buildTransitive\Solutaris.InfoWARE.ProtectedBrowserStorage.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.teamsfx\1.0.0\buildTransitive\Microsoft.TeamsFx.props" Condition="Exists('$(NuGetPackageRoot)microsoft.teamsfx\1.0.0\buildTransitive\Microsoft.TeamsFx.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.fast.components.fluentui\1.0.0\buildTransitive\Microsoft.Fast.Components.FluentUI.props" Condition="Exists('$(NuGetPackageRoot)microsoft.fast.components.fluentui\1.0.0\buildTransitive\Microsoft.Fast.Components.FluentUI.props')" />
   </ImportGroup>

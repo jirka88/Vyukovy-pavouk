@@ -6,10 +6,10 @@
 @inject MicrosoftTeams MicrosoftTeams
 @inject NavigationManager MyNavigationManager
 @inject TeamsFx teamsfx
-@inject IUserToken UserToken
 @inject TeamsUserCredential teamsUserCredential
-
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IUserToken UserToken
+<!-- Blazored.SessionStorage.ISessionStorageService sessionStorage -->
+@inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 
 <div>
 	@if (!IsLoaded) {
@@ -18,11 +18,11 @@
 	</div>
 	}
 	else {
-		@if(@Profile.JobTitle == null) {
+		@if(@UserToken.Profile.JobTitle == null) {
 		<Vytvoreni_Teamu/>
-		<p>@Profile.DisplayName</p>
 			}
 		else {
+
 			<Vytvoreni_teamu_student />
 		}
 	}
@@ -32,8 +32,6 @@
 	bool IsLoaded = false;
 	[Inject]
 	public NavigationManager NavigationManager { get; set; }
-
-	public User Profile { get; set; }
 	public string ErrorMessage { get; set; }
 	public bool NeedConsent { get; set; }
 	private readonly string _scope = "User.Read";
@@ -41,21 +39,26 @@
 	protected override async Task OnAfterRenderAsync(bool firstRender){
 		if (firstRender)
 		{
+
 			if (await HasPermission(_scope))
 			{
-				await ShowProfile();
-				SetLocalUser();
-				//await GetItem();
+				await UserToken.GetUserAsync(sessionStorage);
+				if (UserToken.Profile == null)
+				{
+					await ShowProfile();
+					await UserToken.SetLocalUser(sessionStorage);
+					IsLoaded = true;
+				}
+				else
+				{
+					MyNavigationManager.NavigateTo("/");
+				}	
 			}
-			IsLoaded = true;
+			StateHasChanged();
 		}
-		StateHasChanged();
+		
 	}
-	//uložení uživatele --> ověřování pak bude probíhat přes toto uložení  
-	public async void SetLocalUser() {
-		string json = JsonConvert.SerializeObject(Profile);
-		await sessionStorage.SetItemAsync<string>(UserToken.GetUserToken(), json);
-	}
+
 	//tohle bude sloužit až bude vytvořen Team v databázi 
 	/*protected override void OnInitialized()
 	{
@@ -66,10 +69,6 @@
 		catch(Exception) {
 
 		}
-	}*/
-	/*public async Task GetItem() {
-		string json = await sessionStorage.GetItemAsync<string>(UserToken.UserTokenAuth);
-		Profile = JsonConvert.DeserializeObject<User>(json);
 	}*/
 	private async Task<bool> HasPermission(string scope)
 	{
@@ -97,7 +96,7 @@
 	{
 		var msGraphAuthProvider = new MsGraphAuthProvider(teamsUserCredential);
 		var graph = new GraphServiceClient(msGraphAuthProvider);
-		Profile = await graph.Me.Request().GetAsync();
+		UserToken.Profile = await graph.Me.Request().GetAsync();
 	}
 }
 

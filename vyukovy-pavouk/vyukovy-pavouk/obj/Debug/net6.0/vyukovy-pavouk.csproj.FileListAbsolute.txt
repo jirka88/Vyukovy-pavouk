@@ -123,3 +123,12 @@ D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedc
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Pages\Kapitola-uprava.razor.rz.scp.css
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Blazored.LocalStorage.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Blazored.SessionStorage.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.AspNetCore.Authorization.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.AspNetCore.Components.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.AspNetCore.Components.Forms.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.AspNetCore.Components.Web.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.AspNetCore.Metadata.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.JSInterop.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Solutaris.InfoWARE.ProtectedBrowserStorage.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\System.IO.Pipelines.dll

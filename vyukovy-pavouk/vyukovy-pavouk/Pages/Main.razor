@@ -5,15 +5,15 @@
 @using Newtonsoft.Json;
 @using vyukovy_pavouk.Components;
 @inject TeamsFx teamsfx
+@inject NavigationManager MyNavigationManager
 @inject TeamsUserCredential teamsUserCredential
 @inject IUserToken UserToken
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 
 <h1 class="text-center py-2 pb-4">Obsah</h1>
 @if(IsLoaded) {
-	
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
-	<p>@Profile.DisplayName</p>
+	<p>@UserToken.Profile.DisplayName</p>
 	<Kapitola_splneno ID="2" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />
 	<Kapitola_ucitel ID="3" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />
 	<Kapitola_odemceno ID="3" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />
@@ -32,22 +32,21 @@ else {
 	[Inject]
 	public NavigationManager NavigationManager { get; set; }
 
-	public User Profile { get; set; }
 	public bool IsLoaded = false;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		await base.OnAfterRenderAsync(firstRender);
 		if(firstRender) {
-			await GetItem();
-			IsLoaded = true;
+			await UserToken.GetUserAsync(sessionStorage);
+			if(UserToken.Profile == null)  {
+				MyNavigationManager.NavigateTo("/tab");
+			}
+			else {
+				IsLoaded = true;
+			}
+			
 		}
 		StateHasChanged();
-	}
-	public async Task GetItem()
-	{
-		string json = await sessionStorage.GetItemAsync<string>(UserToken.GetUserToken());
-		Profile = JsonConvert.DeserializeObject<User>(json);
 	}
 
 }

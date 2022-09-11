@@ -1,8 +1,18 @@
 ﻿@page "/add"
 @layout UserLayout
+@inject NavigationManager MyNavigationManager
+@inject IUserToken UserToken
+@inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
+
 <div class="container">
 	<h1 class="text-center py-2">Přidání kapitoly</h1>
-	<label for="shirt-size">Nutno splnit</label>
+    @if(!IsLoaded) {
+        <div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+            <FluentProgressRing />
+        </div>
+    }
+    else {
+        <label for="shirt-size">Nutno splnit</label>
     <br />
     <div class="form d-flex flex-column gap-4">
         @foreach( string item in Splneni) {
@@ -57,6 +67,8 @@
         </div>
         <fluent-button appearance ="accent">Vytvořit</fluent-button>
      </div>
+    }
+	
 </div>
 
 @code {
@@ -68,6 +80,22 @@
     List <string> Splneni = new List<string>();
     int PocetSplneni = 1;
 
+    bool IsLoaded = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await UserToken.GetUserAsync(sessionStorage);
+			if(UserToken.Profile == null)  {
+				MyNavigationManager.NavigateTo("/tab");
+			}
+			else {
+				IsLoaded = true;
+			}		
+			StateHasChanged();
+		}
+	}
     public void Kontrola() {
         if(pocet < 1) {
             pocet = 1;
