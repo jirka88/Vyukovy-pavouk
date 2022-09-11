@@ -8,6 +8,8 @@
 @inject TeamsFx teamsfx
 @inject TeamsUserCredential teamsUserCredential
 @inject IUserToken UserToken
+@inject IWebHostEnvironment HostEnvironment
+@inject IConfiguration Configuration
 <!-- Blazored.SessionStorage.ISessionStorageService sessionStorage -->
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 
@@ -15,14 +17,15 @@
 	@if (!IsLoaded) {
 		<div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
 		<FluentProgressRing/>
-	</div>
+		</div>
 	}
 	else {
 		@if(@UserToken.Profile.JobTitle == null) {
+			<p>@teamsContext.TeamId</p>
 		<Vytvoreni_Teamu/>
 			}
 		else {
-
+		
 			<Vytvoreni_teamu_student />
 		}
 	}
@@ -32,16 +35,29 @@
 	bool IsLoaded = false;
 	[Inject]
 	public NavigationManager NavigationManager { get; set; }
+
+	public TeamsContext teamsContext { get; set; }
+
 	public string ErrorMessage { get; set; }
 	public bool NeedConsent { get; set; }
 	private readonly string _scope = "User.Read";
 
 	protected override async Task OnAfterRenderAsync(bool firstRender){
+
+		await base.OnAfterRenderAsync(firstRender);
 		if (firstRender)
 		{
+			if (await HasPermission(_scope)) {
 
-			if (await HasPermission(_scope))
-			{
+				try {
+					await MicrosoftTeams.InitializeAsync();
+					teamsContext = await MicrosoftTeams.GetTeamsContextAsync();		
+				}
+				catch (Exception e)
+				{
+					var test = e;
+				}
+			
 				await UserToken.GetUserAsync(sessionStorage);
 				if (UserToken.Profile == null)
 				{
@@ -52,13 +68,14 @@
 				else
 				{
 					MyNavigationManager.NavigateTo("/");
-				}	
+				}
+			//IsLoaded = true;
 			}
+			
 			StateHasChanged();
 		}
 		
 	}
-
 	//tohle bude sloužit až bude vytvořen Team v databázi 
 	/*protected override void OnInitialized()
 	{

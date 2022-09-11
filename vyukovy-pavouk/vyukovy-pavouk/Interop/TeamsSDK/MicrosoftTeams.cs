@@ -1,5 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
+
 namespace vyukovy_pavouk.Interop.TeamsSDK;
 
 public class MicrosoftTeams : InteropModuleBase
