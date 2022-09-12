@@ -1,8 +1,10 @@
 ﻿@page "/kapitola"
 @using vyukovy_pavouk.Components;
 @inject NavigationManager MyNavigationManager
+@inject MicrosoftTeams MicrosoftTeams
 @layout UserLayout
 @inject IUserToken UserToken
+@inject IGroupToken GroupToken
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 @using Microsoft.Graph;
 
@@ -57,12 +59,15 @@ else {
 		if (firstRender)
 		{
 			await UserToken.GetUserAsync(sessionStorage);
-			if(UserToken.Profile == null)  {
+			await GroupToken.GetGroupAsync(MicrosoftTeams);
+			if (UserToken.Profile == null)
+			{
 				MyNavigationManager.NavigateTo("/tab");
 			}
-			else {
+			else
+			{
 				IsLoaded = true;
-			}		
+			}
 			StateHasChanged();
 		}
 	}

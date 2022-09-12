@@ -5,10 +5,10 @@
 @using Newtonsoft.Json;
 @using vyukovy_pavouk.Components;
 @inject TeamsFx teamsfx
-@inject NavigationManager MyNavigationManager
 @inject MicrosoftTeams MicrosoftTeams
-@inject TeamsUserCredential teamsUserCredential
+@inject NavigationManager MyNavigationManager
 @inject IUserToken UserToken
+@inject IGroupToken GroupToken
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 
 <h1 class="text-center py-2 pb-4">Obsah</h1>
@@ -40,6 +40,7 @@ else {
 		if(firstRender) {
 
 			await UserToken.GetUserAsync(sessionStorage);
+			await GroupToken.GetGroupAsync(MicrosoftTeams);
 			if(UserToken.Profile == null)  {
 				MyNavigationManager.NavigateTo("/tab");
 			}

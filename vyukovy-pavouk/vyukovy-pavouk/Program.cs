@@ -16,6 +16,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddSingleton<IUserToken, UserToken>();
+builder.Services.AddSingleton<IGroupToken, GroupToken>();
 builder.Services.AddIWProtectedBrowserStorage();
 
 var app = builder.Build();

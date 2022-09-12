@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using Solutaris.InfoWARE.ProtectedBrowserStorage.Services;
 using System;
 
-
 public interface IUserToken
 {
     User Profile { get; set; }
@@ -17,9 +16,9 @@ public interface IUserToken
 }
 public class UserToken : IUserToken
 {
-    private const string UserTokenAuth = "userInfo";
+    private const string UserTokenAuth = "####";
 
-    public User Profile { get; set; } = new User(); 
+    public User Profile { get; set; } = new User();
 
     public async Task GetUserAsync(IIWSessionStorageService sessionStorage)
     {

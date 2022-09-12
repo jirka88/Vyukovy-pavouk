@@ -1,7 +1,9 @@
 ﻿@page "/add"
 @layout UserLayout
 @inject NavigationManager MyNavigationManager
+@inject MicrosoftTeams MicrosoftTeams
 @inject IUserToken UserToken
+@inject IGroupToken GroupToken
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 
 <div class="container">
@@ -86,13 +88,16 @@
 	{
 		if (firstRender)
 		{
-			await UserToken.GetUserAsync(sessionStorage);
-			if(UserToken.Profile == null)  {
-				MyNavigationManager.NavigateTo("/tab");
-			}
-			else {
-				IsLoaded = true;
-			}		
+            await UserToken.GetUserAsync(sessionStorage);
+            await GroupToken.GetGroupAsync(MicrosoftTeams);
+            if (UserToken.Profile == null )
+            {
+                MyNavigationManager.NavigateTo("/tab");
+            }
+            else
+            {
+                IsLoaded = true;
+            }
 			StateHasChanged();
 		}
 	}
