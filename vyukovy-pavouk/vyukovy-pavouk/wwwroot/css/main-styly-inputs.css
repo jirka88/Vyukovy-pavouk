@@ -1,6 +1,7 @@
 ﻿input[type=text], input[type=number] {
     background: #f9f9f9;
     border: none;
+    border: 1px solid gray;
     outline: none;
     padding: 12px;
     box-shadow: 6px 5px gray;
@@ -29,7 +30,7 @@ textarea {
     height: 20vh;
     background: #f9f9f9;
     outline: none;
-    border: none;
+    border: 1px solid gray;
     padding: 12px;
     box-shadow: 6px 5px gray;
 }
@@ -51,7 +52,7 @@ label {
 select {
     padding: 12px;
     outline: none;
-    border: none;
+    border: 1px solid gray;
     box-shadow: 6px 5px gray;
 }
 

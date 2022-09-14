@@ -12,11 +12,18 @@
 }
 .card {
 	background: #E8E8E8;
-	border: none;
+	border: 1px solid gray;
 	width: 80%;
+	box-shadow: 8px 5px gray;
 	min-height: 200px;
 	cursor: pointer;
+	transition: 0.3s;
 }
+	.card:hover {
+		transform: scale(1.05);
+		border: 1px solid #464EB8;
+		box-shadow: 8px 5px #464EB8
+	}
 .locked {
 	cursor: auto;
 }
