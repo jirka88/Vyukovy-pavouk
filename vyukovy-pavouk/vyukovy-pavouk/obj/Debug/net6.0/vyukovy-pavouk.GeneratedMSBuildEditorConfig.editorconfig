@@ -47,6 +47,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMb2FkaW5nLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/NotFound.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xOb3RGb3VuZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Pages/TabConfig.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGFiQ29uZmlnLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
