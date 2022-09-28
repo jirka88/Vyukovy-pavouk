@@ -17,6 +17,7 @@
 	box-shadow: 8px 5px gray;
 	min-height: 200px;
 	cursor: pointer;
+	overflow: hidden;
 	transition: 0.3s;
 }
 	.card:hover {
@@ -63,5 +64,8 @@ a {
 	.circle {
 		width: 5em; 
 		height: 5em;
+	}
+	.require {
+		justify-content: center;
 	}
 }
