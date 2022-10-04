@@ -1,22 +1,26 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager MyNavigationManager
 @inject IUserToken UserToken
+@inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 <div class="container">
-<Fluent-Tabs class="py-4">
-	<Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/")'>Pavouk</Fluent-Tab>
+
+    @if(IsLoaded) {
+        <Fluent-Tabs class="py-4">
+        	<Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/")'>Pavouk</Fluent-Tab>
     @if(UserToken.Profile.JobTitle == null) {
-        <Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/add")'>Přidání</Fluent-Tab>
-    <Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/")'>Statistiky</Fluent-Tab>
+            <Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/add")'>Přidání</Fluent-Tab>
+            <Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/")'>Statistiky</Fluent-Tab>
     }   
-	 <Fluent-Tab-Panel>
-    </Fluent-Tab-Panel>
-     @if(UserToken.Profile.JobTitle == null) {
-    <Fluent-Tab-Panel>
-    </Fluent-Tab-Panel>
-    <Fluent-Tab-Panel>
-    </Fluent-Tab-Panel>
-     }
-</Fluent-Tabs>
+	    <Fluent-Tab-Panel>
+        </Fluent-Tab-Panel>
+    @if(UserToken.Profile.JobTitle == null) {
+        <Fluent-Tab-Panel>
+        </Fluent-Tab-Panel>
+        <Fluent-Tab-Panel>
+        </Fluent-Tab-Panel>
+    }
+        </Fluent-Tabs>
+    }
 @Body
 </div>
 <link rel="stylesheet" href="css/main-styly-inputs.css" />
@@ -26,6 +30,23 @@
     }
 </style>
 @code {
+    public bool IsLoaded = false;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await UserToken.GetUserAsync(sessionStorage);
+            if (UserToken.Profile == null)
+            {
+                MyNavigationManager.NavigateTo("/tab");
+            }
+            else
+            {
+                IsLoaded = true;
+            }
+            StateHasChanged();
+        }
 
+	}	
 
 }
