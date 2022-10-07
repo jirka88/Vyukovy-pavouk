@@ -1,6 +1,10 @@
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph.ExternalConnectors;
 using Solutaris.InfoWARE.ProtectedBrowserStorage.Extensions;
+using System;
+using vyukovy_pavouk.Data;
 using vyukovy_pavouk.Interop.TeamsSDK;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +22,10 @@ builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddScoped<IUserToken, UserToken>();
 builder.Services.AddScoped<IGroupToken, GroupToken>();
 builder.Services.AddIWProtectedBrowserStorage();
-
+builder.Services.AddDbContext<DBContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection"));
+});
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -38,6 +45,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.UseEndpoints(endpoints =>
 {
