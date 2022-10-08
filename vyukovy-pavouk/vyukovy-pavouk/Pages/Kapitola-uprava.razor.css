@@ -16,9 +16,10 @@ input[type=number] {
 	height: 50px;
 	font-size: 1.2em;
 }
-.counter fluent-button{
-	width: 50px; 
+.counter fluent-button {
+	width: 50px;
 	height: 50px;
+	border-radius: 0px;
 }
 @media only screen and (max-width: 767px) {
 	.container {

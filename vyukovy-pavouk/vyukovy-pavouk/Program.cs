@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph.ExternalConnectors;
 using Solutaris.InfoWARE.ProtectedBrowserStorage.Extensions;
 using System;
-using vyukovy_pavouk.Data;
+using vyukovy_pavouk.DBContext;
 using vyukovy_pavouk.Interop.TeamsSDK;
 
 var builder = WebApplication.CreateBuilder(args);
