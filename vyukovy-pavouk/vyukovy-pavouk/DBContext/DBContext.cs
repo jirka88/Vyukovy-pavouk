@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using vyukovy_pavouk.Data;
 
 namespace vyukovy_pavouk.DBContext
@@ -14,12 +15,7 @@ namespace vyukovy_pavouk.DBContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // 1:M --> Predmet : kapitoly
-            modelBuilder.Entity<Kapitola>()
-               .HasOne(p => p.predmet)
-               .WithMany(p => p.Kapitoly)
-               .HasForeignKey(p => p.IdPredmetu);
-              
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());                        
         }
     }
 }
