@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-
+﻿
 namespace vyukovy_pavouk.Data
 {
     public class Predmet

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-
+﻿
 namespace vyukovy_pavouk.Data
 {
     public class Kapitola
@@ -11,6 +9,7 @@ namespace vyukovy_pavouk.Data
         public string Kontent { get; set; }
         public int IdPredmetu { get; set; }
         public Predmet predmet { get; set; }
+        public ICollection<Videa> Videa { get; set; }
 
     }
 }

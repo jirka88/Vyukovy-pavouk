@@ -12,6 +12,7 @@ namespace vyukovy_pavouk.DBContext
         }
         public DbSet<Kapitola> Kapitoly { get; set; }
         public DbSet<Predmet> Predmet { get; set; }
+        public DbSet<Videa> Videa { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -15,7 +15,7 @@ namespace vyukovy_pavouk.EntityConfiguration
 
             // 1:M --> Predmet : kapitoly
             builder.HasOne(p => p.predmet)
-               .WithMany(p => p.Kapitoly)
+               .WithMany(k => k.Kapitoly)
                .HasForeignKey(p => p.IdPredmetu)
                .OnDelete(DeleteBehavior.Cascade);
         }
