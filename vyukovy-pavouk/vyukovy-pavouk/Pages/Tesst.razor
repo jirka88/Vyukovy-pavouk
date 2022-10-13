@@ -1,0 +1,25 @@
+﻿@page "/apii/kapitola"
+@inject HttpClient Http
+@using vyukovy_pavouk.Data
+
+@if(IsLoaded) {
+	@foreach (var item in userList)
+{
+	<p>@item.test</p>
+}
+}
+
+@code {
+	public List<Test> userList;
+	public bool IsLoaded = false;
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+		{	
+			if(firstRender) {
+			userList = await Http.GetFromJsonAsync<List<Test>>("https://localhost:44302/api/kapitola");
+			}
+			else {
+			IsLoaded = true;
+			}
+		StateHasChanged();					
+	}	
+}

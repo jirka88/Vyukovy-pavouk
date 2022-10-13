@@ -9,7 +9,7 @@
         	<Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/")'>Pavouk</Fluent-Tab>
     @if(UserToken.Profile.JobTitle == null) {
             <Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/add")'>Přidání</Fluent-Tab>
-            <Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/")'>Statistiky</Fluent-Tab>
+            <Fluent-Tab @onclick='() => MyNavigationManager.NavigateTo("/souhrn")'>Souhrn</Fluent-Tab>
     }   
 	    <Fluent-Tab-Panel>
         </Fluent-Tab-Panel>

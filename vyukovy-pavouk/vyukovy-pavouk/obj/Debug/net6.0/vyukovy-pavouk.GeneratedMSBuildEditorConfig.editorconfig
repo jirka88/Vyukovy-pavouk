@@ -55,6 +55,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGFiQ29uZmlnLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Pages/Tesst.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVzc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Shared/UserLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFVzZXJMYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -94,6 +98,10 @@ build_metadata.AdditionalFiles.CssScope = b-pkvnducani
 [D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Pages/Main.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-5juggsglmn
+
+[D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Pages/Souhrn.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU291aHJuLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-42p5hbspiz
 
 [D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Pages/Tab.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGFiLnJhem9y

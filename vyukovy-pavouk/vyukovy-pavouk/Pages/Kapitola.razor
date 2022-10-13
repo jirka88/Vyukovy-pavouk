@@ -1,5 +1,7 @@
-﻿@page "/kapitola"
+﻿@page "/Kapitola"
 @using vyukovy_pavouk.Components;
+@using vyukovy_pavouk.Data
+@inject HttpClient Http
 @inject NavigationManager MyNavigationManager
 @inject MicrosoftTeams MicrosoftTeams
 @layout UserLayout
@@ -15,6 +17,7 @@
 }
 else {
 	<div class="container">
+			<p>@(MyNavigationManager.Uri)</p>
 		<div class="kapitola">
 			<div class="d-flex pt-5 pb-3 align-items-center main-title">
 				<h1 class="text-left font-weight-bold flex-grow-1">Název Kapitoly</h1>
@@ -44,7 +47,7 @@ else {
 				<p>Při potvrzení tlačítka Vám bude odesláno cvičení na dané téma ve formě testu. Po následné korekci Vašeho testu bude zpřístupněna další kapitola.</p>
 			</div>
 			<fluent-anchor href="#" appearance="stealth" class="d-flex justify-content-center">zpátky<svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 5a1 1 0 0 1 1-1h5c2.242 0 4.01.778 5.218 2.023C19.414 7.256 20 8.887 20 10.5c0 1.613-.586 3.244-1.782 4.477C17.01 16.222 15.242 17 13 17H8.414l2.043 2.043a1 1 0 0 1-1.414 1.414l-3.75-3.75a1 1 0 0 1 0-1.414l3.75-3.75a1 1 0 0 1 1.414 1.414L8.414 15H13c1.758 0 2.99-.597 3.782-1.415.804-.83 1.218-1.948 1.218-3.085s-.414-2.256-1.218-3.085C15.99 6.597 14.758 6 13 6H8a1 1 0 0 1-1-1Z" fill="#212121" /></svg></fluent-anchor>
-			</div>
+		</div>			
 		</div>
 
 	</div>
@@ -54,6 +57,8 @@ else {
 	[Inject]
 	public NavigationManager NavigationManager { get; set; }
 	bool IsLoaded = false;
+	public List<Test> test;
+	string error = "";
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)
@@ -66,6 +71,7 @@ else {
 			}
 			else
 			{
+				//test = await Http.GetFromJsonAsync<List<Test>>("api/kapitola"); --> tohle nefunguje 
 				IsLoaded = true;
 			}
 			StateHasChanged();
@@ -74,4 +80,14 @@ else {
 	public void edit() {
 		NavigationManager.NavigateTo("edit");
 	}
+	/*protected override async Task OnInitializedAsync()
+	{
+		try {
+			userList = await Http.GetFromJsonAsync<List<Test>>("api/Test");
+		}
+		catch (ExceptionWithCode e)
+		{
+			error = e.Message;
+		}
+	}*/
 }

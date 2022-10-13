@@ -4,8 +4,10 @@
 @using Microsoft.Graph
 @using Newtonsoft.Json;
 @using vyukovy_pavouk.Components;
+@using vyukovy_pavouk.Data
 @inject TeamsFx teamsfx
 @inject MicrosoftTeams MicrosoftTeams
+@inject HttpClient Http
 @inject NavigationManager MyNavigationManager
 @inject IUserToken UserToken
 @inject IGroupToken GroupToken
@@ -19,6 +21,7 @@
 	<Kapitola_odemceno ID="3" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />
 	<Kapitola_uzavreno ID="4" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />
 	<Kapitola_uzavreno ID="5" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />
+	<p>@tests</p>
 </div>
 }
 else {
@@ -32,7 +35,7 @@ else {
 
 	[Inject]
 	public NavigationManager NavigationManager { get; set; }
-
+	private List<Test> tests;
 	public bool IsLoaded = false;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -44,8 +47,10 @@ else {
 				MyNavigationManager.NavigateTo("/tab");
 			}
 			else {
+				
 				IsLoaded = true;
 			}
+			
 			//IsLoaded = true;
 
 		}

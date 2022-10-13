@@ -1,11 +1,14 @@
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph.ExternalConnectors;
 using Solutaris.InfoWARE.ProtectedBrowserStorage.Extensions;
 using System;
-using vyukovy_pavouk.DBContext;
+using vyukovy_pavouk.DBContexts;
+using vyukovy_pavouk.Interface;
 using vyukovy_pavouk.Interop.TeamsSDK;
+using vyukovy_pavouk.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +24,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddScoped<IUserToken, UserToken>();
 builder.Services.AddScoped<IGroupToken, GroupToken>();
+builder.Services.AddScoped<ITest, TestManager>();
 builder.Services.AddIWProtectedBrowserStorage();
 builder.Services.AddDbContext<DBContext>(options =>
 {
@@ -38,9 +42,8 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseAuthentication();

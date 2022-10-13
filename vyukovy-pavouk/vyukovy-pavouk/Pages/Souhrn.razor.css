@@ -1,0 +1,22 @@
+﻿table {
+	max-width: 940px;
+	margin: 0 auto;
+}
+
+td, th:not(:first-child) {
+	text-align: center;
+}
+td * {
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	height: 100%;
+}
+td:last-child * {
+	display: block;
+}
+button{
+	border: none;
+	border-radius: 100%;
+	border: 1px solid gray !important;
+}
