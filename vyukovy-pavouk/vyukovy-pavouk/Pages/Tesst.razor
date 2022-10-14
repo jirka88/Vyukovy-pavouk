@@ -1,5 +1,6 @@
 ﻿@page "/apii/kapitola"
 @inject HttpClient Http
+@inject NavigationManager MyNavigationManager
 @using vyukovy_pavouk.Data
 
 @if(IsLoaded) {
@@ -15,7 +16,7 @@
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 		{	
 			if(firstRender) {
-			userList = await Http.GetFromJsonAsync<List<Test>>("https://localhost:44302/api/kapitola");
+			userList = await Http.GetFromJsonAsync<List<Test>>($"{MyNavigationManager.BaseUri}api/kapitola");
 			}
 			else {
 			IsLoaded = true;
