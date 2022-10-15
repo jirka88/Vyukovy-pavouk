@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿/*using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using vyukovy_pavouk.Data;
 using vyukovy_pavouk.Interface;
@@ -20,4 +20,4 @@ public class KapitolaController : ControllerBase
             return await Task.FromResult(_ITest.GetItems());
         }
     }
-}
+}*/

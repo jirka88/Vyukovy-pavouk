@@ -1,4 +1,4 @@
-﻿using vyukovy_pavouk.Data;
+﻿/*using vyukovy_pavouk.Data;
 using vyukovy_pavouk.DBContexts;
 using vyukovy_pavouk.Interface;
 
@@ -17,4 +17,4 @@ namespace vyukovy_pavouk.Services
             return _dbContext.Test.ToList();
         }
     }
-}
+}*/

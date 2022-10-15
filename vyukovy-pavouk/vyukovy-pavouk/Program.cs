@@ -6,9 +6,9 @@ using Microsoft.Graph.ExternalConnectors;
 using Solutaris.InfoWARE.ProtectedBrowserStorage.Extensions;
 using System;
 using vyukovy_pavouk.DBContexts;
-using vyukovy_pavouk.Interface;
+//using vyukovy_pavouk.Interface;
 using vyukovy_pavouk.Interop.TeamsSDK;
-using vyukovy_pavouk.Services;
+//using vyukovy_pavouk.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +24,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddScoped<IUserToken, UserToken>();
 builder.Services.AddScoped<IGroupToken, GroupToken>();
-builder.Services.AddScoped<ITest, TestManager>();
+//builder.Services.AddScoped<ITest, TestManager>();
 builder.Services.AddIWProtectedBrowserStorage();
 builder.Services.AddDbContext<DBContext>(options =>
 {
