@@ -20,3 +20,7 @@ button[b-42p5hbspiz]{
 	border-radius: 100%;
 	border: 1px solid gray !important;
 }
+h1[b-42p5hbspiz] {
+	font-weight: bold;
+	font-size: 4em;
+}

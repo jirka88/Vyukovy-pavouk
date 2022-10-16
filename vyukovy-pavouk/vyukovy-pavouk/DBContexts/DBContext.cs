@@ -16,6 +16,10 @@ namespace vyukovy_pavouk.DBContexts
         public DbSet<Zadani> Zadani { get; set; }
         public DbSet<Skupina> Skupina { get; set; }
         public DbSet<SkupinaPredmet> SkupinaPredmet {get; set;}
+        public DbSet<SkupinaStudent> SkupinaStudent { get; set; }
+        public DbSet<Student> Student { get; set; }
+        public DbSet<Splneni> Splneni { get; set; }
+
 
         //public DbSet<Test> Test { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

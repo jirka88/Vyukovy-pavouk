@@ -5,5 +5,6 @@
         public int Id { get; set; }
         public string TmSkupina { get; set; }
         public ICollection<SkupinaPredmet> SkupinaPredmet { get; set; }
-}
+        public ICollection<SkupinaStudent> Student { get; set; }
+    }
 }
