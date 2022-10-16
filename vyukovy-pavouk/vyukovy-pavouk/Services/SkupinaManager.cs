@@ -11,12 +11,12 @@ namespace vyukovy_pavouk.Services
         {
             _dbContext = dbContext;
         }
-        //zeptá se zda-li náš Teams v MS Teamu je v databázi --> pokud není učitel ho bude muset založit v Tab 
+        //zeptá se zda-li náš Teams v MS Teamu je v databázi --> pokud není, učitel ho bude muset založit s názvem předmetu v Tab 
         public Skupina GetSkupina(string IDTeamu)
         {
             try
             {
-                var skupina = _dbContext.Skupina.Where(s => s.TmSkupina == IDTeamu).SingleOrDefault<Skupina>();
+                var skupina = _dbContext.Skupina.Where(s => s.TmSkupina == IDTeamu).FirstOrDefault();
                 return skupina;
             }
             catch (Exception)

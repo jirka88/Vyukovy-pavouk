@@ -3,9 +3,11 @@
 @using Azure.Core;
 @using Microsoft.Graph;
 @using Newtonsoft.Json;
+@using vyukovy_pavouk.Data
 @inject MicrosoftTeams MicrosoftTeams
 @inject NavigationManager MyNavigationManager
 @inject TeamsFx teamsfx
+@inject HttpClient Http
 @inject TeamsUserCredential teamsUserCredential
 @inject IUserToken UserToken
 @inject IGroupToken GroupToken
@@ -40,6 +42,7 @@
 		@if (UserToken.Profile.JobTitle == null)
 		{
 			<p>@GroupToken.teamsContext.TeamId</p>
+			<p>@UserToken.Profile.JobTitle</p>
 			<Vytvoreni_Teamu />
 		}
 		else
@@ -57,6 +60,7 @@
 	public string ErrorMessage { get; set; }
 	public bool NeedConsent { get; set; }
 	private readonly string _scope = "User.Read";
+	public Skupina skupina = new Skupina();
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -66,34 +70,31 @@
 		{
 			if (await HasPermission(_scope))
 			{	
-				await GroupToken.GetGroupAsync(MicrosoftTeams);
-				if (UserToken.Profile == null)
+				await GroupToken.GetGroupAsync(MicrosoftTeams);							
+				//pokud o uživateli nic nevíme získáme o něm informace
+				if (UserToken.Profile.DisplayName == null)
 				{
 					await ShowProfile();
-					await UserToken.SetLocalUser(sessionStorage);
+					await UserToken.SetLocalUser(sessionStorage);									
+				}
+				//získání skupiny z databáze
+				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
+				//pokud skupina neexistuje v databázi načteme úvodní stránku pro její vytvoření (vytvoří se jak Skupina tak i předmět, který navazuje na skupinu)
+				if (skupina.TmSkupina == null)
+				{
 					IsLoaded = true;
 				}
 				else
 				{
-					MyNavigationManager.NavigateTo("/"); //tohle bude potřeba doupravit --> profil nesouvisí s vytvořením teamu - až bude databáze
+					MyNavigationManager.NavigateTo("/"); 
 				}
-				//IsLoaded = true;
 			}		
 			StateHasChanged();
 		}
 
-	}
-	//tohle bude sloužit až bude vytvořen Team v databázi
-	/*protected override void OnInitialized()
-		{
-			try
-			{
-			MyNavigationManager.NavigateTo("/");
-		}
-		catch(Exception) {
+	}	
 
-		}
-	}*/
+	//polovení pro MS Graph, aby mohlo číst uživatelské údaje --> pouze při prvním zavedení aplikace, pak už nebude vyžadovat znovu povolení 
 	private async Task Login() {
 		await teamsUserCredential.LoginAsync(_scope);	
 		MyNavigationManager.NavigateTo("/tab",true);
@@ -121,7 +122,7 @@
 		IsLoaded = true;
 		return false;
 	}
-
+	//zjistění infromací o uživateli pomocí Microsoft Identity a pak MS Graph API 
 	private async Task ShowProfile()
 	{
 		var msGraphAuthProvider = new MsGraphAuthProvider(teamsUserCredential);
