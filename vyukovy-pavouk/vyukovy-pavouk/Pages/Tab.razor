@@ -43,7 +43,7 @@
 		{
 			<p>@GroupToken.teamsContext.TeamId</p>
 			<p>@UserToken.Profile.JobTitle</p>
-			<Vytvoreni_Teamu />
+			<Vytvoreni_Teamu Predmety="@predmet" />
 		}
 		else
 		{
@@ -61,6 +61,7 @@
 	public bool NeedConsent { get; set; }
 	private readonly string _scope = "User.Read";
 	public Skupina skupina = new Skupina();
+	public List<Predmet> predmet;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -82,6 +83,7 @@
 				//pokud skupina neexistuje v databázi načteme úvodní stránku pro její vytvoření (vytvoří se jak Skupina tak i předmět, který navazuje na skupinu)
 				if (skupina.TmSkupina == null)
 				{
+					predmet = await Http.GetFromJsonAsync<List<Predmet>>($"{MyNavigationManager.BaseUri}api/predmet");
 					IsLoaded = true;
 				}
 				else
@@ -94,7 +96,7 @@
 
 	}	
 
-	//polovení pro MS Graph, aby mohlo číst uživatelské údaje --> pouze při prvním zavedení aplikace, pak už nebude vyžadovat znovu povolení 
+	//polovení pro MS Graph, aby mohlo číst uživatelské údaje --> pouze při prvním zavedení aplikace v novém teamu, pak už nebude vyžadovat znovu povolení --> povolení by měl dát Tenant účet 
 	private async Task Login() {
 		await teamsUserCredential.LoginAsync(_scope);	
 		MyNavigationManager.NavigateTo("/tab",true);

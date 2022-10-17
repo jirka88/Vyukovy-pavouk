@@ -24,7 +24,9 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddScoped<IUserToken, UserToken>();
 builder.Services.AddScoped<IGroupToken, GroupToken>();
+builder.Services.AddScoped<IPredmet, PredmetManager>();
 builder.Services.AddScoped<ISkupina, SkupinaManager>();
+
 builder.Services.AddIWProtectedBrowserStorage();
 builder.Services.AddDbContext<DBContext>(options =>
 {

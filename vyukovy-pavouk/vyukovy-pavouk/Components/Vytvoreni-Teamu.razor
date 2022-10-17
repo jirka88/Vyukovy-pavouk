@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
+@using vyukovy_pavouk.Data
 	<div class="container">
 		<div class="main-box py-2 d-flex flex-column align-items-center">
 			<h1 class="py-5 text-center">Je potřeba vytvořit team</h1>
@@ -9,26 +10,32 @@
 						<fluent-button appearance="accent" @onclick="vytvor">Vytvořit</fluent-button>			
 				</div>	
 			</div>
+			<!--Pokud nejsou vytvořené žádne předměty (navazují na ně i Teamy) tabulka se nevykreslí -->
+			@if(Predmety.Count() != 0) {
 			<h2 class="py-4">Nebo</h2>
 			<div class="card">
 				<div class="card-body gap-4">
-					<h2 class="card-title pt-2 text-center">Vytvořit z existujícího teamu</h2>			
+					<h2 class="card-title pt-2 text-center">Vytvořit z existujícího teamu</h2>
 					<select @bind-Value=predmet @bind-Value:event="onchange">
-						<option>Extra Small</option>
-						<option>Extra Small</option>
-						<option>Extra Small</option>
-						<option>Extra Small</option>
-					</select>	
+						@foreach (var item in Predmety)
+						{
+							<option>@item.Nazev</option>
+						}						
+					</select>
 					<fluent-button appearance="accent" type="submit">Vytvořit</fluent-button>
 				</div>
 			</div>
+			}
+			
 		</div>
 	</div>
 
 @code {
-	string predmet = "Extra Small";
+	string predmet = "";
 	string NazevPredmetu = "";
-
+	//parametr, který přijímá od Tab
+	[Parameter]
+	public List<Predmet> Predmety { get; set; }
 	[Inject]
 	public NavigationManager NavigationManager { get; set; }
 

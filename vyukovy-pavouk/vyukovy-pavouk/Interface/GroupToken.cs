@@ -6,6 +6,7 @@ using vyukovy_pavouk.Interop.TeamsSDK;
 using System;
 using Microsoft.AspNetCore.Components;
 
+//interface starající se u načtení aktualního Team ID 
 public interface IGroupToken
 {
     TeamsContext teamsContext { get; set; }

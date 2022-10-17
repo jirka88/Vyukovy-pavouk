@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Solutaris.InfoWARE.ProtectedBrowserStorage.Services;
 using System;
 
+//interface starající se o uložení a načtení aktuálního uživatele ze sessionstorage 
 public interface IUserToken
 {
     User Profile { get; set; }
