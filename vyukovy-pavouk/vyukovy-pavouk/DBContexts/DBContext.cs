@@ -8,7 +8,7 @@ namespace vyukovy_pavouk.DBContexts
     {
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
-            this.Configuration.LazyLoadingEnabled = false;
+            //this.Configuration.LazyLoadingEnabled = false;
         }
         public DbSet<Kapitola> Kapitoly { get; set; }
         public DbSet<Predmet> Predmet { get; set; }
