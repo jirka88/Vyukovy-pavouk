@@ -15,7 +15,7 @@ namespace vyukovy_pavouk.Controllers
             _IUzivatel = iUzivatel;
         }
         [HttpGet("{Id}") ]
-        public async Task<List<Student>> Get(int Id)
+        public async Task<List<SkupinaStudent>> Get(int Id)
         {
             return await Task.FromResult(_IUzivatel.GetStudents(Id));
         }

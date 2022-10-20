@@ -4,6 +4,6 @@ namespace vyukovy_pavouk.Interface
 {
     public interface IUzivatel
 {
-        public List<Student> GetStudents(int Id);
+        public List<SkupinaStudent> GetStudents(int Id);
 }
 }
