@@ -14,6 +14,7 @@ namespace vyukovy_pavouk.Controllers
         {
             _ISkupina = iSkupina;
         }
+        //prvotní kontrola zda-li team existuje, pak následně se používá pro získání ID skupiny a předmětu 
         [HttpGet("{IDTeamu}")] 
         public IActionResult Get(string IDTeamu)
         {

@@ -1,4 +1,5 @@
-﻿using vyukovy_pavouk.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using vyukovy_pavouk.Data;
 using vyukovy_pavouk.DBContexts;
 using vyukovy_pavouk.Interface;
 
@@ -16,7 +17,10 @@ namespace vyukovy_pavouk.Services
         {
             try
             {
-                var skupina = _dbContext.Skupina.Where(s => s.TmSkupina == IDTeamu).FirstOrDefault();
+                var skupina = _dbContext.Skupina
+                    .Where(s => s.TmSkupina == IDTeamu)
+                    .Include(p => p.predmet)
+                    .FirstOrDefault();
                 return skupina;
             }
             catch (Exception)

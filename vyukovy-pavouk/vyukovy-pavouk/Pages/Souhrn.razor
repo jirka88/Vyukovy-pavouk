@@ -31,9 +31,15 @@
 				{
 					<tr>
 					<th scope="row">@student.Student.Jmeno @student.Student.Prijmeni</th>
-					<td>@student.Student.Splneni.Count()/12</td>
-						<td>@CalculateAVG(student.Student.Splneni.Count())%</td>
-					<td><fluent-button appearance="accent"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.296 16.294a1 1 0 1 0 1.415 1.414l4.997-5.004a1 1 0 0 0 0-1.413L15.71 6.293a1 1 0 0 0-1.415 1.414L17.59 11H11a8 8 0 0 0-7.996 7.75L3 19a1 1 0 1 0 2 0 6 6 0 0 1 5.775-5.996L11 13h6.586l-3.29 3.294Z" fill="#ffffff" /></svg></fluent-button></td>
+					@if(MaxCountKapitol > 0) {
+							<td>@student.Student.Splneni.Count()/@MaxCountKapitol</td>
+							<td>@CalculateAVG(student.Student.Splneni.Count())%</td>
+							<td><fluent-button appearance="accent"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.296 16.294a1 1 0 1 0 1.415 1.414l4.997-5.004a1 1 0 0 0 0-1.413L15.71 6.293a1 1 0 0 0-1.415 1.414L17.59 11H11a8 8 0 0 0-7.996 7.75L3 19a1 1 0 1 0 2 0 6 6 0 0 1 5.775-5.996L11 13h6.586l-3.29 3.294Z" fill="#ffffff" /></svg></fluent-button></td>
+					}
+					else {
+							<td colspan="3">V teamu není žádná kapitola!</td>
+					}
+					
 				</tr>
 				}
 				}
@@ -57,6 +63,7 @@ else {
 	public bool IsLoaded = false;
 	public List<SkupinaStudent> studenti { get; set; }
 	public Skupina skupina = new Skupina();
+	int MaxCountKapitol = 0;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)
@@ -72,8 +79,12 @@ else {
 			{
 				//získání skupiny z databáze
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				// získání uživatelů a jejich progres v kapitolách 
+				// získání uživatelů a jejich progres v plnění kapitol
 				studenti = await Http.GetFromJsonAsync<List<SkupinaStudent>>($"{MyNavigationManager.BaseUri}api/uzivatel/" + Convert.ToInt32(skupina.Id));
+				//získání počtů všech dostupných kapitol 
+				if(studenti.Count() > 0) {
+					MaxCountKapitol = await Http.GetFromJsonAsync<int>($"{MyNavigationManager.BaseUri}api/predmet/" + Convert.ToInt32(skupina.predmet.Id));
+				}		
 				IsLoaded = true;
 			}
 		}
@@ -82,7 +93,7 @@ else {
 	//TO DO vrátit počet kapitol 
 	public double CalculateAVG(int PocetSplneni) {
 		//vrátí procentuální splnění 
-		double vypocet = (Convert.ToDouble(PocetSplneni) / 12) * 100;
+		double vypocet = (Convert.ToDouble(PocetSplneni) / MaxCountKapitol) * 100;
 		return Math.Round(vypocet);
 
 	}

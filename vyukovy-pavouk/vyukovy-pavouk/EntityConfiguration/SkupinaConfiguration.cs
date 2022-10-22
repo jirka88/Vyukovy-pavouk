@@ -10,7 +10,6 @@ namespace vyukovy_pavouk.EntityConfiguration
         {
             builder.HasKey(id => id.Id);
             builder.Property(TM => TM.TmSkupina).HasMaxLength(2048).IsRequired();
-            builder.Property(p => p.predmet).IsRequired();
             builder.HasOne(p => p.predmet)
                 .WithMany(s => s.Skupiny)
                 .HasForeignKey(Id => Id.ID_Predmetu);

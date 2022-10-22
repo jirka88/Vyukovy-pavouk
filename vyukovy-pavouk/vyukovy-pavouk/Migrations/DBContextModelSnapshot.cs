@@ -82,6 +82,7 @@ namespace vyukovypavouk.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TmSkupina")
+                        .IsRequired()
                         .HasMaxLength(2048)
                         .HasColumnType("nvarchar(2048)");
 

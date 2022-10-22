@@ -35,6 +35,7 @@ else {
 	[Inject]
 	public NavigationManager NavigationManager { get; set; }
 	public bool IsLoaded = false;
+	public Skupina skupina = new Skupina();
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if(firstRender) {
@@ -45,7 +46,7 @@ else {
 				MyNavigationManager.NavigateTo("/tab");
 			}
 			else {
-				
+				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 				IsLoaded = true;
 			}
 			
