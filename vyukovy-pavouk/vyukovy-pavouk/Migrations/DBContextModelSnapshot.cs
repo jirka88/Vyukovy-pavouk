@@ -78,27 +78,18 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("ID_Predmetu")
+                        .HasColumnType("int");
+
                     b.Property<string>("TmSkupina")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ID_Predmetu");
+
                     b.ToTable("Skupina");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.SkupinaPredmet", b =>
-                {
-                    b.Property<int>("SkupinaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PredmetId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SkupinaId", "PredmetId");
-
-                    b.HasIndex("PredmetId");
-
-                    b.ToTable("SkupinaPredmet");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.SkupinaStudent", b =>
@@ -219,23 +210,15 @@ namespace vyukovypavouk.Migrations
                     b.Navigation("predmet");
                 });
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.SkupinaPredmet", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.Skupina", b =>
                 {
-                    b.HasOne("vyukovy_pavouk.Data.Predmet", "Predmet")
-                        .WithMany("SkupinaPredmet")
-                        .HasForeignKey("PredmetId")
+                    b.HasOne("vyukovy_pavouk.Data.Predmet", "predmet")
+                        .WithMany("Skupiny")
+                        .HasForeignKey("ID_Predmetu")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("vyukovy_pavouk.Data.Skupina", "Skupina")
-                        .WithMany("SkupinaPredmet")
-                        .HasForeignKey("SkupinaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Predmet");
-
-                    b.Navigation("Skupina");
+                    b.Navigation("predmet");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.SkupinaStudent", b =>
@@ -301,13 +284,11 @@ namespace vyukovypavouk.Migrations
                 {
                     b.Navigation("Kapitoly");
 
-                    b.Navigation("SkupinaPredmet");
+                    b.Navigation("Skupiny");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.Skupina", b =>
                 {
-                    b.Navigation("SkupinaPredmet");
-
                     b.Navigation("Student");
                 });
 
