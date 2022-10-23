@@ -27,6 +27,7 @@ builder.Services.AddScoped<IGroupToken, GroupToken>();
 builder.Services.AddScoped<IPredmet, PredmetManager>();
 builder.Services.AddScoped<ISkupina, SkupinaManager>();
 builder.Services.AddScoped<IUzivatel, UzivatelManager>();
+builder.Services.AddScoped<IKapitola, KapitolaManager>();
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
