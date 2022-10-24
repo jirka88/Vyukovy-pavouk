@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using vyukovy_pavouk.Data;
+﻿using vyukovy_pavouk.Data;
 using vyukovy_pavouk.DBContexts;
+using Microsoft.EntityFrameworkCore;
 using vyukovy_pavouk.Interface;
 
 namespace vyukovy_pavouk.Services
@@ -12,13 +12,21 @@ namespace vyukovy_pavouk.Services
         {
             _dbContext = dbContext;
         }
-        //vrátí všechny kapitoly podle předmětu --> pouze v main zobrazení 
-        public List<Kapitola> GetKapitoly(int IdPredmetu)
+        public Kapitola GetKapitolaDetail(int IdKapitoly)
         {
-            return _dbContext.Kapitoly
-                .Where(p => p.IdPredmetu == IdPredmetu)             
-                .ToList();
-            //zde bude include na prerekvizity 
+            try
+            {
+                Kapitola Kapitola = _dbContext.Kapitoly
+               .Where(id => id.Id == IdKapitoly)
+               .Include(v => v.Videa)
+               .Include(z => z.Zadani)
+               .FirstOrDefault();
+                return Kapitola;
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

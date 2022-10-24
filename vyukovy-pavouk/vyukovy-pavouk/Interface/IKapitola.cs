@@ -4,6 +4,7 @@ namespace vyukovy_pavouk.Interface
 {
     public interface IKapitola
 {
-        public List<Kapitola> GetKapitoly(int IdPredmetu);
+        public Kapitola GetKapitolaDetail(int IdKapitoly);       
+
 }
 }

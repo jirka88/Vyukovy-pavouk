@@ -7,18 +7,17 @@ namespace vyukovy_pavouk.Controllers
 {
     [Route("api/[controller]")]
 [ApiController]
-public class KapitolaController : ControllerBase { 
-
-    private readonly IKapitola _IKapitola;
-    public KapitolaController(IKapitola iKapitola)
-    {
-        _IKapitola = iKapitola;
-    }
-
-        [HttpGet("{IDPredmetu}")]
-        public async Task<List<Kapitola>> Get(int IDPredmetu)
+public class KapitolaController : ControllerBase
+{
+        private readonly IKapitola _IKapitola;
+        public KapitolaController(IKapitola iKapitola)
         {
-            return await Task.FromResult(_IKapitola.GetKapitoly(IDPredmetu));
+            _IKapitola = iKapitola;
+        }
+        [HttpGet("{IdKapitola}")] 
+        public async Task <Kapitola> Get(int IdKapitola)
+        {
+            return await Task.FromResult(_IKapitola.GetKapitolaDetail(IdKapitola));
         }
     }
 }

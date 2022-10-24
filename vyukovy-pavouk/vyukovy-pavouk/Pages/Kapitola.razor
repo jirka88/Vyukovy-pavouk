@@ -1,4 +1,5 @@
 ﻿@page "/Kapitola"
+@page "/Kapitola/{IdKapitola:int}"
 @using vyukovy_pavouk.Components;
 @using vyukovy_pavouk.Data
 @inject HttpClient Http
@@ -20,7 +21,7 @@ else {
 			<p>@(MyNavigationManager.Uri)</p>
 		<div class="kapitola">
 			<div class="d-flex pt-5 pb-3 align-items-center main-title">
-				<h1 class="text-left font-weight-bold flex-grow-1">Název Kapitoly</h1>
+				<h1 class="text-left font-weight-bold flex-grow-1">@kapitola.Název</h1>
 				@if (UserToken.Profile.JobTitle == null)
 			   {
 				   <div class="admin-btn d-flex gap-3">
@@ -29,14 +30,19 @@ else {
 				</div>
 			   }			
 			</div>
-			<h5 class="pb-3">Perex It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution</h5>
-			<p class="pb-3">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32</p>
+			<h5 class="pb-3">@kapitola.Perex</h5>
+			<p class="pb-3">@kapitola.Kontent</p>
 			<h3 class="pb-3">Videa:</h3>
 			<div class="d-grid flex-wrap">
 				<div class="row">
-					<a href="#" class="col-6 col-md-4">odkaz</a>
-					<a href="#" class="col-6 col-md-4">odkaz</a>
-					<a href="#" class="col-6 col-md-4">odkaz</a>
+					@if (@kapitola.Videa.Count() > 0)
+				   {
+					   @foreach (var video in @kapitola.Videa)
+					{
+						<a href="@video.Odkaz" target="_blank" class="col-6 col-md-4">odkaz</a>
+					}		
+				   }				
+							
 				</div>
 			</div>
 			<hr class="pb-3" />
@@ -54,10 +60,16 @@ else {
 }
 
 @code {
-	[Inject]
-	public NavigationManager NavigationManager { get; set; }
+
+	[Parameter]
+	public int IdKapitola { get; set; }
+
+	public vyukovy_pavouk.Data.Kapitola kapitola { get; set; }
 	bool IsLoaded = false;
 	string error = "";
+	protected override async Task OnParametersSetAsync() {
+		kapitola = await Http.GetFromJsonAsync<vyukovy_pavouk.Data.Kapitola>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdKapitola);
+	}
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)
@@ -76,6 +88,6 @@ else {
 		}
 	}
 	public void edit() {
-		NavigationManager.NavigateTo("edit");
+		MyNavigationManager.NavigateTo("edit");
 	}
 }
