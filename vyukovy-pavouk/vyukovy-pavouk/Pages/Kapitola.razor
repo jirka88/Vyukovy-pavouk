@@ -32,20 +32,19 @@ else {
 			</div>
 			<h5 class="pb-3">@kapitola.Perex</h5>
 			<p class="pb-3">@kapitola.Kontent</p>
+			@if (@kapitola.Videa.Count() > 0)
+				   {
 			<h3 class="pb-3">Videa:</h3>
 			<div class="d-grid flex-wrap">
-				<div class="row">
-					@if (@kapitola.Videa.Count() > 0)
-				   {
+				<div class="row">				
 					   @foreach (var video in @kapitola.Videa)
 					{
 						<a href="@video.Odkaz" target="_blank" class="col-6 col-md-4">odkaz</a>
-					}		
-				   }				
-							
-				</div>
+					}						   											
+				</div>			   
 			</div>
 			<hr class="pb-3" />
+				   }
 			<div class="d-flex justify-content-center align-items-center flex-column w-100">
 			<fluent-button class="main-btn" appearance="accent">Vzít cvičení</fluent-button>
 			<div class="popis text-center pb-3">
@@ -68,7 +67,7 @@ else {
 	bool IsLoaded = false;
 	string error = "";
 	protected override async Task OnParametersSetAsync() {
-		kapitola = await Http.GetFromJsonAsync<vyukovy_pavouk.Data.Kapitola>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdKapitola);
+		await CallApiKapitola();
 	}
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -82,10 +81,17 @@ else {
 			}
 			else
 			{
+				//pokud by se náhodou nevyvolala dřív OnParametersSetAsync vyvolám ho zde 
+				if(kapitola == null) {
+					await CallApiKapitola();
+				}
 				IsLoaded = true;
 			}
 			StateHasChanged();
 		}
+	}
+	public async Task CallApiKapitola() {
+		kapitola = await Http.GetFromJsonAsync<vyukovy_pavouk.Data.Kapitola>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdKapitola);
 	}
 	public void edit() {
 		MyNavigationManager.NavigateTo("edit");
