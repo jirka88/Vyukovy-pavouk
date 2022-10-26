@@ -4,8 +4,8 @@
 }
 .main-box .card {
     border: dashed 1px black;
-    width: 70%;
-    height: 280px;
+    height: 280px !important;
+    width: 100%;
 }
 .main-box .card .card-body {
     display: flex; 
@@ -18,19 +18,19 @@ fluent-button {
     width: 15em;
     height: 40px;
 }
-input[type=text], select {
+#nazev, select {
     width: 50%;
     outline: none;
     height: 50px;
 }
 @media only screen and (max-width: 767px) {
-    .main-box .card {
+    .editForm {
         width: 80%;
     }
     fluent-button {
         width: 30vw;
     }
-    input[type=text] {
+    #nazev {
         width: 80%;
     }
 }

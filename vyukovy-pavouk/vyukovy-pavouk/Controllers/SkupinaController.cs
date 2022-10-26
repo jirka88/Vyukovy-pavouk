@@ -24,8 +24,12 @@ namespace vyukovy_pavouk.Controllers
             {
                 skupina = new Skupina();
             }
-            return Ok(skupina);        
-           
+            return Ok(skupina);                 
+        }
+        [HttpPost] 
+        public void Create([FromBody] Skupina skupina)
+        {
+            _ISkupina.AddSkupina(skupina);
         }
 }
 }

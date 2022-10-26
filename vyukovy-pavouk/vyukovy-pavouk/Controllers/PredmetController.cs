@@ -20,7 +20,7 @@ public class PredmetController : ControllerBase
         {
             return await Task.FromResult(_IPredmet.GetPredmety());
         }
-        //získání počtů kapitol patřící pod jednotlivý předmět --> použití u souhrnu 
+        //získání počtů všech kapitol patřící pod jednotlivý předmět --> použití u souhrnu 
         [HttpGet("{IDPredmetu}")]
         public async Task<int> Get(int IDPredmetu)
         {

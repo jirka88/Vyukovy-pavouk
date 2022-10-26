@@ -26,7 +26,7 @@ builder.Services.AddScoped<IUserToken, UserToken>();
 builder.Services.AddScoped<IGroupToken, GroupToken>();
 builder.Services.AddScoped<IPredmet, PredmetManager>();
 builder.Services.AddScoped<ISkupina, SkupinaManager>();
-builder.Services.AddScoped<IUzivatel, UzivatelManager>();
+builder.Services.AddScoped<IStudenti, StudentiManager>();
 builder.Services.AddScoped<IKapitoly, KapitolyManager>();
 builder.Services.AddScoped<IKapitola, KapitolaManager>();
 builder.Services.AddControllersWithViews()

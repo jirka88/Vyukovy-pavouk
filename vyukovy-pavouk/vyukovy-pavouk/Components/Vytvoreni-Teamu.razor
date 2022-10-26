@@ -1,46 +1,92 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
+@inject HttpClient Http
+@inject IGroupToken GroupToken
 @using vyukovy_pavouk.Data
-	<div class="container">
-		<div class="main-box py-2 d-flex flex-column align-items-center">
-			<h1 class="py-5 text-center">Je potřeba vytvořit team</h1>
+
+<div class="container">
+	<div class="main-box py-2 d-flex flex-column align-items-center">
+		<h1 class="py-5 text-center">Je potřeba vytvořit team</h1>
+		<EditForm Model="@predmet" OnValidSubmit="@vytvor" class="editForm d-flex justify-content-center">
 			<div class="card">
 				<div class="card-body gap-4">
 					<h2 class="card-title text-center">Vytvořit nový team</h2>
-						<input type="text" placeholder="Název předmětu" @bind-value=@NazevPredmetu>
-						<fluent-button appearance="accent" @onclick="vytvor">Vytvořit</fluent-button>			
-				</div>	
+					<InputText id="nazev" type="text" placeholder="Název předmětu" @bind-Value="@predmet.Nazev"></InputText>
+					<fluent-button appearance="accent" type="submit">Vytvořit</fluent-button>
+				</div>
 			</div>
-			<!--Pokud nejsou vytvořené žádne předměty (navazují na ně i Teamy) tabulka se nevykreslí -->
-			@if(Predmety.Count() != 0) {
+		</EditForm>
+		<!--Pokud nejsou vytvořené žádne předměty (navazují na ně i Teamy) tabulka se nevykreslí -->
+		@if (Predmety.Count() != 0)
+		{
 			<h2 class="py-4">Nebo</h2>
+			<EditForm Model="@skupina" OnValidSubmit="@vytvorZexistujici" class="editForm d-flex justify-content-center">
 			<div class="card">
 				<div class="card-body gap-4">
 					<h2 class="card-title pt-2 text-center">Vytvořit z existujícího teamu</h2>
-					<select @bind-Value=predmet @bind-Value:event="onchange">
-						@foreach (var item in Predmety)
+					<select @bind-Value="@predmett" @bind-Value:event="onchange">
+						@foreach (var item in @Predmety)
 						{
 							<option>@item.Nazev</option>
-						}						
+						}
 					</select>
 					<fluent-button appearance="accent" type="submit">Vytvořit</fluent-button>
 				</div>
 			</div>
-			}
-			
-		</div>
+			</EditForm>
+		}
 	</div>
-
+</div>
+<style>
+	.editForm {
+    width: 70%;
+	padding: 0;
+	margin: 0;
+}
+</style>
 @code {
-	string predmet = "";
-	string NazevPredmetu = "";
 	//parametr, který přijímá od Tab
 	[Parameter]
 	public List<Predmet> Predmety { get; set; }
+	string predmett { get; set; }
 	[Inject]
-	public NavigationManager NavigationManager { get; set; }
+	public NavigationManager MyNavigationManager { get; set; }
+	public Predmet HledanyPredmet { get; set; } = new Predmet();
+	public Skupina skupina = new Skupina();
+	public Predmet predmet { get; set; } = new Predmet {Skupiny = new List<Skupina>()};
+	bool IsLoaded = false;
 
-	public void vytvor() {
-		NavigationManager.NavigateTo("/");
-	}		
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		await base.OnAfterRenderAsync(firstRender);
+		if (firstRender)
+		{
+			if(Predmety.Count() > 0) {
+				predmett = Predmety[0].Nazev.ToString();
+			}	 
+			StateHasChanged();
+		}
+		else {
+			IsLoaded = true;
+		}
+	}
+	//TO DO 
+	public async Task vytvor()
+	{
+		predmet.Skupiny.Add(new Skupina());
+		predmet.Skupiny[0].TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
+		//await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", predmet);
+		MyNavigationManager.NavigateTo("/");
+	}
+	//naváže na novou skupinu existující předmět
+	public async Task vytvorZexistujici() {
+		//přidání ID skupiny 
+		skupina.TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
+		//přidání ID předmětu z výběru nahoře
+		HledanyPredmet = Predmety.Find(x => x.Nazev == predmett);
+		//dosazení ID předmětu
+		skupina.ID_Predmetu = HledanyPredmet.Id;
+		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", skupina);
+		MyNavigationManager.NavigateTo("/");
+	}
 
 }

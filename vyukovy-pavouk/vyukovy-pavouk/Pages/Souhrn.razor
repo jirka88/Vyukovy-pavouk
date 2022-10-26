@@ -80,7 +80,7 @@ else {
 				//získání skupiny z databáze
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 				// získání uživatelů a jejich progres v plnění kapitol
-				studenti = await Http.GetFromJsonAsync<List<SkupinaStudent>>($"{MyNavigationManager.BaseUri}api/uzivatel/" + Convert.ToInt32(skupina.Id));
+				studenti = await Http.GetFromJsonAsync<List<SkupinaStudent>>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id));
 				//získání počtů všech dostupných kapitol 
 				if(studenti.Count() > 0) {
 					MaxCountKapitol = await Http.GetFromJsonAsync<int>($"{MyNavigationManager.BaseUri}api/predmet/" + Convert.ToInt32(skupina.predmet.Id));

@@ -16,7 +16,7 @@
 <!-- Blazored.SessionStorage.ISessionStorageService sessionStorage -->
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 
-<div>
+<div class="container">
 	@if (!IsLoaded)
 	{
 		<div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
@@ -43,25 +43,25 @@
 		{
 			<p>@GroupToken.teamsContext.TeamId</p>
 			<p>@UserToken.Profile.JobTitle</p>
-			<Vytvoreni_Teamu Predmety="@predmet" />
+			<Vytvoreni_Teamu Predmety="@predmety" />
 		}
 		else
 		{
-
 			<Vytvoreni_teamu_student />
 		}
 	}
-
 </div>
+
+
 @code {
-	bool IsLoaded = false;
-	[Inject]
-	public NavigationManager NavigationManager { get; set; }
+
 	public string ErrorMessage { get; set; }
+	bool IsLoaded = false;
 	public bool NeedConsent { get; set; }
+	public Skupina skupina { get; set; } = new(); 
+	public SkupinaStudent student { get; set; }
 	private readonly string _scope = "User.Read";
-	public Skupina skupina = new Skupina();
-	public List<Predmet> predmet;
+	public List<Predmet> predmety;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -83,11 +83,16 @@
 				//pokud skupina neexistuje v databázi načteme úvodní stránku pro její vytvoření (vytvoří se jak Skupina tak i předmět, který navazuje na skupinu)
 				if (skupina.TmSkupina == null)
 				{
-					predmet = await Http.GetFromJsonAsync<List<Predmet>>($"{MyNavigationManager.BaseUri}api/predmet");
+					predmety = await Http.GetFromJsonAsync<List<Predmet>>($"{MyNavigationManager.BaseUri}api/predmet");
 					IsLoaded = true;
 				}
+				//pokud existuje přesměrujeme na kapitoly + vytvoříme do databáze studenta patřící pod danou skupinu pokud v ní není 
 				else
 				{
+					student = await Http.GetFromJsonAsync<SkupinaStudent>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id) + "/" + UserToken.Profile.Mail);
+					if(student == null) {
+						//zde bude post TO DO 
+					}
 					MyNavigationManager.NavigateTo("/"); 
 				}
 			}		
@@ -101,6 +106,7 @@
 		await teamsUserCredential.LoginAsync(_scope);	
 		MyNavigationManager.NavigateTo("/tab",true);
 	}
+
 	private async Task<bool> HasPermission(string scope)
 	{
 		try
