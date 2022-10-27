@@ -32,17 +32,7 @@ namespace vyukovy_pavouk.Services
                     .Include(s => s.Student)
                     .ThenInclude(s => s.Splneni
                     .Where(id => id.Id_skupiny == ID))
-                    .ToList();
-                    
-                /*_dbContext.Student
-                //vybere studenty patřící pod team 
-                .Include(sk => sk.SkupinaStudent
-                .Where(s => s.SkupinaId == ID))
-                 .AsSplitQuery()
-                //vybere jejich zadání jednotlivá 
-                .Include(s => s.Splneni
-                .Where(s => s.Id_skupiny == ID))    
-                .ToList();*/
+                    .ToList();                         
         }
     }
 }

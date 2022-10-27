@@ -23,7 +23,7 @@
 			<div class="card">
 				<div class="card-body gap-4">
 					<h2 class="card-title pt-2 text-center">Vytvořit z existujícího teamu</h2>
-					<select @bind-Value="@predmett" @bind-Value:event="onchange">
+					<select @bind-Value="@PredmetSelect" @bind-Value:event="onchange">
 						@foreach (var item in @Predmety)
 						{
 							<option>@item.Nazev</option>
@@ -39,15 +39,16 @@
 <style>
 	.editForm {
     width: 70%;
-	padding: 0;
-	margin: 0;
 }
+	#nazev {
+	width: 50%;
+	}
 </style>
 @code {
 	//parametr, který přijímá od Tab
 	[Parameter]
 	public List<Predmet> Predmety { get; set; }
-	string predmett { get; set; }
+	string PredmetSelect { get; set; }
 	[Inject]
 	public NavigationManager MyNavigationManager { get; set; }
 	public Predmet HledanyPredmet { get; set; } = new Predmet();
@@ -61,7 +62,7 @@
 		if (firstRender)
 		{
 			if(Predmety.Count() > 0) {
-				predmett = Predmety[0].Nazev.ToString();
+				PredmetSelect = Predmety[0].Nazev.ToString();
 			}	 
 			StateHasChanged();
 		}
@@ -82,7 +83,7 @@
 		//přidání ID skupiny 
 		skupina.TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
 		//přidání ID předmětu z výběru nahoře
-		HledanyPredmet = Predmety.Find(x => x.Nazev == predmett);
+		HledanyPredmet = Predmety.Find(x => x.Nazev == PredmetSelect);
 		//dosazení ID předmětu
 		skupina.ID_Predmetu = HledanyPredmet.Id;
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", skupina);

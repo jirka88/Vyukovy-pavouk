@@ -26,6 +26,7 @@ namespace vyukovy_pavouk.Controllers
             }
             return Ok(skupina);                 
         }
+        //vytvoří Teams skupinu pod existující předmět v databázi 
         [HttpPost] 
         public void Create([FromBody] Skupina skupina)
         {

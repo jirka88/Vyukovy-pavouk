@@ -12,7 +12,7 @@ namespace vyukovy_pavouk.Services
         {
             _dbContext = dbContext;
         }
-
+        //vytvoří Teams skupinu pod existující předmět v databázi 
         public void AddSkupina(Skupina skupina)
         {
             try
