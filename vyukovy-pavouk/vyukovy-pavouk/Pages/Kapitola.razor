@@ -1,5 +1,5 @@
 ﻿@page "/Kapitola"
-@page "/Kapitola/{IdKapitola:int}"
+@page "/Kapitola/{IdKapitola:int}/{status:bool}"
 @using vyukovy_pavouk.Components;
 @using vyukovy_pavouk.Data
 @inject HttpClient Http
@@ -54,7 +54,7 @@ else {
 			<hr class="pb-3" />
 				   }
 			<div class="d-flex justify-content-center align-items-center flex-column w-100">
-			<fluent-button class="main-btn" appearance="accent">Vzít cvičení</fluent-button>
+			<fluent-button class="main-btn" Disabled="@status" appearance="accent">Vzít cvičení</fluent-button>
 			<div class="popis text-center pb-3">
 				<p class="h5">0/1</p>
 				<p>Při potvrzení tlačítka Vám bude odesláno cvičení na dané téma ve formě testu. Po následné korekci Vašeho testu bude zpřístupněna další kapitola.</p>
@@ -75,7 +75,8 @@ else {
 
 	[Parameter]
 	public int IdKapitola { get; set; }
-
+	[Parameter]
+	public bool status { get; set; }
 	public vyukovy_pavouk.Data.Kapitola kapitola { get; set; }
 	bool IsLoaded = false;
 	public bool ModelHidden { get; set; } = true;
