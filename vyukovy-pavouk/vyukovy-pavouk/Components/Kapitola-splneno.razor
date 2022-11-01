@@ -26,8 +26,6 @@
 	[Parameter]
 	public string Perex { get; set; }
 
-    [Inject]
-    public NavigationManager NavigationManager { get; set; }
-    public void zobraz() => NavigationManager.NavigateTo($"/kapitola/{ID}/true");
+    public void zobraz() => MyNavigationManager.NavigateTo($"/kapitola/{ID}/true");
 
 }

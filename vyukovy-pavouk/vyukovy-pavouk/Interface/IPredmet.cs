@@ -5,5 +5,6 @@ namespace vyukovy_pavouk.Interface
 {
         public List<Predmet> GetPredmety();
         public int GetCountKapitoly(int IDPredmetu);
+        public void SavePredmet(Predmet predmet);
     }
 }

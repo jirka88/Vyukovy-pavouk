@@ -26,5 +26,12 @@ public class PredmetController : ControllerBase
         {
             return await Task.FromResult(_IPredmet.GetCountKapitoly(IDPredmetu));
         }
+
+        //vytvoří Teams skupinu s novým předmětem 
+        [HttpPost]
+        public void CreateNew([FromBody] Predmet predmet)
+        {
+            _IPredmet.SavePredmet(predmet);
+        }
     }
 }

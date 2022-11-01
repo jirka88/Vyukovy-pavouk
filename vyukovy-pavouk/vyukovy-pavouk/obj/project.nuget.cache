@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "HcHgZ0faDdQvbwWjD19WxDUEYv633u0xeilhu6WncGbLiCwR6Ns81Mll9sMaorCBpDipmB0ZHBml5Qf+AuTCwg==",
+  "dgSpecHash": "LGnrfPFjy7u35wHG6Hz68hPBTMZttqrzghINhN1ykNr3VbUS3U4gHKE0zVGjCd0UBh97nfySfWtGkhUj00NxHg==",
   "success": true,
   "projectFilePath": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jn88\\.nuget\\packages\\azure.core\\1.18.0\\azure.core.1.18.0.nupkg.sha512",
+    "C:\\Users\\jn88\\.nuget\\packages\\blazored.fluentvalidation\\2.0.3\\blazored.fluentvalidation.2.0.3.nupkg.sha512",
     "C:\\Users\\jn88\\.nuget\\packages\\blazored.localstorage\\4.2.0\\blazored.localstorage.4.2.0.nupkg.sha512",
     "C:\\Users\\jn88\\.nuget\\packages\\blazored.sessionstorage\\2.2.0\\blazored.sessionstorage.2.2.0.nupkg.sha512",
+    "C:\\Users\\jn88\\.nuget\\packages\\fluentvalidation\\10.2.1\\fluentvalidation.10.2.1.nupkg.sha512",
     "C:\\Users\\jn88\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\jn88\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.0\\microsoft.aspnetcore.authentication.jwtbearer.6.0.0.nupkg.sha512",
     "C:\\Users\\jn88\\.nuget\\packages\\microsoft.aspnetcore.authorization\\6.0.5\\microsoft.aspnetcore.authorization.6.0.5.nupkg.sha512",

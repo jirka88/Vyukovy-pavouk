@@ -22,5 +22,18 @@ namespace vyukovy_pavouk.Services
         {
             return _dbContext.Predmet.ToList();
         }
+        //
+        public void SavePredmet(Predmet predmet)
+        {
+            try
+            {
+                _dbContext.Predmet.Add(predmet);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

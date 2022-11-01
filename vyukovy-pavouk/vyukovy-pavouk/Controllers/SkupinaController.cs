@@ -32,5 +32,6 @@ namespace vyukovy_pavouk.Controllers
         {
             _ISkupina.AddSkupina(skupina);
         }
+
 }
 }

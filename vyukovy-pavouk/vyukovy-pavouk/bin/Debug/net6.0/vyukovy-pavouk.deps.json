@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "vyukovy-pavouk/1.0.0": {
         "dependencies": {
+          "Blazored.FluentValidation": "2.0.3",
           "Blazored.LocalStorage": "4.2.0",
           "Blazored.SessionStorage": "2.2.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.0",
@@ -44,6 +45,19 @@
           }
         }
       },
+      "Blazored.FluentValidation/2.0.3": {
+        "dependencies": {
+          "FluentValidation": "10.2.1",
+          "Microsoft.AspNetCore.Components": "6.0.5",
+          "Microsoft.AspNetCore.Components.Web": "6.0.5"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Blazored.FluentValidation.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "Blazored.LocalStorage/4.2.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Components.Web": "6.0.5"
@@ -63,6 +77,14 @@
           "lib/net5.0/Blazored.SessionStorage.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "FluentValidation/10.2.1": {
+        "runtime": {
+          "lib/net5.0/FluentValidation.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "10.2.1.0"
           }
         }
       },
@@ -1743,6 +1765,13 @@
       "path": "azure.core/1.18.0",
       "hashPath": "azure.core.1.18.0.nupkg.sha512"
     },
+    "Blazored.FluentValidation/2.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YL+E/JGoyVODn0azRJtmfK48iZXpD9Jy6fQOyofAl6F++ELMqupKygN/aG0QZd92j9eCV5syUmz0QYDwmS+3qA==",
+      "path": "blazored.fluentvalidation/2.0.3",
+      "hashPath": "blazored.fluentvalidation.2.0.3.nupkg.sha512"
+    },
     "Blazored.LocalStorage/4.2.0": {
       "type": "package",
       "serviceable": true,
@@ -1756,6 +1785,13 @@
       "sha512": "sha512-2iVrDbv30kuufV0CGjNkQgVReH/aSfDlyqnYTXyoFIFwtrSnMS+pqx5tLFAoigLXn/imSQHPZkVnOArLZYefXg==",
       "path": "blazored.sessionstorage/2.2.0",
       "hashPath": "blazored.sessionstorage.2.2.0.nupkg.sha512"
+    },
+    "FluentValidation/10.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ZFyVk+AXiWjML6M201GUbkhrmrUfd1U55LmOPOEHpw2bQ+STi0TIilXX3KlWvqt5AX5qSu+B1d/s/Ik5p6Tu3Q==",
+      "path": "fluentvalidation/10.2.1",
+      "hashPath": "fluentvalidation.10.2.1.nupkg.sha512"
     },
     "Humanizer.Core/2.8.26": {
       "type": "package",

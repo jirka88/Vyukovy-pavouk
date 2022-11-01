@@ -80,7 +80,6 @@ else {
 	public vyukovy_pavouk.Data.Kapitola kapitola { get; set; }
 	bool IsLoaded = false;
 	public bool ModelHidden { get; set; } = true;
-	string error = "";
 	protected override async Task OnParametersSetAsync() {
 		await CallApiKapitola();
 	}
