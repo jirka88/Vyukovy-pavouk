@@ -13,13 +13,46 @@ namespace vyukovy_pavouk.Services
             _dbContext = dbContext;
         }
 
-        public SkupinaStudent GetStudent(int IdSkupiny, string EmailStudenta)
+        public void CreateNewConnect(SkupinaStudent skupinaStudent)
         {
-            return _dbContext.SkupinaStudent
+            try
+            {
+                _dbContext.SkupinaStudent.Add(skupinaStudent);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public void CreateNewStudent(Student student)
+        {
+            try
+            {
+                _dbContext.Student.Add(student);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public Student GetStudent(int IdSkupiny, string EmailStudenta)
+        {
+           /* return _dbContext.SkupinaStudent
                     .Where(s => s.SkupinaId == IdSkupiny)
                     .Include(s => s.Student)
                     .Where(e => e.Student.email == EmailStudenta)              
-                    .SingleOrDefault();
+                    .SingleOrDefault();*/
+           return _dbContext.Student
+                .Where(e => e.email == EmailStudenta)
+                .Include(s => s.SkupinaStudent)
+                .SingleOrDefault();
+             
                   
         }
 

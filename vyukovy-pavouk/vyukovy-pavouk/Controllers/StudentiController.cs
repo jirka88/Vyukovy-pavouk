@@ -22,14 +22,27 @@ namespace vyukovy_pavouk.Controllers
         }
         //získa studenta zda-li v dané skupině je a pokud není vrátí null
         [HttpGet("{IdSkupiny}/{EmailStudenta}")]
-        public async Task<SkupinaStudent> GetStudent(int IdSkupiny, string EmailStudenta)
+        public async Task<Student> GetStudent(int IdSkupiny, string EmailStudenta)
         {
-            SkupinaStudent Student = await Task.FromResult(_IStudenti.GetStudent(IdSkupiny, EmailStudenta));
-            if(Student == null)
+            Student student = await Task.FromResult(_IStudenti.GetStudent(IdSkupiny, EmailStudenta));
+            if(student == null)
             {
-                return new SkupinaStudent();
+                return new Student();
             }
-            return Student;
+            return student;
+        }
+        //vytvoří studenta pod patřící skupinu 
+        [HttpPost]
+        public void CreateNewStudent([FromBody] Student student)
+        {
+            _IStudenti.CreateNewStudent(student);
+        }
+        //vytvoří navázaní studenta ke skupině 
+        [Route("connect")]
+        [HttpPost]
+        public void CreateNewConnect([FromBody] SkupinaStudent skupinaStudent)
+        {
+            _IStudenti.CreateNewConnect(skupinaStudent);
         }
 
     }

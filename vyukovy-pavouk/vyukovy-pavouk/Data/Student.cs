@@ -6,7 +6,7 @@
         public string Jmeno { get; set; }
         public string Prijmeni { get; set; }
         public string email { get; set; }
-        public ICollection<SkupinaStudent> SkupinaStudent { get; set; }
+        public List<SkupinaStudent> SkupinaStudent { get; set; }
         public ICollection<Splneni> Splneni { get; set; }
 
     }

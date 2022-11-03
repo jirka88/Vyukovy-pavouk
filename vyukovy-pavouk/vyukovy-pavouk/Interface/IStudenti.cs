@@ -5,6 +5,8 @@ namespace vyukovy_pavouk.Interface
     public interface IStudenti
 {
         public List<SkupinaStudent> GetStudents(int Id);
-        public SkupinaStudent GetStudent(int IdSkupiny, string EmailStudenta);
+        public Student GetStudent(int IdSkupiny, string EmailStudenta);
+        public void CreateNewStudent(Student student);
+        public void CreateNewConnect(SkupinaStudent skupinaStudent);
 }
 }

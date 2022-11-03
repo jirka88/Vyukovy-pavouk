@@ -96,7 +96,7 @@
 	//TO DO 
 	public async Task vytvor()
 	{
-		HledanyPredmet = Predmety.Find(x => x.Nazev == predmet.Nazev.ToLower());
+		HledanyPredmet = Predmety.Find(x => x.Nazev.ToLower() == predmet.Nazev.ToLower());
 		if(HledanyPredmet == null) {
 			predmet.Skupiny.Add(new Skupina());
 			predmet.Skupiny[0].TmSkupina = (GroupToken.teamsContext.TeamId).ToString().ToLower();

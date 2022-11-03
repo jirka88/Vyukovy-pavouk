@@ -59,7 +59,12 @@
 	bool IsLoaded = false;
 	public bool NeedConsent { get; set; }
 	public Skupina skupina { get; set; } = new(); 
-	public SkupinaStudent student { get; set; }
+	//pro načtení studenta 
+	public Student student { get; set; }
+	//pro vytvoření nového studenta s připojení se skupinou
+	public Student studentInfo { get; set; } = new Student { SkupinaStudent = new List<SkupinaStudent>() };
+	//pouze pro připojení studenta se skupinou
+	public SkupinaStudent SkupinaStudentConnect {get; set;} = new SkupinaStudent();
 	private readonly string _scope = "User.Read";
 	public List<Predmet> predmety;
 
@@ -87,11 +92,25 @@
 					IsLoaded = true;
 				}
 				//pokud existuje přesměrujeme na kapitoly + vytvoříme do databáze studenta patřící pod danou skupinu pokud v ní není 
-				else
+				// u podmínky bude JobTitle != Učitel --> učitel se nebude vytvářet v databázi 
+
+				else if (UserToken.Profile.JobTitle != null || UserToken.Profile.JobTitle == null  )
 				{
-					student = await Http.GetFromJsonAsync<SkupinaStudent>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id) + "/" + UserToken.Profile.Mail);
-					if(student == null) {
-						//zde bude post TO DO 
+					student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id) + "/" + UserToken.Profile.Mail);
+					//pokud student neexistuje v databázi vytvoří se a propojí se skupinou
+					if(student.email == null) {
+						studentInfo.Jmeno = UserToken.Profile.GivenName.ToString();
+						studentInfo.Prijmeni = UserToken.Profile.Surname.ToString();
+						studentInfo.email = UserToken.Profile.Mail.ToString();
+						studentInfo.SkupinaStudent.Add(new SkupinaStudent());
+						studentInfo.SkupinaStudent[0].SkupinaId = Convert.ToInt32(skupina.Id);
+						await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti", studentInfo);
+					}
+					//pokud student už existuje v databázi, ale není navázán v naší skupině 
+					else if(student.SkupinaStudent.Find(x => x.SkupinaId == skupina.Id) == null) { 
+						SkupinaStudentConnect.SkupinaId = Convert.ToInt32(skupina.Id);
+						SkupinaStudentConnect.StudentId = Convert.ToInt32(student.Id);
+						await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/connect", SkupinaStudentConnect);
 					}
 					MyNavigationManager.NavigateTo("/"); 
 				}
@@ -137,6 +156,7 @@
 		var graph = new GraphServiceClient(msGraphAuthProvider);
 		UserToken.Profile = await graph.Me.Request().GetAsync();
 	}
+	
 }
 
 
