@@ -1,4 +1,5 @@
-﻿<div class="card locked d-grid" id="@ID">
+﻿@using vyukovy_pavouk.Data
+<div class="card locked d-grid" id="@ID">
 	<div class="d-flex align-items-center justify-content-center main-body">
 		<div class="icon px-4">
 			<div class="circle red d-flex justify-content-center align-items-center">
@@ -7,8 +8,13 @@
 		</div>
 		<div class="card-body">
 			<div class="card-title">@Nazev</div>
-			<p class="perex">@Perex</p>
-			<div class="d-flex gap-2 require"><p class="status">Potřeba splnit: </p><a href="#1">Název Kapitoly</a></div>
+			<p class="perex">@Perex</p>	
+				<div class="d-flex gap-2 require"><p class="status">Potřeba splnit: </p>
+					@foreach (var prerekvizita in Prerekvizity)
+					{
+						<a href="#@prerekvizita.Id">@prerekvizita.Název</a>
+					}
+					</div>					
 		</div>
 	</div>
 </div>
@@ -21,5 +27,8 @@
 
 	[Parameter]
 	public string Perex { get; set; }
+
+	[Parameter]
+	public List<Kapitola> Prerekvizity { get; set; }
 
 }

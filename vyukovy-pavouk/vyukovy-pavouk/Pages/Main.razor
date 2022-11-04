@@ -24,16 +24,27 @@
 			@if(UserToken.Profile.JobTitle != null) {
 				//zobrazení kapitol pro učitele 
 				@foreach (var kapitola in Kapitoly)
-				{
-					<Kapitola_ucitel ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" />
+				{										
+						<Kapitola_ucitel ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" />			
 				}
 			}
 			//zobrazení kapitol pro studenta 
 			else {
 				@foreach (var kapitola in Kapitoly)
 				{
-			<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" />
+					//dočasné řešení pro test
+				@if (kapitola.Id == 3)
+				{
+					PrerekvizityShow(kapitola);
+					<Kapitola_uzavreno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizity="@hledanePrerekvizity" />
+					}
+					else
+					{
+						<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" />
+					}
+					
 				}
+				
 			}
 		
 		}
@@ -57,6 +68,7 @@ else {
 	public bool IsLoaded = false;
 	public Skupina skupina = new Skupina();
 	public List<vyukovy_pavouk.Data.Kapitola> Kapitoly;
+	public List<vyukovy_pavouk.Data.Kapitola> hledanePrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if(firstRender) {
@@ -71,11 +83,18 @@ else {
 				Kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(skupina.ID_Predmetu)));
 				IsLoaded = true;
 			}
-			
-			//IsLoaded = true;
-
 		}
 		StateHasChanged();
+	}
+
+	//pokud je kapitola uzamčena vypíše prerekvizity, které je nutno splnit i s jejím názvem (v databázi je pouze ID kapitoly)
+	public void PrerekvizityShow(vyukovy_pavouk.Data.Kapitola kapitola) {
+		if(hledanePrerekvizity.Count > 0) {
+			hledanePrerekvizity.Clear();
+		}
+		foreach(var prerekvizity in kapitola.KapitolaPrerekvizita) {
+			hledanePrerekvizity.Add(Kapitoly.Find(x => x.Id == prerekvizity.prerekvizita.IdPrerekvizity));
+		}		
 	}
 
 }
