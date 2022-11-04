@@ -265,14 +265,14 @@
           }
         }
       },
-      "Microsoft.Bot.Builder/4.16.0": {
+      "Microsoft.Bot.Builder/4.17.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Bot.Connector": "4.16.0",
-          "Microsoft.Bot.Connector.Streaming": "4.16.0",
-          "Microsoft.Bot.Streaming": "4.16.0",
-          "Microsoft.Extensions.DependencyInjection": "3.1.22",
-          "Microsoft.Extensions.Logging": "3.1.22"
+          "Microsoft.Bot.Connector": "4.17.1",
+          "Microsoft.Bot.Connector.Streaming": "4.17.1",
+          "Microsoft.Bot.Streaming": "4.17.1",
+          "Microsoft.Extensions.DependencyInjection": "2.1.0",
+          "Microsoft.Extensions.Logging": "2.1.0"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.Bot.Builder.dll": {
@@ -285,18 +285,36 @@
           }
         }
       },
-      "Microsoft.Bot.Connector/4.16.0": {
+      "Microsoft.Bot.Builder.Dialogs/4.17.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Bot.Builder": "4.17.1",
+          "Microsoft.Recognizers.Text.Choice": "1.3.2",
+          "Microsoft.Recognizers.Text.DateTime": "1.3.2"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Bot.Builder.Dialogs.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Bot.Builder.Dialogs.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.Bot.Connector/4.17.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.Azure.Services.AppAuthentication": "1.6.1",
-          "Microsoft.Bot.Schema": "4.16.0",
-          "Microsoft.Extensions.Http": "3.1.22",
-          "Microsoft.Extensions.Logging": "3.1.22",
+          "Microsoft.Bot.Schema": "4.17.1",
+          "Microsoft.Extensions.Http": "2.1.0",
+          "Microsoft.Extensions.Logging": "2.1.0",
           "Microsoft.Identity.Client": "4.37.0",
           "Microsoft.IdentityModel.Clients.ActiveDirectory": "5.2.4",
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "5.6.0",
           "Microsoft.Rest.ClientRuntime": "2.3.21",
-          "Newtonsoft.Json": "12.0.3"
+          "Newtonsoft.Json": "13.0.1"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.Bot.Connector.dll": {
@@ -309,13 +327,13 @@
           }
         }
       },
-      "Microsoft.Bot.Connector.Streaming/4.16.0": {
+      "Microsoft.Bot.Connector.Streaming/4.17.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Bot.Schema": "4.16.0",
-          "Microsoft.Bot.Streaming": "4.16.0",
-          "Microsoft.Extensions.Logging": "3.1.22",
-          "Newtonsoft.Json": "12.0.3",
+          "Microsoft.Bot.Schema": "4.17.1",
+          "Microsoft.Bot.Streaming": "4.17.1",
+          "Microsoft.Extensions.Logging": "2.1.0",
+          "Newtonsoft.Json": "13.0.1",
           "System.IO.Pipelines": "5.0.1",
           "System.Text.Encodings.Web": "4.7.2",
           "System.Text.Json": "4.7.2"
@@ -331,10 +349,10 @@
           }
         }
       },
-      "Microsoft.Bot.Schema/4.16.0": {
+      "Microsoft.Bot.Schema/4.17.1": {
         "type": "package",
         "dependencies": {
-          "Newtonsoft.Json": "12.0.3"
+          "Newtonsoft.Json": "13.0.1"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.Bot.Schema.dll": {
@@ -347,12 +365,12 @@
           }
         }
       },
-      "Microsoft.Bot.Streaming/4.16.0": {
+      "Microsoft.Bot.Streaming/4.17.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Logging": "3.1.22",
+          "Microsoft.Extensions.Logging": "2.1.0",
           "Microsoft.Net.Http.Headers": "2.1.0",
-          "Newtonsoft.Json": "12.0.3"
+          "Newtonsoft.Json": "13.0.1"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.Bot.Streaming.dll": {
@@ -1001,6 +1019,77 @@
           "lib/netstandard1.0/_._": {}
         }
       },
+      "Microsoft.Recognizers.Text/1.3.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Memory": "2.0.0",
+          "System.Collections.Immutable": "1.4.0",
+          "System.ValueTuple": "4.4.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Recognizers.Definitions.dll": {},
+          "lib/netstandard2.0/Microsoft.Recognizers.Text.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Recognizers.Definitions.dll": {},
+          "lib/netstandard2.0/Microsoft.Recognizers.Text.dll": {}
+        }
+      },
+      "Microsoft.Recognizers.Text.Choice/1.3.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Recognizers.Text": "1.3.2",
+          "System.Collections.Immutable": "1.4.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Recognizers.Text.Choice.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Recognizers.Text.Choice.dll": {}
+        }
+      },
+      "Microsoft.Recognizers.Text.DateTime/1.3.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Recognizers.Text": "1.3.2",
+          "Microsoft.Recognizers.Text.Number": "1.3.2",
+          "Microsoft.Recognizers.Text.NumberWithUnit": "1.3.2",
+          "System.Collections.Immutable": "1.4.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Recognizers.Text.DateTime.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Recognizers.Text.DateTime.dll": {}
+        }
+      },
+      "Microsoft.Recognizers.Text.Number/1.3.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Recognizers.Text": "1.3.2",
+          "System.Collections.Immutable": "1.4.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Recognizers.Text.Number.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Recognizers.Text.Number.dll": {}
+        }
+      },
+      "Microsoft.Recognizers.Text.NumberWithUnit/1.3.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Recognizers.Text": "1.3.2",
+          "Microsoft.Recognizers.Text.Number": "1.3.2",
+          "System.Collections.Immutable": "1.4.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Recognizers.Text.NumberWithUnit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Recognizers.Text.NumberWithUnit.dll": {}
+        }
+      },
       "Microsoft.Rest.ClientRuntime/2.3.21": {
         "type": "package",
         "dependencies": {
@@ -1017,11 +1106,12 @@
           }
         }
       },
-      "Microsoft.TeamsFx/1.0.0": {
+      "Microsoft.TeamsFx/1.1.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.AspNetCore.Components.Web": "6.0.0",
-          "Microsoft.Bot.Builder": "4.16.0",
+          "Microsoft.Bot.Builder": "4.17.1",
+          "Microsoft.Bot.Builder.Dialogs": "4.17.1",
           "Microsoft.Extensions.Http": "6.0.0",
           "Microsoft.Extensions.Logging": "6.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "6.0.0",
@@ -2995,6 +3085,15 @@
           }
         }
       },
+      "System.ValueTuple/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/_._": {}
+        }
+      },
       "System.Windows.Extensions/4.7.0": {
         "type": "package",
         "dependencies": {
@@ -3417,38 +3516,52 @@
         "version.txt"
       ]
     },
-    "Microsoft.Bot.Builder/4.16.0": {
-      "sha512": "izEFnj/rZXXYqnc8psxRNMgszUu1liSx9W54shnaCbraMF6aH2psGy8iF9haO/pRRG7vHWyyL9/R5gQaj8dYww==",
+    "Microsoft.Bot.Builder/4.17.1": {
+      "sha512": "rd/ImIx/EBWD5MSTx/7AkFnz885CRejf+MpxEAdqKWaj1wCCkSuyvcM4Kq5kUEpJiLqoZszJIxKkRdFJuXEO6g==",
       "type": "package",
-      "path": "microsoft.bot.builder/4.16.0",
+      "path": "microsoft.bot.builder/4.17.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "icon.png",
         "lib/netstandard2.0/Microsoft.Bot.Builder.dll",
         "lib/netstandard2.0/Microsoft.Bot.Builder.xml",
-        "microsoft.bot.builder.4.16.0.nupkg.sha512",
+        "microsoft.bot.builder.4.17.1.nupkg.sha512",
         "microsoft.bot.builder.nuspec"
       ]
     },
-    "Microsoft.Bot.Connector/4.16.0": {
-      "sha512": "Bo83ZmF9JzkFGowF0DOhSflZ+QDtkzS/qlzrPPWcAtmseAQVm1QA27UuuM8kiP4cn3eH5ReHSNuraF0t1wJqFw==",
+    "Microsoft.Bot.Builder.Dialogs/4.17.1": {
+      "sha512": "N9Dpjr3JWu1fQrDVM1zIVzwEXnbmafbC0WgNwUTRzAEQRPq7UCQBLBkk5HFxc9pdZvLXiLRXFE5oDeT4Yf4a3Q==",
       "type": "package",
-      "path": "microsoft.bot.connector/4.16.0",
+      "path": "microsoft.bot.builder.dialogs/4.17.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/netstandard2.0/Microsoft.Bot.Builder.Dialogs.dll",
+        "lib/netstandard2.0/Microsoft.Bot.Builder.Dialogs.xml",
+        "microsoft.bot.builder.dialogs.4.17.1.nupkg.sha512",
+        "microsoft.bot.builder.dialogs.nuspec"
+      ]
+    },
+    "Microsoft.Bot.Connector/4.17.1": {
+      "sha512": "xU5RpFlxCjo847YD+1BQucCXiYP0yfm+TZDhU5b/6tzkq9W2oxmLIxw2UY4GUlYkQ8zK3Y7Lc1Fux3Z6EuGUeA==",
+      "type": "package",
+      "path": "microsoft.bot.connector/4.17.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "icon.png",
         "lib/netstandard2.0/Microsoft.Bot.Connector.dll",
         "lib/netstandard2.0/Microsoft.Bot.Connector.xml",
-        "microsoft.bot.connector.4.16.0.nupkg.sha512",
+        "microsoft.bot.connector.4.17.1.nupkg.sha512",
         "microsoft.bot.connector.nuspec"
       ]
     },
-    "Microsoft.Bot.Connector.Streaming/4.16.0": {
-      "sha512": "8vVrzhqef5yzz2lOCrFf47UQDu8wZyt8XvlP7X3phifT5nUUZxaz/b3dctfSX5dYDIic3Fry4g5M3/os48EuJw==",
+    "Microsoft.Bot.Connector.Streaming/4.17.1": {
+      "sha512": "c62rGWl0EFdwUZGuEKLSMM1KtNX4C9R6OlfIrcobuEGQwF2KvvFcE800ozYCEXl4ycGGv8Sa4fM9WrMUgiI7mg==",
       "type": "package",
-      "path": "microsoft.bot.connector.streaming/4.16.0",
+      "path": "microsoft.bot.connector.streaming/4.17.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3456,28 +3569,28 @@
         "lib/netstandard2.0/Microsoft.Bot.Connector.Streaming.dll",
         "lib/netstandard2.0/Microsoft.Bot.Connector.Streaming.pdb",
         "lib/netstandard2.0/Microsoft.Bot.Connector.Streaming.xml",
-        "microsoft.bot.connector.streaming.4.16.0.nupkg.sha512",
+        "microsoft.bot.connector.streaming.4.17.1.nupkg.sha512",
         "microsoft.bot.connector.streaming.nuspec"
       ]
     },
-    "Microsoft.Bot.Schema/4.16.0": {
-      "sha512": "IRe3Ff5J4Pqjp76BrcdJCvuH/rdJ9M34s6hOHtiCuBA/H8sdcgeUwACA/2Qvd5pu4mHe2fzM6yonZgMzpcPHNw==",
+    "Microsoft.Bot.Schema/4.17.1": {
+      "sha512": "PI+E6fLHAS8J/D83qc6gI81iHnVuKdkIfSdgOjXXh9z8m9JoxN8ASZekpnS2o7gDsqmKkqgqEhChtsS8ka313g==",
       "type": "package",
-      "path": "microsoft.bot.schema/4.16.0",
+      "path": "microsoft.bot.schema/4.17.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "icon.png",
         "lib/netstandard2.0/Microsoft.Bot.Schema.dll",
         "lib/netstandard2.0/Microsoft.Bot.Schema.xml",
-        "microsoft.bot.schema.4.16.0.nupkg.sha512",
+        "microsoft.bot.schema.4.17.1.nupkg.sha512",
         "microsoft.bot.schema.nuspec"
       ]
     },
-    "Microsoft.Bot.Streaming/4.16.0": {
-      "sha512": "hr/y3ivNL/qqTsmcWleFHVQLU6dhOjW8KEFN48MHh3fHNNra7ZHYohyxEruPLXXy7+4SG7fD1ukCyaZuONoWrA==",
+    "Microsoft.Bot.Streaming/4.17.1": {
+      "sha512": "DsFsWLMtWo3l8gOCuJXkcJgzdMZQqrsT6SZMf9NdIX8FWPRFxeIs1k/41PdynsBDog7OJdlSyWWGX66k7IEPLg==",
       "type": "package",
-      "path": "microsoft.bot.streaming/4.16.0",
+      "path": "microsoft.bot.streaming/4.17.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3485,7 +3598,7 @@
         "lib/netstandard2.0/Microsoft.Bot.Streaming.dll",
         "lib/netstandard2.0/Microsoft.Bot.Streaming.pdb",
         "lib/netstandard2.0/Microsoft.Bot.Streaming.xml",
-        "microsoft.bot.streaming.4.16.0.nupkg.sha512",
+        "microsoft.bot.streaming.4.17.1.nupkg.sha512",
         "microsoft.bot.streaming.nuspec"
       ]
     },
@@ -4330,6 +4443,78 @@
         "runtime.json"
       ]
     },
+    "Microsoft.Recognizers.Text/1.3.2": {
+      "sha512": "URNFAH3Q6rJILL2PixaOcUfoLOFRaiEw7K6AsVsbMzThBZeNU8GMpJb2mFABCyx5I43DrmpB0vl/7EmRP/16RQ==",
+      "type": "package",
+      "path": "microsoft.recognizers.text/1.3.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "images/icon.png",
+        "lib/net462/Microsoft.Recognizers.Definitions.dll",
+        "lib/net462/Microsoft.Recognizers.Text.dll",
+        "lib/netstandard2.0/Microsoft.Recognizers.Definitions.dll",
+        "lib/netstandard2.0/Microsoft.Recognizers.Text.dll",
+        "microsoft.recognizers.text.1.3.2.nupkg.sha512",
+        "microsoft.recognizers.text.nuspec"
+      ]
+    },
+    "Microsoft.Recognizers.Text.Choice/1.3.2": {
+      "sha512": "4cPOSKNCN0BIeaAfSV7DnR/XxsTscm9lWgEzhYIbrXd94UuHzZuUR+0U5MaYTB9W6t7yoHJLSChAaGq4pAAMYw==",
+      "type": "package",
+      "path": "microsoft.recognizers.text.choice/1.3.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "images/icon.png",
+        "lib/net462/Microsoft.Recognizers.Text.Choice.dll",
+        "lib/netstandard2.0/Microsoft.Recognizers.Text.Choice.dll",
+        "microsoft.recognizers.text.choice.1.3.2.nupkg.sha512",
+        "microsoft.recognizers.text.choice.nuspec"
+      ]
+    },
+    "Microsoft.Recognizers.Text.DateTime/1.3.2": {
+      "sha512": "KGDTLJflS2qJVFHDaWivRHH8lp/Udpjd3v0We7MDYFNcnNsJKjlW3zXwx3DYmStRtGgFD+o9/oNLDFKhBUFdFg==",
+      "type": "package",
+      "path": "microsoft.recognizers.text.datetime/1.3.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "images/icon.png",
+        "lib/net462/Microsoft.Recognizers.Text.DateTime.dll",
+        "lib/netstandard2.0/Microsoft.Recognizers.Text.DateTime.dll",
+        "microsoft.recognizers.text.datetime.1.3.2.nupkg.sha512",
+        "microsoft.recognizers.text.datetime.nuspec"
+      ]
+    },
+    "Microsoft.Recognizers.Text.Number/1.3.2": {
+      "sha512": "eYFPcfeQeF3gbb9ReEFT9OHznSI8WmU7dwVuTXbRreySZEfdDM967Vg0sGlcnploe9XDcqPPd66851htVR2dqg==",
+      "type": "package",
+      "path": "microsoft.recognizers.text.number/1.3.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "images/icon.png",
+        "lib/net462/Microsoft.Recognizers.Text.Number.dll",
+        "lib/netstandard2.0/Microsoft.Recognizers.Text.Number.dll",
+        "microsoft.recognizers.text.number.1.3.2.nupkg.sha512",
+        "microsoft.recognizers.text.number.nuspec"
+      ]
+    },
+    "Microsoft.Recognizers.Text.NumberWithUnit/1.3.2": {
+      "sha512": "s7f+sqnJFmNV1BD32ESN02Exs2WJgA79aCDFIVg4plw3PBTxIFO+79BDf0J2WeH0JeSXpQekWuedIXFXQc5x+A==",
+      "type": "package",
+      "path": "microsoft.recognizers.text.numberwithunit/1.3.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "images/icon.png",
+        "lib/net462/Microsoft.Recognizers.Text.NumberWithUnit.dll",
+        "lib/netstandard2.0/Microsoft.Recognizers.Text.NumberWithUnit.dll",
+        "microsoft.recognizers.text.numberwithunit.1.3.2.nupkg.sha512",
+        "microsoft.recognizers.text.numberwithunit.nuspec"
+      ]
+    },
     "Microsoft.Rest.ClientRuntime/2.3.21": {
       "sha512": "KDYlgTyO693V6pi6SGk9eg+dDvKjuOgmkapbHdpnB1SmTPKpvWxVLIMyARJsCFLfB6axyURUJHOfvxBQ0yJKeg==",
       "type": "package",
@@ -4349,13 +4534,14 @@
         "microsoft.rest.clientruntime.nuspec"
       ]
     },
-    "Microsoft.TeamsFx/1.0.0": {
-      "sha512": "77jMtVUc/jlHPgqaEvW248vVRFGq/iRvwYY2hHkxteKrCkwXKPqpcSyD96vknpgfkYIDG/2lO29Fa831is9iRw==",
+    "Microsoft.TeamsFx/1.1.0": {
+      "sha512": "ZEtPiwDXJb/NIOxn02rYQDB8mHylLYp82S0WLTFAIoN7KbZIRZh6GPgj7I10yKA/lqEH66rxcc79Nod0vi0HLg==",
       "type": "package",
-      "path": "microsoft.teamsfx/1.0.0",
+      "path": "microsoft.teamsfx/1.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "README.md",
         "build/Microsoft.AspNetCore.StaticWebAssets.props",
         "build/Microsoft.TeamsFx.props",
         "buildMultiTargeting/Microsoft.TeamsFx.props",
@@ -4364,7 +4550,7 @@
         "contentFiles/any/net6.0/wwwroot/jsInterop.js",
         "lib/net6.0/Microsoft.TeamsFx.dll",
         "lib/net6.0/Microsoft.TeamsFx.xml",
-        "microsoft.teamsfx.1.0.0.nupkg.sha512",
+        "microsoft.teamsfx.1.1.0.nupkg.sha512",
         "microsoft.teamsfx.nuspec",
         "staticwebassets/jsInterop.js"
       ]
@@ -9035,6 +9221,51 @@
         "system.threading.timer.nuspec"
       ]
     },
+    "System.ValueTuple/4.4.0": {
+      "sha512": "BahUww/+mdP4ARCAh2RQhQTg13wYLVrBb9SYVgW8ZlrwjraGCXHGjo0oIiUfZ34LUZkMMR+RAzR7dEY4S1HeQQ==",
+      "type": "package",
+      "path": "system.valuetuple/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net461/System.ValueTuple.dll",
+        "lib/net461/System.ValueTuple.xml",
+        "lib/net47/System.ValueTuple.dll",
+        "lib/net47/System.ValueTuple.xml",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.0/System.ValueTuple.dll",
+        "lib/netstandard1.0/System.ValueTuple.xml",
+        "lib/netstandard2.0/_._",
+        "lib/portable-net40+sl4+win8+wp8/System.ValueTuple.dll",
+        "lib/portable-net40+sl4+win8+wp8/System.ValueTuple.xml",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net461/System.ValueTuple.dll",
+        "ref/net461/System.ValueTuple.xml",
+        "ref/net47/System.ValueTuple.dll",
+        "ref/net47/System.ValueTuple.xml",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard2.0/_._",
+        "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll",
+        "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.valuetuple.4.4.0.nupkg.sha512",
+        "system.valuetuple.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.Windows.Extensions/4.7.0": {
       "sha512": "CeWTdRNfRaSh0pm2gDTJFwVaXfTq6Xwv/sA887iwPTneW7oMtMlpvDIO+U60+3GWTB7Aom6oQwv5VZVUhQRdPQ==",
       "type": "package",
@@ -9321,7 +9552,7 @@
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.10",
       "Microsoft.Fast.Components.FluentUI >= 1.0.0",
       "Microsoft.Graph >= 4.10.0",
-      "Microsoft.TeamsFx >= 1.0.0",
+      "Microsoft.TeamsFx >= 1.1.0",
       "Newtonsoft.Json >= 13.0.1",
       "Solutaris.InfoWARE.ProtectedBrowserStorage >= 1.0.0"
     ]
@@ -9414,7 +9645,7 @@
           },
           "Microsoft.TeamsFx": {
             "target": "Package",
-            "version": "[1.0.0, )"
+            "version": "[1.1.0, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",

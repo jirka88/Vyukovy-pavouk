@@ -39,12 +39,14 @@
 	}
 	else if(IsLoaded)
 	{
+		//pokud je učitel
 		@if (UserToken.Profile.JobTitle == null)
 		{
 			<p>@GroupToken.teamsContext.TeamId</p>
 			<p>@UserToken.Profile.JobTitle</p>
 			<Vytvoreni_Teamu Predmety="@predmety" />
 		}
+		//pokud je student 
 		else
 		{
 			<Vytvoreni_teamu_student />
@@ -64,7 +66,7 @@
 	//pro vytvoření nového studenta s připojení se skupinou
 	public Student studentInfo { get; set; } = new Student { SkupinaStudent = new List<SkupinaStudent>() };
 	//pouze pro připojení studenta se skupinou
-	public SkupinaStudent SkupinaStudentConnect {get; set;} = new SkupinaStudent();
+	public SkupinaStudent skupinaStudentConnect {get; set;} = new SkupinaStudent();
 	private readonly string _scope = "User.Read";
 	public List<Predmet> predmety;
 
@@ -108,9 +110,9 @@
 					}
 					//pokud student už existuje v databázi, ale není navázán v naší skupině 
 					else if(student.SkupinaStudent.Find(x => x.SkupinaId == skupina.Id) == null) { 
-						SkupinaStudentConnect.SkupinaId = Convert.ToInt32(skupina.Id);
-						SkupinaStudentConnect.StudentId = Convert.ToInt32(student.Id);
-						await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/connect", SkupinaStudentConnect);
+						skupinaStudentConnect.SkupinaId = Convert.ToInt32(skupina.Id);
+						skupinaStudentConnect.StudentId = Convert.ToInt32(student.Id);
+						await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/connect", skupinaStudentConnect);
 					}
 					MyNavigationManager.NavigateTo("/"); 
 				}

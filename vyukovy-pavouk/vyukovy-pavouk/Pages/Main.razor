@@ -21,10 +21,21 @@
 		<Kapitola_odemceno ID="3" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />
 		<Kapitola_uzavreno ID="4" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />-->
 		@if(Kapitoly.Count() > 0) {
-			@foreach (var kapitola in Kapitoly)
-		{
+			@if(UserToken.Profile.JobTitle != null) {
+				//zobrazení kapitol pro učitele 
+				@foreach (var kapitola in Kapitoly)
+				{
+					<Kapitola_ucitel ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" />
+				}
+			}
+			//zobrazení kapitol pro studenta 
+			else {
+				@foreach (var kapitola in Kapitoly)
+				{
 			<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" />
-		}
+				}
+			}
+		
 		}
 		else {
 			<h4 class="text-center">Zatím není vytvořena žádná kapitola!</h4>
@@ -42,9 +53,6 @@ else {
 <link rel="stylesheet" href="css/Main-Kapitoly.css" />
 
 @code {
-
-	[Inject]
-	public NavigationManager NavigationManager { get; set; }
 
 	public bool IsLoaded = false;
 	public Skupina skupina = new Skupina();

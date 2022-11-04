@@ -166,3 +166,10 @@ D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microso
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Blazored.FluentValidation.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\FluentValidation.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Bot.Builder.Dialogs.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Recognizers.Definitions.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Recognizers.Text.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Recognizers.Text.Choice.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Recognizers.Text.DateTime.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Recognizers.Text.Number.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Recognizers.Text.NumberWithUnit.dll

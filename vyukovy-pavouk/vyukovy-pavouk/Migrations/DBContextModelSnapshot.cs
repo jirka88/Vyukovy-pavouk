@@ -52,6 +52,21 @@ namespace vyukovypavouk.Migrations
                     b.ToTable("Kapitoly");
                 });
 
+            modelBuilder.Entity("vyukovy_pavouk.Data.KapitolaPrerekvizita", b =>
+                {
+                    b.Property<int>("KapitolaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PrerekvizitaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("KapitolaId", "PrerekvizitaId");
+
+                    b.HasIndex("PrerekvizitaId");
+
+                    b.ToTable("KapitolaPrerekvizita");
+                });
+
             modelBuilder.Entity("vyukovy_pavouk.Data.Predmet", b =>
                 {
                     b.Property<int>("Id")
@@ -68,6 +83,22 @@ namespace vyukovypavouk.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Predmet");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.Prerekvizity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("IdPrerekvizity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Prerekvizity");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.Skupina", b =>
@@ -211,6 +242,25 @@ namespace vyukovypavouk.Migrations
                     b.Navigation("predmet");
                 });
 
+            modelBuilder.Entity("vyukovy_pavouk.Data.KapitolaPrerekvizita", b =>
+                {
+                    b.HasOne("vyukovy_pavouk.Data.Kapitola", "kapitola")
+                        .WithMany("KapitolaPrerekvizita")
+                        .HasForeignKey("KapitolaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("vyukovy_pavouk.Data.Prerekvizity", "prerekvizita")
+                        .WithMany("KapitolaPrerekvizita")
+                        .HasForeignKey("PrerekvizitaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("kapitola");
+
+                    b.Navigation("prerekvizita");
+                });
+
             modelBuilder.Entity("vyukovy_pavouk.Data.Skupina", b =>
                 {
                     b.HasOne("vyukovy_pavouk.Data.Predmet", "predmet")
@@ -276,6 +326,8 @@ namespace vyukovypavouk.Migrations
 
             modelBuilder.Entity("vyukovy_pavouk.Data.Kapitola", b =>
                 {
+                    b.Navigation("KapitolaPrerekvizita");
+
                     b.Navigation("Videa");
 
                     b.Navigation("Zadani");
@@ -286,6 +338,11 @@ namespace vyukovypavouk.Migrations
                     b.Navigation("Kapitoly");
 
                     b.Navigation("Skupiny");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.Prerekvizity", b =>
+                {
+                    b.Navigation("KapitolaPrerekvizita");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.Skupina", b =>

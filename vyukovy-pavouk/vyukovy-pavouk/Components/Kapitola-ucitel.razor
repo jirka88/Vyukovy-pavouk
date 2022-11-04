@@ -1,4 +1,5 @@
-﻿<div class="card d-grid" id="@ID" >
+﻿@inject NavigationManager MyNavigationManager
+<div class="card d-grid" id="@ID" @onclick=zobraz>
 	<div class="d-flex align-items-center justify-content-center main-body">
 		<div class="icon px-4">
 			<div class="circle d-flex justify-content-center align-items-center">
@@ -20,4 +21,5 @@
 
 	[Parameter]
 	public string Perex { get; set; }
+	public void zobraz() => MyNavigationManager.NavigateTo($"/kapitola/{ID}/true");
 }

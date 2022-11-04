@@ -5,10 +5,11 @@
 
 <div class="container">
 	<div class="main-box py-2 d-flex flex-column align-items-center">
-		@if(HledanyPredmet != null) {
-			<fluent-dialog Hidden="@ModelHidden">
+		<!--vyskakovací okno pokud najde schodu názvu předmětu při vytváření nového předmětu -->
+		@if(hledanyPredmet != null) {		
+			<fluent-dialog Hidden="@modelHidden">
 			<div class="d-flex justify-content-center align-items-center h-100 w-100 flex-column">
-				<h5 class="text-center">Předmět s názvem @HledanyPredmet.Nazev už existuje. Zkuste jiný název!</h5>
+				<h5 class="text-center">Předmět s názvem @hledanyPredmet.Nazev už existuje. Zkuste jiný název!</h5>
 				<?xml version="1.0" encoding="utf-8" ?>	
 				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
 				<metadata> Svg Vector Icons : http://www.onlinewebfonts.com/icon </metadata>
@@ -20,7 +21,7 @@
 			</div>
 		</fluent-dialog>
 		}
-		
+		<!--vytvoření nového předmětu -->
 		<h1 class="py-5 text-center">Je potřeba vytvořit team</h1>
 		<EditForm Model="@predmet" OnValidSubmit="@vytvor" class="editForm d-flex justify-content-center">
 			 <FluentValidationValidator />
@@ -34,7 +35,7 @@
 			</div>
 		</EditForm>
 		<!--Pokud nejsou vytvořené žádné předměty (navazují na ně i Teamy) tabulka se nevykreslí -->
-		@if (Predmety.Count() != 0)
+		@if (predmety.Count() != 0)
 		{
 			<h2 class="py-4">Nebo</h2>
 			<EditForm Model="@skupina" OnValidSubmit="@vytvorZexistujici" class="editForm d-flex justify-content-center">
@@ -42,7 +43,7 @@
 				<div class="card-body gap-4">
 					<h2 class="card-title pt-2 text-center">Vytvořit z existujícího teamu</h2>
 					<select @bind-Value="@PredmetSelect" @bind-Value:event="onchange">
-						@foreach (var item in @Predmety)
+						@foreach (var item in predmety)
 						{
 							<option>@item.Nazev</option>
 						}
@@ -68,26 +69,29 @@
 		position: sticky;
 		z-index: 999;
 	}
+	.validation-message {
+		margin: -10px;
+	}
 </style>
 @code {
 	//parametr, který přijímá od Tab
 	[Parameter]
-	public List<Predmet> Predmety { get; set; }
+	public List<Predmet> predmety { get; set; }
 	string PredmetSelect { get; set; }
 	[Inject]
 	public NavigationManager MyNavigationManager { get; set; }
-	public Predmet HledanyPredmet { get; set; } = new Predmet();
+	public Predmet hledanyPredmet { get; set; } = new Predmet();
 	public Skupina skupina = new Skupina();
 	public Predmet predmet { get; set; } = new Predmet {Skupiny = new List<Skupina>()};
-	public bool ModelHidden = true;
+	public bool modelHidden = true;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		await base.OnAfterRenderAsync(firstRender);
 		if (firstRender)
 		{
-			if(Predmety.Count() > 0) {
-				PredmetSelect = Predmety[0].Nazev.ToString();
+			if(predmety.Count() > 0) {
+				PredmetSelect = predmety[0].Nazev.ToString();
 			}	 
 			StateHasChanged();
 		}
@@ -96,15 +100,15 @@
 	//TO DO 
 	public async Task vytvor()
 	{
-		HledanyPredmet = Predmety.Find(x => x.Nazev.ToLower() == predmet.Nazev.ToLower());
-		if(HledanyPredmet == null) {
+		hledanyPredmet = predmety.Find(x => x.Nazev.ToLower() == predmet.Nazev.ToLower());
+		if(hledanyPredmet == null) {
 			predmet.Skupiny.Add(new Skupina());
-			predmet.Skupiny[0].TmSkupina = (GroupToken.teamsContext.TeamId).ToString().ToLower();
+			predmet.Skupiny[0].TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
 			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", predmet);
 			MyNavigationManager.NavigateTo("/");
 		}
 		else {
-			ModelHidden = false;
+			modelHidden = false;
 		}
 		
 	}
@@ -113,12 +117,12 @@
 		//přidání ID skupiny 
 		skupina.TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
 		//přidání ID předmětu z výběru nahoře
-		HledanyPredmet = Predmety.Find(x => x.Nazev == PredmetSelect);
+		hledanyPredmet = predmety.Find(x => x.Nazev == PredmetSelect);
 		//dosazení ID předmětu
-		skupina.ID_Predmetu = HledanyPredmet.Id;
+		skupina.ID_Predmetu = hledanyPredmet.Id;
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", skupina);
 		MyNavigationManager.NavigateTo("/");
 	}
-	public void CloseDialog() => ModelHidden = true;
+	public void CloseDialog() => modelHidden = true;
 
 }
