@@ -22,5 +22,12 @@ namespace vyukovy_pavouk.Services
                 .ThenInclude(p => p.prerekvizita)
                 .ToList();
         }
+        //vrátí pouze kapitoly --> použití u načtení kapitol (prerekvizit) při vytváření kapitoly 
+        public List<Kapitola> GetKapitolyOnly(int IdPredmetu)
+        {
+            return _dbContext.Kapitoly
+                .Where(p => p.IdPredmetu == IdPredmetu)
+                .ToList();
+        }
     }
 }

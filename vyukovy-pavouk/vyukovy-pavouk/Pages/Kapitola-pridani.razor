@@ -3,141 +3,160 @@
 @layout UserLayout
 @inject NavigationManager MyNavigationManager
 @inject MicrosoftTeams MicrosoftTeams
+@inject HttpClient Http
 @inject IUserToken UserToken
 @inject IGroupToken GroupToken
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 
 <div class="container">
 	<h1 class="text-center py-2">Přidání kapitoly</h1>
-    @if(!IsLoaded) {
-        <div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
-            <FluentProgressRing />
-        </div>
-    }
-    else {
-        <EditForm Model="@kapitola" OnValidSubmit="@Pridej">
-         <FluentValidationValidator />
-        <label for="shirt-size">Nutno splnit</label>
-    <br />
-    <div class="form d-flex flex-column gap-4">
-        <!-- TO DO -->
-        @foreach( string item in Splneni) {
-            <div class="d-flex gap-4 justify-content-center align-items-center">
-              <select class="w-100" id=@item>
-                <option>Option 1</option>
-                <option>Option 2</option>
-                <option>Option 3</option>
-               </select>
-               <div class="d-flex gap-2">
-               <Fluent-Button class="cancel" appearance="accent" @onclick="() => odeber(item)">X</Fluent-Button>
-               <Fluent-button appearance="accent" class="create" @onclick=PridejSplneni><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff"/></svg></Fluent-button>            
-               </div>
-             </div>
-        }       
-        <div class="d-flex flex-column">
-            <label for="NazevKapitoly">Název Kapitoly</label>
-            <InputText type="text" id="NazevKapitoly" @bind-Value="@kapitola.Název" />
-            <ValidationMessage For="@(()=>@kapitola.Název)" />
-        </div>
-        <div class="d-flex flex-column">
-            <label for="perex">Perex</label>
-            <InputText type="text" id="perex" @bind-Value="@kapitola.Perex" />
-             <ValidationMessage For="@(()=>@kapitola.Perex)" />
-        </div>
-        <div class="d-flex flex-column">
-            <label for="obsah">Obsah</label>
-            <InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>
-            <ValidationMessage For="@(()=>@kapitola.Kontent)" />
-        </div>
-        <label class="First-label">Odkazy na videa</label>
+	@if (!IsLoaded)
+	{
+		<div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+			<FluentProgressRing />
+		</div>
+	}
+	else
+	{
+		<EditForm Model="@kapitola" OnValidSubmit="@Pridej">
+			<FluentValidationValidator />
+			<label for="shirt-size">Nutno splnit</label>
+			<br />
+			<div class="form d-flex flex-column gap-4">
+				<!-- TO DO -->
 
-           <div class="d-flex gap-4 justify-content-center align-items-center flex-column">
-               @for (int i = 0; i < @kapitola.Videa.Count; i++)
-                    {
-                    var index = i;
-                    globalIndex = i;
-                    var video = kapitola.Videa[i];
-                     <div class="d-flex gap-4 w-100 justify-content-center align-items-center">
-                        <InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" />
-                        <fluent-button class="cancel" appearance="accent" @onclick="@(() => kapitola.Videa.RemoveAt(index))">X</fluent-button>
-                     </div>                                
-                    }   
-                  @if(globalIndex < 9) {   
-                     <fluent-button class="create" appearance="accent" @onclick="@(() => kapitola.Videa.Add(new Videa()))"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
-                    }
-        </div>
+				<div class="d-flex gap-4 justify-content-center align-items-center flex-column">
+					@for (int i = 0; i < @kapitola.KapitolaPrerekvizita.Count; i++)
+					{
+						
+						var prerekvizita = kapitola.KapitolaPrerekvizita[i].prerekvizita;
+						int index = i;
+						globalIndexPrerekvizita = i;
+						<div class="d-flex gap-4 w-100 justify-content-center align-items-center">
+							<InputSelect class="w-100" @bind-Value="@prerekvizita.IdPrerekvizity">
+								@foreach (var kapitola in kapitolyKopie)
+								{
+									<option value="@kapitola.Id">@kapitola.Název</option>
+								}
+							</InputSelect>
+							@if(@kapitola.KapitolaPrerekvizita.Count > 1) {
+							  <Fluent-Button class="cancel" appearance="accent" @onclick="@(() => kapitola.KapitolaPrerekvizita.RemoveAt(index))">X</Fluent-Button>
+							}
+							@if(@kapitola.KapitolaPrerekvizita.Count() - 1 == i && i < 3) {
+								<Fluent-button appearance="accent" class="create" @onclick="@vytvorPrerekvizitu"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
+							}
+					
+						</div>
+					}				
+				</div>
 
-        <label class="First-label">Testy</label>
-        <div class="d-flex gap-4 justify-content-center align-items-center">
-            <input type="text" class="flex-grow-1">
-                 <div class="d-flex gap-2">
-            <fluent-button class="cancel" appearance="accent">X</fluent-button>
-            <fluent-button appearance="accent" class="create"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
-            </div>
-        </div>
-        <!--<div class="d-flex gap-2 justify-content-center align-items-center counter flex-column">
-            <div class="d-flex align-items-center">
-                <fluent-button appearance="accent" @onclick="() => {pocet--; if(pocet < 1) {pocet = 1;}}">-</fluent-button>
-                  <input type="number" class="text-center" @bind-value=@pocet @oninput="Kontrola" readonly>
-                <fluent-button appearance="accent" @onclick="() => {pocet++; if(pocet < 1) {pocet = 1;}}"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff"/></svg></fluent-button>              
-            </div>
-            <p class="text-center mb-0">Počet testů, který je potřeba splnit.</p>
-        </div> -->
-        <div class="d-flex justify-content-center align-center w-100">
-        <fluent-button class="main-btn" type="submit" appearance="accent">Vytvořit</fluent-button>
-        </div>
-     </div>
-     </EditForm>
-    }
-	
+				<div class="d-flex flex-column">
+					<label for="NazevKapitoly">Název Kapitoly</label>
+					<InputText type="text" id="NazevKapitoly" @bind-Value="@kapitola.Název" />
+					<ValidationMessage For="@(()=>@kapitola.Název)" />
+				</div>
+				<div class="d-flex flex-column">
+					<label for="perex">Perex</label>
+					<InputText type="text" id="perex" @bind-Value="@kapitola.Perex" />
+					<ValidationMessage For="@(()=>@kapitola.Perex)" />
+				</div>
+				<div class="d-flex flex-column">
+					<label for="obsah">Obsah</label>
+					<InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>
+					<ValidationMessage For="@(()=>@kapitola.Kontent)" />
+				</div>
+				<label class="First-label">Odkazy na videa</label>
+
+				<div class="d-flex gap-4 justify-content-center align-items-center flex-column">
+					@for (int i = 0; i < @kapitola.Videa.Count; i++)
+					{
+						var index = i;
+						globalIndex = i;
+						var video = kapitola.Videa[i];
+						<div class="d-flex gap-4 w-100 justify-content-center align-items-center">
+							<InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" />
+							<fluent-button class="cancel" appearance="accent" @onclick="@(() => kapitola.Videa.RemoveAt(index))">X</fluent-button>
+						</div>
+					}
+					@if (globalIndex < 9)
+					{
+						<fluent-button class="create" appearance="accent" @onclick="@(() => kapitola.Videa.Add(new Videa()))"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
+					}
+				</div>
+
+				<label class="First-label">Testy</label>
+				<div class="d-flex gap-4 justify-content-center align-items-center">
+					<InputText type="text" class="flex-grow-1" @bind-Value="@kapitola.Zadani[0].Odkaz">
+					<div class="d-flex gap-2">
+						<!--<fluent-button class="cancel" appearance="accent">X</fluent-button>-->
+						<fluent-button appearance="accent" class="create"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
+					</div>
+					</InputText>
+				</div>
+				<!--<div class="d-flex gap-2 justify-content-center align-items-center counter flex-column">
+					<div class="d-flex align-items-center">
+						<fluent-button appearance="accent" @onclick="() => {pocet--; if(pocet < 1) {pocet = 1;}}">-</fluent-button>
+						  <input type="number" class="text-center" @bind-value=@pocet @oninput="Kontrola" readonly>
+						<fluent-button appearance="accent" @onclick="() => {pocet++; if(pocet < 1) {pocet = 1;}}"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff"/></svg></fluent-button>
+					</div>
+					<p class="text-center mb-0">Počet testů, který je potřeba splnit.</p>
+				</div> -->
+				<div class="d-flex justify-content-center align-center w-100">
+					<fluent-button class="main-btn" type="submit" appearance="accent">Vytvořit</fluent-button>
+				</div>
+			</div>
+		</EditForm>
+	}
+
 </div>
 
 @code {
-    //int pocet = 1;
-    List <string> Splneni = new List<string>();
-    int PocetSplneni = 1;
-    int globalIndex = 0;
-    vyukovy_pavouk.Data.Kapitola kapitola = new vyukovy_pavouk.Data.Kapitola {Videa = new List<Videa>(), Zadani = new List<Zadani>() };
-    bool IsLoaded = false;
+	int PocetSplneni = 1;
+	int globalIndex = 0;
+	int globalIndexPrerekvizita = 0; 
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+	Skupina skupina = new Skupina();
+	//kapitola má mnoho videí, prerekvizit, ale zatím jedno zadání
+	vyukovy_pavouk.Data.Kapitola kapitola = new vyukovy_pavouk.Data.Kapitola { Videa = new List<Videa>(), KapitolaPrerekvizita = new List<KapitolaPrerekvizita>(), Zadani = new List<Zadani>() };
+	List<vyukovy_pavouk.Data.Kapitola> kapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
+	List<vyukovy_pavouk.Data.Kapitola> kapitolyKopie = new List<vyukovy_pavouk.Data.Kapitola>();
+
+	bool IsLoaded = false;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)
 		{
-            await UserToken.GetUserAsync(sessionStorage);
-            await GroupToken.GetGroupAsync(MicrosoftTeams);
-            if (UserToken.Profile == null )
-            {
-                MyNavigationManager.NavigateTo("/tab");
-            }
-            else
-            {
-                IsLoaded = true;
-            }
+			await UserToken.GetUserAsync(sessionStorage);
+			await GroupToken.GetGroupAsync(MicrosoftTeams);
+			if (UserToken.Profile == null)
+			{
+				MyNavigationManager.NavigateTo("/tab");
+			}
+			else
+			{
+				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
+				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.ID_Predmetu));
+				kapitolyKopie = kapitoly;
+				//vytvoření prvního vstupu pro prerekvizitu 
+				kapitola.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() {prerekvizita = new Prerekvizity()});
+				//zatím řešeno, že je pouze jedno zadání 
+				kapitola.Zadani.Add(new Zadani());
+				IsLoaded = true;
+			}
 			StateHasChanged();
 		}
 	}
-    private void Pridej() {
-
-    }
-    /*public void Kontrola() {
-        if(pocet < 1) {
-            pocet = 1;
-        }
-    }*/
-
-    public void PridejSplneni() {
-        PocetSplneni++;
-        Splneni.Add(PocetSplneni.ToString());
-    }
-    public void odeber(string i) {
-        
-        if(Splneni.Count() > 1) {
-            Splneni.Remove(i);
-        }
-    }
-    protected override void OnInitialized()
-    {
-        Splneni.Add("1");
-    }
+	private void Pridej()
+	{
+		kapitola.IdPredmetu = skupina.ID_Predmetu;
+	}
+	public void vytvorPrerekvizitu() {
+		//TO DO 
+		vyukovy_pavouk.Data.Kapitola hledanaPrerekvizita = new vyukovy_pavouk.Data.Kapitola();
+		//hledanaPrerekvizita = kapitolyKopie.Find(x => x.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.IdPrerekvizity == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.IdPrerekvizity);
+		//kapitolyKopie.Remove(hledanaPrerekvizita);
+		kapitola.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() {prerekvizita = new Prerekvizity()});
+		
+	}
 }

@@ -15,11 +15,17 @@ namespace vyukovy_pavouk.Controllers
         {
             _IKapitola = iKapitola;
         }
-        //získání všech kapitol u mainu podle předmětu 
+        //získání všech kapitol a prerekvizit u mainu podle předmětu 
         [HttpGet("{IDPredmetu}")]
         public async Task<List<Kapitola>> Get(int IDPredmetu)
         {
             return await Task.FromResult(_IKapitola.GetKapitoly(IDPredmetu));
+        }
+        [HttpGet]
+        [Route("nazvy/{idPredmetu}")]
+        public async Task<List<Kapitola>> GetNames(int idPredmetu)
+        {
+            return await Task.FromResult(_IKapitola.GetKapitolyOnly(idPredmetu));
         }
     }
 }
