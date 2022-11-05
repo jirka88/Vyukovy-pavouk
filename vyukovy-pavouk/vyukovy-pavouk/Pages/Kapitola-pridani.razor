@@ -1,4 +1,5 @@
 ﻿@page "/add"
+@using vyukovy_pavouk.Data
 @layout UserLayout
 @inject NavigationManager MyNavigationManager
 @inject MicrosoftTeams MicrosoftTeams
@@ -14,9 +15,12 @@
         </div>
     }
     else {
+        <EditForm Model="@kapitola" OnValidSubmit="@Pridej">
+         <FluentValidationValidator />
         <label for="shirt-size">Nutno splnit</label>
     <br />
     <div class="form d-flex flex-column gap-4">
+        <!-- TO DO -->
         @foreach( string item in Splneni) {
             <div class="d-flex gap-4 justify-content-center align-items-center">
               <select class="w-100" id=@item>
@@ -26,29 +30,41 @@
                </select>
                <div class="d-flex gap-2">
                <Fluent-Button class="cancel" appearance="accent" @onclick="() => odeber(item)">X</Fluent-Button>
-               <Fluent-button appearance="accent" @onclick=PridejSplneni><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff"/></svg></Fluent-button>            
+               <Fluent-button appearance="accent" class="create" @onclick=PridejSplneni><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff"/></svg></Fluent-button>            
                </div>
              </div>
         }       
         <div class="d-flex flex-column">
             <label for="NazevKapitoly">Název Kapitoly</label>
-            <input type="text" id="NazevKapitoly" @bind-value=@NazevKapitoly>
+            <InputText type="text" id="NazevKapitoly" @bind-Value="@kapitola.Název" />
+            <ValidationMessage For="@(()=>@kapitola.Název)" />
         </div>
         <div class="d-flex flex-column">
             <label for="perex">Perex</label>
-            <input type="text" id="perex" @bind-value=@Perex>
+            <InputText type="text" id="perex" @bind-Value="@kapitola.Perex" />
+             <ValidationMessage For="@(()=>@kapitola.Perex)" />
         </div>
         <div class="d-flex flex-column">
             <label for="obsah">Obsah</label>
-            <textarea id="obsah" resize="vertical" @bind-value=@Obsah @bind-value:event="oninput"></textarea>
+            <InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>
+            <ValidationMessage For="@(()=>@kapitola.Kontent)" />
         </div>
         <label class="First-label">Odkazy na videa</label>
-           <div class="d-flex gap-4 justify-content-center align-items-center">
-            <input type="text" class="flex-grow-1">
-            <div class="d-flex gap-2">
-             <fluent-button class="cancel" appearance="accent">X</fluent-button>
-            <fluent-button appearance="accent"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
-        </div>
+
+           <div class="d-flex gap-4 justify-content-center align-items-center flex-column">
+               @for (int i = 0; i < @kapitola.Videa.Count; i++)
+                    {
+                    var index = i;
+                    globalIndex = i;
+                    var video = kapitola.Videa[i];
+                     <div class="d-flex gap-4 w-100 justify-content-center align-items-center">
+                        <InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" />
+                        <fluent-button class="cancel" appearance="accent" @onclick="@(() => kapitola.Videa.RemoveAt(index))">X</fluent-button>
+                     </div>                                
+                    }   
+                  @if(globalIndex < 9) {   
+                     <fluent-button class="create" appearance="accent" @onclick="@(() => kapitola.Videa.Add(new Videa()))"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
+                    }
         </div>
 
         <label class="First-label">Testy</label>
@@ -56,34 +72,32 @@
             <input type="text" class="flex-grow-1">
                  <div class="d-flex gap-2">
             <fluent-button class="cancel" appearance="accent">X</fluent-button>
-            <fluent-button appearance="accent"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
+            <fluent-button appearance="accent" class="create"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
             </div>
         </div>
-        <div class="d-flex gap-2 justify-content-center align-items-center counter flex-column">
+        <!--<div class="d-flex gap-2 justify-content-center align-items-center counter flex-column">
             <div class="d-flex align-items-center">
                 <fluent-button appearance="accent" @onclick="() => {pocet--; if(pocet < 1) {pocet = 1;}}">-</fluent-button>
                   <input type="number" class="text-center" @bind-value=@pocet @oninput="Kontrola" readonly>
                 <fluent-button appearance="accent" @onclick="() => {pocet++; if(pocet < 1) {pocet = 1;}}"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff"/></svg></fluent-button>              
             </div>
             <p class="text-center mb-0">Počet testů, který je potřeba splnit.</p>
-        </div>
+        </div> -->
         <div class="d-flex justify-content-center align-center w-100">
-        <fluent-button class="main-btn" appearance="accent">Vytvořit</fluent-button>
+        <fluent-button class="main-btn" type="submit" appearance="accent">Vytvořit</fluent-button>
         </div>
      </div>
+     </EditForm>
     }
 	
 </div>
 
 @code {
-    //bindy se převede do EditForm --> model
-    int pocet = 1;
-    string NazevKapitoly = "";
-    string Perex = "";
-    string Obsah = "";
+    //int pocet = 1;
     List <string> Splneni = new List<string>();
     int PocetSplneni = 1;
-
+    int globalIndex = 0;
+    vyukovy_pavouk.Data.Kapitola kapitola = new vyukovy_pavouk.Data.Kapitola {Videa = new List<Videa>(), Zadani = new List<Zadani>() };
     bool IsLoaded = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -103,11 +117,14 @@
 			StateHasChanged();
 		}
 	}
-    public void Kontrola() {
+    private void Pridej() {
+
+    }
+    /*public void Kontrola() {
         if(pocet < 1) {
             pocet = 1;
         }
-    }
+    }*/
 
     public void PridejSplneni() {
         PocetSplneni++;

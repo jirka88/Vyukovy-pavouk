@@ -138,8 +138,10 @@ h1[b-ummi2zx0lv] {
 .First-label[b-ummi2zx0lv] {
 	margin-bottom: -15px;
 }
-.cancel[b-ummi2zx0lv] {
+.cancel[b-ummi2zx0lv], .create[b-ummi2zx0lv] {
 	font-weight: bold;
+	width: 40px;
+	height: 40px;
 }
 input[type=number][b-ummi2zx0lv] {
 	width: 50px;
@@ -147,8 +149,8 @@ input[type=number][b-ummi2zx0lv] {
 	font-size: 1.2em;
 }
 .counter fluent-button[b-ummi2zx0lv]{
-	width: 50px; 
-	height: 50px;
+	width: 70px; 
+	height: 70px;
 	border-radius: 0px;
 }
 

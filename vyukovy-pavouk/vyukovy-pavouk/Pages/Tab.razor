@@ -1,4 +1,5 @@
 ﻿@page "/tab"
+@using System.IO
 @using vyukovy_pavouk.Components;
 @using Azure.Core;
 @using Microsoft.Graph;
@@ -42,8 +43,6 @@
 		//pokud je učitel
 		@if (UserToken.Profile.JobTitle == null)
 		{
-			<p>@GroupToken.teamsContext.TeamId</p>
-			<p>@UserToken.Profile.JobTitle</p>
 			<Vytvoreni_Teamu Predmety="@predmety" />
 		}
 		//pokud je student 

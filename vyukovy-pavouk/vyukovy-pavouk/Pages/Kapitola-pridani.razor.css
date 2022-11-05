@@ -13,8 +13,10 @@
 .First-label {
 	margin-bottom: -15px;
 }
-.cancel {
+.cancel, .create {
 	font-weight: bold;
+	width: 40px;
+	height: 40px;
 }
 input[type=number] {
 	width: 50px;
@@ -22,8 +24,8 @@ input[type=number] {
 	font-size: 1.2em;
 }
 .counter fluent-button{
-	width: 50px; 
-	height: 50px;
+	width: 70px; 
+	height: 70px;
 	border-radius: 0px;
 }
 
