@@ -3,8 +3,9 @@
 namespace vyukovy_pavouk.Interface
 {
     public interface IKapitola
-{
-        public Kapitola GetKapitolaDetail(int IdKapitoly);       
+    {
+        public Kapitola GetKapitolaDetail(int IdKapitoly);
+        public void CreateKapitola(Kapitola kapitola);
 
-}
+    }
 }

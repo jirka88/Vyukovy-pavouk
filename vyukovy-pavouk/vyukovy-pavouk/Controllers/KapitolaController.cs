@@ -6,18 +6,24 @@ using vyukovy_pavouk.Interface;
 namespace vyukovy_pavouk.Controllers
 {
     [Route("api/[controller]")]
-[ApiController]
-public class KapitolaController : ControllerBase
-{
+    [ApiController]
+    public class KapitolaController : ControllerBase
+    {
         private readonly IKapitola _IKapitola;
         public KapitolaController(IKapitola iKapitola)
         {
             _IKapitola = iKapitola;
         }
-        [HttpGet("{IdKapitola}")] 
-        public async Task <Kapitola> Get(int IdKapitola)
+        [HttpGet("{IdKapitola}")]
+        public async Task<Kapitola> Get(int IdKapitola)
         {
             return await Task.FromResult(_IKapitola.GetKapitolaDetail(IdKapitola));
         }
+        [HttpPost]
+
+        public void Create([FromBody] Kapitola kapitola)
+        {
+            _IKapitola.CreateKapitola(kapitola);
+        }          
     }
 }

@@ -43,17 +43,11 @@ namespace vyukovy_pavouk.Services
 
         public Student GetStudent(int IdSkupiny, string EmailStudenta)
         {
-           /* return _dbContext.SkupinaStudent
-                    .Where(s => s.SkupinaId == IdSkupiny)
-                    .Include(s => s.Student)
-                    .Where(e => e.Student.email == EmailStudenta)              
-                    .SingleOrDefault();*/
            return _dbContext.Student
                 .Where(e => e.email == EmailStudenta)
                 .Include(s => s.SkupinaStudent)
-                .SingleOrDefault();
-             
-                  
+                .Include(s => s.Splneni.Where(id => id.Id_skupiny == IdSkupiny))
+                .SingleOrDefault();                             
         }
 
         //vybere všechny studenty se splněnými kapitoly, které patří do Teamu 

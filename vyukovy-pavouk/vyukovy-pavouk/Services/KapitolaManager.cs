@@ -12,6 +12,20 @@ namespace vyukovy_pavouk.Services
         {
             _dbContext = dbContext;
         }
+
+        public void CreateKapitola(Kapitola kapitola)
+        {
+            try
+            {
+                _dbContext.Kapitoly.Add(kapitola);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public Kapitola GetKapitolaDetail(int IdKapitoly)
         {
             try

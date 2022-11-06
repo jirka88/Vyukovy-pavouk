@@ -79,7 +79,7 @@
 			{	
 				await GroupToken.GetGroupAsync(MicrosoftTeams);							
 				//pokud o uživateli nic nevíme získáme o něm informace
-				if (UserToken.Profile.DisplayName == null)
+				if ( UserToken.Profile == null || UserToken.Profile.DisplayName == null)
 				{
 					await ShowProfile();
 					await UserToken.SetLocalUser(sessionStorage);									
@@ -155,7 +155,7 @@
 	{
 		var msGraphAuthProvider = new MsGraphAuthProvider(teamsUserCredential);
 		var graph = new GraphServiceClient(msGraphAuthProvider);
-		UserToken.Profile = await graph.Me.Request().GetAsync();
+		UserToken.Profile = await graph.Me.Request().Select("displayName,surname,jobTitle,mail").GetAsync();
 	}
 	
 }

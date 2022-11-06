@@ -147,9 +147,11 @@
 			StateHasChanged();
 		}
 	}
-	private void Pridej()
+	private async Task Pridej()
 	{
 		kapitola.IdPredmetu = skupina.ID_Predmetu;
+		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
+		MyNavigationManager.NavigateTo("/");
 	}
 	public void vytvorPrerekvizitu() {
 		//TO DO 

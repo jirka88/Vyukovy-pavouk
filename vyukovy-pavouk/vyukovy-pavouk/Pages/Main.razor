@@ -31,22 +31,28 @@
 			//zobrazení kapitol pro studenta 
 			else {
 				@foreach (var kapitola in Kapitoly)
-				{
-					//dočasné řešení pro test
-				@if (kapitola.Id == 3)
-				{
-					PrerekvizityShow(kapitola);
-					<Kapitola_uzavreno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizity="@hledanePrerekvizity" />
-					}
-					else
+				{										
+					int Kontrola = Kontroluj(kapitola);
+					@if (Kontrola == 1)
 					{
 						<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" />
 					}
-					
+					else if (Kontrola == 2)
+					{
+						<Kapitola_odemceno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" />
+					}
+					else
+					{
+						//TO DO 					
+						PrerekvizityShow(kapitola);
+						<Kapitola_uzavreno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizity="@hledanePrerekvizity" />
+						
+					}
+
 				}
-				
+				Poradi = new List<List<vyukovy_pavouk.Data.Kapitola>>();
 			}
-		
+			
 		}
 		else {
 			<h4 class="text-center">Zatím není vytvořena žádná kapitola!</h4>
@@ -66,8 +72,13 @@ else {
 @code {
 
 	public bool IsLoaded = false;
+	int i = 0;
 	public Skupina skupina = new Skupina();
+	public Student student = new Student();
 	public List<vyukovy_pavouk.Data.Kapitola> Kapitoly;
+	public List<KapitolaPrerekvizita> Prerekvizity = new List<KapitolaPrerekvizita>();
+
+	public List<List<vyukovy_pavouk.Data.Kapitola>> Poradi = new List<List<vyukovy_pavouk.Data.Kapitola>>();
 	public List<vyukovy_pavouk.Data.Kapitola> hledanePrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -81,6 +92,7 @@ else {
 			else {
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 				Kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(skupina.ID_Predmetu)));
+				student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id) + "/" + UserToken.Profile.Mail);
 				IsLoaded = true;
 			}
 		}
@@ -89,12 +101,44 @@ else {
 
 	//pokud je kapitola uzamčena vypíše prerekvizity, které je nutno splnit i s jejím názvem (v databázi je pouze ID kapitoly)
 	public void PrerekvizityShow(vyukovy_pavouk.Data.Kapitola kapitola) {
-		if(hledanePrerekvizity.Count > 0) {
-			hledanePrerekvizity.Clear();
-		}
+
+		hledanePrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
+
 		foreach(var prerekvizity in kapitola.KapitolaPrerekvizita) {
+
 			hledanePrerekvizity.Add(Kapitoly.Find(x => x.Id == prerekvizity.prerekvizita.IdPrerekvizity));
-		}		
+		}
+		//Poradi.Add(hledanePrerekvizity);
+	}
+	//řeší jestli daná kapitola je pro studenta splněna, odemčena či uzamnčena 
+	public int Kontroluj(vyukovy_pavouk.Data.Kapitola kapitola) {
+
+		if(Prerekvizity.Count() > 0) {
+			Prerekvizity.Clear();
+		}
+		KapitolaPrerekvizita save = new KapitolaPrerekvizita();
+		foreach (var splneni in student.Splneni)
+		{
+			//pokud je splněno 
+			if(splneni.Id_kapitoly == kapitola.Id) {
+				return 1;
+			}
+			//ukládání pokud je odemčena
+			save = kapitola.KapitolaPrerekvizita.Find(x => x.prerekvizita.IdPrerekvizity == splneni.Id_kapitoly);
+			if (save != null) {
+				Prerekvizity.Add(save);
+			}
+		}
+		//kontrola zdali je odemčena splněné prerekvizity pocet == celkovy pocet prerekvizit v kapitole 
+		if(Prerekvizity.Count() == kapitola.KapitolaPrerekvizita.Count()) {
+			return 2;
+		}
+		//pokud není odemcena je uzamcena 
+		else {
+			return 3;
+		}	
+		
+		
 	}
 
 }
