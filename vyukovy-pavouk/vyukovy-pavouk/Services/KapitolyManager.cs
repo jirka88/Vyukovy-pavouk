@@ -29,5 +29,13 @@ namespace vyukovy_pavouk.Services
                 .Where(p => p.IdPredmetu == IdPredmetu)
                 .ToList();
         }
+
+        public List<KapitolaPrerekvizita> GetKapitolyPrerekvizity(int IdPredmetu)
+        {
+            return _dbContext.kapitolaPrerekvizita
+                .Include(p => p.prerekvizita)
+                .Include(k => k.kapitola).Where(x => x.kapitola.IdPredmetu == IdPredmetu)
+                .ToList();
+        }
     }
 }

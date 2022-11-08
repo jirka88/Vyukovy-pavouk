@@ -6,6 +6,7 @@ namespace vyukovy_pavouk.Interface
 {
         public List<Kapitola> GetKapitoly(int IdPredmetu);
         public List<Kapitola> GetKapitolyOnly(int IdPredmetu);
+        public List<KapitolaPrerekvizita> GetKapitolyPrerekvizity(int IdPredmetu);
 
 }
 }

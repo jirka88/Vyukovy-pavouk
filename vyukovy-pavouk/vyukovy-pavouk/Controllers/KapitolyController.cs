@@ -27,5 +27,12 @@ namespace vyukovy_pavouk.Controllers
         {
             return await Task.FromResult(_IKapitola.GetKapitolyOnly(idPredmetu));
         }
+        [HttpGet]
+        [Route("prerekvizity/{idPredmetu}")]
+        public async Task<List<KapitolaPrerekvizita>> GetPrerekvizity(int idPredmetu)
+        {
+            return await Task.FromResult(_IKapitola.GetKapitolyPrerekvizity(idPredmetu));
+        }
     }
+    
 }

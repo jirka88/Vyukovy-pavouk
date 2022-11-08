@@ -30,7 +30,8 @@
 					{
 						
 						var prerekvizita = kapitola.KapitolaPrerekvizita[i].prerekvizita;
-						int index = i;
+						if(prerekvizita != null) {
+								int index = i;
 						globalIndexPrerekvizita = i;
 						<div class="d-flex gap-4 w-100 justify-content-center align-items-center">
 							<InputSelect class="w-100" @bind-Value="@prerekvizita.IdPrerekvizity">
@@ -45,8 +46,8 @@
 							@if(@kapitola.KapitolaPrerekvizita.Count() - 1 == i && i < 3) {
 								<Fluent-button appearance="accent" class="create" @onclick="@vytvorPrerekvizitu"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
 							}
-					
 						</div>
+						}											
 					}				
 				</div>
 
@@ -114,10 +115,13 @@
 	int PocetSplneni = 1;
 	int globalIndex = 0;
 	int globalIndexPrerekvizita = 0; 
+	int globalIndexKontrola = 0;
 
 	Skupina skupina = new Skupina();
+	List<KapitolaPrerekvizita> prerekvizity = new List <KapitolaPrerekvizita>();
 	//kapitola má mnoho videí, prerekvizit, ale zatím jedno zadání
 	vyukovy_pavouk.Data.Kapitola kapitola = new vyukovy_pavouk.Data.Kapitola { Videa = new List<Videa>(), KapitolaPrerekvizita = new List<KapitolaPrerekvizita>(), Zadani = new List<Zadani>() };
+
 	List<vyukovy_pavouk.Data.Kapitola> kapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
 	List<vyukovy_pavouk.Data.Kapitola> kapitolyKopie = new List<vyukovy_pavouk.Data.Kapitola>();
 
@@ -137,6 +141,8 @@
 			{
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.ID_Predmetu));
+				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.ID_Predmetu));
+
 				kapitolyKopie = kapitoly;
 				//vytvoření prvního vstupu pro prerekvizitu 
 				kapitola.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() {prerekvizita = new Prerekvizity()});
@@ -150,6 +156,26 @@
 	private async Task Pridej()
 	{
 		kapitola.IdPredmetu = skupina.ID_Predmetu;
+		//kontrola zda-li se dané prerekvizity už nenachzejí v DB
+		foreach (var prerekvizita in prerekvizity)
+		{
+			for (var i = globalIndexKontrola; i < kapitola.KapitolaPrerekvizita.Count(); i++)
+			{
+				if (prerekvizita.prerekvizita.IdPrerekvizity == kapitola.KapitolaPrerekvizita[i].prerekvizita.IdPrerekvizity) {
+					//vymaže stejnou hodnotu u nově vytvořené instance kapitoly
+					kapitola.KapitolaPrerekvizita.RemoveAt(i);
+					globalIndexKontrola++;
+					//přidá existujicí vztah mezi KapitolaPrerekvizita - Prerekvizita --> díky tomu nebudou vznikat duplicitní hodnoty 
+					KapitolaPrerekvizita existujiciPrerekvizita = new KapitolaPrerekvizita();
+					existujiciPrerekvizita.PrerekvizitaId = prerekvizita.PrerekvizitaId;
+					kapitola.KapitolaPrerekvizita.Insert(0,existujiciPrerekvizita);
+		}
+	
+		}
+		}
+		
+		
+		
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
 		MyNavigationManager.NavigateTo("/");
 	}

@@ -18,6 +18,8 @@ namespace vyukovy_pavouk.DBContexts
         public DbSet<SkupinaStudent> SkupinaStudent { get; set; }
         public DbSet<Student> Student { get; set; }
         public DbSet<Splneni> Splneni { get; set; }
+        public DbSet<KapitolaPrerekvizita> kapitolaPrerekvizita { get; set; }
+        public DbSet<Prerekvizity> Prerekvizity { get; set; }
 
 
         //public DbSet<Test> Test { get; set; }
