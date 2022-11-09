@@ -53,12 +53,12 @@ namespace vyukovy_pavouk.Services
         //vybere všechny studenty se splněnými kapitoly, které patří do Teamu 
         public List<SkupinaStudent> GetStudents(int ID)
         {
-            //vrátí v souhrnu její studenty a jejich splnění kapitol (ID kapitol) 
+            //vrátí v souhrnu její studenty a jejich splnění kapitol (ID kapitol) krom prerekvizity u úvodní kapitoly - ta je automaticky daná studentovi
             return _dbContext.SkupinaStudent
                     .Where(s => s.SkupinaId == ID)
                     .Include(s => s.Student)
                     .ThenInclude(s => s.Splneni
-                    .Where(id => id.Id_skupiny == ID))
+                    .Where(id => id.Id_skupiny == ID && id.Id_kapitoly != 0))
                     .ToList();                         
         }
     }

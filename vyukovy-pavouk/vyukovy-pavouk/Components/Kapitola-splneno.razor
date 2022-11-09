@@ -1,4 +1,5 @@
-﻿@inject NavigationManager MyNavigationManager
+﻿@using vyukovy_pavouk.Data
+@inject NavigationManager MyNavigationManager
 
 <div class="card d-grid" id="@ID" @onclick=zobraz>
 	<div class="d-flex align-items-center justify-content-center main-body">
@@ -10,7 +11,12 @@
 		<div class="card-body">
 			<div class="card-title">@Nazev</div>
 			<p class="perex">@Perex</p>
-			<p class="uvod">Úvodní kapitola</p>
+			@if(Prerekvizita.prerekvizita.IdPrerekvizity != 0) {
+
+			}
+			else {
+				<p class="uvod">Úvodní kapitola</p>
+			}		
 			<p class="status">Splněno</p>
 		</div>
 	</div>
@@ -25,6 +31,9 @@
 
 	[Parameter]
 	public string Perex { get; set; }
+
+	[Parameter]
+	public KapitolaPrerekvizita Prerekvizita { get; set; }
 
     public void zobraz() => MyNavigationManager.NavigateTo($"/kapitola/{ID}/true");
 

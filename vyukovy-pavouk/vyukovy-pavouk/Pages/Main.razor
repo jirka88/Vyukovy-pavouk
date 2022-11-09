@@ -35,22 +35,20 @@
 					int Kontrola = Kontroluj(kapitola);
 					@if (Kontrola == 1)
 					{
-						<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" />
+						<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]" />
 					}
 					else if (Kontrola == 2)
 					{
-						<Kapitola_odemceno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" />
+						<Kapitola_odemceno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]" />
 					}
 					else
-					{
-						//TO DO 					
+					{				
 						PrerekvizityShow(kapitola);
 						<Kapitola_uzavreno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizity="@hledanePrerekvizity" />
 						
 					}
 
 				}
-				Poradi = new List<List<vyukovy_pavouk.Data.Kapitola>>();
 			}
 			
 		}
@@ -78,7 +76,6 @@ else {
 	public List<vyukovy_pavouk.Data.Kapitola> Kapitoly;
 	public List<KapitolaPrerekvizita> Prerekvizity = new List<KapitolaPrerekvizita>();
 
-	public List<List<vyukovy_pavouk.Data.Kapitola>> Poradi = new List<List<vyukovy_pavouk.Data.Kapitola>>();
 	public List<vyukovy_pavouk.Data.Kapitola> hledanePrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -108,7 +105,6 @@ else {
 
 			hledanePrerekvizity.Add(Kapitoly.Find(x => x.Id == prerekvizity.prerekvizita.IdPrerekvizity));
 		}
-		//Poradi.Add(hledanePrerekvizity);
 	}
 	//řeší jestli daná kapitola je pro studenta splněna, odemčena či uzamnčena 
 	public int Kontroluj(vyukovy_pavouk.Data.Kapitola kapitola) {
