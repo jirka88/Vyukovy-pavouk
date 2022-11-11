@@ -155,7 +155,7 @@
 	{
 		var msGraphAuthProvider = new MsGraphAuthProvider(teamsUserCredential);
 		var graph = new GraphServiceClient(msGraphAuthProvider);
-		UserToken.Profile = await graph.Me.Request().Select("displayName,surname,jobTitle,mail").GetAsync();
+		UserToken.Profile = await graph.Me.Request().Select("GivenName,displayName,surname,jobTitle,mail").GetAsync();
 	}
 	
 }

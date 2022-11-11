@@ -64,7 +64,7 @@ namespace vyukovypavouk.Migrations
 
                     b.HasIndex("PrerekvizitaId");
 
-                    b.ToTable("KapitolaPrerekvizita");
+                    b.ToTable("kapitolaPrerekvizita");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.Predmet", b =>
@@ -153,12 +153,7 @@ namespace vyukovypavouk.Migrations
                     b.Property<int>("Id_skupiny")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id_studenta")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("Id_studenta");
 
                     b.ToTable("Splneni");
                 });
@@ -183,6 +178,21 @@ namespace vyukovypavouk.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Student");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.StudentSplneni", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SplneniId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentId", "SplneniId");
+
+                    b.HasIndex("SplneniId");
+
+                    b.ToTable("StudentSplneni");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.Videa", b =>
@@ -291,13 +301,21 @@ namespace vyukovypavouk.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.Splneni", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.StudentSplneni", b =>
                 {
-                    b.HasOne("vyukovy_pavouk.Data.Student", "student")
-                        .WithMany("Splneni")
-                        .HasForeignKey("Id_studenta")
+                    b.HasOne("vyukovy_pavouk.Data.Splneni", "splneni")
+                        .WithMany("StudentSplneni")
+                        .HasForeignKey("SplneniId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("vyukovy_pavouk.Data.Student", "student")
+                        .WithMany("StudentSplneni")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("splneni");
 
                     b.Navigation("student");
                 });
@@ -350,11 +368,16 @@ namespace vyukovypavouk.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("vyukovy_pavouk.Data.Splneni", b =>
+                {
+                    b.Navigation("StudentSplneni");
+                });
+
             modelBuilder.Entity("vyukovy_pavouk.Data.Student", b =>
                 {
                     b.Navigation("SkupinaStudent");
 
-                    b.Navigation("Splneni");
+                    b.Navigation("StudentSplneni");
                 });
 #pragma warning restore 612, 618
         }

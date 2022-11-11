@@ -113,7 +113,7 @@ else {
 			Prerekvizity.Clear();
 		}
 		KapitolaPrerekvizita save = new KapitolaPrerekvizita();
-		foreach (var splneni in student.Splneni)
+		foreach (var splneni in student.StudentSplneni.Select(x => x.splneni))
 		{
 			//pokud je splněno 
 			if(splneni.Id_kapitoly == kapitola.Id) {

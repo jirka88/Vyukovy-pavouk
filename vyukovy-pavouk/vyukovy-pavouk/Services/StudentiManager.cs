@@ -46,7 +46,11 @@ namespace vyukovy_pavouk.Services
            return _dbContext.Student
                 .Where(e => e.email == EmailStudenta)
                 .Include(s => s.SkupinaStudent)
-                .Include(s => s.Splneni.Where(id => id.Id_skupiny == IdSkupiny))
+                .Include(s => s.StudentSplneni.Where(id => id.splneni.Id_skupiny == IdSkupiny))
+                    .ThenInclude(s => s.splneni)
+                        //.ThenInclude(s => s.StudentSplneni.Where(id => id.splneni.Id_skupiny == IdSkupiny))
+                        //.Where(id => id.Id_skupiny == IdSkupiny))
+                 //.Where(id => id.Id_skupiny == IdSkupiny)
                 .SingleOrDefault();                             
         }
 
@@ -57,8 +61,8 @@ namespace vyukovy_pavouk.Services
             return _dbContext.SkupinaStudent
                     .Where(s => s.SkupinaId == ID)
                     .Include(s => s.Student)
-                    .ThenInclude(s => s.Splneni
-                    .Where(id => id.Id_skupiny == ID && id.Id_kapitoly != 0))
+                    .ThenInclude(s => s.StudentSplneni.Where(id => id.splneni.Id_skupiny == ID && id.splneni.Id_kapitoly != 0))
+                        .ThenInclude(s => s.splneni)            
                     .ToList();                         
         }
     }

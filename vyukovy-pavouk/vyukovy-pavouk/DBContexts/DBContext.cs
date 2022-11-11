@@ -17,6 +17,7 @@ namespace vyukovy_pavouk.DBContexts
         public DbSet<Skupina> Skupina { get; set; }
         public DbSet<SkupinaStudent> SkupinaStudent { get; set; }
         public DbSet<Student> Student { get; set; }
+        public DbSet<StudentSplneni> StudentSplneni { get; set; }
         public DbSet<Splneni> Splneni { get; set; }
         public DbSet<KapitolaPrerekvizita> kapitolaPrerekvizita { get; set; }
         public DbSet<Prerekvizity> Prerekvizity { get; set; }
