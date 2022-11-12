@@ -105,18 +105,22 @@
 			predmet.Skupiny.Add(new Skupina());
 			predmet.Skupiny[0].TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
 			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", predmet);
-			//vytvoření úvodní prerekvizity navazané na skupinu --> 0
+			//získání ID nově vytvořené skupiny
 			Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + predmet.Skupiny[0].TmSkupina);
-			Splneni splneni = new Splneni();
-			splneni.Id_skupiny = Getskupina.Id;
-			splneni.Id_kapitoly = 0;
-			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina/uvod", splneni);
+			//vytvoření úvodní prerekvizity navazané na skupinu --> 0
+			await VytvorUvodniSplneni(Getskupina);		
 			MyNavigationManager.NavigateTo("/");
 		}
 		else {
 			modelHidden = false;
 		}
 		
+	}
+	public async Task VytvorUvodniSplneni(Skupina skupina) {
+		Splneni splneni = new Splneni();
+		splneni.Id_skupiny = skupina.Id;
+		splneni.Id_kapitoly = 0;
+		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina/uvod", splneni);
 	}
 	//naváže na novou skupinu existující předmět
 	public async Task vytvorZexistujici() {
@@ -127,6 +131,10 @@
 		//dosazení ID předmětu
 		skupina.ID_Predmetu = hledanyPredmet.Id;
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", skupina);
+		//získání ID nově vytvořené skupiny
+		Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + GroupToken.teamsContext.TeamId);
+		//vytvoření úvodní prerekvizity navazané na skupinu --> 0
+		await VytvorUvodniSplneni(Getskupina);
 		MyNavigationManager.NavigateTo("/");
 	}
 	public void CloseDialog() => modelHidden = true;
