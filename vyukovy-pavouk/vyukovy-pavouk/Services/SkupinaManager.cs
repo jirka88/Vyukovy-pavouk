@@ -27,6 +27,19 @@ namespace vyukovy_pavouk.Services
             }
         }
 
+        public void CreateUvodniPrerekvizita(Splneni splneni)
+        {
+            try
+            {
+                _dbContext.Splneni.Add(splneni);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         //zeptá se zda-li náš Teams v MS Teamu je v databázi --> pokud není, učitel ho bude muset založit s názvem předmetu v Tab 
         public Skupina GetSkupina(string IDTeamu)
         {

@@ -8,5 +8,6 @@ namespace vyukovy_pavouk.Interface
         public Skupina GetSkupina (string IDTeamu);
         //uloží skupinu s předmětem do databáze 
         public void AddSkupina(Skupina skupina);
+        public void CreateUvodniPrerekvizita(Splneni splneni);
     }
 }

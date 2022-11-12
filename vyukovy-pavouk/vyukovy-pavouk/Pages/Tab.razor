@@ -106,13 +106,19 @@
 						studentInfo.SkupinaStudent.Add(new SkupinaStudent());
 						studentInfo.SkupinaStudent[0].SkupinaId = Convert.ToInt32(skupina.Id);
 						await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti", studentInfo);
+						//zde znovu získám studenta, protože potřebuju jeho ID na spojení u StudentSplneni a uvodní prerekvizity ID, které je v splnění 
+						student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id) + "/" + UserToken.Profile.Mail);
+						await PripojUvodniPrerekvizitu();
 					}
 					//pokud student už existuje v databázi, ale není navázán v naší skupině 
 					else if(student.SkupinaStudent.Find(x => x.SkupinaId == skupina.Id) == null) { 
 						skupinaStudentConnect.SkupinaId = Convert.ToInt32(skupina.Id);
 						skupinaStudentConnect.StudentId = Convert.ToInt32(student.Id);
 						await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/connect", skupinaStudentConnect);
+						await PripojUvodniPrerekvizitu();
 					}
+				
+					
 					MyNavigationManager.NavigateTo("/"); 
 				}
 			}		
@@ -120,6 +126,16 @@
 		}
 
 	}	
+	//připojení uvodní prerekvizity (splnění) ID a ID studenta v StudentSplneni
+	private async Task PripojUvodniPrerekvizitu() {
+		//získání ID úvodní prerekvizity (v splnění)
+		Splneni splneni = await Http.GetFromJsonAsync<Splneni>($"{MyNavigationManager.BaseUri}api/prerekvizita/" + skupina.Id);
+		//připojení na studenta (StudentSplneni)
+		StudentSplneni studentSplneni = new StudentSplneni();
+		studentSplneni.StudentId = student.Id;
+		studentSplneni.SplneniId = splneni.Id;
+		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/connectPrerekvizita", studentSplneni);
+	}
 
 	//polovení pro MS Graph, aby mohlo číst uživatelské údaje --> pouze při prvním zavedení aplikace v novém teamu, pak už nebude vyžadovat znovu povolení --> povolení by měl dát Tenant účet 
 	private async Task Login() {

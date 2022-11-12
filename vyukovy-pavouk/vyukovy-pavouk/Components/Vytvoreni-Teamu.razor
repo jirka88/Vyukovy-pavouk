@@ -105,6 +105,12 @@
 			predmet.Skupiny.Add(new Skupina());
 			predmet.Skupiny[0].TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
 			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", predmet);
+			//vytvoření úvodní prerekvizity navazané na skupinu --> 0
+			Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + predmet.Skupiny[0].TmSkupina);
+			Splneni splneni = new Splneni();
+			splneni.Id_skupiny = Getskupina.Id;
+			splneni.Id_kapitoly = 0;
+			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina/uvod", splneni);
 			MyNavigationManager.NavigateTo("/");
 		}
 		else {

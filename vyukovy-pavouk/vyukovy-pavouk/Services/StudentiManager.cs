@@ -27,6 +27,20 @@ namespace vyukovy_pavouk.Services
             }
         }
 
+        public void CreateNewConnectPrerekvizita(StudentSplneni splneni)
+        {
+            try
+            {
+                _dbContext.StudentSplneni.Add(splneni);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public void CreateNewStudent(Student student)
         {
             try

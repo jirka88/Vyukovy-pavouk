@@ -44,6 +44,12 @@ namespace vyukovy_pavouk.Controllers
         {
             _IStudenti.CreateNewConnect(skupinaStudent);
         }
+        [Route("connectPrerekvizita")]
+        [HttpPost]
+        public void CreateNewUvodniPrerekvizita([FromBody] StudentSplneni splneni)
+        {
+            _IStudenti.CreateNewConnectPrerekvizita(splneni);
+        }
 
     }
 }
