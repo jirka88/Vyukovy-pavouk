@@ -20,6 +20,13 @@ namespace vyukovy_pavouk.Controllers
         {
             return await Task.FromResult(_IStudenti.GetStudents(Id));
         }
+        //zjistí jednotlivého studenta a jeho stav plnění kapitol --> u progresu 
+        [HttpGet("progres/{IdSkupiny}/{Id}")]
+        public async Task<Student> GetStudentProgres (int IdSkupiny, int Id)
+        {
+            Student student = await Task.FromResult(_IStudenti.GetStudentProgres(Id, IdSkupiny));
+            return student;
+        }
         //získa studenta zda-li v dané skupině je a pokud není vrátí null
         [HttpGet("{IdSkupiny}/{EmailStudenta}")]
         public async Task<Student> GetStudent(int IdSkupiny, string EmailStudenta)
@@ -44,6 +51,7 @@ namespace vyukovy_pavouk.Controllers
         {
             _IStudenti.CreateNewConnect(skupinaStudent);
         }
+        //vytvoří navázání na úvodní prerekvizitu (splnění) a studenta --> StudentSplneni
         [Route("connectPrerekvizita")]
         [HttpPost]
         public void CreateNewUvodniPrerekvizita([FromBody] StudentSplneni splneni)

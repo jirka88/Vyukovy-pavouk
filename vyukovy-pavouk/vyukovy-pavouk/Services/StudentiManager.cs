@@ -40,7 +40,7 @@ namespace vyukovy_pavouk.Services
                 throw;
             }
         }
-
+        //vytvoří nového studenta 
         public void CreateNewStudent(Student student)
         {
             try
@@ -54,7 +54,15 @@ namespace vyukovy_pavouk.Services
                 throw;
             }
         }
-
+        //zjistí progres (plnění jeho kapitol) u určitého studenta 
+        public Student GetStudentProgres(int Id, int IdSkupiny)
+        {
+            return _dbContext.Student
+                .Where(id => id.Id == Id)
+                .Include(s => s.StudentSplneni.Where(id => id.splneni.Id_skupiny == IdSkupiny))
+                .ThenInclude(s => s.splneni)
+                .SingleOrDefault();
+        }
         public Student GetStudent(int IdSkupiny, string EmailStudenta)
         {
            return _dbContext.Student
@@ -66,7 +74,7 @@ namespace vyukovy_pavouk.Services
                         //.Where(id => id.Id_skupiny == IdSkupiny))
                  //.Where(id => id.Id_skupiny == IdSkupiny)
                 .SingleOrDefault();                             
-        }
+        }      
 
         //vybere všechny studenty se splněnými kapitoly, které patří do Teamu 
         public List<SkupinaStudent> GetStudents(int ID)

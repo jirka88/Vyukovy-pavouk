@@ -12,10 +12,12 @@ namespace vyukovy_pavouk.EntityConfiguration
             builder.HasKey(id => new { id.StudentId, id.SplneniId });
             builder.HasOne(s => s.student)
                 .WithMany(s => s.StudentSplneni)
-                .HasForeignKey(id => id.StudentId);
+                .HasForeignKey(id => id.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(s => s.splneni)
                 .WithMany(s => s.StudentSplneni)
-                .HasForeignKey(id => id.SplneniId);
+                .HasForeignKey(id => id.SplneniId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

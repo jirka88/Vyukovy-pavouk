@@ -1,0 +1,67 @@
+﻿@page "/progres"
+@page "/progres/{id:int}"
+@using vyukovy_pavouk.Data
+@inject HttpClient Http
+@inject MicrosoftTeams MicrosoftTeams
+@inject NavigationManager MyNavigationManager
+@inject IUserToken UserToken
+@inject IGroupToken GroupToken
+@inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
+
+
+@if(@IsLoaded) {
+	@if (student.StudentSplneni.Count() - 1 != 0)
+	{
+		@foreach (var splneni in student.StudentSplneni)
+		{
+			vyukovy_pavouk.Data.Kapitola kapitola = new vyukovy_pavouk.Data.Kapitola();
+			kapitola = kapitoly.Where(id => id.Id == splneni.splneni.Id_kapitoly).SingleOrDefault();
+			@if (kapitola != null)
+			{
+				<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]" />
+			}
+		}
+	}
+	else {
+		<p>Zatím žádné splnění kapitoly!</p>
+	}
+}
+else
+{
+	<div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+		<FluentProgressRing />
+	</div>
+}
+@code {
+	[Parameter]
+	public int id { get; set; }
+
+	private bool IsLoaded = false;
+	private Skupina skupina = new Skupina();
+	private Student student = new Student();
+	private List<vyukovy_pavouk.Data.Kapitola> kapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+
+			await UserToken.GetUserAsync(sessionStorage);
+			await GroupToken.GetGroupAsync(MicrosoftTeams);
+			if (UserToken.Profile == null)
+			{
+				MyNavigationManager.NavigateTo("/tab");
+			}
+			else
+			{
+				//získání skupiny z databáze
+				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
+				// získání uživatelů a jejich progres v plnění kapitol
+				student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/" + Convert.ToInt32(skupina.Id) + "/" + id);
+				//získání všech kapitol 
+				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(skupina.ID_Predmetu)));
+				IsLoaded = true;
+			}
+		}
+		StateHasChanged();
+	}
+}
