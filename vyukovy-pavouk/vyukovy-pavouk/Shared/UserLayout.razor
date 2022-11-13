@@ -4,7 +4,7 @@
 @inject IUserToken UserToken
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 <div class="container">
-
+    <nav class="sticky-top w-100">
     @if(IsLoaded) {
         <fluent-tabs class="py-4">
         	<fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/")'>Pavouk</fluent-tab>
@@ -22,6 +22,7 @@
     }
         </fluent-tabs>
     }
+    </nav>
 @Body
 </div>
 <link rel="stylesheet" href="css/main-styly-inputs.css" />
@@ -31,6 +32,9 @@
     }
     Fluent-Tab {
         cursor: pointer;
+    }
+    nav {
+        background: #edeeee;
     }
 </style>
 @code {

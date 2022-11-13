@@ -173,3 +173,4 @@ D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microso
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Recognizers.Text.DateTime.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Recognizers.Text.Number.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Recognizers.Text.NumberWithUnit.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Pages\Progres.razor.rz.scp.css
