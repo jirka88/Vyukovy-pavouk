@@ -28,32 +28,37 @@
 				<div class="d-flex gap-4 justify-content-center align-items-center flex-column">
 					
 						@for (int i = 0; i < @kapitola.KapitolaPrerekvizita.Count(); i++)
+					{
+						Prerekvizity prerekvizita = kapitola.KapitolaPrerekvizita[i].prerekvizita;
+						if (prerekvizita != null)
 						{
-
-							var prerekvizita = kapitola.KapitolaPrerekvizita[i].prerekvizita;
-							if (prerekvizita != null)
-							{
-								int index = i;
-								globalIndexPrerekvizita = i;
-								<div class="d-flex gap-4 w-100 justify-content-center align-items-center">
+							int index = i;
+							globalIndexPrerekvizita = i;
+						
+							PridejVyber(index, prerekvizita);
+							
+							
+							<div class="d-flex gap-4 w-100 justify-content-center align-items-center">
 								@if (kapitola.KapitolaPrerekvizita.Count() - 1 != index) {
 									<InputText type="text" class="w-100" @bind-Value="@VybraneKapitoly[index].Název" disabled="true">
 
-									</InputText>
-								}
-								else  {
-									<InputSelect class="w-100" @bind-Value="@prerekvizita.IdPrerekvizity">
-									
-										@if(@kapitoly.Count() != 0) {
+								</InputText>
+							}
+							else {
+								<InputSelect class="w-100" @bind-Value="@prerekvizita.IdPrerekvizity">				
+										@if (@kapitoly.Count() != 0) {
 											@foreach (var kapitola in kapitoly)
-										{
-											<option value="@kapitola.Id">@kapitola.Název</option>
-										}
+											{
+												<option value="@kapitola.Id">@kapitola.Název</option>
+											}
 										}
 										else {
 											<option value="0">Úvod</option>
 										}
 									</InputSelect>
+							
+									
+							
 								}
 									
 										
@@ -213,23 +218,44 @@
 	{
 		//najde třídu prerekvizity, kterou jsme si vybrali 
 		vyukovy_pavouk.Data.Kapitola hledanaPrerekvizita = new vyukovy_pavouk.Data.Kapitola();
-
+		
 		hledanaPrerekvizita = kapitoly.Find(x => x.Id == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.IdPrerekvizity);
 		//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
 		kapitoly.Remove(hledanaPrerekvizita);
-		//tu vymazanou prerekvizitu uložíme do listu, kde bude pak zobrazena v jednotlivých inputech, kde jsme vybírali  
-		VybraneKapitoly.Add(hledanaPrerekvizita);
+
+		//VybraneKapitoly.Add(hledanaPrerekvizita);
 		kapitola.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() { prerekvizita = new Prerekvizity() });
 
 	}
 	public void SmazPrerekvizitu(int index) {
 		kapitola.KapitolaPrerekvizita.RemoveAt(index);
-	//přidá zpázky kapitolu a odebere z listu, který pak zobrazujeme v inputech 
+		//pokud je poslední musíme ji přidat zde protože už nebude vyvolaná eventem VytvorPrerekvizitu() ==> pokud by to tu nebylo vznikali by duplicitni hodnoty u výběru
+		if(index == kapitola.KapitolaPrerekvizita.Count()) {
+			//protože už jsme jí předtím smazali musíme jí zpátky přidat, pokud bychom to neudělali hodnota zmizí při smazání posledního selectu
+			kapitoly.Add(VybraneKapitoly[index - 1]);
+		}
+		else {
+			//přidá zpázky kapitolu a odebere z listu, který pak zobrazujeme v inputech co už máme zvolené 
 			kapitoly.Add(VybraneKapitoly[index]);
-			kapitoly = kapitoly.OrderBy(x => x.Id).ToList();
-			VybraneKapitoly.RemoveAt(index);
+		}
+		//seřadí kapitoly podle ID 
+		kapitoly = kapitoly.OrderBy(x => x.Id).ToList();
+		//vymaže vybranou kapitolu z určitého selectu 
+		VybraneKapitoly.RemoveAt(index);
+	}
+	public void PridejVyber(int index, Prerekvizity prerekvizita) {
+		//vyhledá kapitolu po výběru prerekvizity
+		vyukovy_pavouk.Data.Kapitola HledanaKapitola = new vyukovy_pavouk.Data.Kapitola();
+		HledanaKapitola = kapitoly.Find(x => x.Id == prerekvizita.IdPrerekvizity);
+		//test jestli se nejedná o načtení 
+		if(HledanaKapitola != null) {
+			//funguje jako přepis jednotlivého výběru př: vyberu kapitola1 a pak se rozhodnu pro jinou kapitolu vymažu kapitolu1 z listu výběr
+			if(VybraneKapitoly.Count() > index) {
+				VybraneKapitoly.RemoveAt(index);
+			}
+			//vložím aktuální výběr na svůj index 
+			VybraneKapitoly.Insert(index, HledanaKapitola);
+		}
 		
-	
-
 	}
 }
