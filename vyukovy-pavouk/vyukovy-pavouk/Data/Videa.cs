@@ -1,4 +1,6 @@
-﻿namespace vyukovy_pavouk.Data
+﻿using FluentValidation;
+
+namespace vyukovy_pavouk.Data
 {
     public class Videa
 {
@@ -6,5 +8,13 @@
         public int IdKapitoly { get; set; }
         public string Odkaz { get; set; }
         public Kapitola kapitola { get; set; }
+    }
+    public class VideaValidator : AbstractValidator<Videa>
+    {
+        public VideaValidator()
+        {
+            RuleFor(videa => videa.Odkaz).NotEmpty().WithMessage("Musíte zadat odkaz!");
+            RuleFor(videa => videa.Odkaz).MaximumLength(2048).WithMessage("Odkaz je příliš dlouhý!");
+        }
     }
 }

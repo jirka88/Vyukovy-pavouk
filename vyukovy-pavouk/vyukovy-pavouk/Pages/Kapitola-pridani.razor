@@ -27,7 +27,7 @@
 
 				<div class="d-flex gap-4 justify-content-center align-items-center flex-column">
 					
-						@for (int i = 0; i < @kapitola.KapitolaPrerekvizita.Count; i++)
+						@for (int i = 0; i < @kapitola.KapitolaPrerekvizita.Count(); i++)
 						{
 
 							var prerekvizita = kapitola.KapitolaPrerekvizita[i].prerekvizita;
@@ -36,9 +36,16 @@
 								int index = i;
 								globalIndexPrerekvizita = i;
 								<div class="d-flex gap-4 w-100 justify-content-center align-items-center">
+								@if (kapitola.KapitolaPrerekvizita.Count() - 1 != index) {
+									<InputText type="text" class="w-100" @bind-Value="@VybraneKapitoly[index].Název" disabled="true">
+
+									</InputText>
+								}
+								else  {
 									<InputSelect class="w-100" @bind-Value="@prerekvizita.IdPrerekvizity">
-										@if(@kapitoly.Count != 0) {
-											@foreach (var kapitola in kapitolyKopie)
+									
+										@if(@kapitoly.Count() != 0) {
+											@foreach (var kapitola in kapitoly)
 										{
 											<option value="@kapitola.Id">@kapitola.Název</option>
 										}
@@ -46,16 +53,19 @@
 										else {
 											<option value="0">Úvod</option>
 										}
-										
 									</InputSelect>
+								}
+									
+										
+									
 									@if (@kapitola.KapitolaPrerekvizita.Count > 1)
 									{
-										<Fluent-Button class="cancel" appearance="accent" @onclick="@(() => kapitola.KapitolaPrerekvizita.RemoveAt(index))">X</Fluent-Button>
+										<Fluent-Button class="cancel" appearance="accent" @onclick="() => SmazPrerekvizitu(index)">X</Fluent-Button>
 									}
 									<!-- zobrazení + tlačítka u aktualního vstupu && maximální počet 4 prerekvizity && pokud máme mín prerekvizit vstupů může být maximální počet prerekvizit-->
 									@if (@kapitola.KapitolaPrerekvizita.Count() - 1 == i && i < 3 && i < prerekvizity.Select(x => x.KapitolaId).Distinct().Count() - 1)
 									{
-										<Fluent-button appearance="accent" class="create" @onclick="@vytvorPrerekvizitu"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
+										<Fluent-button appearance="accent" class="create" @onclick="@VytvorPrerekvizitu"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
 									}
 								</div>
 							}
@@ -79,7 +89,7 @@
 					<ValidationMessage For="@(()=>@kapitola.Kontent)" />
 				</div>
 				<label class="First-label">Odkazy na videa</label>
-
+				//TO DO předělat na GRID 
 				<div class="d-flex gap-4 justify-content-center align-items-center flex-column">
 					@for (int i = 0; i < @kapitola.Videa.Count; i++)
 					{
@@ -87,16 +97,18 @@
 						globalIndex = i;
 						var video = kapitola.Videa[i];
 						<div class="d-flex gap-4 w-100 justify-content-center align-items-center">
-							<InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" />
+							<InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" />										
 							<fluent-button class="cancel" appearance="accent" @onclick="@(() => kapitola.Videa.RemoveAt(index))">X</fluent-button>
+							
 						</div>
+					<ValidationMessage class="text-left d-block" For="@(() => @video.Odkaz)" />
 					}
 					@if (globalIndex < 9)
 					{
 						<fluent-button class="create" appearance="accent" @onclick="@(() => kapitola.Videa.Add(new Videa()))"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
 					}
 				</div>
-
+				//TO DO předělat na GRID 
 				<label class="First-label">Testy</label>
 				<div class="d-flex gap-4 justify-content-center align-items-center">
 					<InputText type="text" class="flex-grow-1" @bind-Value="@kapitola.Zadani[0].Odkaz">
@@ -104,9 +116,9 @@
 							<!--<fluent-button class="cancel" appearance="accent">X</fluent-button>-->
 							<fluent-button appearance="accent" class="create"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
 						</div>
-					</InputText>
-					
+					</InputText>										
 				</div>
+					<ValidationMessage For="@(() => @kapitola.Zadani[0].Odkaz)" />
 				<!--<div class="d-flex gap-2 justify-content-center align-items-center counter flex-column">
 					<div class="d-flex align-items-center">
 						<fluent-button appearance="accent" @onclick="() => {pocet--; if(pocet < 1) {pocet = 1;}}">-</fluent-button>
@@ -140,7 +152,7 @@
 	vyukovy_pavouk.Data.Kapitola kapitola = new vyukovy_pavouk.Data.Kapitola { Videa = new List<Videa>(), KapitolaPrerekvizita = new List<KapitolaPrerekvizita>(), Zadani = new List<Zadani>() };
 
 	List<vyukovy_pavouk.Data.Kapitola> kapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
-	List<vyukovy_pavouk.Data.Kapitola> kapitolyKopie = new List<vyukovy_pavouk.Data.Kapitola>();
+	List<vyukovy_pavouk.Data.Kapitola> VybraneKapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
 
 	bool IsLoaded = false;
 
@@ -160,7 +172,6 @@
 				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.ID_Predmetu));
 				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.ID_Predmetu));
 
-				kapitolyKopie = kapitoly;
 				//vytvoření prvního vstupu pro prerekvizitu
 				kapitola.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() { prerekvizita = new Prerekvizity() });
 				//zatím řešeno, že je pouze jedno zadání
@@ -198,13 +209,27 @@
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
 		MyNavigationManager.NavigateTo("/");
 	}
-	public void vytvorPrerekvizitu()
+	public void VytvorPrerekvizitu()
 	{
-		//TO DO
+		//najde třídu prerekvizity, kterou jsme si vybrali 
 		vyukovy_pavouk.Data.Kapitola hledanaPrerekvizita = new vyukovy_pavouk.Data.Kapitola();
-		//hledanaPrerekvizita = kapitolyKopie.Find(x => x.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.IdPrerekvizity == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.IdPrerekvizity);
-		//kapitolyKopie.Remove(hledanaPrerekvizita);
+
+		hledanaPrerekvizita = kapitoly.Find(x => x.Id == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.IdPrerekvizity);
+		//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
+		kapitoly.Remove(hledanaPrerekvizita);
+		//tu vymazanou prerekvizitu uložíme do listu, kde bude pak zobrazena v jednotlivých inputech, kde jsme vybírali  
+		VybraneKapitoly.Add(hledanaPrerekvizita);
 		kapitola.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() { prerekvizita = new Prerekvizity() });
+
+	}
+	public void SmazPrerekvizitu(int index) {
+		kapitola.KapitolaPrerekvizita.RemoveAt(index);
+	//přidá zpázky kapitolu a odebere z listu, který pak zobrazujeme v inputech 
+			kapitoly.Add(VybraneKapitoly[index]);
+			kapitoly = kapitoly.OrderBy(x => x.Id).ToList();
+			VybraneKapitoly.RemoveAt(index);
+		
+	
 
 	}
 }

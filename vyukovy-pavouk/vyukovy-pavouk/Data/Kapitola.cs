@@ -20,11 +20,15 @@ namespace vyukovy_pavouk.Data
     {
         public KapitolaValidator()
         {
-            RuleFor(n => n.Název).NotEmpty().WithMessage("Kapitola musí mít název!");
-            RuleFor(n => n.Název).MaximumLength(30).WithMessage("Název kapitoly je příliš dlouhý!");
-            RuleFor(p => p.Perex).MaximumLength(255).WithMessage("Perex je příliš dlouhý!");
-            RuleFor(c => c.Kontent).NotEmpty().WithMessage("Kapitola musí mít obsah!");
-            RuleFor(c => c.Kontent).MaximumLength(65535).WithMessage("Obsah dosáhl maximální délky!");
+            RuleFor(kapitola => kapitola.Název).NotEmpty().WithMessage("Kapitola musí mít název!");
+            RuleFor(kapitola => kapitola.Název).MaximumLength(30).WithMessage("Název kapitoly je příliš dlouhý!");
+            RuleFor(kapitola => kapitola.Perex).MaximumLength(255).WithMessage("Perex je příliš dlouhý!");
+            RuleFor(kapitola => kapitola.Kontent).NotEmpty().WithMessage("Kapitola musí mít obsah!");
+            RuleFor(kapitola => kapitola.Kontent).MaximumLength(65535).WithMessage("Obsah dosáhl maximální délky!");
+            RuleForEach(kapitola => kapitola.Zadani)
+                .SetValidator(new ZadaniValidator());
+            RuleForEach(kapitola => kapitola.Videa)
+                .SetValidator(new VideaValidator());
         }
     }
 }

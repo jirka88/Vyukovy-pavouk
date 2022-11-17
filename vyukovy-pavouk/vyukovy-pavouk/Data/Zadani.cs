@@ -13,7 +13,8 @@ namespace vyukovy_pavouk.Data
     {
         public ZadaniValidator()
         {
-            RuleFor(n => n.Odkaz).NotEmpty().WithMessage("Musíte zadat test!");
+            RuleFor(o => o.Odkaz).NotEmpty().WithMessage("Musíte zadat odkaz na test!");
+            RuleFor(o => o.Odkaz).MaximumLength(2048).WithMessage("Odkaz je příliš dlouhý!");
         }
     }
 }
