@@ -20,10 +20,16 @@ namespace vyukovy_pavouk.Controllers
             return await Task.FromResult(_IKapitola.GetKapitolaDetail(IdKapitola));
         }
         [HttpPost]
-
         public void Create([FromBody] Kapitola kapitola)
         {
             _IKapitola.CreateKapitola(kapitola);
-        }          
+        }
+        [HttpDelete]
+        [Route("delete/{Id}")]
+        public async Task<ActionResult> Delete(int Id)
+        {
+          _IKapitola.DeleteKapitola(Id);
+          return Ok();
+        }
     }
 }

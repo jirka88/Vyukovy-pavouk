@@ -34,6 +34,8 @@ namespace vyukovy_pavouk.Services
                .Where(id => id.Id == IdKapitoly)
                .Include(v => v.Videa)
                .Include(z => z.Zadani)
+               .Include(p => p.KapitolaPrerekvizita)
+               .ThenInclude(p => p.prerekvizita)
                .FirstOrDefault();
                 return Kapitola;
             }
@@ -42,5 +44,27 @@ namespace vyukovy_pavouk.Services
                 throw;
             }
         }
+
+        public void DeleteKapitola(int Id)
+        {
+            try
+            {
+                Kapitola kapitola = _dbContext.Kapitoly.Find(Id);
+                if(kapitola != null)
+                {
+                    _dbContext.Kapitoly.Remove(kapitola);
+                    _dbContext.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentNullException();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+    
     }
 }
