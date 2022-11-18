@@ -26,55 +26,54 @@
 				<!-- TO DO -->
 
 				<div class="d-flex gap-4 justify-content-center align-items-center flex-column">
-					
-						@for (int i = 0; i < @kapitola.KapitolaPrerekvizita.Count(); i++)
+
+					@for (int i = 0; i < @kapitola.KapitolaPrerekvizita.Count(); i++)
 					{
 						Prerekvizity prerekvizita = kapitola.KapitolaPrerekvizita[i].prerekvizita;
 						if (prerekvizita != null)
 						{
 							int index = i;
 							globalIndexPrerekvizita = i;
-						
+
 							PridejVyber(index, prerekvizita);
-							
-							
+
 							<div class="d-flex gap-4 w-100 justify-content-center align-items-center">
-								@if (kapitola.KapitolaPrerekvizita.Count() - 1 != index) {
+								@if (kapitola.KapitolaPrerekvizita.Count() - 1 != index)
+								{
 									<InputText type="text" class="w-100" @bind-Value="@VybraneKapitoly[index].Název" disabled="true">
 
-								</InputText>
-							}
-							else {
-								<InputSelect class="w-100" @bind-Value="@prerekvizita.IdPrerekvizity">				
-										@if (@kapitoly.Count() != 0) {
+									</InputText>
+								}
+								else
+								{
+									<InputSelect class="w-100" @bind-Value="@prerekvizita.IdPrerekvizity">
+										@if (@kapitoly.Count() != 0)
+										{
+											<option value="0" selected>Vyberte prerekvizitu</option>
 											@foreach (var kapitola in kapitoly)
 											{
+
 												<option value="@kapitola.Id">@kapitola.Název</option>
 											}
 										}
-										else {
+										else
+										{
 											<option value="0">Úvod</option>
 										}
 									</InputSelect>
-							
-									
-							
 								}
-									
-										
-									
-									@if (@kapitola.KapitolaPrerekvizita.Count > 1)
-									{
-										<Fluent-Button class="cancel" appearance="accent" @onclick="() => SmazPrerekvizitu(index)">X</Fluent-Button>
-									}
-									<!-- zobrazení + tlačítka u aktualního vstupu && maximální počet 4 prerekvizity && pokud máme mín prerekvizit vstupů může být maximální počet prerekvizit-->
-									@if (@kapitola.KapitolaPrerekvizita.Count() - 1 == i && i < 3 && i < prerekvizity.Select(x => x.KapitolaId).Distinct().Count() - 1)
-									{
-										<Fluent-button appearance="accent" class="create" @onclick="@VytvorPrerekvizitu"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
-									}
-								</div>
-							}
-						}									
+								@if (@kapitola.KapitolaPrerekvizita.Count > 1)
+								{
+									<Fluent-Button class="cancel" appearance="accent" @onclick="() => SmazPrerekvizitu(index)">X</Fluent-Button>
+								}
+								<!-- zobrazení + tlačítka u aktualního vstupu && maximální počet 4 prerekvizity && pokud máme mín prerekvizit vstupů může být maximální počet prerekvizit-->
+								@if (@kapitola.KapitolaPrerekvizita.Count() - 1 == i && i < 3 && i < prerekvizity.Select(x => x.KapitolaId).Distinct().Count() - 1)
+								{
+									<Fluent-button appearance="accent" class="create" @onclick="@VytvorPrerekvizitu"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
+								}
+							</div>
+						}
+					}
 
 				</div>
 
@@ -94,36 +93,35 @@
 					<ValidationMessage For="@(()=>@kapitola.Kontent)" />
 				</div>
 				<label class="First-label">Odkazy na videa</label>
-				//TO DO předělat na GRID 
+
 				<div class="d-flex gap-4 justify-content-center align-items-center flex-column">
 					@for (int i = 0; i < @kapitola.Videa.Count; i++)
 					{
 						var index = i;
 						globalIndex = i;
 						var video = kapitola.Videa[i];
-						<div class="d-flex gap-4 w-100 justify-content-center align-items-center">
-							<InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" />										
+						<div class="odkazy d-flex w-100 justify-content-center align-items-center flex-wrap">
+							<InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" />
 							<fluent-button class="cancel" appearance="accent" @onclick="@(() => kapitola.Videa.RemoveAt(index))">X</fluent-button>
-							
+							<ValidationMessage For="@(() => @video.Odkaz)" />
 						</div>
-					<ValidationMessage class="text-left d-block" For="@(() => @video.Odkaz)" />
 					}
 					@if (globalIndex < 9)
 					{
 						<fluent-button class="create" appearance="accent" @onclick="@(() => kapitola.Videa.Add(new Videa()))"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
 					}
 				</div>
-				//TO DO předělat na GRID 
 				<label class="First-label">Testy</label>
-				<div class="d-flex gap-4 justify-content-center align-items-center">
-					<InputText type="text" class="flex-grow-1" @bind-Value="@kapitola.Zadani[0].Odkaz">
+				<div class="odkazy d-flex justify-content-center align-items-center w-100 flex-wrap">
+					<InputText type="text" class="flex-grow-1 w-100" @bind-Value="@kapitola.Zadani[0].Odkaz">
 						<div class="d-flex gap-2">
 							<!--<fluent-button class="cancel" appearance="accent">X</fluent-button>-->
 							<fluent-button appearance="accent" class="create"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
 						</div>
-					</InputText>										
-				</div>
+					</InputText>
 					<ValidationMessage For="@(() => @kapitola.Zadani[0].Odkaz)" />
+				</div>
+
 				<!--<div class="d-flex gap-2 justify-content-center align-items-center counter flex-column">
 					<div class="d-flex align-items-center">
 						<fluent-button appearance="accent" @onclick="() => {pocet--; if(pocet < 1) {pocet = 1;}}">-</fluent-button>
@@ -144,6 +142,15 @@
 	.validation-message {
 		margin-top: 10px;
 	}
+	.odkazy {
+		gap: 0em 1.5em;
+	}
+	.odkazy .validation-message {
+		width: 100%;
+		text-align: left;
+	}
+
+
 </style>
 @code {
 	int PocetSplneni = 1;
@@ -216,46 +223,75 @@
 	}
 	public void VytvorPrerekvizitu()
 	{
-		//najde třídu prerekvizity, kterou jsme si vybrali 
-		vyukovy_pavouk.Data.Kapitola hledanaPrerekvizita = new vyukovy_pavouk.Data.Kapitola();
-		
-		hledanaPrerekvizita = kapitoly.Find(x => x.Id == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.IdPrerekvizity);
-		//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
-		kapitoly.Remove(hledanaPrerekvizita);
+		bool vytvor = true;
+		foreach (KapitolaPrerekvizita item in kapitola.KapitolaPrerekvizita)
+		{
+			if (item.prerekvizita.IdPrerekvizity == 0)
+			{
+				vytvor = false;
+				break;
+			}
+		}
+		if (vytvor)
+		{
+			//najde třídu prerekvizity, kterou jsme si vybrali
+			vyukovy_pavouk.Data.Kapitola hledanaPrerekvizita = new vyukovy_pavouk.Data.Kapitola();
 
-		//VybraneKapitoly.Add(hledanaPrerekvizita);
-		kapitola.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() { prerekvizita = new Prerekvizity() });
+			hledanaPrerekvizita = kapitoly.Find(x => x.Id == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.IdPrerekvizity);
+			//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
+			kapitoly.Remove(hledanaPrerekvizita);
+
+			//VybraneKapitoly.Add(hledanaPrerekvizita);
+			kapitola.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() { prerekvizita = new Prerekvizity() });
+		}
+
 
 	}
-	public void SmazPrerekvizitu(int index) {
+	public void SmazPrerekvizitu(int index)
+	{
 		kapitola.KapitolaPrerekvizita.RemoveAt(index);
-		//pokud je poslední musíme ji přidat zde protože už nebude vyvolaná eventem VytvorPrerekvizitu() ==> pokud by to tu nebylo vznikali by duplicitni hodnoty u výběru
-		if(index == kapitola.KapitolaPrerekvizita.Count()) {
-			//protože už jsme jí předtím smazali musíme jí zpátky přidat, pokud bychom to neudělali hodnota zmizí při smazání posledního selectu
+		//pokud se jedná o defaultní výběr pouze vymaže select, ale žádnou hodnotu z listu neodebere
+		if (kapitola.KapitolaPrerekvizita.Count() > index)
+		{
+			//pokud je poslední musíme ji přidat zde protože už nebude vyvolaná eventem VytvorPrerekvizitu() ==> pokud by to tu nebylo vznikali by duplicitni hodnoty u výběru
+			if (index == kapitola.KapitolaPrerekvizita.Count())
+			{
+				//protože už jsme jí předtím smazali musíme jí zpátky přidat, pokud bychom to neudělali hodnota zmizí při smazání posledního selectu
+				kapitoly.Add(VybraneKapitoly[index - 1]);
+			}
+			else
+			{
+				//přidá zpázky kapitolu a odebere z listu, který pak zobrazujeme v inputech co už máme zvolené
+				kapitoly.Add(VybraneKapitoly[index]);
+			}
+			//seřadí kapitoly podle ID
+			kapitoly = kapitoly.OrderBy(x => x.Id).ToList();
+			//vymaže vybranou kapitolu z určitého selectu
+			VybraneKapitoly.RemoveAt(index);
+		}
+		else
+		{
 			kapitoly.Add(VybraneKapitoly[index - 1]);
 		}
-		else {
-			//přidá zpázky kapitolu a odebere z listu, který pak zobrazujeme v inputech co už máme zvolené 
-			kapitoly.Add(VybraneKapitoly[index]);
-		}
-		//seřadí kapitoly podle ID 
 		kapitoly = kapitoly.OrderBy(x => x.Id).ToList();
-		//vymaže vybranou kapitolu z určitého selectu 
-		VybraneKapitoly.RemoveAt(index);
+
 	}
-	public void PridejVyber(int index, Prerekvizity prerekvizita) {
+	public void PridejVyber(int index, Prerekvizity prerekvizita)
+	{
 		//vyhledá kapitolu po výběru prerekvizity
 		vyukovy_pavouk.Data.Kapitola HledanaKapitola = new vyukovy_pavouk.Data.Kapitola();
 		HledanaKapitola = kapitoly.Find(x => x.Id == prerekvizita.IdPrerekvizity);
-		//test jestli se nejedná o načtení 
-		if(HledanaKapitola != null) {
+		//test jestli se nejedná o načtení
+		if (HledanaKapitola != null)
+		{
 			//funguje jako přepis jednotlivého výběru př: vyberu kapitola1 a pak se rozhodnu pro jinou kapitolu vymažu kapitolu1 z listu výběr
-			if(VybraneKapitoly.Count() > index) {
+			if (VybraneKapitoly.Count() > index)
+			{
 				VybraneKapitoly.RemoveAt(index);
 			}
-			//vložím aktuální výběr na svůj index 
+			//vložím aktuální výběr na svůj index
 			VybraneKapitoly.Insert(index, HledanaKapitola);
 		}
-		
+
 	}
 }

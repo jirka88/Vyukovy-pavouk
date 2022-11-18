@@ -2,7 +2,7 @@
 {
     public class Prerekvizity
 {
-        public int Id { get; set; } 
+        public int? Id { get; set; } 
         public int IdPrerekvizity { get; set; }
         public List<KapitolaPrerekvizita> KapitolaPrerekvizita { get; set; }
         //TO DO vztah 
