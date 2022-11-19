@@ -36,6 +36,15 @@ else {
 					</div>
 					</div>
 				</fluent-dialog>
+						<fluent-dialog Hidden="@ModelHiddenError">
+							<div class="d-flex justify-content-center align-items-center h-100 w-100 flex-column">
+								<h5 class="text-center">Kapitola @kapitola.Název nelze smazat!</h5>
+								<p class="text-center">Kapitola je již použita jako prerekvizita pro jiné kapitoly! Nejdřív vymažte navázané kapitoly!</p>
+								<div>
+									<fluent-button appearance="accent" @onclick="CloseDialog2">Zavřít</fluent-button>
+								</div>
+							</div>
+						</fluent-dialog>
 			</div>
 			   }			
 			</div>
@@ -78,11 +87,12 @@ else {
 	public int IdKapitola { get; set; }
 	[Parameter]
 	public bool status { get; set; }
-	Skupina skupina = new Skupina();
-	public vyukovy_pavouk.Data.Kapitola kapitola { get; set; }
-	List<KapitolaPrerekvizita> prerekvizity = new List<KapitolaPrerekvizita>();
-	bool IsLoaded = false;
-	public bool ModelHidden { get; set; } = true;
+	private Skupina skupina = new Skupina();
+	private vyukovy_pavouk.Data.Kapitola kapitola { get; set; }
+	private List<KapitolaPrerekvizita> prerekvizity = new List<KapitolaPrerekvizita>();
+	private bool IsLoaded = false;
+	private bool ModelHidden { get; set; } = true;
+	private bool ModelHiddenError { get; set; } = true;
 	protected override async Task OnParametersSetAsync() {
 		await CallApiKapitola();
 	}
@@ -111,30 +121,33 @@ else {
 			StateHasChanged();
 		}
 	}
-	public async Task CallApiKapitola() {
+	private async Task CallApiKapitola() {
 		kapitola = await Http.GetFromJsonAsync<vyukovy_pavouk.Data.Kapitola>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdKapitola);
 	}
-	public void CloseDialog() => ModelHidden = true;
+	private void CloseDialog() => ModelHidden = true;
+	private void CloseDialog2() => ModelHiddenError = true;
 	// TO DO udělat okno pro napsání, že to nejde smazat 
-	public void OpenDialog()  {
+	private void OpenDialog()  {
 		bool NelzeSmazat = false;
 		foreach (KapitolaPrerekvizita Kprerekvizita in prerekvizity)
 		{
 			//TO DO 
 			if(Kprerekvizita.prerekvizita.IdPrerekvizity == kapitola.Id) {
 				NelzeSmazat = true;
-						break;					
+				ModelHiddenError = false;
+				break;					
 			}
 		}
 		if(!NelzeSmazat) {
 			ModelHidden = false;
+		
 		}
 	}
 
-	public void edit() {
+	private void edit() {
 		MyNavigationManager.NavigateTo("edit");
 	}
-	public async Task DeleteKapitola() {
+	private async Task DeleteKapitola() {
 		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/kapitola/delete/" + kapitola.Id);
 		MyNavigationManager.NavigateTo("/");
 	}
