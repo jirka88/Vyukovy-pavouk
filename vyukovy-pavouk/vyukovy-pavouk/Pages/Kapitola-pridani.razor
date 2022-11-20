@@ -34,25 +34,22 @@
 						{
 							int index = i;
 							globalIndexPrerekvizita = i;
-
 							PridejVyber(index, prerekvizita);
 
-							<div class="d-flex gap-4 w-100 justify-content-center align-items-center">
+							<div class="prerekvizity d-flex w-100 justify-content-center align-items-center flex-wrap">
 								@if (kapitola.KapitolaPrerekvizita.Count() - 1 != index)
 								{
-									<InputText type="text" class="w-100" @bind-Value="@VybraneKapitoly[index].Název" disabled="true">
-
+									<InputText type="text" class="flex-grow-1" @bind-Value="@VybraneKapitoly[index].Název" disabled="true">
 									</InputText>
 								}
 								else
 								{
-									<InputSelect class="w-100" @bind-Value="@prerekvizita.IdPrerekvizity">
+									<InputSelect class="flex-grow-1" @bind-Value="@prerekvizita.IdPrerekvizity">
 										@if (@kapitoly.Count() != 0)
 										{
-											<option value="0" selected>Vyberte prerekvizitu</option>
+											<option value="" selected disabled hidden></option>
 											@foreach (var kapitola in kapitoly)
 											{
-
 												<option value="@kapitola.Id">@kapitola.Název</option>
 											}
 										}
@@ -60,7 +57,7 @@
 										{
 											<option value="0">Úvod</option>
 										}
-									</InputSelect>
+									</InputSelect>									
 								}
 								@if (@kapitola.KapitolaPrerekvizita.Count > 1)
 								{
@@ -71,6 +68,7 @@
 								{
 									<Fluent-button appearance="accent" class="create" @onclick="@VytvorPrerekvizitu"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
 								}
+								<ValidationMessage For="@(()=>@kapitola.KapitolaPrerekvizita[index].prerekvizita.IdPrerekvizity)" />
 							</div>
 						}
 					}
@@ -142,14 +140,13 @@
 	.validation-message {
 		margin-top: 10px;
 	}
-	.odkazy {
+	.odkazy, .prerekvizity {
 		gap: 0em 1.5em;
 	}
-	.odkazy .validation-message {
+	.odkazy .validation-message, .prerekvizity .validation-message {
 		width: 100%;
 		text-align: left;
 	}
-
 
 </style>
 @code {

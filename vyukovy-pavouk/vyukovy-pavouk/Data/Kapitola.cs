@@ -29,6 +29,8 @@ namespace vyukovy_pavouk.Data
                 .SetValidator(new ZadaniValidator());
             RuleForEach(kapitola => kapitola.Videa)
                 .SetValidator(new VideaValidator());
+            RuleForEach(kapitola => kapitola.KapitolaPrerekvizita)
+                .SetValidator(new KapitolaPrerekvizitaValidator());
         }
     }
 }
