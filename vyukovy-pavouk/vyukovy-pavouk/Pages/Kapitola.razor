@@ -149,6 +149,6 @@ else {
 	}
 	private async Task DeleteKapitola() {
 		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/kapitola/delete/" + kapitola.Id);
-		MyNavigationManager.NavigateTo("/");
+		MyNavigationManager.NavigateTo("/smazano");
 	}
 }
