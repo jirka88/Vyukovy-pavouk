@@ -17,6 +17,9 @@ a {
 .popis p:last-child {
 	color: gray;
 }
+.row a:nth-child(1n+0) {
+	text-align: left;
+}
 .row a:nth-child(2n+0) {
 	text-align: center;
 }

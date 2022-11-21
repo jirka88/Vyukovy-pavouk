@@ -21,7 +21,7 @@
 		<Kapitola_odemceno ID="3" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />
 		<Kapitola_uzavreno ID="4" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />-->
 		@if(Kapitoly.Count() > 0) {
-			@if(UserToken.Profile.JobTitle == null) {
+			@if(UserToken.Profile.JobTitle != null) {
 				//zobrazení kapitol pro učitele 
 				@foreach (var kapitola in Kapitoly)
 				{										
@@ -35,7 +35,7 @@
 					int Kontrola = Kontroluj(kapitola);
 					@if (Kontrola == 1)
 					{
-						<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]" />
+						<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]"/>
 					}
 					else if (Kontrola == 2)
 					{

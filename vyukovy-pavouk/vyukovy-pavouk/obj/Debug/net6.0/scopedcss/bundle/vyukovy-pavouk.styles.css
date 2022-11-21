@@ -213,6 +213,9 @@ a[b-pkvnducani] {
 .popis p:last-child[b-pkvnducani] {
 	color: gray;
 }
+.row a:nth-child(1n+0)[b-pkvnducani] {
+	text-align: left;
+}
 .row a:nth-child(2n+0)[b-pkvnducani] {
 	text-align: center;
 }
@@ -279,6 +282,18 @@ svg[b-5juggsglmn] {
 h1[b-9rnf461vwu] {
 	font-weight: bold;
 	font-size: 4em;
+}
+/* _content/vyukovy-pavouk/Pages/Smazano.razor.rz.scp.css */
+fluent-button[b-bvxinewe7g] {
+	height: 50px;
+	width: 200px;
+}
+
+.success-screen[b-bvxinewe7g] {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
 }
 /* _content/vyukovy-pavouk/Pages/Souhrn.razor.rz.scp.css */
 table[b-42p5hbspiz] {
