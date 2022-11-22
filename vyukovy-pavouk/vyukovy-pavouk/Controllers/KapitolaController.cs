@@ -26,7 +26,7 @@ namespace vyukovy_pavouk.Controllers
         }
         [HttpDelete]
         [Route("delete/{Id}")]
-        public async Task<ActionResult> Delete(int Id)
+        public IActionResult Delete(int Id)
         {
           _IKapitola.DeleteKapitola(Id);
           return Ok();

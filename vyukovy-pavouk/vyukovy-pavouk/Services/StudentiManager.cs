@@ -63,6 +63,7 @@ namespace vyukovy_pavouk.Services
                 .ThenInclude(s => s.splneni)
                 .SingleOrDefault();
         }
+        //získa studenta zda-li v dané skupině je 
         public Student GetStudent(int IdSkupiny, string EmailStudenta)
         {
            return _dbContext.Student
@@ -70,9 +71,6 @@ namespace vyukovy_pavouk.Services
                 .Include(s => s.SkupinaStudent)
                 .Include(s => s.StudentSplneni.Where(id => id.splneni.Id_skupiny == IdSkupiny))
                     .ThenInclude(s => s.splneni)
-                        //.ThenInclude(s => s.StudentSplneni.Where(id => id.splneni.Id_skupiny == IdSkupiny))
-                        //.Where(id => id.Id_skupiny == IdSkupiny))
-                 //.Where(id => id.Id_skupiny == IdSkupiny)
                 .SingleOrDefault();                             
         }      
 
@@ -86,6 +84,42 @@ namespace vyukovy_pavouk.Services
                     .ThenInclude(s => s.StudentSplneni.Where(id => id.splneni.Id_skupiny == ID && id.splneni.Id_kapitoly != 0))
                         .ThenInclude(s => s.splneni)            
                     .ToList();                         
+        }
+        //vrátí všechny splnění studentů v dané skupině 
+        public List<StudentSplneni> GetSplneni(int IdSkupiny)
+        {
+            return _dbContext.StudentSplneni
+                .Include(s => s.splneni).Where(s => s.splneni.Id_skupiny == IdSkupiny)
+                .ToList();
+        }
+        //vymaže studentům splnění kapitoly --> při mazání kapitoly 
+        public void DeleteSplneni(int Id)
+        {
+            try
+            {
+                List<StudentSplneni> studentiSplneni = new List<StudentSplneni>();
+                studentiSplneni = _dbContext.StudentSplneni.Where(id => id.SplneniId == Id).ToList();
+                Splneni splneni = _dbContext.Splneni.Find(Id);
+
+                foreach (StudentSplneni studentSplneni in studentiSplneni)
+                {
+                    if (studentSplneni != null)
+                    {
+                        _dbContext.StudentSplneni.Remove(studentSplneni);                    
+                    }
+                    else
+                    {
+                        throw new ArgumentNullException();
+                    }
+                }
+                _dbContext.Splneni.Remove(splneni);
+                _dbContext.SaveChanges();
+
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

@@ -87,9 +87,11 @@ else {
 	public int IdKapitola { get; set; }
 	[Parameter]
 	public bool status { get; set; }
+
 	private Skupina skupina = new Skupina();
 	private vyukovy_pavouk.Data.Kapitola kapitola { get; set; }
 	private List<KapitolaPrerekvizita> prerekvizity = new List<KapitolaPrerekvizita>();
+	private List<StudentSplneni> splneni = new List<StudentSplneni>();
 	private bool IsLoaded = false;
 	private bool ModelHidden { get; set; } = true;
 	private bool ModelHiddenError { get; set; } = true;
@@ -140,7 +142,7 @@ else {
 		}
 		if(!NelzeSmazat) {
 			ModelHidden = false;
-		
+
 		}
 	}
 
@@ -148,7 +150,20 @@ else {
 		MyNavigationManager.NavigateTo("edit");
 	}
 	private async Task DeleteKapitola() {
+		//smazání samotné kapitoly 
 		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/kapitola/delete/" + kapitola.Id);
+		//pokud jakýkoliv student má toto už splněno smaže se jeho splnění 
+		//nejdříve zjistím všechny splnění ze skupiny 
+		splneni = await Http.GetFromJsonAsync<List<StudentSplneni>>($"{MyNavigationManager.BaseUri}api/studenti/allSplneni/" + skupina.Id);
+		//poté zkontroluju 
+		foreach (StudentSplneni splneni in splneni)
+		{
+			//pokud je shoda ID kapitoly ve splneni a ID kapitoly této
+			if(splneni.splneni.Id_kapitoly == kapitola.Id) {
+				await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/studenti/deleteSplneni/" + splneni.SplneniId);
+				break;
+			}
+		}
 		MyNavigationManager.NavigateTo("/smazano");
 	}
 }

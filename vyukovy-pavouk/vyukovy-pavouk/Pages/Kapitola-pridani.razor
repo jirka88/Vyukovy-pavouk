@@ -45,9 +45,9 @@
 								else
 								{
 									<InputSelect class="flex-grow-1" @bind-Value="@prerekvizita.IdPrerekvizity">
+										<option value="0" selected disabled hidden>Vyberte Prerekvizitu</option>
 										@if (@kapitoly.Count() != 0)
-										{
-											<option value="0" selected disabled hidden>Vyberte Prerekvizitu</option>
+										{										
 											@foreach (var kapitola in kapitoly)
 											{
 												<option value="@kapitola.Id">@kapitola.Název</option>
@@ -105,9 +105,9 @@
 							<ValidationMessage For="@(() => @video.Odkaz)" />
 						</div>
 					}
-					@if (globalIndex < 9)
+					@if (globalIndex < maximalniPocetOdkazu)
 					{
-						<fluent-button class="create" appearance="accent" @onclick="@(() => kapitola.Videa.Add(new Videa()))"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
+						<fluent-button class="create" appearance="accent" @onclick="@VytvorOdkaz"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
 					}
 				</div>
 				<label class="First-label">Testy</label>
@@ -155,6 +155,7 @@
 	int globalIndex = 0;
 	int globalIndexPrerekvizita = 0;
 	int globalIndexKontrola = 0;
+	int maximalniPocetOdkazu = 11;
 
 	Skupina skupina = new Skupina();
 	List<KapitolaPrerekvizita> prerekvizity = new List<KapitolaPrerekvizita>();
@@ -195,9 +196,9 @@
 	{
 		kapitola.IdPredmetu = skupina.ID_Predmetu;
 		//pokud je úvod --> nastavám na 0 protože to je ID pro úvodní kapitolu 
-			if(kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == -1) {
-				kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity = 0;
-			}
+		if(kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == -1) {
+			kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity = 0;
+		}
 		//kontrola zda-li se dané prerekvizity už nenachzejí v DB
 		foreach (var prerekvizita in prerekvizity)
 		{	
@@ -222,6 +223,13 @@
 
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
 		MyNavigationManager.NavigateTo("/");
+	}
+	private void VytvorOdkaz() {
+
+		if (kapitola.Videa.Count() == 0 || kapitola.Videa[globalIndex].Odkaz != null)
+		{
+			kapitola.Videa.Add(new Videa());
+		}
 	}
 	public void VytvorPrerekvizitu()
 	{
