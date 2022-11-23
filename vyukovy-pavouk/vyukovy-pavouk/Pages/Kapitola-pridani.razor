@@ -20,7 +20,7 @@
 	{
 		<EditForm Model="@kapitola" OnValidSubmit="@Pridej">
 			<FluentValidationValidator />
-			<label for="shirt-size">Nutno splnit</label>
+			<label class="fw-bold">Nutno splnit</label>
 			<br />
 			<div class="form d-flex flex-column gap-4">
 				<!-- TO DO -->
@@ -47,7 +47,7 @@
 									<InputSelect class="flex-grow-1" @bind-Value="@prerekvizita.IdPrerekvizity">
 										<option value="0" selected disabled hidden>Vyberte Prerekvizitu</option>
 										@if (@kapitoly.Count() != 0)
-										{										
+										{
 											@foreach (var kapitola in kapitoly)
 											{
 												<option value="@kapitola.Id">@kapitola.Název</option>
@@ -57,7 +57,7 @@
 										{
 											<option value="-1" selected>Úvod</option>
 										}
-									</InputSelect>									
+									</InputSelect>
 								}
 								@if (@kapitola.KapitolaPrerekvizita.Count > 1)
 								{
@@ -67,9 +67,9 @@
 								@if (@kapitola.KapitolaPrerekvizita.Count() - 1 == i && i < 3 && i < prerekvizity.Select(x => x.KapitolaId).Distinct().Count() - 1)
 								{
 									<Fluent-button appearance="accent" class="create" @onclick="@VytvorPrerekvizitu"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
-								}						
+								}
 								<ValidationMessage For="@(()=>@kapitola.KapitolaPrerekvizita[index].prerekvizita.IdPrerekvizity)" />
-										
+
 							</div>
 						}
 					}
@@ -77,30 +77,39 @@
 				</div>
 
 				<div class="d-flex flex-column">
-					<label for="NazevKapitoly">Název Kapitoly</label>
+					<label for="NazevKapitoly" class="fw-bold">Název Kapitoly</label>
 					<InputText type="text" id="NazevKapitoly" @bind-Value="@kapitola.Název" />
 					<ValidationMessage For="@(()=>@kapitola.Název)" />
 				</div>
 				<div class="d-flex flex-column">
-					<label for="perex">Perex</label>
+					<label for="perex" class="fw-bold">Perex</label>
 					<InputText type="text" id="perex" @bind-Value="@kapitola.Perex" />
 					<ValidationMessage For="@(()=>@kapitola.Perex)" />
 				</div>
 				<div class="d-flex flex-column">
-					<label for="obsah">Obsah</label>
+					<label for="obsah" class="fw-bold">Obsah</label>
 					<InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>
 					<ValidationMessage For="@(()=>@kapitola.Kontent)" />
 				</div>
+				<!--Odkazy na videa-->
 				<label class="First-label">Odkazy na videa</label>
 
-				<div class="d-flex gap-4 justify-content-center align-items-center flex-column">
+				<div class="d-flex gap-3 justify-content-center align-items-center flex-column">
 					@for (int i = 0; i < @kapitola.Videa.Count; i++)
 					{
-						var index = i;
+						int index = i;
+						int PocetOdkazu = i + 1;
 						globalIndex = i;
 						var video = kapitola.Videa[i];
+
+						<label class="w-100">Popis odkazu @PocetOdkazu</label>
+								<div class="nazvy-odkazy d-flex w-100 justify-content-center align-items-center flex-wrap">
+						<InputText type="text" class="flex-grow-1" @bind-Value="video.Nazev" />
+						<ValidationMessage For="@(() => @video.Nazev)" />
+							</div>
+						<label class="w-100">Odkaz</label>
 						<div class="odkazy d-flex w-100 justify-content-center align-items-center flex-wrap">
-							<InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" />
+							<InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" placeholder="https://..." />
 							<fluent-button class="cancel" appearance="accent" @onclick="@(() => kapitola.Videa.RemoveAt(index))">X</fluent-button>
 							<ValidationMessage For="@(() => @video.Odkaz)" />
 						</div>
@@ -144,7 +153,7 @@
 	.odkazy, .prerekvizity {
 		gap: 0em 1.5em;
 	}
-	.odkazy .validation-message, .prerekvizity .validation-message {
+	.odkazy .validation-message, .prerekvizity .validation-message, .nazvy-odkazy .validation-message  {
 		width: 100%;
 		text-align: left;
 	}
@@ -180,8 +189,8 @@
 			else
 			{
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.ID_Predmetu));
-				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.ID_Predmetu));
+				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.IDPredmetu));
+				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.IDPredmetu));
 
 				//vytvoření prvního vstupu pro prerekvizitu
 				kapitola.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() { prerekvizita = new Prerekvizity() });
@@ -194,14 +203,15 @@
 	}
 	private async Task Pridej()
 	{
-		kapitola.IdPredmetu = skupina.ID_Predmetu;
-		//pokud je úvod --> nastavám na 0 protože to je ID pro úvodní kapitolu 
-		if(kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == -1) {
+		kapitola.IdPredmetu = skupina.IDPredmetu;
+		//pokud je úvod --> nastavám na 0 protože to je ID pro úvodní kapitolu
+		if (kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == -1)
+		{
 			kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity = 0;
 		}
 		//kontrola zda-li se dané prerekvizity už nenachzejí v DB
 		foreach (var prerekvizita in prerekvizity)
-		{	
+		{
 			if (globalIndexKontrola == kapitola.KapitolaPrerekvizita.Count)
 			{
 				break;
@@ -215,7 +225,7 @@
 					globalIndexKontrola++;
 					//přidá existujicí vztah mezi KapitolaPrerekvizita - Prerekvizita --> díky tomu nebudou vznikat duplicitní hodnoty
 					KapitolaPrerekvizita existujiciPrerekvizita = new KapitolaPrerekvizita();
-					existujiciPrerekvizita.PrerekvizitaId = prerekvizita.PrerekvizitaId;
+					existujiciPrerekvizita.IdPrerekvizita = prerekvizita.IdPrerekvizita;
 					kapitola.KapitolaPrerekvizita.Insert(0, existujiciPrerekvizita);
 				}
 			}
@@ -224,7 +234,8 @@
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
 		MyNavigationManager.NavigateTo("/");
 	}
-	private void VytvorOdkaz() {
+	private void VytvorOdkaz()
+	{
 
 		if (kapitola.Videa.Count() == 0 || kapitola.Videa[globalIndex].Odkaz != null)
 		{

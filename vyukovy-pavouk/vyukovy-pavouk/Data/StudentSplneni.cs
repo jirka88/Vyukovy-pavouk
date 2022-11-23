@@ -2,9 +2,9 @@
 {
     public class StudentSplneni
 {
-        public int StudentId { get; set; }
+        public int IdStudent { get; set; }
         public Student student { get; set; }
-        public int SplneniId { get; set; }
+        public int IdSplneni { get; set; }
         public Splneni splneni { get; set; }
 
 }

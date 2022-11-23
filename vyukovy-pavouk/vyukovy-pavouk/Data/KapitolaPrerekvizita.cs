@@ -6,7 +6,7 @@ namespace vyukovy_pavouk.Data
 {
         public int KapitolaId  { get; set; }
         public Kapitola kapitola { get; set; }
-        public int PrerekvizitaId { get; set; }      
+        public int IdPrerekvizita { get; set; }      
         public Prerekvizity prerekvizita { get; set; }
 }
     public class KapitolaPrerekvizitaValidator : AbstractValidator<KapitolaPrerekvizita>

@@ -20,7 +20,7 @@
 		@foreach (var splneni in student.StudentSplneni)
 		{
 			vyukovy_pavouk.Data.Kapitola kapitola = new vyukovy_pavouk.Data.Kapitola();
-			kapitola = kapitoly.Where(id => id.Id == splneni.splneni.Id_kapitoly).SingleOrDefault();
+			kapitola = kapitoly.Where(id => id.Id == splneni.splneni.IdKapitoly).SingleOrDefault();
 			@if (kapitola != null)
 			{
 				<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]" />
@@ -72,7 +72,7 @@ else
 				// získání uživatelů a jejich progres v plnění kapitol
 				student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/" + Convert.ToInt32(skupina.Id) + "/" + id);
 				//získání všech kapitol 
-				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(skupina.ID_Predmetu)));
+				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(skupina.IDPredmetu)));
 				IsLoaded = true;
 			}
 		}

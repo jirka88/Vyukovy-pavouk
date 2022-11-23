@@ -4,7 +4,7 @@
 {
         public int Id { get; set; }
         public string TmSkupina { get; set; }
-        public int ID_Predmetu { get; set; }
+        public int IDPredmetu { get; set; }
         public Predmet predmet { get; set; }
         public ICollection<SkupinaStudent> Student { get; set; }
     }

@@ -11,7 +11,7 @@ namespace vyukovy_pavouk.EntityConfiguration
             builder.HasKey(id => id.Id);
             builder.Property(j => j.Jmeno).HasMaxLength(48).IsRequired();
             builder.Property(p => p.Prijmeni).HasMaxLength(48).IsRequired();
-            builder.Property(e => e.email).HasMaxLength(62).IsRequired();
+            builder.Property(e => e.Email).HasMaxLength(62).IsRequired();
         }
     }
 }

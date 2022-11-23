@@ -136,12 +136,16 @@ h1[b-ummi2zx0lv] {
 	max-width: 940px;
 }
 .First-label[b-ummi2zx0lv] {
-	margin-bottom: -15px;
+	margin-bottom: -5px;
+	font-weight: bold;
 }
 .cancel[b-ummi2zx0lv], .create[b-ummi2zx0lv] {
 	font-weight: bold;
 	width: 40px;
 	height: 40px;
+}
+.create[b-ummi2zx0lv] {
+	margin-top: 0.5em;
 }
 input[type=number][b-ummi2zx0lv] {
 	width: 50px;

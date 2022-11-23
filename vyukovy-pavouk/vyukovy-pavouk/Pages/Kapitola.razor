@@ -55,9 +55,15 @@ else {
 			<h3 class="pb-3">Videa:</h3>
 			<div class="d-grid flex-wrap">
 				<div class="row">				
-					   @foreach (var video in @kapitola.Videa)
+					   @foreach (Videa video in @kapitola.Videa)
 					{
-						<a href="@video.Odkaz" target="_blank" class="col-6 col-md-4">odkaz</a>
+						if(video.Nazev == null) {
+							<a href="@video.Odkaz" target="_blank" class="col-6 col-md-4">odkaz</a>
+						}
+						else {
+							<a href="@video.Odkaz" target="_blank" class="col-6 col-md-4">@video.Nazev</a>
+						}
+						
 					}						   											
 				</div>			   
 			</div>
@@ -116,7 +122,7 @@ else {
 				}
 				if(UserToken.Profile.JobTitle == null) {
 					skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-					prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.ID_Predmetu));
+					prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.IDPredmetu));
 				}
 				IsLoaded = true;
 			}
@@ -128,7 +134,7 @@ else {
 	}
 	private void CloseDialog() => ModelHidden = true;
 	private void CloseDialog2() => ModelHiddenError = true;
-	// TO DO udělat okno pro napsání, že to nejde smazat 
+	
 	private void OpenDialog()  {
 		bool NelzeSmazat = false;
 		foreach (KapitolaPrerekvizita Kprerekvizita in prerekvizity)
@@ -159,8 +165,8 @@ else {
 		foreach (StudentSplneni splneni in splneni)
 		{
 			//pokud je shoda ID kapitoly ve splneni a ID kapitoly této
-			if(splneni.splneni.Id_kapitoly == kapitola.Id) {
-				await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/studenti/deleteSplneni/" + splneni.SplneniId);
+			if(splneni.splneni.IdKapitoly == kapitola.Id) {
+				await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/studenti/deleteSplneni/" + splneni.IdSplneni);
 				break;
 			}
 		}

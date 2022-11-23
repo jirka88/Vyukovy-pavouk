@@ -15,7 +15,7 @@ namespace vyukovy_pavouk.Services
         public Splneni GetUvodniPrerekvizitu(int Idkapitoly)
         {
             return _dbContext.Splneni
-                .Where(id => id.Id_skupiny == Idkapitoly)
+                .Where(id => id.IdSkupiny == Idkapitoly)
                 .SingleOrDefault();
         }
     }

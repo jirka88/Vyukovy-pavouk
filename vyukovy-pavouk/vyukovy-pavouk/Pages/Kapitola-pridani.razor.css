@@ -11,12 +11,16 @@
 	max-width: 940px;
 }
 .First-label {
-	margin-bottom: -15px;
+	margin-bottom: -5px;
+	font-weight: bold;
 }
 .cancel, .create {
 	font-weight: bold;
 	width: 40px;
 	height: 40px;
+}
+.create {
+	margin-top: 0.5em;
 }
 input[type=number] {
 	width: 50px;

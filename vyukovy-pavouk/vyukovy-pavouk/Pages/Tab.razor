@@ -99,21 +99,21 @@
 				{
 					student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id) + "/" + UserToken.Profile.Mail);
 					//pokud student neexistuje v databázi vytvoří se a propojí se skupinou
-					if(student.email == null) {
+					if(student.Email == null) {
 						studentInfo.Jmeno = UserToken.Profile.GivenName.ToString();
 						studentInfo.Prijmeni = UserToken.Profile.Surname.ToString();
-						studentInfo.email = UserToken.Profile.Mail.ToString();
+						studentInfo.Email = UserToken.Profile.Mail.ToString();
 						studentInfo.SkupinaStudent.Add(new SkupinaStudent());
-						studentInfo.SkupinaStudent[0].SkupinaId = Convert.ToInt32(skupina.Id);
+						studentInfo.SkupinaStudent[0].IdSkupina = Convert.ToInt32(skupina.Id);
 						await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti", studentInfo);
 						//zde znovu získám studenta, protože potřebuju jeho ID na spojení u StudentSplneni a uvodní prerekvizity ID, které je v splnění 
 						student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id) + "/" + UserToken.Profile.Mail);
 						await PripojUvodniPrerekvizitu();
 					}
 					//pokud student už existuje v databázi, ale není navázán v naší skupině 
-					else if(student.SkupinaStudent.Find(x => x.SkupinaId == skupina.Id) == null) { 
-						skupinaStudentConnect.SkupinaId = Convert.ToInt32(skupina.Id);
-						skupinaStudentConnect.StudentId = Convert.ToInt32(student.Id);
+					else if(student.SkupinaStudent.Find(x => x.IdSkupina == skupina.Id) == null) { 
+						skupinaStudentConnect.IdSkupina = Convert.ToInt32(skupina.Id);
+						skupinaStudentConnect.IdStudent = Convert.ToInt32(student.Id);
 						await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/connect", skupinaStudentConnect);
 						await PripojUvodniPrerekvizitu();
 					}
@@ -132,8 +132,8 @@
 		Splneni splneni = await Http.GetFromJsonAsync<Splneni>($"{MyNavigationManager.BaseUri}api/prerekvizita/" + skupina.Id);
 		//připojení na studenta (StudentSplneni)
 		StudentSplneni studentSplneni = new StudentSplneni();
-		studentSplneni.StudentId = student.Id;
-		studentSplneni.SplneniId = splneni.Id;
+		studentSplneni.IdStudent = student.Id;
+		studentSplneni.IdSplneni = splneni.Id;
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/connectPrerekvizita", studentSplneni);
 	}
 

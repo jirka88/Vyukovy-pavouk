@@ -59,7 +59,7 @@ namespace vyukovy_pavouk.Services
         {
             return _dbContext.Student
                 .Where(id => id.Id == Id)
-                .Include(s => s.StudentSplneni.Where(id => id.splneni.Id_skupiny == IdSkupiny))
+                .Include(s => s.StudentSplneni.Where(id => id.splneni.IdSkupiny == IdSkupiny))
                 .ThenInclude(s => s.splneni)
                 .SingleOrDefault();
         }
@@ -67,9 +67,9 @@ namespace vyukovy_pavouk.Services
         public Student GetStudent(int IdSkupiny, string EmailStudenta)
         {
            return _dbContext.Student
-                .Where(e => e.email == EmailStudenta)
+                .Where(e => e.Email == EmailStudenta)
                 .Include(s => s.SkupinaStudent)
-                .Include(s => s.StudentSplneni.Where(id => id.splneni.Id_skupiny == IdSkupiny))
+                .Include(s => s.StudentSplneni.Where(id => id.splneni.IdSkupiny == IdSkupiny))
                     .ThenInclude(s => s.splneni)
                 .SingleOrDefault();                             
         }      
@@ -79,9 +79,9 @@ namespace vyukovy_pavouk.Services
         {
             //vrátí v souhrnu její studenty a jejich splnění kapitol (ID kapitol) krom prerekvizity u úvodní kapitoly - ta je automaticky daná studentovi
             return _dbContext.SkupinaStudent
-                    .Where(s => s.SkupinaId == ID)
+                    .Where(s => s.IdSkupina == ID)
                     .Include(s => s.Student)
-                    .ThenInclude(s => s.StudentSplneni.Where(id => id.splneni.Id_skupiny == ID && id.splneni.Id_kapitoly != 0))
+                    .ThenInclude(s => s.StudentSplneni.Where(id => id.splneni.IdSkupiny == ID && id.splneni.IdKapitoly != 0))
                         .ThenInclude(s => s.splneni)            
                     .ToList();                         
         }
@@ -89,7 +89,7 @@ namespace vyukovy_pavouk.Services
         public List<StudentSplneni> GetSplneni(int IdSkupiny)
         {
             return _dbContext.StudentSplneni
-                .Include(s => s.splneni).Where(s => s.splneni.Id_skupiny == IdSkupiny)
+                .Include(s => s.splneni).Where(s => s.splneni.IdSkupiny == IdSkupiny)
                 .ToList();
         }
         //vymaže studentům splnění kapitoly --> při mazání kapitoly 
@@ -98,7 +98,7 @@ namespace vyukovy_pavouk.Services
             try
             {
                 List<StudentSplneni> studentiSplneni = new List<StudentSplneni>();
-                studentiSplneni = _dbContext.StudentSplneni.Where(id => id.SplneniId == Id).ToList();
+                studentiSplneni = _dbContext.StudentSplneni.Where(id => id.IdSplneni == Id).ToList();
                 Splneni splneni = _dbContext.Splneni.Find(Id);
 
                 foreach (StudentSplneni studentSplneni in studentiSplneni)
