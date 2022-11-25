@@ -1,2 +1,2 @@
 # Vyukovy-pavouk
-Maturitní práce v2
+Maturitní práce
