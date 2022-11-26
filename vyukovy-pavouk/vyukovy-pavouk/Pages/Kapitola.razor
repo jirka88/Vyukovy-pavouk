@@ -153,14 +153,14 @@ else {
 	}
 
 	private void edit() {
-		MyNavigationManager.NavigateTo("edit");
+		MyNavigationManager.NavigateTo($"edit/{kapitola.Id}");
 	}
 	private async Task DeleteKapitola() {
 		//smazání samotné kapitoly 
-		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/kapitola/delete/" + kapitola.Id);
+		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/kapitola/delete/{kapitola.Id}");
 		//pokud jakýkoliv student má toto už splněno smaže se jeho splnění 
 		//nejdříve zjistím všechny splnění ze skupiny 
-		splneni = await Http.GetFromJsonAsync<List<StudentSplneni>>($"{MyNavigationManager.BaseUri}api/studenti/allSplneni/" + skupina.Id);
+		splneni = await Http.GetFromJsonAsync<List<StudentSplneni>>($"{MyNavigationManager.BaseUri}api/studenti/allSplneni/{skupina.Id}");
 		//poté zkontroluju 
 		foreach (StudentSplneni splneni in splneni)
 		{

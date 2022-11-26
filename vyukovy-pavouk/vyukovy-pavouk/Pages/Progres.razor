@@ -61,7 +61,7 @@ else
 
 			await UserToken.GetUserAsync(sessionStorage);
 			await GroupToken.GetGroupAsync(MicrosoftTeams);
-			if (UserToken.Profile == null)
+			if (UserToken.Profile == null || UserToken.Profile.JobTitle == "žák školy")
 			{
 				MyNavigationManager.NavigateTo("/tab");
 			}

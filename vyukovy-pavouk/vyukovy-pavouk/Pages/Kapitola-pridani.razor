@@ -20,10 +20,9 @@
 	{
 		<EditForm Model="@kapitola" OnValidSubmit="@Pridej">
 			<FluentValidationValidator />
-			<label class="fw-bold">Nutno splnit</label>
+			<label class="fw-bold">*Nutno splnit</label>
 			<br />
 			<div class="form d-flex flex-column gap-4">
-				<!-- TO DO -->
 
 				<div class="d-flex gap-4 justify-content-center align-items-center flex-column">
 
@@ -77,7 +76,7 @@
 				</div>
 
 				<div class="d-flex flex-column">
-					<label for="NazevKapitoly" class="fw-bold">Název Kapitoly</label>
+					<label for="NazevKapitoly" class="fw-bold">*Název Kapitoly</label>
 					<InputText type="text" id="NazevKapitoly" @bind-Value="@kapitola.Název" />
 					<ValidationMessage For="@(()=>@kapitola.Název)" />
 				</div>
@@ -87,14 +86,14 @@
 					<ValidationMessage For="@(()=>@kapitola.Perex)" />
 				</div>
 				<div class="d-flex flex-column">
-					<label for="obsah" class="fw-bold">Obsah</label>
+					<label for="obsah" class="fw-bold">*Obsah</label>
 					<InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>
 					<ValidationMessage For="@(()=>@kapitola.Kontent)" />
 				</div>
 				<!--Odkazy na videa-->
 				<label class="First-label">Odkazy na videa</label>
 
-				<div class="d-flex gap-3 justify-content-center align-items-center flex-column">
+				<div class="d-flex gap-2 justify-content-center align-items-center flex-column">
 					@for (int i = 0; i < @kapitola.Videa.Count; i++)
 					{
 						int index = i;
@@ -107,7 +106,7 @@
 						<InputText type="text" class="flex-grow-1" @bind-Value="video.Nazev" />
 						<ValidationMessage For="@(() => @video.Nazev)" />
 							</div>
-						<label class="w-100">Odkaz</label>
+						<label class="w-100">*Odkaz</label>
 						<div class="odkazy d-flex w-100 justify-content-center align-items-center flex-wrap">
 							<InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" placeholder="https://..." />
 							<fluent-button class="cancel" appearance="accent" @onclick="@(() => kapitola.Videa.RemoveAt(index))">X</fluent-button>
@@ -119,7 +118,7 @@
 						<fluent-button class="create" appearance="accent" @onclick="@VytvorOdkaz"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
 					}
 				</div>
-				<label class="First-label">Testy</label>
+				<label class="First-label">*Testy</label>
 				<div class="odkazy d-flex justify-content-center align-items-center w-100 flex-wrap">
 					<InputText type="text" class="flex-grow-1 w-100" @bind-Value="@kapitola.Zadani[0].Odkaz">
 						<div class="d-flex gap-2">
@@ -182,7 +181,7 @@
 		{
 			await UserToken.GetUserAsync(sessionStorage);
 			await GroupToken.GetGroupAsync(MicrosoftTeams);
-			if (UserToken.Profile == null)
+			if (UserToken.Profile == null || UserToken.Profile.JobTitle == "žák školy")
 			{
 				MyNavigationManager.NavigateTo("/tab");
 			}
@@ -242,7 +241,7 @@
 			kapitola.Videa.Add(new Videa());
 		}
 	}
-	public void VytvorPrerekvizitu()
+	private void VytvorPrerekvizitu()
 	{
 		bool vytvor = true;
 		foreach (KapitolaPrerekvizita item in kapitola.KapitolaPrerekvizita)
@@ -268,7 +267,7 @@
 
 
 	}
-	public void SmazPrerekvizitu(int index)
+	private void SmazPrerekvizitu(int index)
 	{
 		kapitola.KapitolaPrerekvizita.RemoveAt(index);
 		//pokud se jedná o defaultní výběr pouze vymaže select, ale žádnou hodnotu z listu neodebere

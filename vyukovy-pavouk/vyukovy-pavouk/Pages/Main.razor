@@ -16,12 +16,8 @@
 @if (IsLoaded) {
 	<h1 class="text-center py-2 pb-4">Obsah</h1>
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
-		<!--<Kapitola_splneno ID="2" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />
-		<Kapitola_ucitel ID="3" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />
-		<Kapitola_odemceno ID="3" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />
-		<Kapitola_uzavreno ID="4" Nazev="Název Kapitoly" Perex="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic" />-->
 		@if(Kapitoly.Count() > 0) {
-			@if(UserToken.Profile.JobTitle != null) {
+			@if(UserToken.Profile.JobTitle == null) {
 				//zobrazení kapitol pro učitele 
 				@foreach (var kapitola in Kapitoly)
 				{										
@@ -69,13 +65,13 @@ else {
 
 @code {
 
-	public bool IsLoaded = false;
-	public Skupina skupina = new Skupina();
-	public Student student = new Student();
-	public List<vyukovy_pavouk.Data.Kapitola> Kapitoly;
-	public List<KapitolaPrerekvizita> Prerekvizity = new List<KapitolaPrerekvizita>();
+	private bool IsLoaded = false;
+	private Skupina skupina = new Skupina();
+	private Student student = new Student();
+	private List<vyukovy_pavouk.Data.Kapitola> Kapitoly;
+	private List<KapitolaPrerekvizita> Prerekvizity = new List<KapitolaPrerekvizita>();
 
-	public List<vyukovy_pavouk.Data.Kapitola> hledanePrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
+	private List<vyukovy_pavouk.Data.Kapitola> hledanePrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if(firstRender) {
@@ -96,7 +92,7 @@ else {
 	}
 
 	//pokud je kapitola uzamčena vypíše prerekvizity, které je nutno splnit i s jejím názvem (v databázi je pouze ID kapitoly)
-	public void PrerekvizityShow(vyukovy_pavouk.Data.Kapitola kapitola) {
+	private void PrerekvizityShow(vyukovy_pavouk.Data.Kapitola kapitola) {
 
 		hledanePrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
 
@@ -106,7 +102,7 @@ else {
 		}
 	}
 	//řeší jestli daná kapitola je pro studenta splněna, odemčena či uzamnčena 
-	public int Kontroluj(vyukovy_pavouk.Data.Kapitola kapitola) {
+	private int Kontroluj(vyukovy_pavouk.Data.Kapitola kapitola) {
 
 		if(Prerekvizity.Count() > 0) {
 			Prerekvizity.Clear();
@@ -131,8 +127,7 @@ else {
 		//pokud není odemcena je uzamcena 
 		else {
 			return 3;
-		}	
-		
+		}			
 		
 	}
 
