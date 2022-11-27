@@ -44,7 +44,6 @@
 									<InputText type="text" class="flex-grow-1" @bind-Value="@VybraneKapitoly[index].Název" disabled="true">
 									</InputText>
 									VytvorPrerekvizituNacteni();
-
 								}
 								else
 								{
@@ -242,12 +241,11 @@
 			}
 		}
 
-		//await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
+		await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
 		MyNavigationManager.NavigateTo("/");
 	}
 	private void VytvorOdkaz()
 	{
-
 		if (kapitola.Videa.Count() == 0 || kapitola.Videa[globalIndex].Odkaz != null)
 		{
 			kapitola.Videa.Add(new Videa());

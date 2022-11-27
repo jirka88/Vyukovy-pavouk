@@ -24,6 +24,11 @@ namespace vyukovy_pavouk.Controllers
         {
             _IKapitola.CreateKapitola(kapitola);
         }
+        [HttpPut]
+        public async Task Update(Kapitola kapitola)
+        {
+            await _IKapitola.UpdateKapitola(kapitola);
+        }
         [HttpDelete]
         [Route("delete/{Id}")]
         public IActionResult Delete(int Id)
