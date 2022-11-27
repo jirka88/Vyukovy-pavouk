@@ -69,6 +69,23 @@ namespace vyukovy_pavouk.Services
         public async Task UpdateKapitola(Kapitola kapitola)
         {
             _dbContext.Entry(kapitola).State = EntityState.Modified;
+
+          
+                /*foreach (KapitolaPrerekvizita kapitolaPrerekvizita in kapitola.KapitolaPrerekvizita)
+                {
+                    if (kapitolaPrerekvizita.IdPrerekvizita != 0 || kapitolaPrerekvizita.prerekvizita.IdPrerekvizity == 0)
+                    {
+                        _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Modified;
+                         _dbContext.Entry(kapitolaPrerekvizita.prerekvizita).State = EntityState.Modified;
+                }
+                    else
+                    {
+                        _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Added;
+                    _dbContext.Entry(kapitolaPrerekvizita.prerekvizita).State = EntityState.Added;
+                }
+                }*/
+        
+
             //zjištění změn u videí 
             foreach (Videa odkaz in kapitola.Videa)
             {
@@ -91,8 +108,39 @@ namespace vyukovy_pavouk.Services
             List<Videa> odkazyNaSmazani = new List<Videa>();
             odkazyNaSmazani = await _dbContext.Videa.Where(x => !odkazy.Contains(x.Id) && x.IdKapitoly == kapitola.Id).ToListAsync();
 
+            //zjištění změn/y u zadaní
+            foreach (Zadani zadani in kapitola.Zadani)
+            {
+                if(zadani.Id != 0)
+                {
+                    _dbContext.Entry(zadani).State = EntityState.Modified;
+                }
+                else
+                {
+                    _dbContext.Entry(zadani).State = EntityState.Added;
+                }
+            }
+            
+            List<int> zadaniList = new List<int>();
+            //zjištění jaké ID se nachází v naší kapitole po změně dat 
+            zadaniList = kapitola.Zadani.Select(x => x.Id).ToList();
+            //načtení dat z databáze a porovnání naších změněných dat ty co se zde uloží půjdou k smazání 
+            List<Zadani> zadaniNaSmazani = new List<Zadani>();
+            zadaniNaSmazani = await _dbContext.Zadani.Where(x => !zadaniList.Contains(x.Id) && x.IdKapitoly == kapitola.Id).ToListAsync();
+            /*  
+                        //pokud nastalo smazání učitého odkazu 
+                        List<int> prerekvizity = new List<int>();
+                        //zjištění jaké ID se nachází v naší kapitole po změně dat 
+                        prerekvizity = kapitola.KapitolaPrerekvizita.Select(x => x.IdPrerekvizita).ToList();
+                        //načtení dat z databáze a porovnání naších změněných dat ty co se zde uloží půjdou k smazání 
+                        List<KapitolaPrerekvizita> prerekvizityNaSmazani = new List<KapitolaPrerekvizita>();
+
+                        prerekvizityNaSmazani = await _dbContext.kapitolaPrerekvizita.Where(x => !prerekvizity.Contains(x.IdPrerekvizita) && x.KapitolaId == kapitola.Id).ToListAsync();*/
+
             _dbContext.RemoveRange(odkazyNaSmazani);
-            _dbContext.SaveChanges();
+            _dbContext.RemoveRange(zadaniNaSmazani);
+            //_dbContext.RemoveRange(prerekvizityNaSmazani);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

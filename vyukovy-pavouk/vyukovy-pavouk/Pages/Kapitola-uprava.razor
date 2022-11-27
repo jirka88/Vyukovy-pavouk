@@ -50,15 +50,15 @@
 									<InputSelect class="flex-grow-1" @bind-Value="@prerekvizita.IdPrerekvizity">
 										<!-- podmínka pro kontrolu jestli se nejedná o úvodní kapitolu -1 je při našem výběru 0 při načtení a celkový počet prerekvizit dané kapitoly je jedna-->
 											<option value="0" selected disabled hidden>Vyberte Prerekvizitu</option>
-										@if (prerekvizita.IdPrerekvizity == -1 || prerekvizita.IdPrerekvizity == 0 && kapitola.KapitolaPrerekvizita.Count() == 1)
-										{							
-											<option value="-1">Úvod</option>	
-										}
-										else {																		
+										@if (!uvodniKapitola)
+										{											
 											@foreach (var kapitola in kapitoly)
 											{
 												<option value="@kapitola.Id">@kapitola.Název</option>
 											}
+										}
+										else {																		
+											<option value="-1">Úvod</option>	
 										}
 																											
 									</InputSelect>
@@ -169,7 +169,7 @@
 	int globalIndexPrerekvizita = 0;
 	int globalIndexKontrola = 0;
 	int maximalniPocetOdkazu = 11;
-
+	bool uvodniKapitola = false;
 	[Parameter]
 	public int IdKapitola { get; set; }
 
@@ -178,6 +178,9 @@
 	protected override async Task OnParametersSetAsync()
 	{
 		kapitola = await Http.GetFromJsonAsync<vyukovy_pavouk.Data.Kapitola>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdKapitola);
+		if(kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == 0) {
+			uvodniKapitola = true;
+		}
 	}
 
 	Skupina skupina = new Skupina();
