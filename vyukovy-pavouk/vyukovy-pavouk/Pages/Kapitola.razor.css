@@ -6,7 +6,7 @@ hr {
 	height: 4px;
 }
 a {
-	padding-bottom: 1rem;
+	padding-bottom: 0.5rem;
 	font-size: 1.5em;
     text-decoration: none;
 }
@@ -17,15 +17,7 @@ a {
 .popis p:last-child {
 	color: gray;
 }
-.row a:nth-child(1n+0) {
-	text-align: left;
-}
-.row a:nth-child(2n+0) {
-	text-align: center;
-}
-.row a:nth-child(3n+0) {
-	text-align: right;
-}
+
 .btn {
 	display: grid;
 	justify-content: center;

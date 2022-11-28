@@ -216,7 +216,7 @@ hr[b-pkvnducani] {
 	height: 4px;
 }
 a[b-pkvnducani] {
-	padding-bottom: 1rem;
+	padding-bottom: 0.5rem;
 	font-size: 1.5em;
     text-decoration: none;
 }
@@ -227,15 +227,7 @@ a[b-pkvnducani] {
 .popis p:last-child[b-pkvnducani] {
 	color: gray;
 }
-.row a:nth-child(1n+0)[b-pkvnducani] {
-	text-align: left;
-}
-.row a:nth-child(2n+0)[b-pkvnducani] {
-	text-align: center;
-}
-.row a:nth-child(3n+0)[b-pkvnducani] {
-	text-align: right;
-}
+
 .btn[b-pkvnducani] {
 	display: grid;
 	justify-content: center;
