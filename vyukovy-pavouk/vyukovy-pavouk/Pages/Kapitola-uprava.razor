@@ -1,6 +1,8 @@
 ﻿@page "/edit"
 @page "/edit/{IdKapitola:int}"
 @using vyukovy_pavouk.Data
+@using Microsoft.JSInterop;
+@inject IJSRuntime JS
 @layout UserLayout
 @inject NavigationManager MyNavigationManager
 @inject MicrosoftTeams MicrosoftTeams
@@ -92,7 +94,39 @@
 				</div>
 				<div class="d-flex flex-column">
 					<label for="obsah" class="fw-bold">*Obsah</label>
-					<InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>
+					<!--<InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>-->
+						<BlazoredTextEditor @ref="@QuillHtml" >
+    <ToolbarContent>
+        <select class="ql-header">
+            <option selected=""></option>
+            <option value="1"></option>
+            <option value="2"></option>
+            <option value="3"></option>
+            <option value="4"></option>
+            <option value="5"></option>
+        </select>
+        <span class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-strike"></button>
+        </span>
+        <span class="ql-formats">
+            <select class="ql-color"></select>
+            <select class="ql-background"></select>
+        </span>
+		<span class="ql-formats">
+			<button class="ql-code-block" value="code-block"></button>
+		</span>
+        <span class="ql-formats">
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+        </span>
+ 
+		 </ToolbarContent>
+
+		</BlazoredTextEditor>	
+										
 					<ValidationMessage For="@(()=>@kapitola.Kontent)" />
 				</div>
 				<!--Odkazy na videa-->
@@ -147,6 +181,7 @@
 				</div>
 			</div>
 		</EditForm>
+			
 	}
 
 </div>
@@ -170,6 +205,9 @@
 	int globalIndexKontrola = 0;
 	int maximalniPocetOdkazu = 11;
 	bool uvodniKapitola = false;
+
+	bool nacti = false;
+
 	[Parameter]
 	public int IdKapitola { get; set; }
 
@@ -182,6 +220,7 @@
 			uvodniKapitola = true;
 		}
 	}
+	public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
 
 	Skupina skupina = new Skupina();
 	List<KapitolaPrerekvizita> prerekvizity = new List<KapitolaPrerekvizita>();
@@ -204,18 +243,30 @@
 			else
 			{
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.IDPredmetu));	
+				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.IDPredmetu));
 				//vymazání upravované kapitoly --> jinak by se dala navázat kapitola sama na sebe 
 				kapitoly.RemoveAt(kapitoly.FindIndex(x => x.Id == kapitola.Id));
 				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.IDPredmetu));
-		
 				IsLoaded = true;
+				nacti = true;
 			}
-			StateHasChanged();
+			StateHasChanged();			
+		}
+
+		while(nacti) {
+			try {
+				await QuillHtml.LoadHTMLContent(kapitola.Kontent);
+				nacti = false;
+				StateHasChanged();		
+			}
+			catch {
+				await Task.Delay(10);
+			}
 		}
 	}
 	private async Task Uprav()
 	{
+		kapitola.Kontent = await this.QuillHtml.GetHTML();
 		kapitola.IdPredmetu = skupina.IDPredmetu;
 		//pokud je úvod --> nastavám na 0 protože to je ID pro úvodní kapitolu
 		if (kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == -1)
@@ -247,6 +298,7 @@
 		await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
 		MyNavigationManager.NavigateTo("/");
 	}
+	
 	private void VytvorOdkaz()
 	{
 		if (kapitola.Videa.Count() == 0 || kapitola.Videa[globalIndex].Odkaz != null)

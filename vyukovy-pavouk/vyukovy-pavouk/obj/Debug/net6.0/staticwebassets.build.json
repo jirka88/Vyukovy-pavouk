@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "nq2xIYuipJjUco0WjQ7MkA03IzksOMz9JjsZ3TkoWoY=",
+  "Hash": "nPn7fDie2SCqZpYlLQyHOOnd5ZCm4LcpwZ3TKWRYv6E=",
   "Source": "vyukovy-pavouk",
   "BasePath": "_content/vyukovy-pavouk",
   "Mode": "Default",
@@ -16,6 +16,40 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "C:\\Users\\jn88\\.nuget\\packages\\blazored.texteditor\\1.0.8\\staticwebassets\\Blazored-BlazorQuill.js",
+      "SourceId": "Blazored.TextEditor",
+      "SourceType": "Package",
+      "ContentRoot": "C:\\Users\\jn88\\.nuget\\packages\\blazored.texteditor\\1.0.8\\staticwebassets\\",
+      "BasePath": "_content/Blazored.TextEditor",
+      "RelativePath": "Blazored-BlazorQuill.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\jn88\\.nuget\\packages\\blazored.texteditor\\1.0.8\\staticwebassets\\Blazored-BlazorQuill.js"
+    },
+    {
+      "Identity": "C:\\Users\\jn88\\.nuget\\packages\\blazored.texteditor\\1.0.8\\staticwebassets\\quill-blot-formatter.min.js",
+      "SourceId": "Blazored.TextEditor",
+      "SourceType": "Package",
+      "ContentRoot": "C:\\Users\\jn88\\.nuget\\packages\\blazored.texteditor\\1.0.8\\staticwebassets\\",
+      "BasePath": "_content/Blazored.TextEditor",
+      "RelativePath": "quill-blot-formatter.min.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\jn88\\.nuget\\packages\\blazored.texteditor\\1.0.8\\staticwebassets\\quill-blot-formatter.min.js"
+    },
     {
       "Identity": "C:\\Users\\jn88\\.nuget\\packages\\microsoft.fast.components.fluentui\\1.0.0\\staticwebassets\\Microsoft.Fast.Components.FluentUI.lib.module.js",
       "SourceId": "Microsoft.Fast.Components.FluentUI",

@@ -49,7 +49,7 @@ else {
 			   }			
 			</div>
 			<h5 class="pb-3">@kapitola.Perex</h5>
-			<p class="pb-3">@kapitola.Kontent</p>
+			<p class="pb-3">@((MarkupString)obsah)</p>
 			@if (@kapitola.Videa.Count() > 0)
 				   {
 			<h3 class="pb-3">Videa:</h3>		
@@ -69,8 +69,7 @@ else {
 									<div class="col col-md-4 text-end"><a href="@video.Odkaz" target="_blank">odkaz</a></div>
 									rozstridOdkazy = 0;
 									break;
-							}
-							
+							}							
 						}
 						else {						
 							switch(rozstridOdkazy) {
@@ -116,6 +115,8 @@ else {
 	[Parameter]
 	public bool status { get; set; }
 
+	private string obsah;
+
 	private Skupina skupina = new Skupina();
 	private vyukovy_pavouk.Data.Kapitola kapitola { get; set; }
 	private List<KapitolaPrerekvizita> prerekvizity = new List<KapitolaPrerekvizita>();
@@ -147,6 +148,7 @@ else {
 					skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 					prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.IDPredmetu));
 				}
+				obsah = kapitola.Kontent;
 				IsLoaded = true;
 			}
 			StateHasChanged();

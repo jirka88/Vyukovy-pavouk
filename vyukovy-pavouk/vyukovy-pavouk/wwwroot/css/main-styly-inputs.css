@@ -4,6 +4,7 @@
     border: 1px solid gray;
     outline: none;
     padding: 12px;
+    cursor: pointer;
     box-shadow: 6px 5px gray;
 }
 input[type=number] {

@@ -1,5 +1,6 @@
 ﻿@page "/add"
 @using vyukovy_pavouk.Data
+@using Blazored.TextEditor
 @layout UserLayout
 @inject NavigationManager MyNavigationManager
 @inject MicrosoftTeams MicrosoftTeams
@@ -87,7 +88,38 @@
 				</div>
 				<div class="d-flex flex-column">
 					<label for="obsah" class="fw-bold">*Obsah</label>
-					<InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>
+					<!--<InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>-->
+					<BlazoredTextEditor @ref="@QuillHtml">
+    <ToolbarContent>
+        <select class="ql-header">
+            <option selected=""></option>
+            <option value="1"></option>
+            <option value="2"></option>
+            <option value="3"></option>
+            <option value="4"></option>
+            <option value="5"></option>
+        </select>
+        <span class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-strike"></button>
+        </span>
+        <span class="ql-formats">
+            <select class="ql-color"></select>
+            <select class="ql-background"></select>
+        </span>
+		<span class="ql-formats">
+			<button class="ql-code-block" value="code-block"></button>
+		</span>
+        <span class="ql-formats">
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+        </span>
+ 
+    </ToolbarContent>
+  
+</BlazoredTextEditor>
 					<ValidationMessage For="@(()=>@kapitola.Kontent)" />
 				</div>
 				<!--Odkazy na videa-->
@@ -138,7 +170,7 @@
 					<p class="text-center mb-0">Počet testů, který je potřeba splnit.</p>
 				</div> -->
 				<div class="d-flex justify-content-center align-center w-100">
-					<fluent-button class="main-btn" type="submit" appearance="accent">Vytvořit</fluent-button>
+					<fluent-button class="main-btn" type="submit" appearance="accent" @onclick="CreateObsah">Vytvořit</fluent-button>
 				</div>
 			</div>
 		</EditForm>
@@ -164,6 +196,9 @@
 	int globalIndexPrerekvizita = 0;
 	int globalIndexKontrola = 0;
 	int maximalniPocetOdkazu = 11;
+
+	BlazoredTextEditor QuillHtml;
+	string QuillHTMLContent;
 
 	Skupina skupina = new Skupina();
 	List<KapitolaPrerekvizita> prerekvizity = new List<KapitolaPrerekvizita>();
@@ -233,9 +268,13 @@
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
 		MyNavigationManager.NavigateTo("/");
 	}
+	private async void CreateObsah() {
+		QuillHTMLContent = await this.QuillHtml.GetHTML();
+		kapitola.Kontent = QuillHTMLContent;
+
+	}
 	private void VytvorOdkaz()
 	{
-
 		if (kapitola.Videa.Count() == 0 || kapitola.Videa[globalIndex].Odkaz != null)
 		{
 			kapitola.Videa.Add(new Videa());

@@ -69,8 +69,7 @@ namespace vyukovy_pavouk.Services
         public async Task UpdateKapitola(Kapitola kapitola)
         {
             _dbContext.Entry(kapitola).State = EntityState.Modified;
-
-          
+        
                 /*foreach (KapitolaPrerekvizita kapitolaPrerekvizita in kapitola.KapitolaPrerekvizita)
                 {
                     if (kapitolaPrerekvizita.IdPrerekvizita != 0 || kapitolaPrerekvizita.prerekvizita.IdPrerekvizity == 0)

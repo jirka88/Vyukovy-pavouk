@@ -64,6 +64,25 @@
           "lib/net5.0/Blazored.SessionStorage.dll": {}
         }
       },
+      "Blazored.TextEditor/1.0.8": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components": "3.1.0",
+          "Microsoft.AspNetCore.Components.Web": "3.1.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Blazored.TextEditor.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Blazored.TextEditor.dll": {}
+        },
+        "build": {
+          "buildTransitive/Blazored.TextEditor.props": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/Blazored.TextEditor.props": {}
+        }
+      },
       "FluentValidation/10.2.1": {
         "type": "package",
         "compile": {
@@ -3287,6 +3306,24 @@
         "icon.png",
         "lib/net5.0/Blazored.SessionStorage.dll",
         "lib/netstandard2.1/Blazored.SessionStorage.dll"
+      ]
+    },
+    "Blazored.TextEditor/1.0.8": {
+      "sha512": "+d95FcwpI7saVbMhowYSDBaMgDvUCuukCWGZmu5dRVU+jNrM+hDH79Bf6hmMrigwd0yBriTxn9cEczlCkZmOTQ==",
+      "type": "package",
+      "path": "blazored.texteditor/1.0.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "blazored.texteditor.1.0.8.nupkg.sha512",
+        "blazored.texteditor.nuspec",
+        "build/Blazored.TextEditor.props",
+        "build/Microsoft.AspNetCore.StaticWebAssets.props",
+        "buildMultiTargeting/Blazored.TextEditor.props",
+        "buildTransitive/Blazored.TextEditor.props",
+        "lib/netstandard2.0/Blazored.TextEditor.dll",
+        "staticwebassets/Blazored-BlazorQuill.js",
+        "staticwebassets/quill-blot-formatter.min.js"
       ]
     },
     "FluentValidation/10.2.1": {
@@ -9545,6 +9582,7 @@
       "Blazored.FluentValidation >= 2.0.3",
       "Blazored.LocalStorage >= 4.2.0",
       "Blazored.SessionStorage >= 2.2.0",
+      "Blazored.TextEditor >= 1.0.8",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 6.0.0",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 6.0.10",
       "Microsoft.EntityFrameworkCore >= 6.0.10",
@@ -9612,6 +9650,10 @@
           "Blazored.SessionStorage": {
             "target": "Package",
             "version": "[2.2.0, )"
+          },
+          "Blazored.TextEditor": {
+            "target": "Package",
+            "version": "[1.0.8, )"
           },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
