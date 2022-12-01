@@ -67,7 +67,7 @@
 								@if (@kapitola.KapitolaPrerekvizita.Count() - 1 == i && i < 3 && i < prerekvizity.Select(x => x.KapitolaId).Distinct().Count() - 1)
 								{
 									<Fluent-button appearance="accent" class="create" @onclick="@VytvorPrerekvizitu"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
-								}
+								}							
 								<ValidationMessage For="@(()=>@kapitola.KapitolaPrerekvizita[index].prerekvizita.IdPrerekvizity)" />
 
 							</div>
@@ -148,6 +148,11 @@
 					@if (globalIndex < maximalniPocetOdkazu)
 					{
 						<fluent-button class="create mt-2" appearance="accent" @onclick="@VytvorOdkaz"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
+						ukazToast = false;
+					}
+					else if (globalIndex == 11 && !ukazToast) {
+						upozorneni.ShowInfo("Kapitola dosáhla maximalního počtu vložených odkazů.", "Info");
+						ukazToast = true;
 					}
 				</div>
 				<label class="First-label">*Testy</label>
@@ -198,6 +203,7 @@
 	int globalIndexPrerekvizita = 0;
 	int globalIndexKontrola = 0;
 	int maximalniPocetOdkazu = 11;
+	bool ukazToast = false;
 
 	BlazoredTextEditor QuillHtml;
 	Skupina skupina = new Skupina();
@@ -210,6 +216,8 @@
 	List<vyukovy_pavouk.Data.Kapitola> VybraneKapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
 
 	bool IsLoaded = false;
+
+	@inject IToastService upozorneni;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -271,6 +279,7 @@
 			}
 			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
 			MyNavigationManager.NavigateTo("/");
+			upozorneni.ShowSuccess("Kapitola byla úspěšně vytvořena.", "Úspěch!");
 		}
 
 	}

@@ -25,6 +25,8 @@
     </nav>
 @Body
 </div>
+<BlazoredToasts Position="Blazored.Toast.Configuration.ToastPosition.TopRight"
+                Timeout="5"/>
 <link rel="stylesheet" href="css/main-styly-inputs.css" />
 <style>
     .container {
@@ -35,7 +37,10 @@
     }
     nav {
         background: #edeeee;
-        z-index: 990 !important;
+        z-index: 10 !important;
+    }
+    .blazored-toast-container{
+        z-index: 999 !important;
     }
 </style>
 @code {

@@ -12,6 +12,7 @@
           "Blazored.LocalStorage": "4.2.0",
           "Blazored.SessionStorage": "2.2.0",
           "Blazored.TextEditor": "1.0.8",
+          "Blazored.Toast": "3.2.2",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.0",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.10",
           "Microsoft.EntityFrameworkCore": "6.0.10",
@@ -20,7 +21,7 @@
           "Microsoft.Fast.Components.FluentUI": "1.0.0",
           "Microsoft.Graph": "4.10.0",
           "Microsoft.TeamsFx": "1.1.0",
-          "Newtonsoft.Json": "13.0.1",
+          "Newtonsoft.Json": "13.0.2",
           "Solutaris.InfoWARE.ProtectedBrowserStorage": "1.0.0"
         },
         "runtime": {
@@ -90,6 +91,19 @@
           "lib/netstandard2.0/Blazored.TextEditor.dll": {
             "assemblyVersion": "1.0.8.0",
             "fileVersion": "1.0.8.0"
+          }
+        }
+      },
+      "Blazored.Toast/3.2.2": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components": "6.0.5",
+          "Microsoft.AspNetCore.Components.Web": "6.0.5",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Blazored.Toast.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       },
@@ -175,7 +189,7 @@
       "Microsoft.AspNetCore.JsonPatch/6.0.10": {
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.2"
         },
         "runtime": {
           "lib/net6.0/Microsoft.AspNetCore.JsonPatch.dll": {
@@ -195,7 +209,7 @@
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson/6.0.10": {
         "dependencies": {
           "Microsoft.AspNetCore.JsonPatch": "6.0.10",
-          "Newtonsoft.Json": "13.0.1",
+          "Newtonsoft.Json": "13.0.2",
           "Newtonsoft.Json.Bson": "1.0.2"
         },
         "runtime": {
@@ -263,7 +277,7 @@
           "Microsoft.IdentityModel.Clients.ActiveDirectory": "5.2.4",
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "6.12.2",
           "Microsoft.Rest.ClientRuntime": "2.3.21",
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.2"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.Bot.Connector.dll": {
@@ -277,7 +291,7 @@
           "Microsoft.Bot.Schema": "4.17.1",
           "Microsoft.Bot.Streaming": "4.17.1",
           "Microsoft.Extensions.Logging": "6.0.0",
-          "Newtonsoft.Json": "13.0.1",
+          "Newtonsoft.Json": "13.0.2",
           "System.IO.Pipelines": "6.0.3",
           "System.Text.Encodings.Web": "4.7.2",
           "System.Text.Json": "5.0.2"
@@ -291,7 +305,7 @@
       },
       "Microsoft.Bot.Schema/4.17.1": {
         "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.2"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.Bot.Schema.dll": {
@@ -304,7 +318,7 @@
         "dependencies": {
           "Microsoft.Extensions.Logging": "6.0.0",
           "Microsoft.Net.Http.Headers": "2.1.0",
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.2"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.Bot.Streaming.dll": {
@@ -745,7 +759,7 @@
       },
       "Microsoft.Rest.ClientRuntime/2.3.21": {
         "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.2"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.Rest.ClientRuntime.dll": {
@@ -853,17 +867,17 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "Newtonsoft.Json/13.0.1": {
+      "Newtonsoft.Json/13.0.2": {
         "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
             "assemblyVersion": "13.0.0.0",
-            "fileVersion": "13.0.1.25517"
+            "fileVersion": "13.0.2.27524"
           }
         }
       },
       "Newtonsoft.Json.Bson/1.0.2": {
         "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.2"
         },
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.Bson.dll": {
@@ -1889,6 +1903,13 @@
       "path": "blazored.texteditor/1.0.8",
       "hashPath": "blazored.texteditor.1.0.8.nupkg.sha512"
     },
+    "Blazored.Toast/3.2.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6RiWHpgIgJJFWZHnmSZb/6IBP6LS6F5brLDGTBls/B4bTf0SzPsRoTUu2g6y7sY59/PFC1XeKbwXHys9PCe6lw==",
+      "path": "blazored.toast/3.2.2",
+      "hashPath": "blazored.toast.3.2.2.nupkg.sha512"
+    },
     "FluentValidation/10.2.1": {
       "type": "package",
       "serviceable": true,
@@ -2358,12 +2379,12 @@
       "path": "netstandard.library/1.6.1",
       "hashPath": "netstandard.library.1.6.1.nupkg.sha512"
     },
-    "Newtonsoft.Json/13.0.1": {
+    "Newtonsoft.Json/13.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
-      "path": "newtonsoft.json/13.0.1",
-      "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
+      "sha512": "sha512-R2pZ3B0UjeyHShm9vG+Tu0EBb2lC8b0dFzV9gVn50ofHXh9Smjk6kTn7A/FdAsC8B5cKib1OnGYOXxRBz5XQDg==",
+      "path": "newtonsoft.json/13.0.2",
+      "hashPath": "newtonsoft.json.13.0.2.nupkg.sha512"
     },
     "Newtonsoft.Json.Bson/1.0.2": {
       "type": "package",

@@ -49,7 +49,7 @@ else {
 			   }			
 			</div>
 			<h5 class="pb-3">@kapitola.Perex</h5>
-			<p class="pb-3">@((MarkupString)obsah)</p>
+			<p class="pb-3 obsah">@((MarkupString)obsah)</p>
 			@if (@kapitola.Videa.Count() > 0)
 				   {
 			<h3 class="pb-3">Videa:</h3>		
@@ -105,7 +105,7 @@ else {
 <style>
 	fluent-dialog {
 		position: sticky;
-		z-index: 999;		
+		z-index: 11;		
 	}
 </style>
 @code {
@@ -125,6 +125,8 @@ else {
 	private bool ModelHidden { get; set; } = true;
 	private bool ModelHiddenError { get; set; } = true;
 	int rozstridOdkazy = 0;
+
+	@inject IToastService upozorneni;
 	protected override async Task OnParametersSetAsync() {
 		await CallApiKapitola();
 	}
@@ -195,6 +197,8 @@ else {
 				break;
 			}
 		}
-		MyNavigationManager.NavigateTo("/smazano");
+		MyNavigationManager.NavigateTo("/");
+		upozorneni.ShowSuccess("Kapitola byla úspěšně vymazaná.", "Smazáno!");
+
 	}
 }

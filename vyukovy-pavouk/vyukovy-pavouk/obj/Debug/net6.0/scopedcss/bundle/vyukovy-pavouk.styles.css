@@ -227,7 +227,9 @@ a[b-pkvnducani] {
 .popis p:last-child[b-pkvnducani] {
 	color: gray;
 }
-
+.obsah p[b-pkvnducani] {
+	margin-bottom: 0px !important;
+}
 .btn[b-pkvnducani] {
 	display: grid;
 	justify-content: center;

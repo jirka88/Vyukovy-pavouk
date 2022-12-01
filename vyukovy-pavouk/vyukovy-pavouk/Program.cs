@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
+using Blazored.Toast;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph.ExternalConnectors;
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IStudenti, StudentiManager>();
 builder.Services.AddScoped<IKapitoly, KapitolyManager>();
 builder.Services.AddScoped<IKapitola, KapitolaManager>();
 builder.Services.AddScoped<IPrerekvizita, PrerekvizitaManager>();
+builder.Services.AddBlazoredToast();
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
