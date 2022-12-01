@@ -19,7 +19,7 @@
 	}
 	else
 	{
-		<EditForm Model="@kapitola" OnValidSubmit="@Pridej">
+		<EditForm EditContext="@EditContext" OnSubmit="@Pridej">
 			<FluentValidationValidator />
 			<label class="fw-bold">*Nutno splnit</label>
 			<br />
@@ -90,36 +90,36 @@
 					<label for="obsah" class="fw-bold">*Obsah</label>
 					<!--<InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>-->
 					<BlazoredTextEditor @ref="@QuillHtml">
-    <ToolbarContent>
-        <select class="ql-header">
-            <option selected=""></option>
-            <option value="1"></option>
-            <option value="2"></option>
-            <option value="3"></option>
-            <option value="4"></option>
-            <option value="5"></option>
-        </select>
-        <span class="ql-formats">
-            <button class="ql-bold"></button>
-            <button class="ql-italic"></button>
-            <button class="ql-underline"></button>
-            <button class="ql-strike"></button>
-        </span>
-        <span class="ql-formats">
-            <select class="ql-color"></select>
-            <select class="ql-background"></select>
-        </span>
-		<span class="ql-formats">
-			<button class="ql-code-block" value="code-block"></button>
-		</span>
-        <span class="ql-formats">
-            <button class="ql-list" value="ordered"></button>
-            <button class="ql-list" value="bullet"></button>
-        </span>
- 
-    </ToolbarContent>
-  
-</BlazoredTextEditor>
+						<ToolbarContent>
+							<select class="ql-header">
+								<option selected=""></option>
+								<option value="1"></option>
+								<option value="2"></option>
+								<option value="3"></option>
+								<option value="4"></option>
+								<option value="5"></option>
+							</select>
+							<span class="ql-formats">
+								<button class="ql-bold"></button>
+								<button class="ql-italic"></button>
+								<button class="ql-underline"></button>
+								<button class="ql-strike"></button>
+							</span>
+							<span class="ql-formats">
+								<select class="ql-color"></select>
+								<select class="ql-background"></select>
+							</span>
+							<span class="ql-formats">
+								<button class="ql-code-block" value="code-block"></button>
+							</span>
+							<span class="ql-formats">
+								<button class="ql-list" value="ordered"></button>
+								<button class="ql-list" value="bullet"></button>
+							</span>
+
+						</ToolbarContent>
+
+					</BlazoredTextEditor>
 					<ValidationMessage For="@(()=>@kapitola.Kontent)" />
 				</div>
 				<!--Odkazy na videa-->
@@ -134,10 +134,10 @@
 						var video = kapitola.Videa[i];
 
 						<label class="w-100">Popis odkazu @PocetOdkazu</label>
-								<div class="nazvy-odkazy d-flex w-100 justify-content-center align-items-center flex-wrap">
-						<InputText type="text" class="flex-grow-1" @bind-Value="video.Nazev" />
-						<ValidationMessage For="@(() => @video.Nazev)" />
-							</div>
+						<div class="nazvy-odkazy d-flex w-100 justify-content-center align-items-center flex-wrap">
+							<InputText type="text" class="flex-grow-1" @bind-Value="video.Nazev" />
+							<ValidationMessage For="@(() => @video.Nazev)" />
+						</div>
 						<label class="w-100">*Odkaz</label>
 						<div class="odkazy d-flex w-100 justify-content-center align-items-center flex-wrap">
 							<InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" placeholder="https://..." />
@@ -170,7 +170,7 @@
 					<p class="text-center mb-0">Počet testů, který je potřeba splnit.</p>
 				</div> -->
 				<div class="d-flex justify-content-center align-center w-100">
-					<fluent-button class="main-btn" type="submit" appearance="accent" @onclick="CreateObsah">Vytvořit</fluent-button>
+					<fluent-button class="main-btn" type="submit" appearance="accent">Vytvořit</fluent-button>
 				</div>
 			</div>
 		</EditForm>
@@ -181,13 +181,15 @@
 	.validation-message {
 		margin-top: 10px;
 	}
+
 	.odkazy, .prerekvizity {
 		gap: 0em 1.5em;
 	}
-	.odkazy .validation-message, .prerekvizity .validation-message, .nazvy-odkazy .validation-message  {
-		width: 100%;
-		text-align: left;
-	}
+
+		.odkazy .validation-message, .prerekvizity .validation-message, .nazvy-odkazy .validation-message {
+			width: 100%;
+			text-align: left;
+		}
 
 </style>
 @code {
@@ -198,9 +200,8 @@
 	int maximalniPocetOdkazu = 11;
 
 	BlazoredTextEditor QuillHtml;
-	string QuillHTMLContent;
-
 	Skupina skupina = new Skupina();
+	EditContext EditContext;
 	List<KapitolaPrerekvizita> prerekvizity = new List<KapitolaPrerekvizita>();
 	//kapitola má mnoho videí, prerekvizit, ale zatím jedno zadání
 	vyukovy_pavouk.Data.Kapitola kapitola = new vyukovy_pavouk.Data.Kapitola { Videa = new List<Videa>(), KapitolaPrerekvizita = new List<KapitolaPrerekvizita>(), Zadani = new List<Zadani>() };
@@ -225,7 +226,7 @@
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.IDPredmetu));
 				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.IDPredmetu));
-
+				EditContext = new EditContext(kapitola);
 				//vytvoření prvního vstupu pro prerekvizitu
 				kapitola.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() { prerekvizita = new Prerekvizity() });
 				//zatím řešeno, že je pouze jedno zadání
@@ -237,40 +238,40 @@
 	}
 	private async Task Pridej()
 	{
-		kapitola.IdPredmetu = skupina.IDPredmetu;
-		//pokud je úvod --> nastavám na 0 protože to je ID pro úvodní kapitolu
-		if (kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == -1)
+		kapitola.Kontent = await this.QuillHtml.GetText();
+		if (EditContext.Validate())
 		{
-			kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity = 0;
-		}
-		//kontrola zda-li se dané prerekvizity už nenachzejí v DB
-		foreach (var prerekvizita in prerekvizity)
-		{
-			if (globalIndexKontrola == kapitola.KapitolaPrerekvizita.Count)
+			kapitola.IdPredmetu = skupina.IDPredmetu;
+			kapitola.Kontent = await this.QuillHtml.GetHTML();
+			//pokud je úvod --> nastavím na 0 protože to je ID pro úvodní kapitolu
+			if (kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == -1)
 			{
-				break;
+				kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity = 0;
 			}
-			for (var i = globalIndexKontrola; i < kapitola.KapitolaPrerekvizita.Count; i++)
+			//kontrola zda-li se dané prerekvizity už nenachzejí v DB
+			foreach (var prerekvizita in prerekvizity)
 			{
-				if (prerekvizita.prerekvizita.IdPrerekvizity == kapitola.KapitolaPrerekvizita[i].prerekvizita.IdPrerekvizity)
+				if (globalIndexKontrola == kapitola.KapitolaPrerekvizita.Count)
 				{
-					//vymaže stejnou hodnotu u nově vytvořené instance kapitoly
-					kapitola.KapitolaPrerekvizita.RemoveAt(i);
-					globalIndexKontrola++;
-					//přidá existujicí vztah mezi KapitolaPrerekvizita - Prerekvizita --> díky tomu nebudou vznikat duplicitní hodnoty
-					KapitolaPrerekvizita existujiciPrerekvizita = new KapitolaPrerekvizita();
-					existujiciPrerekvizita.IdPrerekvizita = prerekvizita.IdPrerekvizita;
-					kapitola.KapitolaPrerekvizita.Insert(0, existujiciPrerekvizita);
+					break;
+				}
+				for (var i = globalIndexKontrola; i < kapitola.KapitolaPrerekvizita.Count; i++)
+				{
+					if (prerekvizita.prerekvizita.IdPrerekvizity == kapitola.KapitolaPrerekvizita[i].prerekvizita.IdPrerekvizity)
+					{
+						//vymaže stejnou hodnotu u nově vytvořené instance kapitoly
+						kapitola.KapitolaPrerekvizita.RemoveAt(i);
+						globalIndexKontrola++;
+						//přidá existujicí vztah mezi KapitolaPrerekvizita - Prerekvizita --> díky tomu nebudou vznikat duplicitní hodnoty
+						KapitolaPrerekvizita existujiciPrerekvizita = new KapitolaPrerekvizita();
+						existujiciPrerekvizita.IdPrerekvizita = prerekvizita.IdPrerekvizita;
+						kapitola.KapitolaPrerekvizita.Insert(0, existujiciPrerekvizita);
+					}
 				}
 			}
+			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
+			MyNavigationManager.NavigateTo("/");
 		}
-
-		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
-		MyNavigationManager.NavigateTo("/");
-	}
-	private async void CreateObsah() {
-		QuillHTMLContent = await this.QuillHtml.GetHTML();
-		kapitola.Kontent = QuillHTMLContent;
 
 	}
 	private void VytvorOdkaz()

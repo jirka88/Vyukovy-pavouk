@@ -21,7 +21,7 @@
 	}
 	else
 	{
-		<EditForm Model="@kapitola" OnValidSubmit="@Uprav">
+		<EditForm EditContext="@EditContext" OnSubmit="@Uprav">
 			<FluentValidationValidator />
 			<label class="fw-bold">*Nutno splnit</label>
 			<br />
@@ -37,7 +37,7 @@
 							int index = i;
 							globalIndexPrerekvizita = i;
 
-						
+
 							PridejVyber(index, prerekvizita);
 
 							<div class="prerekvizity d-flex w-100 justify-content-center align-items-center flex-wrap">
@@ -51,18 +51,19 @@
 								{
 									<InputSelect class="flex-grow-1" @bind-Value="@prerekvizita.IdPrerekvizity">
 										<!-- podmínka pro kontrolu jestli se nejedná o úvodní kapitolu -1 je při našem výběru 0 při načtení a celkový počet prerekvizit dané kapitoly je jedna-->
-											<option value="0" selected disabled hidden>Vyberte Prerekvizitu</option>
+										<option value="0" selected disabled hidden>Vyberte Prerekvizitu</option>
 										@if (!uvodniKapitola)
-										{											
+										{
 											@foreach (var kapitola in kapitoly)
 											{
 												<option value="@kapitola.Id">@kapitola.Název</option>
 											}
 										}
-										else {																		
-											<option value="-1">Úvod</option>	
+										else
+										{
+											<option value="-1">Úvod</option>
 										}
-																											
+
 									</InputSelect>
 								}
 								@if (@kapitola.KapitolaPrerekvizita.Count > 1)
@@ -95,38 +96,38 @@
 				<div class="d-flex flex-column">
 					<label for="obsah" class="fw-bold">*Obsah</label>
 					<!--<InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>-->
-						<BlazoredTextEditor @ref="@QuillHtml" >
-    <ToolbarContent>
-        <select class="ql-header">
-            <option selected=""></option>
-            <option value="1"></option>
-            <option value="2"></option>
-            <option value="3"></option>
-            <option value="4"></option>
-            <option value="5"></option>
-        </select>
-        <span class="ql-formats">
-            <button class="ql-bold"></button>
-            <button class="ql-italic"></button>
-            <button class="ql-underline"></button>
-            <button class="ql-strike"></button>
-        </span>
-        <span class="ql-formats">
-            <select class="ql-color"></select>
-            <select class="ql-background"></select>
-        </span>
-		<span class="ql-formats">
-			<button class="ql-code-block" value="code-block"></button>
-		</span>
-        <span class="ql-formats">
-            <button class="ql-list" value="ordered"></button>
-            <button class="ql-list" value="bullet"></button>
-        </span>
- 
-		 </ToolbarContent>
+					<BlazoredTextEditor @ref="@QuillHtml">
+						<ToolbarContent>
+							<select class="ql-header">
+								<option selected=""></option>
+								<option value="1"></option>
+								<option value="2"></option>
+								<option value="3"></option>
+								<option value="4"></option>
+								<option value="5"></option>
+							</select>
+							<span class="ql-formats">
+								<button class="ql-bold"></button>
+								<button class="ql-italic"></button>
+								<button class="ql-underline"></button>
+								<button class="ql-strike"></button>
+							</span>
+							<span class="ql-formats">
+								<select class="ql-color"></select>
+								<select class="ql-background"></select>
+							</span>
+							<span class="ql-formats">
+								<button class="ql-code-block" value="code-block"></button>
+							</span>
+							<span class="ql-formats">
+								<button class="ql-list" value="ordered"></button>
+								<button class="ql-list" value="bullet"></button>
+							</span>
 
-		</BlazoredTextEditor>	
-										
+						</ToolbarContent>
+
+					</BlazoredTextEditor>
+
 					<ValidationMessage For="@(()=>@kapitola.Kontent)" />
 				</div>
 				<!--Odkazy na videa-->
@@ -141,10 +142,10 @@
 						var video = kapitola.Videa[i];
 
 						<label class="w-100">Popis odkazu @PocetOdkazu</label>
-								<div class="nazvy-odkazy d-flex w-100 justify-content-center align-items-center flex-wrap">
-						<InputText type="text" class="flex-grow-1" @bind-Value="video.Nazev" />
-						<ValidationMessage For="@(() => @video.Nazev)" />
-							</div>
+						<div class="nazvy-odkazy d-flex w-100 justify-content-center align-items-center flex-wrap">
+							<InputText type="text" class="flex-grow-1" @bind-Value="video.Nazev" />
+							<ValidationMessage For="@(() => @video.Nazev)" />
+						</div>
 						<label class="w-100">*Odkaz</label>
 						<div class="odkazy d-flex w-100 justify-content-center align-items-center flex-wrap">
 							<InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" placeholder="https://..." />
@@ -181,7 +182,7 @@
 				</div>
 			</div>
 		</EditForm>
-			
+
 	}
 
 </div>
@@ -189,13 +190,15 @@
 	.validation-message {
 		margin-top: 10px;
 	}
+
 	.odkazy, .prerekvizity {
 		gap: 0em 1.5em;
 	}
-	.odkazy .validation-message, .prerekvizity .validation-message, .nazvy-odkazy .validation-message  {
-		width: 100%;
-		text-align: left;
-	}
+
+		.odkazy .validation-message, .prerekvizity .validation-message, .nazvy-odkazy .validation-message {
+			width: 100%;
+			text-align: left;
+		}
 
 </style>
 @code {
@@ -216,7 +219,8 @@
 	protected override async Task OnParametersSetAsync()
 	{
 		kapitola = await Http.GetFromJsonAsync<vyukovy_pavouk.Data.Kapitola>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdKapitola);
-		if(kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == 0) {
+		if (kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == 0)
+		{
 			uvodniKapitola = true;
 		}
 	}
@@ -224,7 +228,7 @@
 
 	Skupina skupina = new Skupina();
 	List<KapitolaPrerekvizita> prerekvizity = new List<KapitolaPrerekvizita>();
-
+	EditContext EditContext;
 	List<vyukovy_pavouk.Data.Kapitola> kapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
 	List<vyukovy_pavouk.Data.Kapitola> VybraneKapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
 
@@ -244,61 +248,70 @@
 			{
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.IDPredmetu));
-				//vymazání upravované kapitoly --> jinak by se dala navázat kapitola sama na sebe 
+				//vymazání upravované kapitoly --> jinak by se dala navázat kapitola sama na sebe
 				kapitoly.RemoveAt(kapitoly.FindIndex(x => x.Id == kapitola.Id));
 				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.IDPredmetu));
+				EditContext = new EditContext(kapitola);
 				IsLoaded = true;
 				nacti = true;
 			}
-			StateHasChanged();			
+			StateHasChanged();
 		}
 
-		while(nacti) {
-			try {
+		while (nacti)
+		{
+			try
+			{
 				await QuillHtml.LoadHTMLContent(kapitola.Kontent);
 				nacti = false;
-				StateHasChanged();		
+				StateHasChanged();
 			}
-			catch {
+			catch
+			{
 				await Task.Delay(10);
 			}
 		}
 	}
 	private async Task Uprav()
 	{
-		kapitola.Kontent = await this.QuillHtml.GetHTML();
-		kapitola.IdPredmetu = skupina.IDPredmetu;
-		//pokud je úvod --> nastavám na 0 protože to je ID pro úvodní kapitolu
-		if (kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == -1)
+		kapitola.Kontent = await this.QuillHtml.GetText();
+		if (EditContext.Validate())
 		{
-			kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity = 0;
-		}
-		//kontrola zda-li se dané prerekvizity už nenachzejí v DB
-		foreach (var prerekvizita in prerekvizity)
-		{
-			if (globalIndexKontrola == kapitola.KapitolaPrerekvizita.Count)
+			kapitola.Kontent = await this.QuillHtml.GetHTML();
+			kapitola.IdPredmetu = skupina.IDPredmetu;
+			//pokud je úvod --> nastavám na 0 protože to je ID pro úvodní kapitolu
+			if (kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == -1)
 			{
-				break;
+				kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity = 0;
 			}
-			for (var i = globalIndexKontrola; i < kapitola.KapitolaPrerekvizita.Count; i++)
+			//kontrola zda-li se dané prerekvizity už nenachzejí v DB
+			foreach (var prerekvizita in prerekvizity)
 			{
-				if (prerekvizita.prerekvizita.IdPrerekvizity == kapitola.KapitolaPrerekvizita[i].prerekvizita.IdPrerekvizity)
+				if (globalIndexKontrola == kapitola.KapitolaPrerekvizita.Count)
 				{
-					//vymaže stejnou hodnotu u nově vytvořené instance kapitoly
-					kapitola.KapitolaPrerekvizita.RemoveAt(i);
-					globalIndexKontrola++;
-					//přidá existujicí vztah mezi KapitolaPrerekvizita - Prerekvizita --> díky tomu nebudou vznikat duplicitní hodnoty
-					KapitolaPrerekvizita existujiciPrerekvizita = new KapitolaPrerekvizita();
-					existujiciPrerekvizita.IdPrerekvizita = prerekvizita.IdPrerekvizita;
-					kapitola.KapitolaPrerekvizita.Insert(0, existujiciPrerekvizita);
+					break;
+				}
+				for (var i = globalIndexKontrola; i < kapitola.KapitolaPrerekvizita.Count; i++)
+				{
+					if (prerekvizita.prerekvizita.IdPrerekvizity == kapitola.KapitolaPrerekvizita[i].prerekvizita.IdPrerekvizity)
+					{
+						//vymaže stejnou hodnotu u nově vytvořené instance kapitoly
+						kapitola.KapitolaPrerekvizita.RemoveAt(i);
+						globalIndexKontrola++;
+						//přidá existujicí vztah mezi KapitolaPrerekvizita - Prerekvizita --> díky tomu nebudou vznikat duplicitní hodnoty
+						KapitolaPrerekvizita existujiciPrerekvizita = new KapitolaPrerekvizita();
+						existujiciPrerekvizita.IdPrerekvizita = prerekvizita.IdPrerekvizita;
+						kapitola.KapitolaPrerekvizita.Insert(0, existujiciPrerekvizita);
+					}
 				}
 			}
+
+			await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
+			MyNavigationManager.NavigateTo("/");
 		}
 
-		await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
-		MyNavigationManager.NavigateTo("/");
 	}
-	
+
 	private void VytvorOdkaz()
 	{
 		if (kapitola.Videa.Count() == 0 || kapitola.Videa[globalIndex].Odkaz != null)
@@ -332,13 +345,14 @@
 
 
 	}
-	private void VytvorPrerekvizituNacteni() {
+	private void VytvorPrerekvizituNacteni()
+	{
 		//najde třídu prerekvizity, kterou jsme si vybrali
-			vyukovy_pavouk.Data.Kapitola hledanaPrerekvizita = new vyukovy_pavouk.Data.Kapitola();
+		vyukovy_pavouk.Data.Kapitola hledanaPrerekvizita = new vyukovy_pavouk.Data.Kapitola();
 
-			hledanaPrerekvizita = kapitoly.Find(x => x.Id == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.IdPrerekvizity);
-			//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
-			kapitoly.Remove(hledanaPrerekvizita);
+		hledanaPrerekvizita = kapitoly.Find(x => x.Id == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.IdPrerekvizity);
+		//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
+		kapitoly.Remove(hledanaPrerekvizita);
 
 	}
 	private void SmazPrerekvizitu(int index)
