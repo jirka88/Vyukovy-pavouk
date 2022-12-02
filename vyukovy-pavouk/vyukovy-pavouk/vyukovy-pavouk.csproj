@@ -24,7 +24,6 @@
     <None Remove="Pages\Kapitola.razor.css" />
     <None Remove="Pages\Main.razor.css" />
     <None Remove="Pages\Progres.razor.css" />
-    <None Remove="Pages\smazano.razor.css" />
     <None Remove="Pages\Souhrn.razor.css" />
     <None Remove="Shared\MainLayout.razor.css" />
   </ItemGroup>
@@ -37,7 +36,6 @@
     <Content Include="Pages\Kapitola.razor.css" />
     <Content Include="Pages\Main.razor.css" />
     <Content Include="Pages\Progres.razor.css" />
-    <Content Include="Pages\Smazano.razor.css" />
     <Content Include="Pages\Souhrn.razor.css" />
     <Content Include="Shared\MainLayout.razor.css" />
   </ItemGroup>

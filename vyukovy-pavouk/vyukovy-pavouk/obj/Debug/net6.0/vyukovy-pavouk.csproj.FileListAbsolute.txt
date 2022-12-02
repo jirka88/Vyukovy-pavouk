@@ -104,7 +104,6 @@ D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedc
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Pages\Kapitola.razor.rz.scp.css
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Pages\Main.razor.rz.scp.css
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Pages\Progres.razor.rz.scp.css
-D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Pages\Smazano.razor.rz.scp.css
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Pages\Souhrn.razor.rz.scp.css
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\bundle\vyukovy-pavouk.styles.css

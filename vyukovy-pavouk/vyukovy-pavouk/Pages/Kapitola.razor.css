@@ -17,9 +17,6 @@ a {
 .popis p:last-child {
 	color: gray;
 }
-.obsah p {
-	margin-bottom: 0px !important;
-}
 .btn {
 	display: grid;
 	justify-content: center;

@@ -95,7 +95,7 @@
 				<div class="d-flex flex-column">
 					<label for="obsah" class="fw-bold">*Obsah</label>
 					<!--<InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>-->
-					<BlazoredTextEditor @ref="@QuillHtml">
+					<BlazoredTextEditor @ref="@QuillHtml" Placeholder="Obsah kapitoly">
 						<ToolbarContent>
 							<select class="ql-header">
 								<option selected=""></option>
@@ -121,13 +121,22 @@
 							<span class="ql-formats">
 								<button class="ql-list" value="ordered"></button>
 								<button class="ql-list" value="bullet"></button>
+								<select class="ql-align">
+									<option selected=""></option>
+									<option value="center"></option>
+									<option value="right"></option>
+									<option value="justify"></option>
+								</select>
+							</span>
+							<span class="ql-formats">
+								<button class="ql-link"></button>
 							</span>
 
 						</ToolbarContent>
 
 					</BlazoredTextEditor>
 
-					<ValidationMessage For="@(()=>@kapitola.Kontent)" />
+					<ValidationMessage For="@(()=>@kapitola.Kontent)" /> 
 				</div>
 				<!--Odkazy na videa-->
 				<label class="First-label">Odkazy na videa</label>
@@ -323,7 +332,7 @@
 		if (kapitola.Videa.Count() == 0 || kapitola.Videa[globalIndex].Odkaz != null)
 		{
 			kapitola.Videa.Add(new Videa());
-		}		
+		}
 	}
 	private void VytvorPrerekvizitu()
 	{

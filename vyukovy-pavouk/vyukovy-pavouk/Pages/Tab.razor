@@ -115,9 +115,7 @@
 						skupinaStudentConnect.IdStudent = Convert.ToInt32(student.Id);
 						await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/connect", skupinaStudentConnect);
 						await PripojUvodniPrerekvizitu();
-					}
-				
-					
+					}									
 					MyNavigationManager.NavigateTo("/"); 
 				}
 			}		
