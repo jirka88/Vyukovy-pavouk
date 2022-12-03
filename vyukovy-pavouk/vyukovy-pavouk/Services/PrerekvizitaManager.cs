@@ -12,10 +12,10 @@ namespace vyukovy_pavouk.Services
             _dbContext = dbContext;
         }
         //získání úvodní prerekvizity --> 0 --> pak se přidá při vytvoření uživatele a tím se odemkne úvodní kapitola 
-        public Splneni GetUvodniPrerekvizitu(int Idkapitoly)
+        public Splneni GetUvodniPrerekvizitu(int IdSkupiny)
         {
             return _dbContext.Splneni
-                .Where(id => id.IdSkupiny == Idkapitoly)
+                .Where(id => id.IdSkupiny == IdSkupiny && id.IdKapitoly == 0)
                 .SingleOrDefault();
         }
     }
