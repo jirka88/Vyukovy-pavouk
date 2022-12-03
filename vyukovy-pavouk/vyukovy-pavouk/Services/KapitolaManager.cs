@@ -50,7 +50,7 @@ namespace vyukovy_pavouk.Services
             try
             {
                 Kapitola kapitola = _dbContext.Kapitoly.Find(Id);
-                if(kapitola != null)
+                if (kapitola != null)
                 {
                     _dbContext.Kapitoly.Remove(kapitola);
                     _dbContext.SaveChanges();
@@ -69,27 +69,25 @@ namespace vyukovy_pavouk.Services
         public async Task UpdateKapitola(Kapitola kapitola)
         {
             _dbContext.Entry(kapitola).State = EntityState.Modified;
-        
-                /*foreach (KapitolaPrerekvizita kapitolaPrerekvizita in kapitola.KapitolaPrerekvizita)
-                {
-                    if (kapitolaPrerekvizita.IdPrerekvizita != 0 || kapitolaPrerekvizita.prerekvizita.IdPrerekvizity == 0)
-                    {
-                        _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Modified;
-                         _dbContext.Entry(kapitolaPrerekvizita.prerekvizita).State = EntityState.Modified;
-                }
-                    else
-                    {
-                        _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Added;
-                    _dbContext.Entry(kapitolaPrerekvizita.prerekvizita).State = EntityState.Added;
-                }
-                }*/
-        
+
+            /*  foreach (KapitolaPrerekvizita kapitolaPrerekvizita in kapitola.KapitolaPrerekvizita)
+              {
+                  if (kapitolaPrerekvizita.IdPrerekvizita != 0 || kapitolaPrerekvizita.prerekvizita.IdPrerekvizity == 0)
+                  {
+                      _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Modified;
+                  }
+                  else
+                  {
+                      _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Added;
+                  }
+              }*/
+
 
             //zjištění změn u videí 
             foreach (Videa odkaz in kapitola.Videa)
             {
                 //pokud nastala změna
-                if(odkaz.Id != 0)
+                if (odkaz.Id != 0)
                 {
                     _dbContext.Entry(odkaz).State = EntityState.Modified;
                 }
@@ -100,17 +98,17 @@ namespace vyukovy_pavouk.Services
                 }
             }
             //pokud nastalo smazání učitého odkazu 
-            List<int> odkazy = new List <int>();
+            List<int> odkazy = new List<int>();
             //zjištění jaké ID se nachází v naší kapitole po změně dat 
             odkazy = kapitola.Videa.Select(x => x.Id).ToList();
-            //načtení dat z databáze a porovnání naších změněných dat ty co se zde uloží půjdou k smazání 
+            //načtení dat z databáze a porovnání naších změněných dat, ty co se zde uloží půjdou k smazání 
             List<Videa> odkazyNaSmazani = new List<Videa>();
             odkazyNaSmazani = await _dbContext.Videa.Where(x => !odkazy.Contains(x.Id) && x.IdKapitoly == kapitola.Id).ToListAsync();
 
             //zjištění změn/y u zadaní
             foreach (Zadani zadani in kapitola.Zadani)
             {
-                if(zadani.Id != 0)
+                if (zadani.Id != 0)
                 {
                     _dbContext.Entry(zadani).State = EntityState.Modified;
                 }
@@ -119,7 +117,7 @@ namespace vyukovy_pavouk.Services
                     _dbContext.Entry(zadani).State = EntityState.Added;
                 }
             }
-            
+
             List<int> zadaniList = new List<int>();
             //zjištění jaké ID se nachází v naší kapitole po změně dat 
             zadaniList = kapitola.Zadani.Select(x => x.Id).ToList();

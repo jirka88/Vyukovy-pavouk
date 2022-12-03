@@ -192,7 +192,7 @@
 					<p class="text-center mb-0">Počet testů, který je potřeba splnit.</p>
 				</div> -->
 				<div class="d-flex justify-content-center align-center w-100">
-					<fluent-button class="main-btn" type="submit" appearance="accent">Upravit</fluent-button>
+					<fluent-button class="main-btn" type="submit" Disabled="@vypnutiTlacitka" appearance="accent">Upravit</fluent-button>
 				</div>
 			</div>
 		</EditForm>
@@ -246,6 +246,7 @@
 	List<vyukovy_pavouk.Data.Kapitola> kapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
 	List<vyukovy_pavouk.Data.Kapitola> VybraneKapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
 	@inject IToastService upozorneni;
+	bool vypnutiTlacitka = false;
 	bool IsLoaded = false;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -288,6 +289,7 @@
 	}
 	private async Task Uprav()
 	{
+		vypnutiTlacitka = true;
 		kapitola.Kontent = await this.QuillHtml.GetText();
 		if (EditContext.Validate())
 		{
@@ -323,6 +325,9 @@
 			await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
 			MyNavigationManager.NavigateTo("/");
 			upozorneni.ShowSuccess("Kapitola byla úspěšně upravena.", "Úspěch!");
+		}
+		else {
+			vypnutiTlacitka = false;
 		}
 
 	}

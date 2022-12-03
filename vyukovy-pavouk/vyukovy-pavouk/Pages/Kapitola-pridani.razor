@@ -185,7 +185,7 @@
 					<p class="text-center mb-0">Počet testů, který je potřeba splnit.</p>
 				</div> -->
 				<div class="d-flex justify-content-center align-center w-100">
-					<fluent-button class="main-btn" type="submit" appearance="accent">Vytvořit</fluent-button>
+					<fluent-button class="main-btn" type="submit" Disabled="@vypnutiTlacitka" appearance="accent">Vytvořit</fluent-button>
 				</div>
 			</div>
 		</EditForm>
@@ -214,6 +214,7 @@
 	int globalIndexKontrola = 0;
 	int maximalniPocetOdkazu = 11;
 	bool ukazToast = false;
+	bool vypnutiTlacitka = false;
 
 	BlazoredTextEditor QuillHtml;
 	Skupina skupina = new Skupina();
@@ -256,6 +257,7 @@
 	}
 	private async Task Pridej()
 	{
+		vypnutiTlacitka = true;
 		kapitola.Kontent = await this.QuillHtml.GetText();
 		if (EditContext.Validate())
 		{
@@ -290,6 +292,9 @@
 			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
 			MyNavigationManager.NavigateTo("/");
 			upozorneni.ShowSuccess("Kapitola byla úspěšně vytvořena.", "Úspěch!");
+		}
+		else {
+			vypnutiTlacitka = false;
 		}
 
 	}

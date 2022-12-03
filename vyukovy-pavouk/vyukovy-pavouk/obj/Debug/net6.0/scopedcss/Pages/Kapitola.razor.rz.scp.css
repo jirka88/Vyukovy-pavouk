@@ -14,6 +14,7 @@ a[b-pkvnducani] {
 	margin-top: 0.5em;
 	margin-bottom: 0;
 }
+
 .popis p:last-child[b-pkvnducani] {
 	color: gray;
 }
@@ -21,6 +22,17 @@ a[b-pkvnducani] {
 	display: grid;
 	justify-content: center;
 
+}
+fluent-dialog[b-pkvnducani] {
+	position: sticky;
+	z-index: 11;
+}
+.obsah *[b-pkvnducani] {
+	margin-bottom: 0rem !important;
+}
+.dialog-btn[b-pkvnducani] {
+	width: 100px;
+	height: 50px;
 }
 .main-btn[b-pkvnducani] {
 	width: 40em;
