@@ -69,19 +69,27 @@ namespace vyukovy_pavouk.Services
         public async Task UpdateKapitola(Kapitola kapitola)
         {
             _dbContext.Entry(kapitola).State = EntityState.Modified;
-
-            /*  foreach (KapitolaPrerekvizita kapitolaPrerekvizita in kapitola.KapitolaPrerekvizita)
-              {
-                  if (kapitolaPrerekvizita.IdPrerekvizita != 0 || kapitolaPrerekvizita.prerekvizita.IdPrerekvizity == 0)
-                  {
-                      _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Modified;
-                  }
-                  else
-                  {
-                      _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Added;
-                  }
-              }*/
-
+            foreach (KapitolaPrerekvizita kapitolaPrerekvizita in kapitola.KapitolaPrerekvizita)
+            {
+                //pokud je to nezměněná hodnota 
+                if(kapitolaPrerekvizita.prerekvizita == null)
+                {
+                    _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Modified;
+                }
+                //pokud to je změněná hodnota 
+                else if (kapitolaPrerekvizita.Id != 0 && kapitolaPrerekvizita.prerekvizita != null)
+                {
+                    //toto bude potřeba dodělat --> musí hledat ID splneni a pokud neni tak ho vytvorit 
+                    _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Modified;
+                }
+                //pokud to je přidaná hodnota 
+                else
+                {                
+                    //to stejné akorát naopak musí hledat stejnou vazbu 
+                        _dbContext.Entry(kapitolaPrerekvizita.prerekvizita).State = EntityState.Added;
+                        _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Added;                                 
+                }
+            }
 
             //zjištění změn u videí 
             foreach (Videa odkaz in kapitola.Videa)
@@ -124,19 +132,19 @@ namespace vyukovy_pavouk.Services
             //načtení dat z databáze a porovnání naších změněných dat ty co se zde uloží půjdou k smazání 
             List<Zadani> zadaniNaSmazani = new List<Zadani>();
             zadaniNaSmazani = await _dbContext.Zadani.Where(x => !zadaniList.Contains(x.Id) && x.IdKapitoly == kapitola.Id).ToListAsync();
-            /*  
-                        //pokud nastalo smazání učitého odkazu 
-                        List<int> prerekvizity = new List<int>();
-                        //zjištění jaké ID se nachází v naší kapitole po změně dat 
-                        prerekvizity = kapitola.KapitolaPrerekvizita.Select(x => x.IdPrerekvizita).ToList();
-                        //načtení dat z databáze a porovnání naších změněných dat ty co se zde uloží půjdou k smazání 
-                        List<KapitolaPrerekvizita> prerekvizityNaSmazani = new List<KapitolaPrerekvizita>();
 
-                        prerekvizityNaSmazani = await _dbContext.kapitolaPrerekvizita.Where(x => !prerekvizity.Contains(x.IdPrerekvizita) && x.KapitolaId == kapitola.Id).ToListAsync();*/
+            //pokud nastalo smazání učitého odkazu 
+            List<int> prerekvizity = new List<int>();
+            //zjištění jaké ID se nachází v naší kapitole po změně dat 
+            prerekvizity = kapitola.KapitolaPrerekvizita.Select(x => x.IdPrerekvizita).ToList();
+            //načtení dat z databáze a porovnání naších změněných dat ty co se zde uloží půjdou k smazání 
+            List<KapitolaPrerekvizita> prerekvizityNaSmazani = new List<KapitolaPrerekvizita>();
+
+            prerekvizityNaSmazani = await _dbContext.kapitolaPrerekvizita.Where(x => !prerekvizity.Contains(x.IdPrerekvizita) && x.KapitolaId == kapitola.Id).ToListAsync();
 
             _dbContext.RemoveRange(odkazyNaSmazani);
             _dbContext.RemoveRange(zadaniNaSmazani);
-            //_dbContext.RemoveRange(prerekvizityNaSmazani);
+            _dbContext.RemoveRange(prerekvizityNaSmazani);
             await _dbContext.SaveChangesAsync();
         }
     }

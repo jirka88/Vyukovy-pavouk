@@ -54,15 +54,23 @@ namespace vyukovypavouk.Migrations
 
             modelBuilder.Entity("vyukovy_pavouk.Data.KapitolaPrerekvizita", b =>
                 {
-                    b.Property<int>("KapitolaId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("IdPrerekvizita")
                         .HasColumnType("int");
 
-                    b.HasKey("KapitolaId", "IdPrerekvizita");
+                    b.Property<int>("KapitolaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("IdPrerekvizita");
+
+                    b.HasIndex("KapitolaId");
 
                     b.ToTable("kapitolaPrerekvizita");
                 });

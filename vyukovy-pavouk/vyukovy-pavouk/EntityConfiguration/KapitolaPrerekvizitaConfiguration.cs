@@ -10,6 +10,7 @@ namespace vyukovy_pavouk.EntityConfiguration
         public void Configure(EntityTypeBuilder<KapitolaPrerekvizita> builder)
         {
             builder.HasKey(id => new { id.KapitolaId, id.IdPrerekvizita });
+            builder.HasKey(id => id.Id);
             builder.HasOne(k => k.kapitola)
                 .WithMany(k => k.KapitolaPrerekvizita)
                 .HasForeignKey(id => id.KapitolaId);

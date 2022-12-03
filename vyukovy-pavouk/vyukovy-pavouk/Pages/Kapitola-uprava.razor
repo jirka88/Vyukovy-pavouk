@@ -312,16 +312,19 @@
 					if (prerekvizita.prerekvizita.IdPrerekvizity == kapitola.KapitolaPrerekvizita[i].prerekvizita.IdPrerekvizity)
 					{
 						//vymaže stejnou hodnotu u nově vytvořené instance kapitoly
+						int id = kapitola.KapitolaPrerekvizita[i].Id;
 						kapitola.KapitolaPrerekvizita.RemoveAt(i);
 						globalIndexKontrola++;
 						//přidá existujicí vztah mezi KapitolaPrerekvizita - Prerekvizita --> díky tomu nebudou vznikat duplicitní hodnoty
 						KapitolaPrerekvizita existujiciPrerekvizita = new KapitolaPrerekvizita();
 						existujiciPrerekvizita.IdPrerekvizita = prerekvizita.IdPrerekvizita;
+						existujiciPrerekvizita.Id = id;
 						kapitola.KapitolaPrerekvizita.Insert(0, existujiciPrerekvizita);
 					}
 				}
 			}
 
+			
 			await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
 			MyNavigationManager.NavigateTo("/");
 			upozorneni.ShowSuccess("Kapitola byla úspěšně upravena.", "Úspěch!");
