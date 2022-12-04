@@ -23,10 +23,6 @@ input[type=text]:focus {
     box-shadow: 6px 5px #464EB8;
 }
 
-input[type=text]:hover {
-    background: #e8e8e8;
-}
-
 textarea {
     height: 20vh;
     background: #f9f9f9;
@@ -35,15 +31,6 @@ textarea {
     padding: 12px;
     box-shadow: 6px 5px gray;
 }
-
-    textarea:focus {
-        background: #f9f9f9 !important;
-        box-shadow: 6px 5px #464EB8;
-    }
-
-    textarea:hover {
-        background: #e8e8e8;
-    }
 
 label {
     font-size: 0.9em;
@@ -61,15 +48,23 @@ option {
     padding: 24px;
 }
 
-select:focus {
+#editor {
+    border: 1px solid gray;
+    box-shadow: 6px 5px gray;
+}
+
+.ql-toolbar.ql-snow {
+    border: none;
+    border-bottom: 1px solid gray;
+}
+
+textarea:focus, select:focus, #editor:focus {
     background: #f9f9f9 !important;
     box-shadow: 6px 5px #464EB8;
 }
-
-select:hover {
+select:hover, textarea:hover, input[type=text]:hover {
     background: #e8e8e8;
 }
-
 ::selection {
     background: #464EB8;
     color: white;

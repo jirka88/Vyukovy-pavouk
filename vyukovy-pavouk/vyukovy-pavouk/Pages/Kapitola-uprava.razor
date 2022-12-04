@@ -2,7 +2,7 @@
 @page "/edit/{IdKapitola:int}"
 @using vyukovy_pavouk.Data
 @using Microsoft.JSInterop;
-@inject IJSRuntime JS
+@inject IJSRuntime jsRuntime
 @layout UserLayout
 @inject NavigationManager MyNavigationManager
 @inject MicrosoftTeams MicrosoftTeams
@@ -94,7 +94,7 @@
 				</div>
 				<div class="d-flex flex-column">
 					<label for="obsah" class="fw-bold">*Obsah</label>
-					<!--<InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>-->
+					<div id="editor" tabindex="0">
 					<BlazoredTextEditor @ref="@QuillHtml" Placeholder="Obsah kapitoly">
 						<ToolbarContent>
 							<select class="ql-header">
@@ -135,6 +135,7 @@
 						</ToolbarContent>
 
 					</BlazoredTextEditor>
+					</div>
 
 					<ValidationMessage For="@(()=>@kapitola.Kontent)" /> 
 				</div>
@@ -222,9 +223,9 @@
 	int globalIndexKontrola = 0;
 	int maximalniPocetOdkazu = 11;
 	bool uvodniKapitola = false;
-
 	bool nacti = false;
 	bool ukazToast = false;
+
 	[Parameter]
 	public int IdKapitola { get; set; }
 
@@ -270,6 +271,7 @@
 				IsLoaded = true;
 				nacti = true;
 			}
+			//await jsRuntime.InvokeVoidAsync("NastavFocus");
 			StateHasChanged();
 		}
 

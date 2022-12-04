@@ -87,8 +87,8 @@
 					<ValidationMessage For="@(()=>@kapitola.Perex)" />
 				</div>
 				<div class="d-flex flex-column">
-					<label for="obsah" class="fw-bold">*Obsah</label>
-					<!--<InputTextArea type="text" id="obsah" resize="vertical" @bind-Value="@kapitola.Kontent"></InputTextArea>-->
+					<label for="obsah" class="fw-bold">*Obsah</label>			
+					<div id="editor">
 					<BlazoredTextEditor @ref="@QuillHtml" Placeholder="Obsah kapitoly">
 						<ToolbarContent>
 							<select class="ql-header">
@@ -130,6 +130,7 @@
 						</ToolbarContent>
 
 					</BlazoredTextEditor>
+					</div>
 					<ValidationMessage For="@(()=>@kapitola.Kontent)" />
 				</div>
 				<!--Odkazy na videa-->
@@ -201,10 +202,11 @@
 		gap: 0em 1.5em;
 	}
 
-		.odkazy .validation-message, .prerekvizity .validation-message, .nazvy-odkazy .validation-message {
-			width: 100%;
-			text-align: left;
-		}
+	.odkazy .validation-message, .prerekvizity .validation-message, .nazvy-odkazy .validation-message {
+		width: 100%;
+		text-align: left;
+	}
+
 
 </style>
 @code {

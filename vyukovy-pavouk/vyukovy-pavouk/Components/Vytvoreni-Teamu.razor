@@ -22,12 +22,12 @@
 		</fluent-dialog>
 		}
 		<!--vytvoření nového předmětu -->
-		<h1 class="py-5 text-center">Je potřeba vytvořit team</h1>
+		<h1 class="py-5 text-center">Je potřeba vytvořit strukturu</h1>
 		<EditForm Model="@predmet" OnValidSubmit="@vytvor" class="editForm d-flex justify-content-center">
 			 <FluentValidationValidator />
 			<div class="card">
 				<div class="card-body gap-4">
-					<h2 class="card-title text-center">Vytvořit nový team</h2>
+					<h2 class="card-title text-center">Vytvořit novou strukturu</h2>
 					<InputText id="nazev" type="text" placeholder="Název předmětu" @bind-Value="@predmet.Nazev"></InputText>
 					<ValidationMessage For="@(()=>@predmet.Nazev)" />
 					<fluent-button appearance="accent" type="submit" disabled="@(!context.IsModified() || !context.Validate())">Vytvořit</fluent-button>
@@ -41,14 +41,14 @@
 			<EditForm Model="@skupina" OnValidSubmit="@vytvorZexistujici" class="editForm d-flex justify-content-center">
 			<div class="card">
 				<div class="card-body gap-4">
-					<h2 class="card-title pt-2 text-center">Vytvořit z existujícího teamu</h2>
+					<h2 class="card-title pt-2 text-center">Vytvořit z existující struktury</h2>
 					<select @bind-Value="@PredmetSelect" @bind-Value:event="onchange">
 						@foreach (var item in predmety)
 						{
 							<option>@item.Nazev</option>
 						}
 					</select>
-					<fluent-button appearance="accent" type="submit">Vytvořit</fluent-button>
+					<fluent-button appearance="accent" Disabled="@vypnutiTlacitka" type="submit">Vytvořit</fluent-button>
 				</div>
 			</div>
 			</EditForm>
@@ -79,12 +79,12 @@
 	public List<Predmet> predmety { get; set; }
 	string PredmetSelect { get; set; }
 	[Inject]
-	public NavigationManager MyNavigationManager { get; set; }
-	public Predmet hledanyPredmet { get; set; } = new Predmet();
-	public Skupina skupina = new Skupina();
-	public Predmet predmet { get; set; } = new Predmet {Skupiny = new List<Skupina>()};
-	public bool modelHidden = true;
-	@inject IToastService upozorneni;
+	NavigationManager MyNavigationManager { get; set; }
+	Predmet hledanyPredmet { get; set; } = new Predmet();
+	Skupina skupina = new Skupina();
+	Predmet predmet { get; set; } = new Predmet {Skupiny = new List<Skupina>()};
+	bool modelHidden = true;
+	bool vypnutiTlacitka = false;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		await base.OnAfterRenderAsync(firstRender);
@@ -124,6 +124,7 @@
 	}
 	//naváže na novou skupinu existující předmět
 	public async Task vytvorZexistujici() {
+		vypnutiTlacitka = true;
 		//přidání ID skupiny 
 		skupina.TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
 		//přidání ID předmětu z výběru nahoře
