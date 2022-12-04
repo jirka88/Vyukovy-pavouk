@@ -33,7 +33,7 @@ else {
 					<h5 class="text-center pb-3">Opravdu si přejete smazat kapitolu @kapitola.Název ?</h5>
 					<div>
 						<fluent-button class="dialog-btn" @onclick="CloseDialog">Zavřít</fluent-button>
-						<fluent-button appearance="accent" class="dialog-btn" @onclick="DeleteKapitola">Smazat</fluent-button>
+						<fluent-button appearance="accent" class="dialog-btn" Disabled="@vypnutiTlacitka" @onclick="DeleteKapitola">Smazat</fluent-button>
 					</div>
 					</div>
 				</fluent-dialog>
@@ -42,7 +42,7 @@ else {
 								<?xml version="1.0" encoding="iso-8859-1"?>
 
 <svg version="1.1" class="pb-3" id="Capa_1"xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 177.055 177.055" style="enable-background:new 0 0 177.055 177.055; width: 20%" xml:space="preserve">
+	 viewBox="0 0 177.055 177.055" style="enable-background:new 0 0 177 177; width: 20%" xml:space="preserve">
 <path d="M0.001,88.527c0,48.814,39.713,88.527,88.527,88.527c48.813,0,88.526-39.713,88.526-88.527S137.341,0,88.528,0
 	C39.714,0,0.001,39.713,0.001,88.527z M88.528,24.304c35.413,0,64.224,28.811,64.224,64.224c0,13.324-4.081,25.712-11.055,35.983
 	L52.544,35.359C62.816,28.385,75.204,24.304,88.528,24.304z M124.511,141.696c-10.272,6.974-22.659,11.055-35.983,11.055
@@ -147,6 +147,7 @@ else {
 	private bool IsLoaded = false;
 	private bool ModelHidden { get; set; } = true;
 	private bool ModelHiddenError { get; set; } = true;
+	bool vypnutiTlacitka = false;
 	int rozstridOdkazy = 0;
 
 	@inject IToastService upozorneni;
@@ -205,6 +206,7 @@ else {
 		MyNavigationManager.NavigateTo($"edit/{kapitola.Id}");
 	}
 	private async Task DeleteKapitola() {
+		vypnutiTlacitka = true;
 		//smazání samotné kapitoly 
 		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/kapitola/delete/{kapitola.Id}");
 		//pokud jakýkoliv student má toto už splněno smaže se jeho splnění 

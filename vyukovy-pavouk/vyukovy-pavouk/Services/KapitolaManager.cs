@@ -68,29 +68,49 @@ namespace vyukovy_pavouk.Services
 
         public async Task UpdateKapitola(Kapitola kapitola)
         {
+          
+            List<int> prerekvizityProtiSmazani = new List<int>();
             _dbContext.Entry(kapitola).State = EntityState.Modified;
             foreach (KapitolaPrerekvizita kapitolaPrerekvizita in kapitola.KapitolaPrerekvizita)
             {
-                //pokud je to nezměněná hodnota 
-                if(kapitolaPrerekvizita.prerekvizita == null)
+                //pokud se jedná o změněnou hodnotu 
+                 if (kapitolaPrerekvizita.Id != 0)
                 {
+                    //pokud je prerekvizita null víme, že už je v databázi a pouze upravíme vztah
+                    if(kapitolaPrerekvizita.prerekvizita != null)
+                    {
+                        VyresVztahy(kapitolaPrerekvizita);
+                    }                                        
                     _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Modified;
-                }
-                //pokud to je změněná hodnota 
-                else if (kapitolaPrerekvizita.Id != 0 && kapitolaPrerekvizita.prerekvizita != null)
-                {
-                    //toto bude potřeba dodělat --> musí hledat ID splneni a pokud neni tak ho vytvorit 
-                    _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Modified;
+                    //ukládádám změněné kapitolyPrerekvizity id --> u mazání se pak tyto id nevyberou a tím pádem nesmažou, protože se jedná pouze o změnu 
+                    prerekvizityProtiSmazani.Add(kapitolaPrerekvizita.Id);
                 }
                 //pokud to je přidaná hodnota 
                 else
-                {                
-                    //to stejné akorát naopak musí hledat stejnou vazbu 
-                        _dbContext.Entry(kapitolaPrerekvizita.prerekvizita).State = EntityState.Added;
-                        _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Added;                                 
+                {
+                    if (kapitolaPrerekvizita.prerekvizita != null)
+                    {
+                        VyresVztahy(kapitolaPrerekvizita);                 
+                    }
+                      _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Added;                                 
                 }
             }
-
+            void VyresVztahy(KapitolaPrerekvizita kapitolaPrerekvizita)
+            {
+                //jdeme zjistit zda-li se naše prerekvizita nenachází v DB
+                Prerekvizity prerekvizita = _dbContext.Prerekvizity.Where(id => id.IdPrerekvizity == kapitolaPrerekvizita.prerekvizita.IdPrerekvizity).SingleOrDefault();
+                //pokud prerekvizita není musíme ji vytvořit 
+                if (prerekvizita == null)
+                {
+                    kapitolaPrerekvizita.prerekvizita.Id = 0;
+                    _dbContext.Entry(kapitolaPrerekvizita.prerekvizita).State = EntityState.Added;
+                }
+                //pokud je nastavíme u kapitolaPrerekvizita propojení s existující prerekvizitou 
+                else
+                {
+                    kapitolaPrerekvizita.IdPrerekvizita = prerekvizita.Id;
+                }
+            }
             //zjištění změn u videí 
             foreach (Videa odkaz in kapitola.Videa)
             {
@@ -104,7 +124,7 @@ namespace vyukovy_pavouk.Services
                 {
                     _dbContext.Entry(odkaz).State = EntityState.Added;
                 }
-            }
+            } 
             //pokud nastalo smazání učitého odkazu 
             List<int> odkazy = new List<int>();
             //zjištění jaké ID se nachází v naší kapitole po změně dat 
@@ -140,7 +160,7 @@ namespace vyukovy_pavouk.Services
             //načtení dat z databáze a porovnání naších změněných dat ty co se zde uloží půjdou k smazání 
             List<KapitolaPrerekvizita> prerekvizityNaSmazani = new List<KapitolaPrerekvizita>();
 
-            prerekvizityNaSmazani = await _dbContext.kapitolaPrerekvizita.Where(x => !prerekvizity.Contains(x.IdPrerekvizita) && x.KapitolaId == kapitola.Id).ToListAsync();
+            prerekvizityNaSmazani = await _dbContext.kapitolaPrerekvizita.Where(x => !prerekvizity.Contains(x.IdPrerekvizita) && !prerekvizityProtiSmazani.Contains(x.Id) && x.KapitolaId == kapitola.Id).ToListAsync();
 
             _dbContext.RemoveRange(odkazyNaSmazani);
             _dbContext.RemoveRange(zadaniNaSmazani);
