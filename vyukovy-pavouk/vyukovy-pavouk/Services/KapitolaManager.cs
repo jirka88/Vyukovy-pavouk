@@ -47,40 +47,35 @@ namespace vyukovy_pavouk.Services
 
         public void DeleteKapitola(int Id)
         {
-            try
+            Kapitola kapitola = _dbContext.Kapitoly.Find(Id);
+            if (kapitola != null)
             {
-                Kapitola kapitola = _dbContext.Kapitoly.Find(Id);
-                if (kapitola != null)
+                _dbContext.Kapitoly.Remove(kapitola);
+                //vymazání prerekvizity, která mohla být navazána 
+                Prerekvizity prerekvizita = _dbContext.Prerekvizity.Where(x => x.IdPrerekvizity == Id).SingleOrDefault();
+                if (prerekvizita != null)
                 {
-                    _dbContext.Kapitoly.Remove(kapitola);
-                    _dbContext.SaveChanges();
+                    _dbContext.Prerekvizity.Remove(prerekvizita);
                 }
-                else
-                {
-                    throw new ArgumentNullException();
-                }
-            }
-            catch
-            {
-                throw;
+                _dbContext.SaveChanges();
             }
         }
 
         public async Task UpdateKapitola(Kapitola kapitola)
         {
-          
+
             List<int> prerekvizityProtiSmazani = new List<int>();
             _dbContext.Entry(kapitola).State = EntityState.Modified;
             foreach (KapitolaPrerekvizita kapitolaPrerekvizita in kapitola.KapitolaPrerekvizita)
             {
                 //pokud se jedná o změněnou hodnotu 
-                 if (kapitolaPrerekvizita.Id != 0)
+                if (kapitolaPrerekvizita.Id != 0)
                 {
                     //pokud je prerekvizita null víme, že už je v databázi a pouze upravíme vztah
-                    if(kapitolaPrerekvizita.prerekvizita != null)
+                    if (kapitolaPrerekvizita.prerekvizita != null)
                     {
                         VyresVztahy(kapitolaPrerekvizita);
-                    }                                        
+                    }
                     _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Modified;
                     //ukládádám změněné kapitolyPrerekvizity id --> u mazání se pak tyto id nevyberou a tím pádem nesmažou, protože se jedná pouze o změnu 
                     prerekvizityProtiSmazani.Add(kapitolaPrerekvizita.Id);
@@ -90,9 +85,9 @@ namespace vyukovy_pavouk.Services
                 {
                     if (kapitolaPrerekvizita.prerekvizita != null)
                     {
-                        VyresVztahy(kapitolaPrerekvizita);                 
+                        VyresVztahy(kapitolaPrerekvizita);
                     }
-                      _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Added;                                 
+                    _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Added;
                 }
             }
             void VyresVztahy(KapitolaPrerekvizita kapitolaPrerekvizita)
@@ -124,7 +119,7 @@ namespace vyukovy_pavouk.Services
                 {
                     _dbContext.Entry(odkaz).State = EntityState.Added;
                 }
-            } 
+            }
             //pokud nastalo smazání učitého odkazu 
             List<int> odkazy = new List<int>();
             //zjištění jaké ID se nachází v naší kapitole po změně dat 
