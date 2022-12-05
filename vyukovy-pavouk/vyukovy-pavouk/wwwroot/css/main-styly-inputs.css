@@ -48,17 +48,22 @@ option {
     padding: 24px;
 }
 
-#editor {
-    border: 1px solid gray;
-    box-shadow: 6px 5px gray;
-}
-
 .ql-toolbar.ql-snow {
-    border: none;
-    border-bottom: 1px solid gray;
+    border: 1px solid gray;
+    background: white;
+}
+.ql-container.ql-snow {
+    border: 1px solid gray;
+    border-top: 0px;
+    box-shadow: 6px 5px gray;
+    background: white;
 }
 
-textarea:focus, select:focus, #editor:focus {
+.ql-editor:focus {
+    box-shadow: 6px 5px #464EB8;
+}
+
+textarea:focus, select:focus {
     background: #f9f9f9 !important;
     box-shadow: 6px 5px #464EB8;
 }

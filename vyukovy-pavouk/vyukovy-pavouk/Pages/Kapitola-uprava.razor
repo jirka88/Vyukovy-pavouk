@@ -94,7 +94,7 @@
 				</div>
 				<div class="d-flex flex-column">
 					<label for="obsah" class="fw-bold">*Obsah</label>
-					<div id="editor" tabindex="0">
+				
 					<BlazoredTextEditor @ref="@QuillHtml" Placeholder="Obsah kapitoly">
 						<ToolbarContent>
 							<select class="ql-header">
@@ -135,7 +135,7 @@
 						</ToolbarContent>
 
 					</BlazoredTextEditor>
-					</div>
+					
 
 					<ValidationMessage For="@(()=>@kapitola.Kontent)" /> 
 				</div>
@@ -271,7 +271,6 @@
 				IsLoaded = true;
 				nacti = true;
 			}
-			//await jsRuntime.InvokeVoidAsync("NastavFocus");
 			StateHasChanged();
 		}
 
@@ -336,7 +335,6 @@
 		}
 
 	}
-
 	private void VytvorOdkaz()
 	{
 		if (kapitola.Videa.Count() == 0 || kapitola.Videa[globalIndex].Odkaz != null)
