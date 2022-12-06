@@ -1,0 +1,130 @@
+﻿@page "/nastaveni"
+@layout UserLayout
+@using Azure.Core;
+@using Microsoft.Graph;
+@using Newtonsoft.Json;
+@using vyukovy_pavouk.Data;
+@inject TeamsFx teamsfx
+@inject MicrosoftTeams MicrosoftTeams
+@inject HttpClient Http
+@inject NavigationManager MyNavigationManager
+@inject IUserToken UserToken
+@inject IGroupToken GroupToken
+@inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
+<div class="container">
+<h1 class="text-center py-2 pb-4">Nastavení</h1>
+@if (!IsLoaded)
+	{
+		<div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+			<FluentProgressRing />
+		</div>
+	}
+	else {
+		<fluent-dialog Hidden="@ModelHidden">
+					<div class="d-flex justify-content-center align-items-center h-100 w-100 flex-column">
+						<svg id="Layer_1" style="width: 20%" class="pb-5" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 105.16 122.88"><defs><style>.cls-1{fill-rule:evenodd;}</style></defs><title>delete</title><path class="cls-1" d="M11.17,37.16H94.65a8.4,8.4,0,0,1,2,.16,5.93,5.93,0,0,1,2.88,1.56,5.43,5.43,0,0,1,1.64,3.34,7.65,7.65,0,0,1-.06,1.44L94,117.31v0l0,.13,0,.28v0a7.06,7.06,0,0,1-.2.9v0l0,.06v0a5.89,5.89,0,0,1-5.47,4.07H17.32a6.17,6.17,0,0,1-1.25-.19,6.17,6.17,0,0,1-1.16-.48h0a6.18,6.18,0,0,1-3.08-4.88l-7-73.49a7.69,7.69,0,0,1-.06-1.66,5.37,5.37,0,0,1,1.63-3.29,6,6,0,0,1,3-1.58,8.94,8.94,0,0,1,1.79-.13ZM5.65,8.8H37.12V6h0a2.44,2.44,0,0,1,0-.27,6,6,0,0,1,1.76-4h0A6,6,0,0,1,43.09,0H62.46l.3,0a6,6,0,0,1,5.7,6V6h0V8.8h32l.39,0a4.7,4.7,0,0,1,4.31,4.43c0,.18,0,.32,0,.5v9.86a2.59,2.59,0,0,1-2.59,2.59H2.59A2.59,2.59,0,0,1,0,23.62V13.53H0a1.56,1.56,0,0,1,0-.31v0A4.72,4.72,0,0,1,3.88,8.88,10.4,10.4,0,0,1,5.65,8.8Zm42.1,52.7a4.77,4.77,0,0,1,9.49,0v37a4.77,4.77,0,0,1-9.49,0v-37Zm23.73-.2a4.58,4.58,0,0,1,5-4.06,4.47,4.47,0,0,1,4.51,4.46l-2,37a4.57,4.57,0,0,1-5,4.06,4.47,4.47,0,0,1-4.51-4.46l2-37ZM25,61.7a4.46,4.46,0,0,1,4.5-4.46,4.58,4.58,0,0,1,5,4.06l2,37a4.47,4.47,0,0,1-4.51,4.46,4.57,4.57,0,0,1-5-4.06l-2-37Z"/></svg>
+					<h5 class="text-center pb-3">Opravdu si přejete resetovat skupinu?</h5>
+					<div>
+						<fluent-button class="dialog-btn" @onclick="CloseDialogReset">Zavřít</fluent-button>
+						<fluent-button appearance="accent" class="dialog-btn" Disabled="@vypnutiTlacitkaReset" @onclick="ResetSkupinu">Resetovat</fluent-button>
+					</div>
+					</div>
+				</fluent-dialog>
+		<div class="nastaveni">
+					<hr>
+	<div class="row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
+		<div class="col-2 d-flex align-items-center fw-bold">
+			Změnit název skupiny: 
+		</div>
+	
+		<div class="col-8">
+				<EditForm Model="@skupina" OnValidSubmit="@Zmen" class="d-flex gap-4">
+				<InputText class="w-75"  type="text" placeholder="Název předmětu" @bind-Value="@skupina.predmet.Nazev"></InputText>
+				<ValidationMessage For="@(()=>@skupina.predmet.Nazev)" />		
+				<div class="d-flex align-items-center">
+			<fluent-button appearance="accent" type="submit" disabled="@vypniTlacitka">Upravit</fluent-button>		
+			</div>
+		</EditForm>
+	</div>
+</div>
+	<hr>
+	<div class="row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
+		<div class="col-2 d-flex align-items-center fw-bold">
+			Resetovat skupinu: 
+		</div>
+	
+		<div class="col-8">	
+				<div class="d-flex align-items-center">
+			<fluent-button appearance="accent" disabled="@vypniTlacitka" @onclick="@ShowResetDialog">Resetovat</fluent-button>		
+			</div>
+	</div>
+</div>
+			<hr>
+			<div class="row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
+				<div class="col-2 d-flex align-items-center fw-bold">
+					Smazat strukturu:
+				</div>
+
+				<div class="col-8">
+					<div class="d-flex align-items-center">
+						<fluent-button appearance="accent" disabled="@vypniTlacitka">Smazat</fluent-button>
+					</div>
+				</div>
+			</div>
+	<hr>
+</div>
+	}
+</div>
+	<style>
+	fluent-button {
+		width: 100px;
+		height: 50px;
+	}
+	fluent-dialog {
+		position: sticky;
+		z-index: 11;
+	}
+</style>
+@code {
+	bool IsLoaded = false;
+	bool vypnutiTlacitkaReset = false;
+	bool vypniTlacitka = false;
+	bool ModelHidden = true;
+	Skupina skupina = new Skupina();
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+
+			await UserToken.GetUserAsync(sessionStorage);
+			await GroupToken.GetGroupAsync(MicrosoftTeams);
+			if (UserToken.Profile == null || UserToken.Profile.JobTitle == "žák školy")
+			{
+				MyNavigationManager.NavigateTo("/tab");
+			}
+			else
+			{
+				//získání skupinu z databáze
+				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
+				IsLoaded = true;
+			}
+		}
+		StateHasChanged();
+	}
+	private async void Zmen() {
+		vypniTlacitka = true;
+		await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", skupina);
+		MyNavigationManager.NavigateTo("/nastaveni", true);
+	}
+	private void ShowResetDialog() {
+		ModelHidden = false;
+		vypniTlacitka = true;
+	}
+	private void CloseDialogReset() {
+		ModelHidden = true;
+		vypniTlacitka = false;
+	}
+	private void ResetSkupinu() {
+		vypnutiTlacitkaReset = true;
+	}
+}

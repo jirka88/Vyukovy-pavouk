@@ -1,6 +1,8 @@
-﻿using vyukovy_pavouk.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using vyukovy_pavouk.Data;
 using vyukovy_pavouk.DBContexts;
 using vyukovy_pavouk.Interface;
+using vyukovy_pavouk.Pages;
 
 
 namespace vyukovy_pavouk.Services
@@ -34,6 +36,12 @@ namespace vyukovy_pavouk.Services
             {
                 throw;
             }
+        }
+
+        public void UpravPredmet(Skupina skupina)
+        {
+            _dbContext.Entry(skupina.predmet).State = EntityState.Modified;
+            _dbContext.SaveChanges();
         }
     }
 }

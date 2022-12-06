@@ -33,5 +33,11 @@ public class PredmetController : ControllerBase
         {
             _IPredmet.SavePredmet(predmet);
         }
+        //úprava předmětu (název) 
+        [HttpPut]
+        public void UpravPredmet(Skupina skupina)
+        {
+             _IPredmet.UpravPredmet(skupina);
+        }
     }
 }
