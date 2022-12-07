@@ -40,6 +40,14 @@ namespace vyukovy_pavouk.Controllers
         {
             _ISkupina.CreateUvodniPrerekvizita(splneni);
         }
+
+        [HttpDelete]
+        [Route("reset/{Id}")]
+        public IActionResult ResetSkupinu(int Id)
+        {
+            _ISkupina.ResetSkupina(Id);
+            return Ok();
+        }
        
 
 }

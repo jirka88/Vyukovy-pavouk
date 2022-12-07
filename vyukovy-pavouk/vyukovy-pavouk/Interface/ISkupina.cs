@@ -10,5 +10,7 @@ namespace vyukovy_pavouk.Interface
         public void AddSkupina(Skupina skupina);
         //vytvoří uvodní prerekvizitu --> u splnění o hodnotě ID --> 0
         public void CreateUvodniPrerekvizita(Splneni splneni);
+        //resetuje danou skupinu (jednoduše odebere předmět + splnění studentů z té dané skupiny)
+        public void ResetSkupina(int Id);
     }
 }
