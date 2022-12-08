@@ -37,6 +37,26 @@ namespace vyukovy_pavouk.Services
                 throw;
             }
         }
+        //vymazani prerekvizit
+        public void SmazPredmet(int IdPredmetu)
+        {
+            Predmet predmet = _dbContext.Predmet.Where(x => x.Id == IdPredmetu)
+                                                .Include(x => x.Skupiny.Where(x => x.IDPredmetu == IdPredmetu))
+                                                .Include(x => x.Kapitoly.Where(x => x.IdPredmetu == IdPredmetu))
+                                                .SingleOrDefault();
+
+            _dbContext.Remove(predmet);
+            //vymazání všech splnění 
+            foreach (Skupina item in predmet.Skupiny)
+            {
+                List <Splneni> splneni = _dbContext.Splneni.Where(x => x.IdSkupiny == item.Id)
+                                                           .Include(x => x.StudentSplneni).ToList();
+                //vymaže všechny možné splnění v tabulce splnění i s navazaním 
+                _dbContext.RemoveRange(splneni);        
+            }
+            _dbContext.SaveChanges();
+
+        }
 
         public void UpravPredmet(Skupina skupina)
         {

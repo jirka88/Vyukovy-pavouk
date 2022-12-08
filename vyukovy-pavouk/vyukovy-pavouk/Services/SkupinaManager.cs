@@ -56,7 +56,7 @@ namespace vyukovy_pavouk.Services
                 throw;
             }
         }
-
+        //TO DO upravit na Splneni
         public void ResetSkupina(int Id)
         {
              List<StudentSplneni> VsechnySplneni = _dbContext.StudentSplneni
@@ -67,7 +67,9 @@ namespace vyukovy_pavouk.Services
             {
                 _dbContext.RemoveRange(VsechnySplneni);
                 _dbContext.Splneni.RemoveRange(VsechnySplneni.Select(x => x.splneni));
-              
+                List<SkupinaStudent> SkupinaStudent = _dbContext.SkupinaStudent.Where(x => x.IdSkupina == Id).ToList();
+                _dbContext.RemoveRange(SkupinaStudent);
+
             }
             //pokud resetujeme skupinu, ale žádný student se k ní ještě nepřipojil (nevzniklo navázání na splnění přes StudentSplneni)
             else

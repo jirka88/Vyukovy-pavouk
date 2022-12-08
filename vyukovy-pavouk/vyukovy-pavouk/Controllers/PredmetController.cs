@@ -39,5 +39,11 @@ public class PredmetController : ControllerBase
         {
              _IPredmet.UpravPredmet(skupina);
         }
+        [HttpDelete("{Id}")]
+        public IActionResult VymazPredmet(int Id)
+        {
+            _IPredmet.SmazPredmet(Id);
+            return Ok();
+        }
     }
 }

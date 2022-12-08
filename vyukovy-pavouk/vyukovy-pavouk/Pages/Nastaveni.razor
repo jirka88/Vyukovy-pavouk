@@ -98,11 +98,17 @@
 			Resetovat skupinu: 
 		</div>
 	
-		<div class="col-8">	
+		<div class="col-6">	
 				<div class="d-flex align-items-center">
 			<fluent-button appearance="accent" disabled="@vypniTlacitka" @onclick="@ShowResetDialog">Resetovat</fluent-button>		
 			</div>
 	</div>
+		<div class="col-2 d-flex align-items-center justify-content-center">
+			<div class="circle d-flex align-items-center justify-content-center" id="anchor1">
+				<p class="mb-0">?</p>
+				</div>
+				<!--<fluent-tooltip Anchor="anchor1" Position=TooltipPosition.Bottom>Znamená, že tuto skupinu resetuje tím páde vymaže veškeré splnění studentů a samotné napojení jednotlivých studentů. Struktura (předmět s kapitolamy) zůstavá a lze jí znovu napojit se skupinou. </fluent-tooltip>-->
+		</div>
 </div>
 			<hr>
 			<div class="row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
@@ -110,11 +116,17 @@
 					Smazat strukturu:
 				</div>
 
-				<div class="col-8">
+				<div class="col-6">
 					<div class="d-flex align-items-center">
 						<fluent-button appearance="accent" disabled="@vypniTlacitka" @onclick="@ShowDeleteDialog">Smazat</fluent-button>
 					</div>
 				</div>
+				<div class="col-2 d-flex align-items-center justify-content-center">
+			<div class="circle d-flex align-items-center justify-content-center" id="anchor1">
+				<p class="mb-0">?</p>
+				</div>
+				<fluent-tooltip Anchor="anchor1" Position=TooltipPosition.Bottom>Znamená, že tuto skupinu resetuje tím páde vymaže veškeré splnění studentů a samotné napojení jednotlivých studentů. Struktura (předmět s kapitolamy) zůstavá a lze jí znovu napojit se skupinou. </fluent-tooltip>
+		</div>
 			</div>
 	<hr>
 </div>
@@ -131,6 +143,21 @@
 	}
 	svg {
 	width: 50%;
+	}
+	.circle {
+		height: 4em;
+		width: 4em;
+		border: 2px solid black;
+		border-radius: 50%; 
+		box-shadow: 6px 3px gray;
+		cursor: pointer;
+	}
+	.circle:hover {
+		box-shadow: 6px 3px #464EB8;
+	}
+	.circle p {
+		font-size: 2em;
+		font-weight: bold;
 	}
 </style>
 @code {
@@ -208,8 +235,11 @@
 		SwitchDelete = true;
 		StartTimer(10);
 	}
-	private void DeleteStruktura() {
-
+	private async void DeleteStruktura() {
+		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/predmet/" + skupina.predmet.Id);
+		upozorneni.ShowSuccess("Struktura byla smazaná.", "Úspěch!");
+		await Task.Delay(1000);
+		MyNavigationManager.NavigateTo("/tab");
 	}
 	private void CloseDialogReset() {
 		ModelHidden = true;

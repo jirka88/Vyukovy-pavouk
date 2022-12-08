@@ -12,7 +12,8 @@ namespace vyukovy_pavouk.EntityConfiguration
             builder.HasKey(id => new { id.IdSkupina, id.IdStudent });
             builder.HasOne(s => s.Skupina)
                 .WithMany(s => s.Student)
-                .HasForeignKey(s => s.IdSkupina);
+                .HasForeignKey(s => s.IdSkupina)
+                .OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(s => s.Student)
                 .WithMany(s => s.SkupinaStudent)
                 .HasForeignKey(s => s.IdStudent);
