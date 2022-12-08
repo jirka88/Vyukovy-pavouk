@@ -88,6 +88,11 @@ namespace vyukovypavouk.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("Vytvoril")
+                        .IsRequired()
+                        .HasMaxLength(62)
+                        .HasColumnType("nvarchar(62)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Predmet");

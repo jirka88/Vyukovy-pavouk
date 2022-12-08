@@ -11,8 +11,8 @@ using vyukovy_pavouk.DBContexts;
 namespace vyukovypavouk.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20221203180422_Dbv6")]
-    partial class Dbv6
+    [Migration("20221208134345_Dbv7")]
+    partial class Dbv7
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -89,6 +89,11 @@ namespace vyukovypavouk.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Vytvoril")
+                        .IsRequired()
+                        .HasMaxLength(62)
+                        .HasColumnType("nvarchar(62)");
 
                     b.HasKey("Id");
 

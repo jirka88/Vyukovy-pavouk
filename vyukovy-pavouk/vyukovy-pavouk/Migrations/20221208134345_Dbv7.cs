@@ -4,7 +4,7 @@
 
 namespace vyukovypavouk.Migrations
 {
-    public partial class Dbv6 : Migration
+    public partial class Dbv7 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,8 @@ namespace vyukovypavouk.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nazev = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Nazev = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Vytvoril = table.Column<string>(type: "nvarchar(62)", maxLength: 62, nullable: false)
                 },
                 constraints: table =>
                 {

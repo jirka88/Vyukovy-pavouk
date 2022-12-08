@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 @inject HttpClient Http
 @inject IGroupToken GroupToken
+@inject IUserToken UserToken
 @using vyukovy_pavouk.Data
 
 <div class="container">
@@ -102,8 +103,10 @@
 	{
 		hledanyPredmet = predmety.Find(x => x.Nazev.ToLower() == predmet.Nazev.ToLower());
 		if(hledanyPredmet == null) {
+			predmet.Vytvoril = UserToken.Profile.Mail;
 			predmet.Skupiny.Add(new Skupina());
 			predmet.Skupiny[0].TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
+			//vytvoření nového předmětu se skupinou
 			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", predmet);
 			//získání ID nově vytvořené skupiny
 			Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + predmet.Skupiny[0].TmSkupina);

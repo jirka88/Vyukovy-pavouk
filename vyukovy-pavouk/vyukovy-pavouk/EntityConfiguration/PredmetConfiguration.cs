@@ -10,6 +10,7 @@ namespace vyukovy_pavouk.EntityConfiguration
             {
                 builder.HasKey(i => i.Id);
                 builder.Property(n => n.Nazev).HasMaxLength(30).IsRequired();
+                builder.Property(v => v.Vytvoril).HasMaxLength(62).IsRequired();
             }
         }
 
