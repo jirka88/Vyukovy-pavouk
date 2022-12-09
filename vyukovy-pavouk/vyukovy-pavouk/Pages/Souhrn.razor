@@ -14,6 +14,7 @@
 	<table class="table table-md my-4">
 		<thead>
 			<tr>
+				<th></th>
 				<th>Jméno a příjmení</th>
 				<th>
 					Splněno <button id="anchor1">?</button>
@@ -33,13 +34,30 @@
 			{
 				@foreach (var student in studenti)
 				{
-					<tr>
-						<th scope="row">@student.Student.Jmeno @student.Student.Prijmeni</th>
+					<tr class="usr">				
+						<th>	<fluent-button appearance="accent" @onclick="() => VymazStudenta(student.Student.Id)">
+							<?xml version="1.0" encoding="iso-8859-1" ?>				
+							<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+					 width="20" height="20" viewBox="0 0 408.483 408.483" style="enable-background:new 0 0 408 408;"
+					 xml:space="preserve">
+							<g>
+							<path d="M87.748,388.784c0.461,11.01,9.521,19.699,20.539,19.699h191.911c11.018,0,20.078-8.689,20.539-19.699l13.705-289.316
+			H74.043L87.748,388.784z M247.655,171.329c0-4.61,3.738-8.349,8.35-8.349h13.355c4.609,0,8.35,3.738,8.35,8.349v165.293
+			c0,4.611-3.738,8.349-8.35,8.349h-13.355c-4.61,0-8.35-3.736-8.35-8.349V171.329z M189.216,171.329
+			c0-4.61,3.738-8.349,8.349-8.349h13.355c4.609,0,8.349,3.738,8.349,8.349v165.293c0,4.611-3.737,8.349-8.349,8.349h-13.355
+			c-4.61,0-8.349-3.736-8.349-8.349V171.329L189.216,171.329z M130.775,171.329c0-4.61,3.738-8.349,8.349-8.349h13.356
+			c4.61,0,8.349,3.738,8.349,8.349v165.293c0,4.611-3.738,8.349-8.349,8.349h-13.356c-4.61,0-8.349-3.736-8.349-8.349V171.329z" />
+							<path d="M343.567,21.043h-88.535V4.305c0-2.377-1.927-4.305-4.305-4.305h-92.971c-2.377,0-4.304,1.928-4.304,4.305v16.737H64.916
+			c-7.125,0-12.9,5.776-12.9,12.901V74.47h304.451V33.944C356.467,26.819,350.692,21.043,343.567,21.043z" />
+				</g>
+			</svg>
+						</fluent-button></th>
+						<th scope="row"><p class="d-flex align-items-center justify-content-center h-100">@student.Student.Jmeno @student.Student.Prijmeni</p></th>
 						@if (MaxCountKapitol > 0)
 						{
-							<td>@student.Student.StudentSplneni.Select(x => x.splneni).Count()/@MaxCountKapitol</td>
-							<td>@CalculateAVG(student.Student.StudentSplneni.Select(x => x.splneni).Count())%</td>
-							<td><fluent-button appearance="accent" @onclick="() => ShowResult(student.Student.Id)"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.296 16.294a1 1 0 1 0 1.415 1.414l4.997-5.004a1 1 0 0 0 0-1.413L15.71 6.293a1 1 0 0 0-1.415 1.414L17.59 11H11a8 8 0 0 0-7.996 7.75L3 19a1 1 0 1 0 2 0 6 6 0 0 1 5.775-5.996L11 13h6.586l-3.29 3.294Z" fill="#ffffff" /></svg></fluent-button></td>
+							<td><p class="d-flex align-items-center">@student.Student.StudentSplneni.Select(x => x.splneni).Count()/@MaxCountKapitol</p></td>
+							<td><p class="d-flex align-items-center">@CalculateAVG(student.Student.StudentSplneni.Select(x => x.splneni).Count())%</p></td>
+							<td><fluent-button appearance="accent" class="d-grid align-items-center" @onclick="() => ShowResult(student.Student.Id)"><svg width="28" height="28" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.296 16.294a1 1 0 1 0 1.415 1.414l4.997-5.004a1 1 0 0 0 0-1.413L15.71 6.293a1 1 0 0 0-1.415 1.414L17.59 11H11a8 8 0 0 0-7.996 7.75L3 19a1 1 0 1 0 2 0 6 6 0 0 1 5.775-5.996L11 13h6.586l-3.29 3.294Z" fill="#ffffff" /></svg></fluent-button></td>
 						}
 						else
 						{
@@ -55,9 +73,6 @@
 					<td colspan="4">Čekáme na připojení studentů do Teamu.</td>
 				</tr>
 			}
-
-
-
 		</tbody>
 	</table>
 }
@@ -67,6 +82,11 @@ else
 		<FluentProgressRing />
 	</div>
 }
+<style>
+	.usr {
+		height: 3em;
+	}
+</style>
 @code {
 	public bool IsLoaded = false;
 	public List<SkupinaStudent> studenti { get; set; }
@@ -99,14 +119,17 @@ else
 		}
 		StateHasChanged();
 	}
-	//TO DO vrátit počet kapitol
 	public double CalculateAVG(int PocetSplneni)
 	{
-		//vrátí procentuální splnění
 		double vypocet = (Convert.ToDouble(PocetSplneni) / MaxCountKapitol) * 100;
 		return Math.Round(vypocet);
 
 	}
+	//TO DO 
+	private void VymazStudenta(int Id) {
+
+	}
+
 	public void ShowResult(int student)
 	{
 		MyNavigationManager.NavigateTo($"/progres/{student}");
