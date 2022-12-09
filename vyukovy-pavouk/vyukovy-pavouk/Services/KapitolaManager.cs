@@ -60,7 +60,7 @@ namespace vyukovy_pavouk.Services
                 _dbContext.SaveChanges();
             }
         }
-
+        // TO DO vymazat prerekvizity 
         public async Task UpdateKapitola(Kapitola kapitola)
         {
 

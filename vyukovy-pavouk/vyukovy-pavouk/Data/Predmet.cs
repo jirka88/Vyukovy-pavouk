@@ -16,6 +16,7 @@ namespace vyukovy_pavouk.Data
         {
             RuleFor(n => n.Nazev).NotEmpty().WithMessage("Zadejte název předmětu!");
             RuleFor(n => n.Nazev).MaximumLength(30).WithMessage("Předmět má příliš velký název!");
+     
         }
     }
 

@@ -16,7 +16,8 @@ namespace vyukovy_pavouk.EntityConfiguration
                 .HasForeignKey(id => id.KapitolaId);
             builder.HasOne(p => p.prerekvizita)
                 .WithMany(p => p.KapitolaPrerekvizita)
-                .HasForeignKey(id => id.IdPrerekvizita);
+                .HasForeignKey(id => id.IdPrerekvizita)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 

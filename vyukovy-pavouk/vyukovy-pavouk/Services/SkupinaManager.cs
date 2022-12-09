@@ -56,27 +56,17 @@ namespace vyukovy_pavouk.Services
                 throw;
             }
         }
-        //TO DO upravit na Splneni
+   
         public void ResetSkupina(int Id)
         {
-             List<StudentSplneni> VsechnySplneni = _dbContext.StudentSplneni
-                                                    .Include(x => x.splneni)
-                                                    .Where(x => x.splneni.IdSkupiny == Id).ToList();
-            //zde vymažeme i všechny splnění studentů (jak spojení StudentSplneni tak i samotné splnění) 
-            if(VsechnySplneni.Count() != 0)
-            {
-                _dbContext.RemoveRange(VsechnySplneni);
-                _dbContext.Splneni.RemoveRange(VsechnySplneni.Select(x => x.splneni));
-                List<SkupinaStudent> SkupinaStudent = _dbContext.SkupinaStudent.Where(x => x.IdSkupina == Id).ToList();
-                _dbContext.RemoveRange(SkupinaStudent);
+            List<Splneni> vsechnySplneni = _dbContext.Splneni
+                                            .Where(x => x.IdSkupiny == Id)
+                                            .ToList();
+            _dbContext.RemoveRange(vsechnySplneni);
 
-            }
-            //pokud resetujeme skupinu, ale žádný student se k ní ještě nepřipojil (nevzniklo navázání na splnění přes StudentSplneni)
-            else
-            {
-                Splneni uvodni = _dbContext.Splneni.Where(x => x.IdSkupiny == Id && x.IdKapitoly == 0).SingleOrDefault();         
-                _dbContext.Splneni.Remove(uvodni);
-            }
+            List<SkupinaStudent> SkupinaStudent = _dbContext.SkupinaStudent.Where(x => x.IdSkupina == Id).ToList();
+            _dbContext.RemoveRange(SkupinaStudent);
+
             Skupina skupina = _dbContext.Skupina.Find(Id);
             _dbContext.Skupina.Remove(skupina);
             _dbContext.SaveChanges();

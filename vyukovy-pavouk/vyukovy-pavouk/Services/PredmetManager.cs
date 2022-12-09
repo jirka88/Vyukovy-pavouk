@@ -37,7 +37,6 @@ namespace vyukovy_pavouk.Services
                 throw;
             }
         }
-        //vymazani prerekvizit
         public void SmazPredmet(int IdPredmetu)
         {
             Predmet predmet = _dbContext.Predmet.Where(x => x.Id == IdPredmetu)
@@ -53,6 +52,12 @@ namespace vyukovy_pavouk.Services
                                                            .Include(x => x.StudentSplneni).ToList();
                 //vymaže všechny možné splnění v tabulce splnění i s navazaním 
                 _dbContext.RemoveRange(splneni);        
+            }
+            //vymaže všechny prerekvizity kapitol
+            foreach(vyukovy_pavouk.Data.Kapitola kapitola in predmet.Kapitoly)
+            {
+                List<Prerekvizity> prerekvizizy = _dbContext.Prerekvizity.Where(x => x.IdPrerekvizity == kapitola.Id || x.IdPrerekvizity == 0).ToList();             
+                _dbContext.RemoveRange(prerekvizizy);
             }
             _dbContext.SaveChanges();
 
