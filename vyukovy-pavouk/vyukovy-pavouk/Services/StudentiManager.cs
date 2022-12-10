@@ -13,48 +13,35 @@ namespace vyukovy_pavouk.Services
             _dbContext = dbContext;
         }
 
-        public void CreateNewConnect(SkupinaStudent skupinaStudent)
-        {
-            try
-            {
+        public async Task CreateNewConnect(SkupinaStudent skupinaStudent)
+        {         
                 _dbContext.SkupinaStudent.Add(skupinaStudent);
-                _dbContext.SaveChanges();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-        public void CreateNewConnectPrerekvizita(StudentSplneni splneni)
-        {
-            try
-            {
-                _dbContext.StudentSplneni.Add(splneni);
-                _dbContext.SaveChanges();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+                //vytvoří spojení mezi úvodní kapitolou a studentem 
+                StudentSplneni studentSplneni = new StudentSplneni();
+                studentSplneni.IdStudent = skupinaStudent.IdStudent;
+                //získá uvodní prerekvizitu
+                Splneni splneni = await _dbContext.Splneni.Where(x => x.IdSkupiny == skupinaStudent.IdSkupina && x.IdKapitoly == 0).SingleOrDefaultAsync();
+                studentSplneni.IdSplneni = splneni.Id;
+                _dbContext.StudentSplneni.Add(studentSplneni);
+                await _dbContext.SaveChangesAsync();                  
         }
         //vytvoří nového studenta 
-        public void CreateNewStudent(Student student)
-        {
-            try
-            {
+        public async Task CreateNewStudent(Student student)
+        {                       
                 _dbContext.Student.Add(student);
-                _dbContext.SaveChanges();
-            }
-            catch (Exception)
-            {
+                await _dbContext.SaveChangesAsync();
+                //vytvoří spojení mezi úvodní kapitolou a studentem 
+                StudentSplneni studentSplneni = new StudentSplneni();
+                studentSplneni.IdStudent = student.Id;
+                //získá uvodní prerekvizitu
+                Splneni splneni = await _dbContext.Splneni.Where(x => x.IdSkupiny == student.SkupinaStudent[0].IdSkupina && x.IdKapitoly == 0).SingleOrDefaultAsync();
+                studentSplneni.IdSplneni = splneni.Id;
 
-                throw;
-            }
+                _dbContext.Add(studentSplneni);
+                await _dbContext.SaveChangesAsync();
         }
         //zjistí progres (plnění jeho kapitol) u určitého studenta 
+        //TO DO 
         public Student GetStudentProgres(int Id, int IdSkupiny)
         {
             return _dbContext.Student
@@ -64,6 +51,7 @@ namespace vyukovy_pavouk.Services
                 .SingleOrDefault();
         }
         //získa studenta zda-li v dané skupině je 
+        //TO DO 
         public Student GetStudent(int IdSkupiny, string EmailStudenta)
         {
            return _dbContext.Student
@@ -72,9 +60,10 @@ namespace vyukovy_pavouk.Services
                 .Include(s => s.StudentSplneni.Where(id => id.splneni.IdSkupiny == IdSkupiny))
                     .ThenInclude(s => s.splneni)
                 .SingleOrDefault();                             
-        }      
+        }
 
         //vybere všechny studenty se splněnými kapitoly, které patří do Teamu 
+        //TO DO 
         public List<SkupinaStudent> GetStudents(int ID)
         {
             //vrátí v souhrnu její studenty a jejich splnění kapitol (ID kapitol) krom prerekvizity u úvodní kapitoly - ta je automaticky daná studentovi
@@ -93,6 +82,7 @@ namespace vyukovy_pavouk.Services
                 .ToList();
         }
         //vymaže studentům splnění kapitoly --> při mazání kapitoly 
+        //TO DO 
         public void DeleteSplneni(int Id)
         {          
                 List<StudentSplneni> studentiSplneni = new List<StudentSplneni>();

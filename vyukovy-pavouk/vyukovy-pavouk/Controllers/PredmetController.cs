@@ -34,11 +34,13 @@ public class PredmetController : ControllerBase
             await _IPredmet.SavePredmet(predmet);
         }
         //úprava předmětu (název) 
+        //TO DO 
         [HttpPut]
         public void UpravPredmet(Skupina skupina)
         {
              _IPredmet.UpravPredmet(skupina);
         }
+        //TO DO
         [HttpDelete("{Id}")]
         public IActionResult VymazPredmet(int Id)
         {

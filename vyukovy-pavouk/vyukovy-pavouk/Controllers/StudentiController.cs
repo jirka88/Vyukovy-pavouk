@@ -46,26 +46,21 @@ namespace vyukovy_pavouk.Controllers
         }
         //vytvoří studenta pod patřící skupinu 
         [HttpPost]
-        public void CreateNewStudent([FromBody] Student student)
+        public async Task CreateNewStudent([FromBody] Student student)
         {
-            _IStudenti.CreateNewStudent(student);
+            await _IStudenti.CreateNewStudent(student);
         }
         //vytvoří navázaní studenta ke skupině 
         [Route("connect")]
         [HttpPost]
-        public void CreateNewConnect([FromBody] SkupinaStudent skupinaStudent)
+        public async Task CreateNewConnect([FromBody] SkupinaStudent skupinaStudent)
         {
-            _IStudenti.CreateNewConnect(skupinaStudent);
+            await _IStudenti.CreateNewConnect(skupinaStudent);
         }
-        //vytvoří navázání na úvodní prerekvizitu (splnění) a studenta --> StudentSplneni
-        [Route("connectPrerekvizita")]
-        [HttpPost]
-        public void CreateNewUvodniPrerekvizita([FromBody] StudentSplneni splneni)
-        {
-            _IStudenti.CreateNewConnectPrerekvizita(splneni);
-        }
+     
         [HttpDelete]
         [Route("deleteSplneni/{Id}")] 
+        //TO DO 
         public IActionResult deleteSplneni(int Id)
         {
             _IStudenti.DeleteSplneni(Id);

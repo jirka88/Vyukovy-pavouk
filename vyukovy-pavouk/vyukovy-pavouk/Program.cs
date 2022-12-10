@@ -30,7 +30,6 @@ builder.Services.AddScoped<ISkupina, SkupinaManager>();
 builder.Services.AddScoped<IStudenti, StudentiManager>();
 builder.Services.AddScoped<IKapitoly, KapitolyManager>();
 builder.Services.AddScoped<IKapitola, KapitolaManager>();
-builder.Services.AddScoped<IPrerekvizita, PrerekvizitaManager>();
 builder.Services.AddBlazoredToast();
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>

@@ -9,9 +9,8 @@ namespace vyukovy_pavouk.Interface
         public Student GetStudent(int IdSkupiny, string EmailStudenta);
         public List<StudentSplneni> GetSplneni(int IdSkupiny);
         public void DeleteSplneni(int id);
-        public void CreateNewStudent(Student student);
-        public void CreateNewConnect(SkupinaStudent skupinaStudent);
-        public void CreateNewConnectPrerekvizita(StudentSplneni splneni);
+        public Task CreateNewStudent(Student student);
+        public Task CreateNewConnect(SkupinaStudent skupinaStudent);
         public Task DeleteStudent(int IdStudenta, int IdSkupiny);
 
 }
