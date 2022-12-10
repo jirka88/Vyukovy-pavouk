@@ -29,9 +29,9 @@ public class PredmetController : ControllerBase
 
         //vytvoří Teams skupinu s novým předmětem 
         [HttpPost]
-        public void CreateNew([FromBody] Predmet predmet)
+        public async Task CreateNew([FromBody] Predmet predmet)
         {
-            _IPredmet.SavePredmet(predmet);
+            await _IPredmet.SavePredmet(predmet);
         }
         //úprava předmětu (název) 
         [HttpPut]

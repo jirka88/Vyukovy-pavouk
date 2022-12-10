@@ -71,6 +71,13 @@ namespace vyukovy_pavouk.Controllers
             _IStudenti.DeleteSplneni(Id);
             return Ok();
         }
+        //vymaže studenta u určité skupiny 
+        [HttpDelete]
+        [Route("deleteStudent/{IdStudenta}/{IdSkupiny}")]
+        public async Task deleteStudenta(int IdStudenta, int IdSkupiny)
+        {
+            await _IStudenti.DeleteStudent(IdStudenta, IdSkupiny);
+        }
 
     }
 }

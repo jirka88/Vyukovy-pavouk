@@ -94,9 +94,7 @@ namespace vyukovy_pavouk.Services
         }
         //vymaže studentům splnění kapitoly --> při mazání kapitoly 
         public void DeleteSplneni(int Id)
-        {
-            try
-            {
+        {          
                 List<StudentSplneni> studentiSplneni = new List<StudentSplneni>();
                 studentiSplneni = _dbContext.StudentSplneni.Where(id => id.IdSplneni == Id).ToList();
                 Splneni splneni = _dbContext.Splneni.Find(Id);
@@ -107,19 +105,20 @@ namespace vyukovy_pavouk.Services
                     {
                         _dbContext.StudentSplneni.Remove(studentSplneni);                    
                     }
-                    else
-                    {
-                        throw new ArgumentNullException();
-                    }
                 }
                 _dbContext.Splneni.Remove(splneni);
-                _dbContext.SaveChanges();
+                _dbContext.SaveChanges();                 
+        }
 
-            }
-            catch
-            {
-                throw;
-            }
+        public async Task DeleteStudent(int IdStudenta, int IdSkupiny)
+        {
+            //vymaže studentoho navázaní na skupinu
+            SkupinaStudent SkupinaStudent = await _dbContext.SkupinaStudent.Where(x => x.IdStudent == IdStudenta && x.IdSkupina == IdSkupiny).SingleOrDefaultAsync();
+            _dbContext.Remove(SkupinaStudent);
+            //vymaže jeho progres 
+            List<StudentSplneni> StudentSplneni = await _dbContext.StudentSplneni.Where(x => x.IdStudent == IdStudenta && x.splneni.IdSkupiny == IdSkupiny).ToListAsync();
+            _dbContext.RemoveRange(StudentSplneni);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

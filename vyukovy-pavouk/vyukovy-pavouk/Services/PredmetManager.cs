@@ -24,18 +24,11 @@ namespace vyukovy_pavouk.Services
         {
             return _dbContext.Predmet.ToList();
         }
-        //
-        public void SavePredmet(Predmet predmet)
+        //uloží daný předmět 
+        public async Task SavePredmet(Predmet predmet)
         {
-            try
-            {
-                _dbContext.Predmet.Add(predmet);
-                _dbContext.SaveChanges();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            _dbContext.Predmet.Add(predmet);
+            await _dbContext.SaveChangesAsync();
         }
         public void SmazPredmet(int IdPredmetu)
         {

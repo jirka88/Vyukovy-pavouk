@@ -70,7 +70,7 @@
 			else
 			{
 				<tr>
-					<td colspan="4">Čekáme na připojení studentů do Teamu.</td>
+					<td colspan="5">Čekáme na připojení studentů do Teamu.</td>
 				</tr>
 			}
 		</tbody>
@@ -125,9 +125,9 @@ else
 		return Math.Round(vypocet);
 
 	}
-	//TO DO 
-	private void VymazStudenta(int Id) {
 
+	private async void VymazStudenta(int Id) {
+		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/studenti/deleteStudent/{Id}/{skupina.Id}");
 	}
 
 	public void ShowResult(int student)
