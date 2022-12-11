@@ -36,6 +36,10 @@
 					<fluent-tooltip Anchor="anchor2" Position=TooltipPosition.Bottom>Zobrazuje procentuální splnění.</fluent-tooltip>
 				</th>
 				<th>Více info</th>
+				<th>Povolení
+					<button id="anchor3">?</button>
+					<fluent-tooltip Anchor="anchor3" Position=TooltipPosition.Bottom>Slouží k odemykání kapitol pro studenta.</fluent-tooltip>
+				</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -62,16 +66,17 @@
 				</g>
 			</svg>
 						</fluent-button></th>
-						<th scope="row"><p class="d-flex align-items-center justify-content-center h-100">@student.Student.Jmeno @student.Student.Prijmeni</p></th>
+						<th scope="row"><p class="d-flex align-items-center justify-content-center h-100 mt-1 mb-0">@student.Student.Jmeno @student.Student.Prijmeni</p></th>
 						@if (MaxCountKapitol > 0)
 						{
-							<td><p class="d-flex align-items-center">@student.Student.StudentSplneni.Select(x => x.splneni).Count()/@MaxCountKapitol</p></td>
-							<td><p class="d-flex align-items-center">@CalculateAVG(student.Student.StudentSplneni.Select(x => x.splneni).Count())%</p></td>
+							<td><p class="d-flex align-items-center mt-1 mb-0">@student.Student.StudentSplneni.Select(x => x.splneni).Count()/@MaxCountKapitol</p></td>
+							<td><p class="d-flex align-items-center mt-1 mb-0">@CalculateAVG(student.Student.StudentSplneni.Select(x => x.splneni).Count())%</p></td>
 							<td><fluent-button appearance="accent" class="d-grid align-items-center" @onclick="() => ShowResult(student.Student.Id)"><svg width="28" height="28" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.296 16.294a1 1 0 1 0 1.415 1.414l4.997-5.004a1 1 0 0 0 0-1.413L15.71 6.293a1 1 0 0 0-1.415 1.414L17.59 11H11a8 8 0 0 0-7.996 7.75L3 19a1 1 0 1 0 2 0 6 6 0 0 1 5.775-5.996L11 13h6.586l-3.29 3.294Z" fill="#ffffff" /></svg></fluent-button></td>
+							<td><fluent-button appearance="accent" class="d-grid align-items-center"><svg width="28" height="28" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button></td>
 						}
 						else
 						{
-							<td colspan="3">V teamu není žádná kapitola!</td>
+							<td colspan="4">V teamu není žádná kapitola!</td>
 						}
 
 					</tr>
@@ -80,7 +85,7 @@
 			else
 			{
 				<tr>
-					<td colspan="5">Čekáme na připojení studentů do Teamu.</td>
+					<td colspan="6">Čekáme na připojení studentů do Teamu.</td>
 				</tr>
 			}
 		</tbody>
@@ -93,17 +98,9 @@ else
 	</div>
 }
 <style>
-	.usr {
-		height: 3em;
-	}	
-	fluent-dialog fluent-button {
-		width: 100px;
-		height: 50px;
-	}
-	fluent-dialog {
-		position: sticky;
-		z-index: 11;
-	}
+	th button {
+	width: 25px;
+}
 </style>
 @code {
 	private bool IsLoaded = false;

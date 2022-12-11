@@ -24,3 +24,22 @@ h1 {
 	font-weight: bold;
 	font-size: 4em;
 }
+.usr {
+	height: 3em;
+}
+
+fluent-dialog fluent-button {
+	width: 100px;
+	height: 50px;
+}
+
+fluent-dialog {
+	position: sticky;
+	z-index: 11;
+}
+
+
+td fluent-button:hover, th fluent-button:hover {
+	transform: scale(1.1);
+	transition: 0.3s;
+}

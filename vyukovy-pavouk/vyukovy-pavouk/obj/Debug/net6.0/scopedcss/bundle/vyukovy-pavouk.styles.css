@@ -332,5 +332,27 @@ h1[b-42p5hbspiz] {
 	font-weight: bold;
 	font-size: 4em;
 }
+.usr[b-42p5hbspiz] {
+	height: 3em;
+}
+
+fluent-dialog fluent-button[b-42p5hbspiz] {
+	width: 100px;
+	height: 50px;
+}
+
+fluent-dialog[b-42p5hbspiz] {
+	position: sticky;
+	z-index: 11;
+}
+
+th fluent-button[b-42p5hbspiz] {
+	width: 25px;
+}
+
+td fluent-button:hover[b-42p5hbspiz], th fluent-button:hover[b-42p5hbspiz] {
+	transform: scale(1.1);
+	transition: 0.3s;
+}
 /* _content/vyukovy-pavouk/Pages/Tab.razor.rz.scp.css */
 /* _content/vyukovy-pavouk/Shared/MainLayout.razor.rz.scp.css */
