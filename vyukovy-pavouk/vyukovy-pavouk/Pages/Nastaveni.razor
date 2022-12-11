@@ -209,16 +209,15 @@
 	private async void Zmen() {
 		vypniTlacitka = true;
 		hledanyPredmet = predmety.Where(x => x.Nazev == skupina.predmet.Nazev).SingleOrDefault();
-		if(hledanyPredmet == null) {
-			await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", skupina);
-			upozorneni.ShowSuccess("Předmět byl úspěšně přejmenován.", "Úspěch!");
-			await Task.Delay(1000);
-			MyNavigationManager.NavigateTo("/nastaveni", true);
-		}
-		else {
+		if(hledanyPredmet != null) {
 			shodaDialog = false;
+			return;
 		}
-
+		await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", skupina);
+		predmety = await Http.GetFromJsonAsync<List<Predmet>>($"{MyNavigationManager.BaseUri}api/predmet");
+		await InvokeAsync(StateHasChanged);
+		upozorneni.ShowSuccess("Předmět byl úspěšně přejmenován.", "Úspěch!");
+		vypniTlacitka = false;
 	}
 	private void ShowResetDialog() {
 		ModelHidden = false;

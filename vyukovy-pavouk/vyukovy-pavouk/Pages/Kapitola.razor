@@ -212,6 +212,7 @@ else {
 		//nejdříve zjistím všechny splnění ze skupiny 
 		splneni = await Http.GetFromJsonAsync<List<StudentSplneni>>($"{MyNavigationManager.BaseUri}api/studenti/allSplneni/{skupina.Id}");
 		//poté zkontroluju 
+
 		foreach (StudentSplneni splneni in splneni)
 		{
 			//pokud je shoda ID kapitoly ve splneni a ID kapitoly této
