@@ -39,11 +39,11 @@ namespace vyukovy_pavouk.Controllers
             return student;
         }
         //získá všechny splnění 
-        [HttpGet("allSplneni/{IdSkupiny}")] 
+        /*[HttpGet("allSplneni/{IdSkupiny}")] 
         public async Task<List<StudentSplneni>> GetSplneni(int IdSkupiny)
         {
             return await Task.FromResult(_IStudenti.GetSplneni(IdSkupiny));
-        }
+        }*/
         //vytvoří studenta pod patřící skupinu 
         [HttpPost]
         public async Task CreateNewStudent([FromBody] Student student)
@@ -58,14 +58,14 @@ namespace vyukovy_pavouk.Controllers
             await _IStudenti.CreateNewConnect(skupinaStudent);
         }
      
-        [HttpDelete]
+        /*[HttpDelete]
         [Route("deleteSplneni/{Id}")] 
         //TO DO 
         public IActionResult deleteSplneni(int Id)
         {
             _IStudenti.DeleteSplneni(Id);
             return Ok();
-        }
+        }*/
         //vymaže studenta u určité skupiny 
         [HttpDelete]
         [Route("deleteStudent/{IdStudenta}/{IdSkupiny}")]

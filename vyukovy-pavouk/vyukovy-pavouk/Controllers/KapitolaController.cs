@@ -30,11 +30,10 @@ namespace vyukovy_pavouk.Controllers
             await _IKapitola.UpdateKapitola(kapitola);
         }
         [HttpDelete]
-        [Route("delete/{Id}")]
-        public IActionResult Delete(int Id)
+        [Route("delete/{IdKapitoly}")]
+        public async Task Delete(int Idkapitoly)
         {
-          _IKapitola.DeleteKapitola(Id);
-          return Ok();
+          await _IKapitola.DeleteKapitola(Idkapitoly);
         }
     }
 }

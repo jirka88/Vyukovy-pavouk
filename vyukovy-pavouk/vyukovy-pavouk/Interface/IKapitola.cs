@@ -8,7 +8,7 @@ namespace vyukovy_pavouk.Interface
         public Kapitola GetKapitolaDetail(int IdKapitoly);
         public void CreateKapitola(Kapitola kapitola);
         public Task UpdateKapitola(Kapitola kapitola);  
-        public void DeleteKapitola(int Id);
+        public Task DeleteKapitola(int IdKapitoly);
 
     }
 }

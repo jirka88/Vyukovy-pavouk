@@ -45,19 +45,25 @@ namespace vyukovy_pavouk.Services
             }
         }
 
-        public void DeleteKapitola(int Id)
+        public async Task DeleteKapitola(int Idkapitoly)
         {
-            Kapitola kapitola = _dbContext.Kapitoly.Find(Id);
+            Kapitola kapitola = _dbContext.Kapitoly.Find(Idkapitoly);
             if (kapitola != null)
             {
                 _dbContext.Kapitoly.Remove(kapitola);
                 //vymazání prerekvizity, která mohla být navazána 
-                Prerekvizity prerekvizita = _dbContext.Prerekvizity.Where(x => x.IdPrerekvizity == Id).SingleOrDefault();
+                Prerekvizity prerekvizita = await _dbContext.Prerekvizity.Where(x => x.IdPrerekvizity == Idkapitoly).SingleOrDefaultAsync();
                 if (prerekvizita != null)
                 {
                     _dbContext.Prerekvizity.Remove(prerekvizita);
                 }
-                _dbContext.SaveChanges();
+                //vymazání splnění a navázaní splnění na studentech 
+                List <Splneni> splneni = await _dbContext.Splneni.Where(x => x.IdKapitoly == Idkapitoly).ToListAsync();
+                if(splneni.Count != 0)
+                {
+                    _dbContext.Splneni.RemoveRange(splneni);
+                }           
+                await _dbContext.SaveChangesAsync();
             }
         }
         // TO DO vymazat prerekvizity 
