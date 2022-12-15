@@ -103,13 +103,13 @@
 						studentInfo.Prijmeni = UserToken.Profile.Surname;
 						studentInfo.Email = UserToken.Profile.Mail;
 						studentInfo.SkupinaStudent.Add(new SkupinaStudent());
-						studentInfo.SkupinaStudent[0].IdSkupina = skupina.Id;
+						studentInfo.SkupinaStudent[0].SkupinaID = skupina.Id;
 						await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti", studentInfo);
 					}
 					//pokud student už existuje v databázi, ale není navázán v naší skupině 
-					else if(student.SkupinaStudent.Find(x => x.IdSkupina == skupina.Id) == null) { 
-						skupinaStudentConnect.IdSkupina = skupina.Id;
-						skupinaStudentConnect.IdStudent = student.Id;
+					else if(student.SkupinaStudent.Find(x => x.SkupinaID == skupina.Id) == null) { 
+						skupinaStudentConnect.SkupinaID = skupina.Id;
+						skupinaStudentConnect.StudentID = student.Id;
 						await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/connect", skupinaStudentConnect);				
 					}									
 					MyNavigationManager.NavigateTo("/"); 

@@ -12,7 +12,7 @@ namespace vyukovy_pavouk.EntityConfiguration
             builder.HasKey(id => id.Id);
             builder.HasOne(k => k.kapitola)
                 .WithMany(z => z.Zadani)
-                .HasForeignKey(id => id.IdKapitoly);
+                .HasForeignKey(id => id.KapitolaID);
         }
     }
 }

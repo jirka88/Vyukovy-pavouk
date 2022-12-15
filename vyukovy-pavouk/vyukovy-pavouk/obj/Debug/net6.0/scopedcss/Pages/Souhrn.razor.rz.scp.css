@@ -38,9 +38,6 @@ fluent-dialog[b-42p5hbspiz] {
 	z-index: 11;
 }
 
-th fluent-button[b-42p5hbspiz] {
-	width: 25px;
-}
 
 td fluent-button:hover[b-42p5hbspiz], th fluent-button:hover[b-42p5hbspiz] {
 	transform: scale(1.1);

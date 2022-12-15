@@ -60,11 +60,11 @@ namespace vyukovy_pavouk.Services
         public void ResetSkupina(int Id)
         {
             List<Splneni> vsechnySplneni = _dbContext.Splneni
-                                            .Where(x => x.IdSkupiny == Id)
+                                            .Where(x => x.SkupinaID == Id)
                                             .ToList();
             _dbContext.RemoveRange(vsechnySplneni);
 
-            List<SkupinaStudent> SkupinaStudent = _dbContext.SkupinaStudent.Where(x => x.IdSkupina == Id).ToList();
+            List<SkupinaStudent> SkupinaStudent = _dbContext.SkupinaStudent.Where(x => x.SkupinaID == Id).ToList();
             _dbContext.RemoveRange(SkupinaStudent);
 
             Skupina skupina = _dbContext.Skupina.Find(Id);

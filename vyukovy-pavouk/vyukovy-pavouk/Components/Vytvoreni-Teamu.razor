@@ -121,8 +121,8 @@
 	}
 	public async Task VytvorUvodniSplneni(Skupina skupina) {
 		Splneni splneni = new Splneni();
-		splneni.IdSkupiny = skupina.Id;
-		splneni.IdKapitoly = 0;
+		splneni.SkupinaID = skupina.Id;
+		splneni.KapitolaID = 0;
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina/uvod", splneni);
 	}
 	//naváže na novou skupinu existující předmět
@@ -133,7 +133,7 @@
 		//přidání ID předmětu z výběru nahoře
 		hledanyPredmet = predmety.Find(x => x.Nazev == PredmetSelect);
 		//dosazení ID předmětu
-		skupina.IDPredmetu = hledanyPredmet.Id;
+		skupina.PredmetID = hledanyPredmet.Id;
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", skupina);
 		//získání ID nově vytvořené skupiny
 		Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + GroupToken.teamsContext.TeamId);

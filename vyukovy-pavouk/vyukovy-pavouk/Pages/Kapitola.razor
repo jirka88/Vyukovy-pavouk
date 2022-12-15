@@ -172,7 +172,7 @@ else {
 				}
 				if(UserToken.Profile.JobTitle == null) {
 					skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-					prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.IDPredmetu));
+					prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.PredmetID));
 				}
 				IsLoaded = true;
 			}
@@ -189,7 +189,7 @@ else {
 		bool NelzeSmazat = false;
 		foreach (KapitolaPrerekvizita Kprerekvizita in prerekvizity)
 		{
-			if(Kprerekvizita.prerekvizita.IdPrerekvizity == kapitola.Id) {
+			if(Kprerekvizita.prerekvizita.PrerekvizityID == kapitola.Id) {
 				NelzeSmazat = true;
 				ModelHiddenError = false;
 				break;					

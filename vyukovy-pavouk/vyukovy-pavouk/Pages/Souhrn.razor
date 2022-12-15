@@ -144,7 +144,7 @@ else
 
 	}
 	private void UkazDialog(int Id) {
-		VybranyStudent = studenti.Where(x => x.IdStudent == Id).Select(x => x.Student).SingleOrDefault();
+		VybranyStudent = studenti.Where(x => x.StudentID == Id).Select(x => x.Student).SingleOrDefault();
 		ModelHidden = false;
 	}
 	private void CloseDialog() {

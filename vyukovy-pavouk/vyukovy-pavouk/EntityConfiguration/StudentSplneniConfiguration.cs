@@ -9,14 +9,14 @@ namespace vyukovy_pavouk.EntityConfiguration
         // student : splneni --> M : N 
         public void Configure(EntityTypeBuilder<StudentSplneni> builder)
         {
-            builder.HasKey(id => new { id.IdStudent, id.IdSplneni });
+            builder.HasKey(id => new { id.StudentID, id.SplneniID });
             builder.HasOne(s => s.student)
                 .WithMany(s => s.StudentSplneni)
-                .HasForeignKey(id => id.IdStudent)
+                .HasForeignKey(id => id.StudentID)
                 .OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(s => s.splneni)
                 .WithMany(s => s.StudentSplneni)
-                .HasForeignKey(id => id.IdSplneni)
+                .HasForeignKey(id => id.SplneniID)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

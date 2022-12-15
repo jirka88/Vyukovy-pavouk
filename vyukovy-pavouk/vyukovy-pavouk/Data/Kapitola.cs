@@ -9,7 +9,7 @@ namespace vyukovy_pavouk.Data
         public string Název { get; set; }
         public string Perex { get; set; }
         public string Kontent { get; set; }
-        public int IdPredmetu { get; set; }
+        public int PredmetID { get; set; }
         public Predmet predmet { get; set; }
         public List<Zadani> Zadani { get; set; }
         public List<Videa> Videa { get; set; }

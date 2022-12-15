@@ -14,7 +14,7 @@ namespace vyukovy_pavouk.EntityConfiguration
             // kapitola : Videa --> 1 : M
             builder.HasOne(i => i.kapitola)
                 .WithMany(v => v.Videa)
-                .HasForeignKey(p => p.IdKapitoly);
+                .HasForeignKey(p => p.KapitolaID);
         }
 
 }

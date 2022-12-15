@@ -29,9 +29,6 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("IdPredmetu")
-                        .HasColumnType("int");
-
                     b.Property<string>("Kontent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -45,9 +42,12 @@ namespace vyukovypavouk.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int>("PredmetID")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdPredmetu");
+                    b.HasIndex("PredmetID");
 
                     b.ToTable("Kapitoly");
                 });
@@ -60,17 +60,17 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("IdPrerekvizita")
+                    b.Property<int>("KapitolaID")
                         .HasColumnType("int");
 
-                    b.Property<int>("KapitolaId")
+                    b.Property<int>("PrerekvizitaID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdPrerekvizita");
+                    b.HasIndex("KapitolaID");
 
-                    b.HasIndex("KapitolaId");
+                    b.HasIndex("PrerekvizitaID");
 
                     b.ToTable("kapitolaPrerekvizita");
                 });
@@ -106,7 +106,7 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("IdPrerekvizity")
+                    b.Property<int>("PrerekvizityID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -122,7 +122,7 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("IDPredmetu")
+                    b.Property<int>("PredmetID")
                         .HasColumnType("int");
 
                     b.Property<string>("TmSkupina")
@@ -132,22 +132,22 @@ namespace vyukovypavouk.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IDPredmetu");
+                    b.HasIndex("PredmetID");
 
                     b.ToTable("Skupina");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.SkupinaStudent", b =>
                 {
-                    b.Property<int>("IdSkupina")
+                    b.Property<int>("SkupinaID")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdStudent")
+                    b.Property<int>("StudentID")
                         .HasColumnType("int");
 
-                    b.HasKey("IdSkupina", "IdStudent");
+                    b.HasKey("SkupinaID", "StudentID");
 
-                    b.HasIndex("IdStudent");
+                    b.HasIndex("StudentID");
 
                     b.ToTable("SkupinaStudent");
                 });
@@ -160,10 +160,10 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("IdKapitoly")
+                    b.Property<int>("KapitolaID")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdSkupiny")
+                    b.Property<int>("SkupinaID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -195,15 +195,18 @@ namespace vyukovypavouk.Migrations
 
             modelBuilder.Entity("vyukovy_pavouk.Data.StudentSplneni", b =>
                 {
-                    b.Property<int>("IdStudent")
+                    b.Property<int>("StudentID")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdSplneni")
+                    b.Property<int>("SplneniID")
                         .HasColumnType("int");
 
-                    b.HasKey("IdStudent", "IdSplneni");
+                    b.Property<bool>("Uspech")
+                        .HasColumnType("bit");
 
-                    b.HasIndex("IdSplneni");
+                    b.HasKey("StudentID", "SplneniID");
+
+                    b.HasIndex("SplneniID");
 
                     b.ToTable("StudentSplneni");
                 });
@@ -216,7 +219,7 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("IdKapitoly")
+                    b.Property<int>("KapitolaID")
                         .HasColumnType("int");
 
                     b.Property<string>("Nazev")
@@ -230,7 +233,7 @@ namespace vyukovypavouk.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdKapitoly");
+                    b.HasIndex("KapitolaID");
 
                     b.ToTable("Videa");
                 });
@@ -243,7 +246,7 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("IdKapitoly")
+                    b.Property<int>("KapitolaID")
                         .HasColumnType("int");
 
                     b.Property<string>("Odkaz")
@@ -253,7 +256,7 @@ namespace vyukovypavouk.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdKapitoly");
+                    b.HasIndex("KapitolaID");
 
                     b.ToTable("Zadani");
                 });
@@ -262,7 +265,7 @@ namespace vyukovypavouk.Migrations
                 {
                     b.HasOne("vyukovy_pavouk.Data.Predmet", "predmet")
                         .WithMany("Kapitoly")
-                        .HasForeignKey("IdPredmetu")
+                        .HasForeignKey("PredmetID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -271,15 +274,15 @@ namespace vyukovypavouk.Migrations
 
             modelBuilder.Entity("vyukovy_pavouk.Data.KapitolaPrerekvizita", b =>
                 {
-                    b.HasOne("vyukovy_pavouk.Data.Prerekvizity", "prerekvizita")
+                    b.HasOne("vyukovy_pavouk.Data.Kapitola", "kapitola")
                         .WithMany("KapitolaPrerekvizita")
-                        .HasForeignKey("IdPrerekvizita")
+                        .HasForeignKey("KapitolaID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("vyukovy_pavouk.Data.Kapitola", "kapitola")
+                    b.HasOne("vyukovy_pavouk.Data.Prerekvizity", "prerekvizita")
                         .WithMany("KapitolaPrerekvizita")
-                        .HasForeignKey("KapitolaId")
+                        .HasForeignKey("PrerekvizitaID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -292,7 +295,7 @@ namespace vyukovypavouk.Migrations
                 {
                     b.HasOne("vyukovy_pavouk.Data.Predmet", "predmet")
                         .WithMany("Skupiny")
-                        .HasForeignKey("IDPredmetu")
+                        .HasForeignKey("PredmetID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -303,13 +306,13 @@ namespace vyukovypavouk.Migrations
                 {
                     b.HasOne("vyukovy_pavouk.Data.Skupina", "Skupina")
                         .WithMany("Student")
-                        .HasForeignKey("IdSkupina")
+                        .HasForeignKey("SkupinaID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("vyukovy_pavouk.Data.Student", "Student")
                         .WithMany("SkupinaStudent")
-                        .HasForeignKey("IdStudent")
+                        .HasForeignKey("StudentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -322,13 +325,13 @@ namespace vyukovypavouk.Migrations
                 {
                     b.HasOne("vyukovy_pavouk.Data.Splneni", "splneni")
                         .WithMany("StudentSplneni")
-                        .HasForeignKey("IdSplneni")
+                        .HasForeignKey("SplneniID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("vyukovy_pavouk.Data.Student", "student")
                         .WithMany("StudentSplneni")
-                        .HasForeignKey("IdStudent")
+                        .HasForeignKey("StudentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -341,7 +344,7 @@ namespace vyukovypavouk.Migrations
                 {
                     b.HasOne("vyukovy_pavouk.Data.Kapitola", "kapitola")
                         .WithMany("Videa")
-                        .HasForeignKey("IdKapitoly")
+                        .HasForeignKey("KapitolaID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -352,7 +355,7 @@ namespace vyukovypavouk.Migrations
                 {
                     b.HasOne("vyukovy_pavouk.Data.Kapitola", "kapitola")
                         .WithMany("Zadani")
-                        .HasForeignKey("IdKapitoly")
+                        .HasForeignKey("KapitolaID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -2,10 +2,11 @@
 {
     public class StudentSplneni
 {
-        public int IdStudent { get; set; }
+        public int StudentID { get; set; }
         public Student student { get; set; }
-        public int IdSplneni { get; set; }
+        public int SplneniID { get; set; }
         public Splneni splneni { get; set; }
+        public bool Uspech { get; set; }
 
 }
 }

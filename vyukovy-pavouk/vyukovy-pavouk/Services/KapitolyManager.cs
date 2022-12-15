@@ -17,7 +17,7 @@ namespace vyukovy_pavouk.Services
         public List<Kapitola> GetKapitoly(int IdPredmetu)
         {
             return _dbContext.Kapitoly
-                .Where(p => p.IdPredmetu == IdPredmetu) 
+                .Where(p => p.PredmetID == IdPredmetu) 
                 .Include(p => p.KapitolaPrerekvizita)
                 .ThenInclude(p => p.prerekvizita)
                 .ToList();
@@ -26,7 +26,7 @@ namespace vyukovy_pavouk.Services
         public List<Kapitola> GetKapitolyOnly(int IdPredmetu)
         {
             return _dbContext.Kapitoly
-                .Where(p => p.IdPredmetu == IdPredmetu)
+                .Where(p => p.PredmetID == IdPredmetu)
                 .ToList();
         }
 
@@ -34,7 +34,7 @@ namespace vyukovy_pavouk.Services
         {
             return _dbContext.kapitolaPrerekvizita
                 .Include(p => p.prerekvizita)
-                .Include(k => k.kapitola).Where(x => x.kapitola.IdPredmetu == IdPredmetu)
+                .Include(k => k.kapitola).Where(x => x.kapitola.PredmetID == IdPredmetu)
                 .ToList();
         }
     }

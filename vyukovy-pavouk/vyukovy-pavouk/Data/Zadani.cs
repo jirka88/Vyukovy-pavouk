@@ -6,7 +6,7 @@ namespace vyukovy_pavouk.Data
 {
         public int Id { get; set; }
         public string Odkaz { get; set; }
-        public int IdKapitoly { get; set; }
+        public int KapitolaID { get; set; }
         public Kapitola kapitola { get; set; }
     }
     public class ZadaniValidator : AbstractValidator<Zadani>

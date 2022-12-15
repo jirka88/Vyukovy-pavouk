@@ -48,7 +48,7 @@
 								}
 								else
 								{
-									<InputSelect class="flex-grow-1" @bind-Value="@prerekvizita.IdPrerekvizity">
+									<InputSelect class="flex-grow-1" @bind-Value="@prerekvizita.PrerekvizityID">
 										<!-- podmínka pro kontrolu jestli se nejedná o úvodní kapitolu -1 je při našem výběru 0 při načtení a celkový počet prerekvizit dané kapitoly je jedna-->
 										<option value="0" selected disabled hidden>Vyberte Prerekvizitu</option>
 										@if (!uvodniKapitola)
@@ -70,11 +70,11 @@
 									<Fluent-Button class="cancel" appearance="accent" @onclick="() => SmazPrerekvizitu(index)">X</Fluent-Button>
 								}
 								<!-- zobrazení + tlačítka u aktualního vstupu && maximální počet 4 prerekvizity && pokud máme mín prerekvizit vstupů může být maximální počet prerekvizit-->
-								@if (@kapitola.KapitolaPrerekvizita.Count() - 1 == i && i < 3 && i < prerekvizity.Select(x => x.KapitolaId).Distinct().Count() - 2 && prerekvizita.IdPrerekvizity != 0 && prerekvizita.IdPrerekvizity != -1)
+								@if (@kapitola.KapitolaPrerekvizita.Count() - 1 == i && i < 3 && i < prerekvizity.Select(x => x.KapitolaID).Distinct().Count() - 2 && prerekvizita.PrerekvizityID != 0 && prerekvizita.PrerekvizityID != -1)
 								{
 									<Fluent-button appearance="accent" class="create" @onclick="@VytvorPrerekvizitu"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
 								}
-								<ValidationMessage For="@(()=>@kapitola.KapitolaPrerekvizita[index].prerekvizita.IdPrerekvizity)" />
+								<ValidationMessage For="@(()=>@kapitola.KapitolaPrerekvizita[index].prerekvizita.PrerekvizityID)" />
 
 							</div>
 						}
@@ -234,7 +234,7 @@
 	protected override async Task OnParametersSetAsync()
 	{
 		kapitola = await Http.GetFromJsonAsync<vyukovy_pavouk.Data.Kapitola>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdKapitola);
-		if (kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == 0)
+		if (kapitola.KapitolaPrerekvizita[0].prerekvizita.PrerekvizityID == 0)
 		{
 			uvodniKapitola = true;
 		}
@@ -263,10 +263,10 @@
 			else
 			{
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.IDPredmetu));
+				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.PredmetID));
 				//vymazání upravované kapitoly --> jinak by se dala navázat kapitola sama na sebe
 				kapitoly.RemoveAt(kapitoly.FindIndex(x => x.Id == kapitola.Id));
-				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.IDPredmetu));
+				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.PredmetID));
 				EditContext = new EditContext(kapitola);
 				IsLoaded = true;
 				nacti = true;
@@ -295,11 +295,11 @@
 		if (EditContext.Validate())
 		{
 			kapitola.Kontent = await this.QuillHtml.GetHTML();
-			kapitola.IdPredmetu = skupina.IDPredmetu;
+			kapitola.PredmetID = skupina.PredmetID;
 			//pokud je úvod --> nastavám na 0 protože to je ID pro úvodní kapitolu
-			if (kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity == -1)
+			if (kapitola.KapitolaPrerekvizita[0].prerekvizita.PrerekvizityID == -1)
 			{
-				kapitola.KapitolaPrerekvizita[0].prerekvizita.IdPrerekvizity = 0;
+				kapitola.KapitolaPrerekvizita[0].prerekvizita.PrerekvizityID = 0;
 			}
 			//kontrola zda-li se dané prerekvizity už nenachzejí v DB
 			foreach (var prerekvizita in prerekvizity)
@@ -310,7 +310,7 @@
 				}
 				for (var i = globalIndexKontrola; i < kapitola.KapitolaPrerekvizita.Count; i++)
 				{
-					if (prerekvizita.prerekvizita.IdPrerekvizity == kapitola.KapitolaPrerekvizita[i].prerekvizita.IdPrerekvizity)
+					if (prerekvizita.prerekvizita.PrerekvizityID == kapitola.KapitolaPrerekvizita[i].prerekvizita.PrerekvizityID)
 					{
 						//vymaže stejnou hodnotu u nově vytvořené instance kapitoly
 						int id = kapitola.KapitolaPrerekvizita[i].Id;
@@ -318,7 +318,7 @@
 						globalIndexKontrola++;
 						//přidá existujicí vztah mezi KapitolaPrerekvizita - Prerekvizita --> díky tomu nebudou vznikat duplicitní hodnoty
 						KapitolaPrerekvizita existujiciPrerekvizita = new KapitolaPrerekvizita();
-						existujiciPrerekvizita.IdPrerekvizita = prerekvizita.IdPrerekvizita;
+						existujiciPrerekvizita.PrerekvizitaID = prerekvizita.PrerekvizitaID;
 						existujiciPrerekvizita.Id = id;
 						kapitola.KapitolaPrerekvizita.Insert(0, existujiciPrerekvizita);
 					}
@@ -347,7 +347,7 @@
 		bool vytvor = true;
 		foreach (KapitolaPrerekvizita item in kapitola.KapitolaPrerekvizita)
 		{
-			if (item.prerekvizita.IdPrerekvizity == 0)
+			if (item.prerekvizita.PrerekvizityID == 0)
 			{
 				vytvor = false;
 				break;
@@ -358,7 +358,7 @@
 			//najde třídu prerekvizity, kterou jsme si vybrali
 			vyukovy_pavouk.Data.Kapitola hledanaPrerekvizita = new vyukovy_pavouk.Data.Kapitola();
 
-			hledanaPrerekvizita = kapitoly.Find(x => x.Id == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.IdPrerekvizity);
+			hledanaPrerekvizita = kapitoly.Find(x => x.Id == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.PrerekvizityID);
 			//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
 			kapitoly.Remove(hledanaPrerekvizita);
 
@@ -373,7 +373,7 @@
 		//najde třídu prerekvizity, kterou jsme si vybrali
 		vyukovy_pavouk.Data.Kapitola hledanaPrerekvizita = new vyukovy_pavouk.Data.Kapitola();
 
-		hledanaPrerekvizita = kapitoly.Find(x => x.Id == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.IdPrerekvizity);
+		hledanaPrerekvizita = kapitoly.Find(x => x.Id == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.PrerekvizityID);
 		//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
 		kapitoly.Remove(hledanaPrerekvizita);
 
@@ -411,7 +411,7 @@
 	{
 		//vyhledá kapitolu po výběru prerekvizity
 		vyukovy_pavouk.Data.Kapitola HledanaKapitola = new vyukovy_pavouk.Data.Kapitola();
-		HledanaKapitola = kapitoly.Find(x => x.Id == prerekvizita.IdPrerekvizity);
+		HledanaKapitola = kapitoly.Find(x => x.Id == prerekvizita.PrerekvizityID);
 		//test jestli se nejedná o načtení
 		if (HledanaKapitola != null)
 		{

@@ -22,8 +22,6 @@ namespace vyukovy_pavouk.DBContexts
         public DbSet<KapitolaPrerekvizita> kapitolaPrerekvizita { get; set; }
         public DbSet<Prerekvizity> Prerekvizity { get; set; }
 
-
-        //public DbSet<Test> Test { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());                   

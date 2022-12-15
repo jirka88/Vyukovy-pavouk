@@ -18,10 +18,11 @@ namespace vyukovy_pavouk.Services
                 _dbContext.SkupinaStudent.Add(skupinaStudent);
                 //vytvoří spojení mezi úvodní kapitolou a studentem 
                 StudentSplneni studentSplneni = new StudentSplneni();
-                studentSplneni.IdStudent = skupinaStudent.IdStudent;
+                studentSplneni.StudentID = skupinaStudent.StudentID;
                 //získá uvodní prerekvizitu
-                Splneni splneni = await _dbContext.Splneni.Where(x => x.IdSkupiny == skupinaStudent.IdSkupina && x.IdKapitoly == 0).SingleOrDefaultAsync();
-                studentSplneni.IdSplneni = splneni.Id;
+                Splneni splneni = await _dbContext.Splneni.Where(x => x.SkupinaID == skupinaStudent.SkupinaID && x.KapitolaID == 0).SingleOrDefaultAsync();
+                studentSplneni.SplneniID = splneni.Id;
+                studentSplneni.Uspech = true;
                 _dbContext.StudentSplneni.Add(studentSplneni);
                 await _dbContext.SaveChangesAsync();                  
         }
@@ -32,45 +33,43 @@ namespace vyukovy_pavouk.Services
                 await _dbContext.SaveChangesAsync();
                 //vytvoří spojení mezi úvodní kapitolou a studentem 
                 StudentSplneni studentSplneni = new StudentSplneni();
-                studentSplneni.IdStudent = student.Id;
+                studentSplneni.StudentID = student.Id;
                 //získá uvodní prerekvizitu
-                Splneni splneni = await _dbContext.Splneni.Where(x => x.IdSkupiny == student.SkupinaStudent[0].IdSkupina && x.IdKapitoly == 0).SingleOrDefaultAsync();
-                studentSplneni.IdSplneni = splneni.Id;
+                Splneni splneni = await _dbContext.Splneni.Where(x => x.SkupinaID == student.SkupinaStudent[0].SkupinaID && x.KapitolaID == 0).SingleOrDefaultAsync();
+                studentSplneni.SplneniID = splneni.Id;
+                studentSplneni.Uspech = true;
 
                 _dbContext.Add(studentSplneni);
                 await _dbContext.SaveChangesAsync();
         }
         //zjistí progres (plnění jeho kapitol) u určitého studenta 
-        //TO DO 
         public Student GetStudentProgres(int Id, int IdSkupiny)
         {
             return _dbContext.Student
                 .Where(id => id.Id == Id)
-                .Include(s => s.StudentSplneni.Where(id => id.splneni.IdSkupiny == IdSkupiny))
+                .Include(s => s.StudentSplneni.Where(id => id.splneni.SkupinaID == IdSkupiny))
                 .ThenInclude(s => s.splneni)
                 .SingleOrDefault();
         }
         //získa studenta zda-li v dané skupině je 
-        //TO DO 
         public Student GetStudent(int IdSkupiny, string EmailStudenta)
         {
            return _dbContext.Student
                 .Where(e => e.Email == EmailStudenta)
                 .Include(s => s.SkupinaStudent)
-                .Include(s => s.StudentSplneni.Where(id => id.splneni.IdSkupiny == IdSkupiny))
+                .Include(s => s.StudentSplneni.Where(id => id.splneni.SkupinaID == IdSkupiny))
                     .ThenInclude(s => s.splneni)
                 .SingleOrDefault();                             
         }
 
         //vybere všechny studenty se splněnými kapitoly, které patří do Teamu 
-        //TO DO 
         public List<SkupinaStudent> GetStudents(int ID)
         {
             //vrátí v souhrnu její studenty a jejich splnění kapitol (ID kapitol) krom prerekvizity u úvodní kapitoly - ta je automaticky daná studentovi
             return _dbContext.SkupinaStudent
-                    .Where(s => s.IdSkupina == ID)
+                    .Where(s => s.SkupinaID == ID)
                     .Include(s => s.Student)
-                    .ThenInclude(s => s.StudentSplneni.Where(id => id.splneni.IdSkupiny == ID && id.splneni.IdKapitoly != 0))
+                    .ThenInclude(s => s.StudentSplneni.Where(id => id.splneni.SkupinaID == ID && id.splneni.KapitolaID != 0))
                         .ThenInclude(s => s.splneni)            
                     .ToList();                         
         }
@@ -78,15 +77,14 @@ namespace vyukovy_pavouk.Services
         public List<StudentSplneni> GetSplneni(int IdSkupiny)
         {
             return _dbContext.StudentSplneni
-                .Include(s => s.splneni).Where(s => s.splneni.IdSkupiny == IdSkupiny)
+                .Include(s => s.splneni).Where(s => s.splneni.SkupinaID == IdSkupiny)
                 .ToList();
         }
         //vymaže studentům splnění kapitoly --> při mazání kapitoly 
-        //TO DO 
         public void DeleteSplneni(int Id)
         {          
                 List<StudentSplneni> studentiSplneni = new List<StudentSplneni>();
-                studentiSplneni = _dbContext.StudentSplneni.Where(id => id.IdSplneni == Id).ToList();
+                studentiSplneni = _dbContext.StudentSplneni.Where(id => id.SplneniID == Id).ToList();
                 Splneni splneni = _dbContext.Splneni.Find(Id);
 
                 foreach (StudentSplneni studentSplneni in studentiSplneni)
@@ -103,10 +101,10 @@ namespace vyukovy_pavouk.Services
         public async Task DeleteStudent(int IdStudenta, int IdSkupiny)
         {
             //vymaže studentoho navázaní na skupinu
-            SkupinaStudent SkupinaStudent = await _dbContext.SkupinaStudent.Where(x => x.IdStudent == IdStudenta && x.IdSkupina == IdSkupiny).SingleOrDefaultAsync();
+            SkupinaStudent SkupinaStudent = await _dbContext.SkupinaStudent.Where(x => x.StudentID == IdStudenta && x.SkupinaID == IdSkupiny).SingleOrDefaultAsync();
             _dbContext.Remove(SkupinaStudent);
             //vymaže jeho progres 
-            List<StudentSplneni> StudentSplneni = await _dbContext.StudentSplneni.Where(x => x.IdStudent == IdStudenta && x.splneni.IdSkupiny == IdSkupiny).ToListAsync();
+            List<StudentSplneni> StudentSplneni = await _dbContext.StudentSplneni.Where(x => x.StudentID == IdStudenta && x.splneni.SkupinaID == IdSkupiny).ToListAsync();
             _dbContext.RemoveRange(StudentSplneni);
             await _dbContext.SaveChangesAsync();
         }

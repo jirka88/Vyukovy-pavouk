@@ -9,14 +9,14 @@ namespace vyukovy_pavouk.EntityConfiguration
         //kapitola : prerekvizity --> M : N 
         public void Configure(EntityTypeBuilder<KapitolaPrerekvizita> builder)
         {
-            builder.HasKey(id => new { id.KapitolaId, id.IdPrerekvizita });
+            builder.HasKey(id => new { id.KapitolaID, id.PrerekvizitaID });
             builder.HasKey(id => id.Id);
             builder.HasOne(k => k.kapitola)
                 .WithMany(k => k.KapitolaPrerekvizita)
-                .HasForeignKey(id => id.KapitolaId);
+                .HasForeignKey(id => id.KapitolaID);
             builder.HasOne(p => p.prerekvizita)
                 .WithMany(p => p.KapitolaPrerekvizita)
-                .HasForeignKey(id => id.IdPrerekvizita)
+                .HasForeignKey(id => id.PrerekvizitaID)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

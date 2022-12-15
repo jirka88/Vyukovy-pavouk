@@ -2,9 +2,9 @@
 {
     public class SkupinaStudent
 {
-        public int IdSkupina { get; set; }
+        public int SkupinaID { get; set; }
         public Skupina Skupina { get; set; }
-        public int IdStudent { get; set; }
+        public int StudentID { get; set; }
         public Student Student { get; set; }
     }
 }

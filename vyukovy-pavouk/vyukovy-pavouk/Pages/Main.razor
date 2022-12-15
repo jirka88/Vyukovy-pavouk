@@ -83,7 +83,7 @@ else {
 			}
 			else {
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				Kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(skupina.IDPredmetu)));
+				Kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(skupina.PredmetID)));
 				student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id) + "/" + UserToken.Profile.Mail);
 				IsLoaded = true;
 			}
@@ -98,7 +98,7 @@ else {
 
 		foreach(var prerekvizity in kapitola.KapitolaPrerekvizita) {
 
-			hledanePrerekvizity.Add(Kapitoly.Find(x => x.Id == prerekvizity.prerekvizita.IdPrerekvizity));
+			hledanePrerekvizity.Add(Kapitoly.Find(x => x.Id == prerekvizity.prerekvizita.PrerekvizityID));
 		}
 	}
 	//řeší jestli daná kapitola je pro studenta splněna, odemčena či uzamnčena 
@@ -111,11 +111,11 @@ else {
 		foreach (var splneni in student.StudentSplneni.Select(x => x.splneni))
 		{
 			//pokud je splněno 
-			if(splneni.IdKapitoly == kapitola.Id) {
+			if(splneni.KapitolaID == kapitola.Id) {
 				return 1;
 			}
 			//ukládání pokud je odemčena
-			save = kapitola.KapitolaPrerekvizita.Find(x => x.prerekvizita.IdPrerekvizity == splneni.IdKapitoly);
+			save = kapitola.KapitolaPrerekvizita.Find(x => x.prerekvizita.PrerekvizityID == splneni.KapitolaID);
 			if (save != null) {
 				Prerekvizity.Add(save);
 			}

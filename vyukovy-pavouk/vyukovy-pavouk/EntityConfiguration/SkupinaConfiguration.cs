@@ -12,7 +12,7 @@ namespace vyukovy_pavouk.EntityConfiguration
             builder.Property(TM => TM.TmSkupina).HasMaxLength(2048).IsRequired();
             builder.HasOne(p => p.predmet)
                 .WithMany(s => s.Skupiny)
-                .HasForeignKey(Id => Id.IDPredmetu);
+                .HasForeignKey(Id => Id.PredmetID);
         }
     }
 }
