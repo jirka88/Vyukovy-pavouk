@@ -12,6 +12,6 @@ namespace vyukovy_pavouk.Interface
         public Task CreateNewStudent(Student student);
         public Task CreateNewConnect(SkupinaStudent skupinaStudent);
         public Task DeleteStudent(int IdStudenta, int IdSkupiny);
-
+        public Task CreateSplneni(StudentSplneni studentSplneni);
 }
 }

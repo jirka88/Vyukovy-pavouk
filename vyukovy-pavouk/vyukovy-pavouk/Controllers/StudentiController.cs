@@ -57,6 +57,12 @@ namespace vyukovy_pavouk.Controllers
         {
             await _IStudenti.CreateNewConnect(skupinaStudent);
         }
+        [Route("splneni")]
+        [HttpPost]
+        public async Task PripojSplneni([FromBody] StudentSplneni studentSplneni)
+        {
+            await _IStudenti.CreateSplneni(studentSplneni);
+        }
      
         /*[HttpDelete]
         [Route("deleteSplneni/{Id}")] 

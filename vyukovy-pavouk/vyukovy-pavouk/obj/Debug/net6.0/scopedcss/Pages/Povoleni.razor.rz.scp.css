@@ -1,0 +1,15 @@
+h1[b-hom6uf2ehd] {
+	font-weight: bold;
+	font-size: 4em;
+}
+fluent-dialog fluent-button[b-hom6uf2ehd] {
+	width: 100px;
+	height: 50px;
+}
+table[b-hom6uf2ehd] {
+	max-width: 940px;
+	margin: 0 auto;
+}
+td[b-hom6uf2ehd], th:not(:first-child)[b-hom6uf2ehd] {
+	text-align: center;
+}

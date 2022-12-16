@@ -108,5 +108,36 @@ namespace vyukovy_pavouk.Services
             _dbContext.RemoveRange(StudentSplneni);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task CreateSplneni(StudentSplneni studentSplneni)
+        {
+            bool pokracuj = true;
+            Splneni splneni = await _dbContext.Splneni.Where(x => x.KapitolaID == studentSplneni.splneni.KapitolaID && x.SkupinaID == studentSplneni.splneni.SkupinaID).SingleOrDefaultAsync();
+            //vytvoří nové splnění 
+            if (splneni == null)
+            {
+                _dbContext.Splneni.Add(studentSplneni.splneni);
+            }
+            //připojí s existujícím splněním 
+            else
+            {
+                StudentSplneni studentSplneniPropoj = new StudentSplneni();
+                studentSplneniPropoj.SplneniID = splneni.Id;
+                studentSplneniPropoj.StudentID = studentSplneni.StudentID;
+                studentSplneniPropoj.Uspech = studentSplneni.Uspech;
+                _dbContext.StudentSplneni.Add(studentSplneniPropoj);
+                pokracuj = false;
+            }
+            await _dbContext.SaveChangesAsync();
+            //nové splnění připojí 
+            if(pokracuj)
+            {
+                splneni = await _dbContext.Splneni.Where(x => x.KapitolaID == studentSplneni.splneni.KapitolaID && x.SkupinaID == studentSplneni.splneni.SkupinaID).SingleOrDefaultAsync();
+                studentSplneni.SplneniID = splneni.Id;
+                _dbContext.StudentSplneni.Add(studentSplneni);
+                await _dbContext.SaveChangesAsync();
+            }
+
+        }
     }
 }

@@ -17,7 +17,7 @@
 	<h1 class="text-center py-2 pb-4">Obsah</h1>
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
 		@if(Kapitoly.Count() > 0) {
-			@if(UserToken.Profile.JobTitle == null) {
+			@if(UserToken.Profile.JobTitle != null) {
 				//zobrazení kapitol pro učitele 
 				@foreach (var kapitola in Kapitoly)
 				{										
