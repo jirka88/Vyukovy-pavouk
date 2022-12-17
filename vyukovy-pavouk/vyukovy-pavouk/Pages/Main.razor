@@ -111,8 +111,13 @@ else {
 		foreach (var splneni in student.StudentSplneni.Select(x => x.splneni))
 		{
 			//pokud je splněno 
-			if(splneni.KapitolaID == kapitola.Id) {
+			if(splneni.KapitolaID == kapitola.Id && student.StudentSplneni.Find(x => x.splneni.Id == splneni.Id).Uspech == true) {
 				return 1;
+			}
+			// neúspěšně splněno
+			else if (splneni.KapitolaID == kapitola.Id && student.StudentSplneni.Find(x => x.SplneniID == splneni.Id).Uspech == false)
+			{
+				return 2; //TO DO 
 			}
 			//ukládání pokud je odemčena
 			save = kapitola.KapitolaPrerekvizita.Find(x => x.prerekvizita.PrerekvizityID == splneni.KapitolaID);
