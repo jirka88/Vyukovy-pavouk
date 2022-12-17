@@ -139,5 +139,11 @@ namespace vyukovy_pavouk.Services
             }
 
         }
+
+        public async Task OpravaSplneni(StudentSplneni studentSplneni)
+        {
+          _dbContext.Entry(studentSplneni).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

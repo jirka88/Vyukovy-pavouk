@@ -79,6 +79,11 @@ namespace vyukovy_pavouk.Controllers
         {
             await _IStudenti.DeleteStudent(IdStudenta, IdSkupiny);
         }
+        [HttpPut]
+        public async Task OpravSplneni(StudentSplneni studentSplneni)
+        {
+            await _IStudenti.OpravaSplneni(studentSplneni);
+        }
 
     }
 }

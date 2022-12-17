@@ -53,7 +53,7 @@
 							else
 							{
 								<td><fluent-button appearance="accent" disabled="true" class="d-grid align-items-center"><svg width="28" height="28" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button></td>
-								<td><fluent-button appearance="accent" class="d-grid align-items-center"><svg width="28" height="28" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button></td>
+								<td><fluent-button appearance="accent" Disabled="@stisknuto" @onclick="() => OpravaKapitoly(kapitola.Id)"class="d-grid align-items-center"><svg width="28" height="28" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button></td>
 							}
 							</tr>
 						}
@@ -133,10 +133,21 @@ else {
 		}
 		//kontrola zdali je odemčena splněné prerekvizity pocet == celkovy pocet prerekvizit v kapitole 
 		if(Prerekvizity.Count() == kapitola.KapitolaPrerekvizita.Count()) {
+			//kontroluje prerekvizitu kapitoly a studentova (neúspěšného splnění) ==> pokud nastane nezobrazí další kapitoly pro odemčení a může se odemknout (na úspěšný stav) pouze ta neúspěšná 
+			foreach (KapitolaPrerekvizita kapitolaPrerekvizita in kapitola.KapitolaPrerekvizita)
+			{
+				int IDKapitolyPrerekvizity = kapitolaPrerekvizita.prerekvizita.PrerekvizityID;
+				StudentSplneni studentTestSplneni = new StudentSplneni();
+				studentTestSplneni = student.StudentSplneni.Where(x => x.Uspech == false && x.splneni.KapitolaID == IDKapitolyPrerekvizity).SingleOrDefault();
+				if(studentTestSplneni != null) {
+					return 1;
+				}
+
+			}
 			return 3;
 		}
 		else {
-			return 4;
+			return 1;
 		}
 	}
 	//vytvoření nového splnění pro studenta
@@ -148,9 +159,19 @@ else {
 		studentSplneni.splneni.KapitolaID = IdKapitoly;
 		studentSplneni.splneni.SkupinaID = skupina.Id;
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/splneni", studentSplneni);
-		student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/" + Convert.ToInt32(skupina.Id) + "/" + id);
+		student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/{skupina.Id}/{id}");
 		stisknuto = false;
 		await InvokeAsync(StateHasChanged);
 
+	}
+	//povolení neúspěšné kapitoly  
+	private async Task OpravaKapitoly(int IdKapitoly) {
+		stisknuto = true;
+		StudentSplneni studentSplneniV2 = student.StudentSplneni.Where(x => x.splneni.KapitolaID == IdKapitoly && x.splneni.SkupinaID == skupina.Id).SingleOrDefault();
+		studentSplneniV2.Uspech = true;	
+		await Http.PutAsJsonAsync<StudentSplneni>($"{MyNavigationManager.BaseUri}api/studenti", studentSplneniV2);
+		student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/{skupina.Id}/{id}");
+		stisknuto = false;
+		await InvokeAsync(StateHasChanged);
 	}
 }
