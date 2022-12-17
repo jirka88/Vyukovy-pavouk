@@ -17,10 +17,10 @@
 	@if (student.StudentSplneni.Count() - 1 != 0)
 	{
 		<div class="d-flex flex-column justify-content-center align-items-center gap-3 py-2">
-		@foreach (var splneni in student.StudentSplneni)
+		@foreach (StudentSplneni studentSplneni in student.StudentSplneni)
 		{
 			vyukovy_pavouk.Data.Kapitola kapitola = new vyukovy_pavouk.Data.Kapitola();
-			kapitola = kapitoly.Where(id => id.Id == splneni.splneni.KapitolaID).SingleOrDefault();
+			kapitola = kapitoly.Where(id => id.Id == studentSplneni.splneni.KapitolaID && studentSplneni.Uspech == true).SingleOrDefault();
 			@if (kapitola != null)
 			{
 				<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]" />

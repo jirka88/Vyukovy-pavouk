@@ -33,10 +33,14 @@
 					{
 						<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]"/>
 					}
-					else if (Kontrola == 2)
-					{
-						<Kapitola_odemceno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]" />
+					else if(Kontrola == 2) {
+						<Kapitola_odemceno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]" Uspech="false"  />
 					}
+					else if (Kontrola == 3)
+					{
+						<Kapitola_odemceno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]" Uspech="true"  />
+					}
+					
 					else
 					{				
 						PrerekvizityShow(kapitola);
@@ -117,7 +121,7 @@ else {
 			// neúspěšně splněno
 			else if (splneni.KapitolaID == kapitola.Id && student.StudentSplneni.Find(x => x.SplneniID == splneni.Id).Uspech == false)
 			{
-				return 2; //TO DO 
+				return 2; 
 			}
 			//ukládání pokud je odemčena
 			save = kapitola.KapitolaPrerekvizita.Find(x => x.prerekvizita.PrerekvizityID == splneni.KapitolaID);
@@ -127,11 +131,21 @@ else {
 		}
 		//kontrola zdali je odemčena splněné prerekvizity pocet == celkovy pocet prerekvizit v kapitole 
 		if(Prerekvizity.Count() == kapitola.KapitolaPrerekvizita.Count()) {
-			return 2;
+			foreach (KapitolaPrerekvizita kapitolaPrerekvizita in kapitola.KapitolaPrerekvizita)
+			{
+				int IDKapitolyPrerekvizity = kapitolaPrerekvizita.prerekvizita.PrerekvizityID;
+				StudentSplneni studentTestSplneni = new StudentSplneni();
+				studentTestSplneni = student.StudentSplneni.Where(x => x.Uspech == false && x.splneni.KapitolaID == IDKapitolyPrerekvizity).SingleOrDefault();
+				if(studentTestSplneni != null) {
+					return 4;
+				}
+
+			}
+			return 3;
 		}
 		//pokud není odemcena je uzamcena 
 		else {
-			return 3;
+			return 4;
 		}			
 		
 	}

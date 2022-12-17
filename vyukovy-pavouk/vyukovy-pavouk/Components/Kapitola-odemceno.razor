@@ -20,8 +20,13 @@
 			{
 				<p class="uvod">Úvodní kapitola</p>
 			}
-
-			<p class="status">Nesplněno</p>
+			@if(!Uspech) {
+				<p class="status text-danger">Neúspěch! Zkuste znova.</p>
+			}
+			else {
+				<p class="status">Nesplněno</p>
+			}
+			
 		</div>
 	</div>
 </div>
@@ -39,6 +44,9 @@
 
 	[Parameter]
 	public KapitolaPrerekvizita Prerekvizita { get; set; }
+
+	[Parameter]
+	public bool Uspech { get; set; }
 
 	public void zobraz()
 	{
