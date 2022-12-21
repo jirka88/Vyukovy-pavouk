@@ -7,10 +7,10 @@
 <div class="container">
 	<div class="main-box py-2 d-flex flex-column align-items-center">
 		<!--vyskakovací okno pokud najde schodu názvu předmětu při vytváření nového předmětu -->
-		@if(hledanyPredmet != null) {		
+		@if(searchSubject != null) {		
 			<fluent-dialog Hidden="@modelHidden">
 			<div class="d-flex justify-content-center align-items-center h-100 w-100 flex-column">
-				<h5 class="text-center">Předmět s názvem @hledanyPredmet.Nazev už existuje. Zkuste jiný název!</h5>
+				<h5 class="text-center">Předmět s názvem @searchSubject.Nazev už existuje. Zkuste jiný název!</h5>
 				<?xml version="1.0" encoding="utf-8" ?>	
 				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
 				<metadata> Svg Vector Icons : http://www.onlinewebfonts.com/icon </metadata>
@@ -24,35 +24,53 @@
 		}
 		<!--vytvoření nového předmětu -->
 		<h1 class="py-5 text-center">Je potřeba vytvořit strukturu</h1>
-		<EditForm Model="@predmet" OnValidSubmit="@vytvor" class="editForm d-flex justify-content-center">
+		<EditForm Model="@subject" OnValidSubmit="@vytvor" class="editForm d-flex justify-content-center">
 			 <FluentValidationValidator />
 			<div class="card">
 				<div class="card-body gap-4">
 					<h2 class="card-title text-center">Vytvořit novou strukturu</h2>
-					<InputText id="nazev" type="text" placeholder="Název předmětu" @bind-Value="@predmet.Nazev"></InputText>
-					<ValidationMessage For="@(()=>@predmet.Nazev)" />
+					<InputText id="nazev" type="text" placeholder="Název předmětu" @bind-Value="@subject.Nazev"></InputText>
+					<ValidationMessage For="@(()=>subject.Nazev)" />
+						<div class="d-flex flex-column align-items-center">
+						<Label for="private" class="fw-bold">Privátní</Label>
+						<FluentCheckbox id="private" @bind-Value="@subject.Privatni"></FluentCheckbox>
+						</div>
 					<fluent-button appearance="accent" type="submit" disabled="@(!context.IsModified() || !context.Validate())">Vytvořit</fluent-button>
 				</div>
 			</div>
 		</EditForm>
 		<!--Pokud nejsou vytvořené žádné předměty (navazují na ně i Teamy) tabulka se nevykreslí -->
-		@if (predmety.Count() != 0)
+		@if (subjects.Count() != 0)
 		{
-			<h2 class="py-4">Nebo</h2>
-			<EditForm Model="@skupina" OnValidSubmit="@vytvorZexistujici" class="editForm d-flex justify-content-center">
-			<div class="card">
-				<div class="card-body gap-4">
-					<h2 class="card-title pt-2 text-center">Vytvořit z existující struktury</h2>
-					<select @bind-Value="@PredmetSelect" @bind-Value:event="onchange">
-						@foreach (var item in predmety)
-						{
-							<option>@item.Nazev</option>
-						}
-					</select>
-					<fluent-button appearance="accent" Disabled="@vypnutiTlacitka" type="submit">Vytvořit</fluent-button>
-				</div>
-			</div>
-			</EditForm>
+			if(!IfAllPrivate()) {
+				<h2 class="py-4">Nebo</h2>
+				<EditForm Model="@group" OnValidSubmit="@vytvorZexistujici" class="editForm d-flex justify-content-center">
+					<div class="card">
+						<div class="card-body gap-4">
+							<h2 class="card-title pt-2 text-center">Vytvořit z existující struktury</h2>
+							<select @bind-Value="@subjectSelect" @bind-Value:event="onchange">
+								@foreach (var item in subjects)
+								{
+									if (item.Privatni == false)
+									{
+										<option>@item.Nazev</option>
+									}
+									else
+									{
+										if (item.Vytvoril == UserToken.Profile.Mail)
+										{
+											<option>@item.Nazev</option>
+										}
+										
+									}
+								}
+							</select>
+							<fluent-button appearance="accent" Disabled="@offBtn" type="submit">Vytvořit</fluent-button>
+						</div>
+					</div>
+				</EditForm>
+			}
+			
 		}
 	</div>
 </div>
@@ -77,39 +95,39 @@
 @code {
 	//parametr, který přijímá od Tab
 	[Parameter]
-	public List<Predmet> predmety { get; set; }
-	string PredmetSelect { get; set; }
+	public List<Predmet> subjects { get; set; }
+	string subjectSelect { get; set; }
 	[Inject]
 	NavigationManager MyNavigationManager { get; set; }
-	Predmet hledanyPredmet { get; set; } = new Predmet();
-	Skupina skupina = new Skupina();
-	Predmet predmet { get; set; } = new Predmet {Skupiny = new List<Skupina>()};
+	Predmet searchSubject { get; set; } = new Predmet();
+	Skupina group = new Skupina();
+	Predmet subject { get; set; } = new Predmet {Skupiny = new List<Skupina>()};
 	bool modelHidden = true;
-	bool vypnutiTlacitka = false;
+	bool offBtn = false;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		await base.OnAfterRenderAsync(firstRender);
 		if (firstRender)
 		{
-			if(predmety.Count() > 0) {
-				PredmetSelect = predmety[0].Nazev.ToString();
+			if(subjects.Count() > 0) {
+				subjectSelect = subjects[0].Nazev.ToString();
 			}	 
 			StateHasChanged();
 		}
 
 	}
-	//TO DO 
+
 	public async Task vytvor()
 	{
-		hledanyPredmet = predmety.Find(x => x.Nazev.ToLower() == predmet.Nazev.ToLower());
-		if(hledanyPredmet == null) {
-			predmet.Vytvoril = UserToken.Profile.Mail;
-			predmet.Skupiny.Add(new Skupina());
-			predmet.Skupiny[0].TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
+		searchSubject = subjects.Find(x => x.Nazev.ToLower() == subject.Nazev.ToLower());
+		if(searchSubject == null) {
+			subject.Vytvoril = UserToken.Profile.Mail;
+			subject.Skupiny.Add(new Skupina());
+			subject.Skupiny[0].TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
 			//vytvoření nového předmětu se skupinou
-			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", predmet);
+			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", subject);
 			//získání ID nově vytvořené skupiny
-			Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + predmet.Skupiny[0].TmSkupina);
+			Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + subject.Skupiny[0].TmSkupina);
 			//vytvoření úvodní prerekvizity navazané na skupinu --> 0
 			await VytvorUvodniSplneni(Getskupina);	
 			MyNavigationManager.NavigateTo("/");
@@ -127,14 +145,14 @@
 	}
 	//naváže na novou skupinu existující předmět
 	public async Task vytvorZexistujici() {
-		vypnutiTlacitka = true;
+		offBtn = true;
 		//přidání ID skupiny 
-		skupina.TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
+		group.TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
 		//přidání ID předmětu z výběru nahoře
-		hledanyPredmet = predmety.Find(x => x.Nazev == PredmetSelect);
+		searchSubject = subjects.Find(x => x.Nazev == subjectSelect);
 		//dosazení ID předmětu
-		skupina.PredmetID = hledanyPredmet.Id;
-		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", skupina);
+		group.PredmetID = searchSubject.Id;
+		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", group);
 		//získání ID nově vytvořené skupiny
 		Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + GroupToken.teamsContext.TeamId);
 		//vytvoření úvodní prerekvizity navazané na skupinu --> 0
@@ -142,5 +160,10 @@
 		MyNavigationManager.NavigateTo("/");
 	}
 	public void CloseDialog() => modelHidden = true;
-
+	private bool IfAllPrivate() {
+		if(subjects.Where(x => x.Vytvoril == UserToken.Profile.Mail).Count() > 0) {
+			return false;
+		}
+		return true;
+	}
 }

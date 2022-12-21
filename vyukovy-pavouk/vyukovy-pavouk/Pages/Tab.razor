@@ -43,7 +43,7 @@
 		//pokud je učitel
 		@if (UserToken.Profile.JobTitle == null)
 		{
-			<Vytvoreni_Teamu Predmety="@predmety" />
+			<Vytvoreni_Teamu subjects="@predmety" />
 		}
 		//pokud je student 
 		else

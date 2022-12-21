@@ -88,6 +88,9 @@ namespace vyukovypavouk.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<bool>("Privatni")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Vytvoril")
                         .IsRequired()
                         .HasMaxLength(62)
