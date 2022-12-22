@@ -23,6 +23,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDdXJyZW50VXNlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/Dialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/Graph.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xHcmFwaC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

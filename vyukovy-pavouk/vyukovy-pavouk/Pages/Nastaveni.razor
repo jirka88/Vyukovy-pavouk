@@ -76,6 +76,8 @@
 			   }
 					
 				</fluent-dialog>
+				<Dialog @bind-ModelHiddenInfo=ModelHiddenInfo1 Info="Znamená, že tuto skupinu resetuje tím páde vymaže veškeré splnění studentů a samotné napojení jednotlivých studentů. Struktura (předmět s kapitolamy) zůstavá a lze jí znovu napojit se skupinou."></Dialog>
+			<Dialog @bind-ModelHiddenInfo=ModelHiddenInfo2 Info="dZnamená, že tuto skupinu resetuje tím páde vymaže veškeré splnění studentů a samotné napojení jednotlivých studentů. Struktura (předmět s kapitolamy) zůstavá a lze jí znovu napojit se skupinou."></Dialog>
 		<div class="nastaveni">
 					<hr>
 	<div class="row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
@@ -106,7 +108,7 @@
 			</div>
 	</div>
 		<div class="col-2 d-flex align-items-center justify-content-center">
-			<div class="circle d-flex align-items-center justify-content-center" id="anchor1">
+			<div class="circle d-flex align-items-center justify-content-center" id="anchor1" @onclick="() => ModelHiddenInfo1 = false">
 				<p class="mb-0">?</p>
 				</div>
 				<!--<fluent-tooltip Anchor="anchor1" Position=TooltipPosition.Bottom>Znamená, že tuto skupinu resetuje tím páde vymaže veškeré splnění studentů a samotné napojení jednotlivých studentů. Struktura (předmět s kapitolamy) zůstavá a lze jí znovu napojit se skupinou. </fluent-tooltip>-->
@@ -125,10 +127,9 @@
 					</div>
 				</div>
 				<div class="col-2 d-flex align-items-center justify-content-center">
-			<div class="circle d-flex align-items-center justify-content-center" id="anchor1">
+			<div class="circle d-flex align-items-center justify-content-center" id="anchor1" @onclick="() => ModelHiddenInfo2 = false">
 				<p class="mb-0">?</p>
 				</div>
-				<fluent-tooltip Anchor="anchor1" Position=TooltipPosition.Bottom>Znamená, že tuto skupinu resetuje tím páde vymaže veškeré splnění studentů a samotné napojení jednotlivých studentů. Struktura (předmět s kapitolamy) zůstavá a lze jí znovu napojit se skupinou. </fluent-tooltip>
 		</div>
 			</div>
 			<hr>
@@ -204,6 +205,8 @@
 	bool TurnBtnReset = true;
 	bool turnOffBtns = false;
 	bool ModelHidden = true;
+	bool ModelHiddenInfo1 = true;
+	bool ModelHiddenInfo2 = true;
 	bool shodaDialog = true;
 	//při mazaní struktury 
 	bool ModelHiddenDelete = true;
