@@ -14,23 +14,30 @@ namespace vyukovy_pavouk.Services
         {
             _dbContext = dbContext;
         }
+
+        public async Task ChangeVisibilitySubject(Predmet predmet)
+        {
+            _dbContext.Entry(predmet).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+        }
+
         //vrátí počet všech kapitol v daném předmětu 
         public int GetCountKapitoly(int IDPredmetu)
         {
             return _dbContext.Kapitoly.Where(idPredmetu => idPredmetu.PredmetID == IDPredmetu).Count();
         }
         //vrátí všechny předměty na začátku při vytváření 
-        public List<Predmet> GetPredmety()
+        public List<Predmet> GetSubjects()
         {
             return _dbContext.Predmet.ToList();
         }
         //uloží daný předmět 
-        public async Task SavePredmet(Predmet predmet)
+        public async Task SaveSubject(Predmet predmet)
         {
             _dbContext.Predmet.Add(predmet);
             await _dbContext.SaveChangesAsync();
         }
-        public void SmazPredmet(int IdPredmetu)
+        public void DeleteSubject(int IdPredmetu)
         {
             Predmet predmet = _dbContext.Predmet.Where(x => x.Id == IdPredmetu)
                                                 .Include(x => x.Skupiny.Where(x => x.PredmetID == IdPredmetu))
@@ -56,10 +63,10 @@ namespace vyukovy_pavouk.Services
 
         }
 
-        public void UpravPredmet(Skupina skupina)
+        public async Task EditSubject(Skupina skupina)
         {
             _dbContext.Entry(skupina.predmet).State = EntityState.Modified;
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

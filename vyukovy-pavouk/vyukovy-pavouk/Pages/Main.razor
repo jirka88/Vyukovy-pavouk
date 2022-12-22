@@ -17,7 +17,7 @@
 	<h1 class="text-center py-2 pb-4">Obsah</h1>
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
 		@if(Kapitoly.Count() > 0) {
-			@if(UserToken.Profile.JobTitle != null) {
+			@if(UserToken.Profile.JobTitle != null || UserToken.Profile.JobTitle == "Administrátor") {
 				//zobrazení kapitol pro učitele 
 				@foreach (var kapitola in Kapitoly)
 				{										
@@ -88,7 +88,11 @@ else {
 			else {
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 				Kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(skupina.PredmetID)));
-				student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id) + "/" + UserToken.Profile.Mail);
+				//pokud je student zjistí informace o progresu atd..
+				if( UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle == "Žák školy") {
+					student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id) + "/" + UserToken.Profile.Mail);
+				}
+				
 				IsLoaded = true;
 			}
 		}

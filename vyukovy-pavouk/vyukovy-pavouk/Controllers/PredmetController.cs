@@ -18,7 +18,7 @@ public class PredmetController : ControllerBase
         [HttpGet]
         public async Task<List<Predmet>> Get()
         {
-            return await Task.FromResult(_IPredmet.GetPredmety());
+            return await Task.FromResult(_IPredmet.GetSubjects());
         }
         //získání počtů všech kapitol patřící pod jednotlivý předmět --> použití u souhrnu 
         [HttpGet("{IDPredmetu}")]
@@ -31,20 +31,25 @@ public class PredmetController : ControllerBase
         [HttpPost]
         public async Task CreateNew([FromBody] Predmet predmet)
         {
-            await _IPredmet.SavePredmet(predmet);
+            await _IPredmet.SaveSubject(predmet);
         }
-        //úprava předmětu (název) 
-        //TO DO 
+
         [HttpPut]
-        public void UpravPredmet(Skupina skupina)
+        public async Task EditSubject(Skupina skupina)
         {
-             _IPredmet.UpravPredmet(skupina);
+             await _IPredmet.EditSubject(skupina);
         }
-        //TO DO
-        [HttpDelete("{Id}")]
-        public IActionResult VymazPredmet(int Id)
+        [Route("visibility")]
+        [HttpPut]
+        public async Task ChangeVisibilitySubject(Predmet predmet)
         {
-            _IPredmet.SmazPredmet(Id);
+            await _IPredmet.ChangeVisibilitySubject(predmet);
+        }
+
+        [HttpDelete("{Id}")]
+        public IActionResult DeleteSubject(int Id)
+        {
+            _IPredmet.DeleteSubject(Id);
             return Ok();
         }
     }

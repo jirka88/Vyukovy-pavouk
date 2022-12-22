@@ -37,6 +37,7 @@
 						}
 					}
 				@if(NotEmpty) {
+					NotEmpty = false;
 					@foreach (vyukovy_pavouk.Data.Kapitola kapitola in Kapitoly)
 					{
 								
@@ -106,6 +107,7 @@ else {
 	private Student student = new Student();
 	private List<vyukovy_pavouk.Data.Kapitola> Kapitoly;
 	private List<KapitolaPrerekvizita> Prerekvizity = new List<KapitolaPrerekvizita>();
+	@inject IToastService upozorneni;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if(firstRender) {
@@ -175,6 +177,7 @@ else {
 		studentSplneni.splneni.SkupinaID = skupina.Id;
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/splneni", studentSplneni);
 		student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/{skupina.Id}/{id}");
+		upozorneni.ShowSuccess("Nepovoleno.", "Úspěch!");
 		stisknuto = false;
 		await InvokeAsync(StateHasChanged);
 
@@ -186,6 +189,7 @@ else {
 		studentSplneniV2.Uspech = true;	
 		await Http.PutAsJsonAsync<StudentSplneni>($"{MyNavigationManager.BaseUri}api/studenti", studentSplneniV2);
 		student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/{skupina.Id}/{id}");
+		upozorneni.ShowSuccess("Povoleno.", "Úspěch!");
 		stisknuto = false;
 		await InvokeAsync(StateHasChanged);
 	}
