@@ -17,15 +17,10 @@ namespace vyukovy_pavouk.Controllers
         }
         //prvotní kontrola zda-li team existuje, pak následně se používá pro získání ID skupiny a předmětu 
         [HttpGet("{IDTeamu}")]
-        public IActionResult Get(string IDTeamu)
+        public async Task<Skupina> Get(string IDTeamu)
         {
-            Skupina skupina = _ISkupina.GetSkupina(IDTeamu);
-            //pokud skupina není v databázi je vrácena prázdná třída (null), pokud ne nastane chyba v JSON 
-            if (skupina == null)
-            {
-                skupina = new Skupina();
-            }
-            return Ok(skupina);
+            Skupina skupina = await _ISkupina.GetSkupina(IDTeamu);            
+            return skupina;
         }
         //vytvoří Teams skupinu pod existující předmět v databázi 
         [HttpPost]

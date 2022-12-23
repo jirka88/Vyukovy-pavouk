@@ -41,20 +41,18 @@ namespace vyukovy_pavouk.Services
         }
 
         //zeptá se zda-li náš Teams v MS Teamu je v databázi --> pokud není, učitel ho bude muset založit s názvem předmetu v Tab 
-        public Skupina GetSkupina(string IDTeamu)
-        {
-            try
-            {
-                var skupina = _dbContext.Skupina
+        public async Task<Skupina> GetSkupina(string IDTeamu)
+        {           
+                Skupina skupina = await _dbContext.Skupina
                     .Where(s => s.TmSkupina == IDTeamu)
                     .Include(p => p.predmet)
-                    .FirstOrDefault();
-                return skupina;
-            }
-            catch (Exception)
+                    .FirstOrDefaultAsync();
+            if(skupina == null)
             {
-                throw;
+                skupina = new Skupina();
             }
+            return skupina;           
+      
         }
    
         public void ResetSkupina(int Id)

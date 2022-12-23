@@ -24,7 +24,7 @@
 		}
 		<!--vytvoření nového předmětu -->
 		<h1 class="py-5 text-center">Je potřeba vytvořit strukturu</h1>
-		<EditForm Model="@subject" OnValidSubmit="@vytvor" class="editForm d-flex justify-content-center">
+		<EditForm Model="@subject" OnValidSubmit="@create" class="editForm d-flex justify-content-center">
 			 <FluentValidationValidator />
 			<div class="card">
 				<div class="card-body gap-4">
@@ -117,7 +117,7 @@
 
 	}
 
-	public async Task vytvor()
+	public async Task create()
 	{
 		searchSubject = subjects.Find(x => x.Nazev.ToLower() == subject.Nazev.ToLower());
 		if(searchSubject == null) {
