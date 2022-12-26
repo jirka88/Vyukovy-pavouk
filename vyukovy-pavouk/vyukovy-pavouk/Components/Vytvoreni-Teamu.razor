@@ -24,7 +24,7 @@
 		}
 		<!--vytvoření nového předmětu -->
 		<h1 class="py-5 text-center">Je potřeba vytvořit strukturu</h1>
-		<EditForm Model="@subject" OnValidSubmit="@create" class="editForm d-flex justify-content-center">
+		<EditForm Model="@subject" OnValidSubmit="@Create" class="editForm d-flex justify-content-center">
 			 <FluentValidationValidator />
 			<div class="card">
 				<div class="card-body gap-4">
@@ -44,7 +44,7 @@
 		{
 			if(!IfAllPrivate()) {
 				<h2 class="py-4">Nebo</h2>
-				<EditForm Model="@group" OnValidSubmit="@vytvorZexistujici" class="editForm d-flex justify-content-center">
+				<EditForm Model="@group" OnValidSubmit="@CreateIfExist" class="editForm d-flex justify-content-center">
 					<div class="card">
 						<div class="card-body gap-4">
 							<h2 class="card-title pt-2 text-center">Vytvořit z existující struktury</h2>
@@ -117,7 +117,7 @@
 
 	}
 
-	public async Task create()
+	public async Task Create()
 	{
 		searchSubject = subjects.Find(x => x.Nazev.ToLower() == subject.Nazev.ToLower());
 		if(searchSubject == null) {
@@ -144,7 +144,7 @@
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina/uvod", splneni);
 	}
 	//naváže na novou skupinu existující předmět
-	public async Task vytvorZexistujici() {
+	public async Task CreateIfExist() {
 		offBtn = true;
 		//přidání ID skupiny 
 		group.TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
@@ -154,14 +154,14 @@
 		group.PredmetID = searchSubject.Id;
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", group);
 		//získání ID nově vytvořené skupiny
-		Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + GroupToken.teamsContext.TeamId);
+		Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
 		//vytvoření úvodní prerekvizity navazané na skupinu --> 0
 		await VytvorUvodniSplneni(Getskupina);
 		MyNavigationManager.NavigateTo("/");
 	}
 	public void CloseDialog() => modelHidden = true;
 	private bool IfAllPrivate() {
-		if(subjects.Where(x => x.Vytvoril == UserToken.Profile.Mail).Count() > 0) {
+		if(subjects.Where(x => x.Privatni == true && x.Vytvoril != UserToken.Profile.Mail).Count() != subjects.Count()) {
 			return false;
 		}
 		return true;
