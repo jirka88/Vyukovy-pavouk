@@ -19,7 +19,7 @@
 	}
 	else
 	{
-		<EditForm EditContext="@EditContext" OnSubmit="@Pridej">
+		<EditForm EditContext="@EditContext" OnSubmit="@Create">
 			<FluentValidationValidator />
 			<label class="fw-bold">*Nutno splnit</label>
 			<br />
@@ -123,19 +123,17 @@
 								<button class="ql-list" value="ordered"></button>
 								<button class="ql-list" value="bullet"></button>
 				
-            <select class="ql-align">
-                <option selected=""></option>
-                <option value="center"></option>
-                <option value="right"></option>
-                <option value="justify"></option>
-            </select>
+							<select class="ql-align">
+								<option selected=""></option>
+								<option value="center"></option>
+								<option value="right"></option>
+								<option value="justify"></option>
+							</select>
 							</span>
 							<span class="ql-formats">
-            <button class="ql-link"></button>
-        </span>
-
+							<button class="ql-link"></button>
+						</span>
 						</ToolbarContent>
-
 					</BlazoredTextEditor>
 					</div>
 					<ValidationMessage For="@(()=>@kapitola.Kontent)" />
@@ -271,7 +269,7 @@
 			StateHasChanged();
 		}
 	}
-	private async Task Pridej()
+	private async Task Create()
 	{
 		vypnutiTlacitka = true;
 		kapitola.Kontent = await this.QuillHtml.GetText();

@@ -17,12 +17,12 @@ namespace vyukovy_pavouk.Controllers
         [HttpGet("{IdKapitola}")]
         public async Task<Kapitola> Get(int IdKapitola)
         {
-            return await Task.FromResult(_IKapitola.GetKapitolaDetail(IdKapitola));
+            return await _IKapitola.GetKapitolaDetail(IdKapitola);
         }
         [HttpPost]
-        public void Create([FromBody] Kapitola kapitola)
+        public async Task Create([FromBody] Kapitola kapitola)
         {
-            _IKapitola.CreateKapitola(kapitola);
+            await _IKapitola.CreateKapitola(kapitola);
         }
         [HttpPut]
         public async Task Update(Kapitola kapitola)

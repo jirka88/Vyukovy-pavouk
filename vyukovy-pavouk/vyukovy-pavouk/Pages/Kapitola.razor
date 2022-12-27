@@ -207,21 +207,8 @@ else {
 	private async Task DeleteKapitola() {
 		vypnutiTlacitka = true;
 		//smazání samotné kapitoly 
-		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/kapitola/delete/{kapitola.Id}");
-		//pokud jakýkoliv student má toto už splněno smaže se jeho splnění 
-		//nejdříve zjistím všechny splnění ze skupiny 
-		// TO DO
-		//splneni = await Http.GetFromJsonAsync<List<StudentSplneni>>($"{MyNavigationManager.BaseUri}api/studenti/allSplneni/{skupina.Id}");
-		//poté zkontroluju 
+		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/kapitola/delete/{kapitola.Id}");	
 
-	/*	foreach (StudentSplneni splneni in splneni)
-		{
-			//pokud je shoda ID kapitoly ve splneni a ID kapitoly této
-			if(splneni.splneni.IdKapitoly == kapitola.Id) {
-				await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/studenti/deleteSplneni/" + splneni.IdSplneni);
-				break;
-			}
-		}*/
 		MyNavigationManager.NavigateTo("/");
 		upozorneni.ShowSuccess("Kapitola byla úspěšně vymazaná.", "Smazáno!");
 

@@ -13,36 +13,23 @@ namespace vyukovy_pavouk.Services
             _dbContext = dbContext;
         }
 
-        public void CreateKapitola(Kapitola kapitola)
-        {
-            try
-            {
+        public async Task CreateKapitola(Kapitola kapitola)
+        {         
                 _dbContext.Kapitoly.Add(kapitola);
-                _dbContext.SaveChanges();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+                await _dbContext.SaveChangesAsync();           
+         
         }
 
-        public Kapitola GetKapitolaDetail(int IdKapitoly)
-        {
-            try
-            {
-                Kapitola Kapitola = _dbContext.Kapitoly
+        public async Task<Kapitola> GetKapitolaDetail(int IdKapitoly)
+        {           
+                Kapitola Kapitola = await _dbContext.Kapitoly
                .Where(id => id.Id == IdKapitoly)
                .Include(v => v.Videa)
                .Include(z => z.Zadani)
                .Include(p => p.KapitolaPrerekvizita)
                .ThenInclude(p => p.prerekvizita)
-               .FirstOrDefault();
-                return Kapitola;
-            }
-            catch
-            {
-                throw;
-            }
+               .FirstOrDefaultAsync();
+                return Kapitola;       
         }
 
         public async Task DeleteKapitola(int Idkapitoly)
