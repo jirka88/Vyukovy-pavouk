@@ -8,6 +8,7 @@ namespace vyukovy_pavouk.Interface
         public Task SaveSubject(Predmet predmet);
         public Task EditSubject(Skupina skupina);
         public Task ChangeVisibilitySubject(Predmet predmet);
+        public Task<Predmet> GetSubjectWithConnectedGroups(int IDSubject);
         public void DeleteSubject(int Id);
     }
 }

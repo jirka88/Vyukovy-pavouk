@@ -47,7 +47,7 @@
 				<EditForm Model="@group" OnValidSubmit="@CreateIfExist" class="editForm d-flex justify-content-center">
 					<div class="card">
 						<div class="card-body gap-4">
-							<h2 class="card-title pt-2 text-center">Vytvořit z existující struktury</h2>
+							<h2 class="card-title pt-2 text-center">Použít existující strukturu</h2>
 							<select @bind-Value="@subjectSelect" @bind-Value:event="onchange">
 								@foreach (var item in subjects)
 								{

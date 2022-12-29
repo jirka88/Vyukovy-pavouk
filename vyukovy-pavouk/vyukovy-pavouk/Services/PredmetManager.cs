@@ -68,5 +68,12 @@ namespace vyukovy_pavouk.Services
             _dbContext.Entry(skupina.predmet).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<Predmet> GetSubjectWithConnectedGroups(int IDSubject)
+        {
+            Predmet subject = await _dbContext.Predmet.Where(x => x.Id == IDSubject)
+                               .Include(x => x.Skupiny).SingleOrDefaultAsync();
+            return subject;                          
+        }
     }
 }

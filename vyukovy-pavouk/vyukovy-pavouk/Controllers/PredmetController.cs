@@ -26,6 +26,12 @@ public class PredmetController : ControllerBase
         {
             return await Task.FromResult(_IPredmet.GetCountKapitoly(IDPredmetu));
         }
+        [HttpGet]
+        [Route("skupiny/{IdPredmetu}")]
+        public async Task<Predmet> GetPredmetWithGroups(int IdPredmetu)
+        {
+            return await _IPredmet.GetSubjectWithConnectedGroups(IdPredmetu);
+        }
 
         //vytvoří Teams skupinu s novým předmětem 
         [HttpPost]
@@ -39,6 +45,7 @@ public class PredmetController : ControllerBase
         {
              await _IPredmet.EditSubject(skupina);
         }
+        //změna viditelnosti předmětu --> veřejná x privátní
         [Route("visibility")]
         [HttpPut]
         public async Task ChangeVisibilitySubject(Predmet predmet)
