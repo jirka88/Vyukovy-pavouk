@@ -92,7 +92,7 @@ else {
 				if( UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle == "Žák školy") {
 					student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id) + "/" + UserToken.Profile.Mail);
 				}
-				
+
 				IsLoaded = true;
 			}
 		}
@@ -107,6 +107,22 @@ else {
 		foreach(var prerekvizity in kapitola.KapitolaPrerekvizita) {
 
 			hledanePrerekvizity.Add(Kapitoly.Find(x => x.Id == prerekvizity.prerekvizita.PrerekvizityID));
+			//CheckChapter je prerekvizita kapitoly --> uložíme jí jako kapitolu 
+			vyukovy_pavouk.Data.Kapitola CheckChapter = hledanePrerekvizity.Find(x => x.Id == prerekvizity.prerekvizita.PrerekvizityID);
+
+			//pokud prerekvizita kapitoly je odkazána na prerekvizitu, která je také potřeba pro splnění kapitoly --> nezobrazí se 
+			foreach(var prerekvizita in kapitola.KapitolaPrerekvizita) {
+				//pokud se shodujou Prerekvizity z kapitoly s prerekvizitami od CheckChapter  --> víme, že ji nepotřebujeme zobrazovat 
+				KapitolaPrerekvizita CheckChapterV2 = CheckChapter.KapitolaPrerekvizita.Where(x => x.prerekvizita.PrerekvizityID == prerekvizita.prerekvizita.PrerekvizityID).SingleOrDefault();
+				if (CheckChapterV2 != null) {
+					hledanePrerekvizity.Remove(hledanePrerekvizity.Find(x => x.Id == CheckChapterV2.prerekvizita.PrerekvizityID));
+				}
+			}
+		
+		}
+		//vymaže prerekvizity, které jsou už úspěšně splněné 
+		foreach(var splneni in student.StudentSplneni) {
+			hledanePrerekvizity.Remove(Kapitoly.Find(x => x.Id == splneni.splneni.KapitolaID && splneni.Uspech == true));
 		}
 	}
 	//řeší jestli daná kapitola je pro studenta splněna, odemčena či uzamnčena 
