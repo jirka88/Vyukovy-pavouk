@@ -13,35 +13,20 @@ namespace vyukovy_pavouk.Services
             _dbContext = dbContext;
         }
         //vytvoří Teams skupinu pod existující předmět v databázi 
-        public void AddSkupina(Skupina skupina)
-        {
-            try
-            {
+        public async Task AddGroup(Skupina skupina)
+        {         
                 _dbContext.Skupina.Add(skupina);
-                _dbContext.SaveChanges();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+                await _dbContext.SaveChangesAsync();                
         }
 
-        public void CreateUvodniPrerekvizita(Splneni splneni)
-        {
-            try
-            {
+        public async Task CreateIntroductionPrerequisite(Splneni splneni)
+        {      
                 _dbContext.Splneni.Add(splneni);
-                _dbContext.SaveChanges();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+                await _dbContext.SaveChangesAsync();                
         }
 
         //zeptá se zda-li náš Teams v MS Teamu je v databázi --> pokud není, učitel ho bude muset založit s názvem předmetu v Tab 
-        public async Task<Skupina> GetSkupina(string IDTeamu)
+        public async Task<Skupina> GetGroup(string IDTeamu)
         {           
                 Skupina skupina = await _dbContext.Skupina
                     .Where(s => s.TmSkupina == IDTeamu)
@@ -55,21 +40,21 @@ namespace vyukovy_pavouk.Services
       
         }
    
-        public void ResetGroup(int Id)
+        public async Task ResetGroup(int Id)
         {
-            List<Splneni> vsechnySplneni = _dbContext.Splneni
+            List<Splneni> vsechnySplneni = await _dbContext.Splneni
                                             .Where(x => x.SkupinaID == Id)
-                                            .ToList();
+                                            .ToListAsync();
             _dbContext.RemoveRange(vsechnySplneni);
 
-            List<SkupinaStudent> SkupinaStudent = _dbContext.SkupinaStudent
+            List<SkupinaStudent> SkupinaStudent = await _dbContext.SkupinaStudent
                                                    .Where(x => x.SkupinaID == Id)
-                                                   .ToList();
+                                                   .ToListAsync();
             _dbContext.RemoveRange(SkupinaStudent);
 
-            Skupina skupina = _dbContext.Skupina.Find(Id);
-            _dbContext.Skupina.Remove(skupina);
-            _dbContext.SaveChanges();
+            Skupina group = _dbContext.Skupina.Find(Id);
+            _dbContext.Skupina.Remove(group);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

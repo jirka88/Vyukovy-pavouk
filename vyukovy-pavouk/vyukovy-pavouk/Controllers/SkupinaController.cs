@@ -19,29 +19,28 @@ namespace vyukovy_pavouk.Controllers
         [HttpGet("{IDTeamu}")]
         public async Task<Skupina> Get(string IDTeamu)
         {
-            Skupina skupina = await _ISkupina.GetSkupina(IDTeamu);            
+            Skupina skupina = await _ISkupina.GetGroup(IDTeamu);            
             return skupina;
         }
         //vytvoří Teams skupinu pod existující předmět v databázi 
         [HttpPost]
-        public void Create([FromBody] Skupina skupina)
+        public async Task Create([FromBody] Skupina skupina)
         {
-            _ISkupina.AddSkupina(skupina);
+            await _ISkupina.AddGroup(skupina);
         }
         //vytvoří úvodní prerekvizitu patřící pod skupinu 
         [Route("uvod")]
         [HttpPost]
-        public void CreateUvodniPrerekvizitu([FromBody] Splneni splneni)
+        public async Task CreateIntroductionPrerequisite([FromBody] Splneni splneni)
         {
-            _ISkupina.CreateUvodniPrerekvizita(splneni);
+            await _ISkupina.CreateIntroductionPrerequisite(splneni);
         }
-
+        //resetuje danou skupinu
         [HttpDelete]
         [Route("reset/{Id}")]
-        public IActionResult ResetSkupinu(int Id)
+        public async Task ResetGroup(int Id)
         {
-            _ISkupina.ResetGroup(Id);
-            return Ok();
+            await _ISkupina.ResetGroup(Id);
         }
        
 

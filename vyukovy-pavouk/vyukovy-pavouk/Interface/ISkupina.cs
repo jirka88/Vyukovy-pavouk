@@ -5,12 +5,12 @@ namespace vyukovy_pavouk.Interface
     public interface ISkupina
 {
         //vrátí skupinu s předmětem
-        public Task<Skupina> GetSkupina (string IDTeamu);
+        public Task<Skupina> GetGroup (string IDTeamu);
         //uloží skupinu s předmětem do databáze 
-        public void AddSkupina(Skupina skupina);
+        public Task AddGroup(Skupina skupina);
         //vytvoří uvodní prerekvizitu --> u splnění o hodnotě ID --> 0
-        public void CreateUvodniPrerekvizita(Splneni splneni);
+        public Task CreateIntroductionPrerequisite(Splneni splneni);
         //resetuje danou skupinu (jednoduše odebere předmět + splnění studentů z té dané skupiny)
-        public void ResetGroup(int Id);
+        public Task ResetGroup(int Id);
     }
 }
