@@ -40,7 +40,7 @@ namespace vyukovy_pavouk.Controllers
         [Route("reset/{Id}")]
         public IActionResult ResetSkupinu(int Id)
         {
-            _ISkupina.ResetSkupina(Id);
+            _ISkupina.ResetGroup(Id);
             return Ok();
         }
        

@@ -16,38 +16,50 @@
 @if (IsLoaded) {
 	<h1 class="text-center py-2 pb-4">Obsah</h1>
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
-		@if(Kapitoly.Count() > 0) {
-			@if(UserToken.Profile.JobTitle != null || UserToken.Profile.JobTitle == "Administrátor") {
+		@if(chapters.Count() > 0) {
+			@if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle == "Administrátor") {
 				//zobrazení kapitol pro učitele 
-				@foreach (var kapitola in Kapitoly)
+				@foreach (var chapter in chapters)
 				{										
-						<Kapitola_ucitel ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" />			
+					<Kapitola_ucitel ID="@chapter.Id" Nazev="@chapter.Název" Perex="@chapter.Perex" />			
 				}
 			}
 			//zobrazení kapitol pro studenta 
 			else {
-				@foreach (var kapitola in Kapitoly)
+				@foreach (var chapter in chapters)
 				{										
-					int Kontrola = Kontroluj(kapitola);
-					@if (Kontrola == 1)
+					int status = Check(chapter);
+					@if (status == 1)
 					{
-						<Kapitola_splneno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]"/>
+						<Kapitola_splneno ID="@chapter.Id" 
+						Nazev="@chapter.Název" 
+						Perex="@chapter.Perex" 
+						Prerekvizita="@chapter.KapitolaPrerekvizita[0]"/>
 					}
-					else if(Kontrola == 2) {
-						<Kapitola_odemceno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]" Uspech="false"  />
+					else if(status == 2) {
+						<Kapitola_odemceno ID="@chapter.Id" 
+						Nazev="@chapter.Název" 
+						Perex="@chapter.Perex" 
+						Prerekvizita="@chapter.KapitolaPrerekvizita[0]" 
+						Uspech="false"  />
 					}
-					else if (Kontrola == 3)
+					else if (status == 3)
 					{
-						<Kapitola_odemceno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizita="@kapitola.KapitolaPrerekvizita[0]" Uspech="true"  />
-					}
-					
+						<Kapitola_odemceno ID="@chapter.Id" 
+						Nazev="@chapter.Název" 
+						Perex="@chapter.Perex" 
+						Prerekvizita="@chapter.KapitolaPrerekvizita[0]" 
+						Uspech="true"  />
+					}				
 					else
 					{				
-						PrerekvizityShow(kapitola);
-						<Kapitola_uzavreno ID="@kapitola.Id" Nazev="@kapitola.Název" Perex="@kapitola.Perex" Prerekvizity="@hledanePrerekvizity" />
+						PrerekvizityShow(chapter);
+						<Kapitola_uzavreno ID="@chapter.Id" 
+						Nazev="@chapter.Název" 
+						Perex="@chapter.Perex"
+						Prerekvizity="@searchPrerekvizity" />
 						
 					}
-
 				}
 			}
 			
@@ -70,12 +82,11 @@ else {
 @code {
 
 	private bool IsLoaded = false;
-	private Skupina skupina = new Skupina();
+	private Skupina group = new Skupina();
 	private Student student = new Student();
-	private List<vyukovy_pavouk.Data.Kapitola> Kapitoly;
+	private List<vyukovy_pavouk.Data.Kapitola> chapters;
 	private List<KapitolaPrerekvizita> Prerekvizity = new List<KapitolaPrerekvizita>();
-
-	private List<vyukovy_pavouk.Data.Kapitola> hledanePrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
+	private List<vyukovy_pavouk.Data.Kapitola> searchPrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if(firstRender) {
@@ -86,11 +97,21 @@ else {
 				MyNavigationManager.NavigateTo("/tab");
 			}
 			else {
-				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				Kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(skupina.PredmetID)));
-				//pokud je student zjistí informace o progresu atd..
-				if( UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle == "Žák školy") {
-					student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(skupina.Id) + "/" + UserToken.Profile.Mail);
+				group = await Http.GetFromJsonAsync<Skupina>
+				($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
+				//pokud by skupina byla resetovaná či smazaná --> vrátí studenta k úvodní stránce 
+				if(group.TmSkupina == null) {
+					MyNavigationManager.NavigateTo("/tab");
+				}
+
+				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>
+				($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.PredmetID)));
+
+				//pokud je studenta, zjistí informace o progresu atd..
+				if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle == "Žák školy") {
+					student = await Http.GetFromJsonAsync<Student>
+					($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(group.Id)
+					+ "/" + UserToken.Profile.Mail);
 				}
 
 				IsLoaded = true;
@@ -102,44 +123,47 @@ else {
 	//pokud je kapitola uzamčena vypíše prerekvizity, které je nutno splnit i s jejím názvem (v databázi je pouze ID kapitoly)
 	private void PrerekvizityShow(vyukovy_pavouk.Data.Kapitola kapitola) {
 
-		hledanePrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
+		searchPrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
 
 		foreach(var prerekvizity in kapitola.KapitolaPrerekvizita) {
 
-			hledanePrerekvizity.Add(Kapitoly.Find(x => x.Id == prerekvizity.prerekvizita.PrerekvizityID));
+			searchPrerekvizity.Add(chapters.Find(x => x.Id == prerekvizity.prerekvizita.PrerekvizityID));
 			//CheckChapter je prerekvizita kapitoly --> uložíme jí jako kapitolu 
-			vyukovy_pavouk.Data.Kapitola CheckChapter = hledanePrerekvizity.Find(x => x.Id == prerekvizity.prerekvizita.PrerekvizityID);
+			vyukovy_pavouk.Data.Kapitola CheckChapter = searchPrerekvizity.Find(x => x.Id == prerekvizity.prerekvizita.PrerekvizityID);
 
 			//pokud prerekvizita kapitoly je odkazána na prerekvizitu, která je také potřeba pro splnění kapitoly --> nezobrazí se 
 			foreach(var prerekvizita in kapitola.KapitolaPrerekvizita) {
 				//pokud se shodujou Prerekvizity z kapitoly s prerekvizitami od CheckChapter  --> víme, že ji nepotřebujeme zobrazovat 
 				KapitolaPrerekvizita CheckChapterV2 = CheckChapter.KapitolaPrerekvizita.Where(x => x.prerekvizita.PrerekvizityID == prerekvizita.prerekvizita.PrerekvizityID).SingleOrDefault();
 				if (CheckChapterV2 != null) {
-					hledanePrerekvizity.Remove(hledanePrerekvizity.Find(x => x.Id == CheckChapterV2.prerekvizita.PrerekvizityID));
+					searchPrerekvizity.Remove(searchPrerekvizity.Find(x => x.Id == CheckChapterV2.prerekvizita.PrerekvizityID));
 				}
 			}
 		
 		}
 		//vymaže prerekvizity, které jsou už úspěšně splněné 
 		foreach(var splneni in student.StudentSplneni) {
-			hledanePrerekvizity.Remove(Kapitoly.Find(x => x.Id == splneni.splneni.KapitolaID && splneni.Uspech == true));
+			searchPrerekvizity.Remove(chapters.Find(x => x.Id == splneni.splneni.KapitolaID && splneni.Uspech == true));
 		}
 	}
 	//řeší jestli daná kapitola je pro studenta splněna, odemčena či uzamnčena 
-	private int Kontroluj(vyukovy_pavouk.Data.Kapitola kapitola) {
+	private int Check(vyukovy_pavouk.Data.Kapitola kapitola) {
 
 		if(Prerekvizity.Count() > 0) {
 			Prerekvizity.Clear();
 		}
 		KapitolaPrerekvizita save = new KapitolaPrerekvizita();
-		foreach (var splneni in student.StudentSplneni.Select(x => x.splneni))
+		foreach (var splneni in student.StudentSplneni
+			.Select(x => x.splneni))
 		{
 			//pokud je splněno 
-			if(splneni.KapitolaID == kapitola.Id && student.StudentSplneni.Find(x => x.splneni.Id == splneni.Id).Uspech == true) {
+			if(splneni.KapitolaID == kapitola.Id && student.StudentSplneni
+				.Find(x => x.splneni.Id == splneni.Id).Uspech == true) {
 				return 1;
 			}
 			// neúspěšně splněno
-			else if (splneni.KapitolaID == kapitola.Id && student.StudentSplneni.Find(x => x.SplneniID == splneni.Id).Uspech == false)
+			else if (splneni.KapitolaID == kapitola.Id && student.StudentSplneni
+				.Find(x => x.SplneniID == splneni.Id).Uspech == false)
 			{
 				return 2; 
 			}
@@ -155,15 +179,16 @@ else {
 			{
 				int IDKapitolyPrerekvizity = kapitolaPrerekvizita.prerekvizita.PrerekvizityID;
 				StudentSplneni studentTestSplneni = new StudentSplneni();
-				studentTestSplneni = student.StudentSplneni.Where(x => x.Uspech == false && x.splneni.KapitolaID == IDKapitolyPrerekvizity).SingleOrDefault();
+				studentTestSplneni = student.StudentSplneni
+				.Where(x => x.Uspech == false && x.splneni.KapitolaID == IDKapitolyPrerekvizity)
+				.SingleOrDefault();
 				if(studentTestSplneni != null) {
 					return 4;
 				}
-
 			}
 			return 3;
 		}
-		//pokud není odemcena je uzamcena 
+		//uzamčená kapitola
 		else {
 			return 4;
 		}			

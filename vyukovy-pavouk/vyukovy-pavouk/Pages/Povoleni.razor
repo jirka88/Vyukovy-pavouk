@@ -48,7 +48,7 @@
 							@if (status == 3)
 							{
 								<td><fluent-button appearance="accent" Disabled="@clicked" 
-									@onclick="() => PovolKapitoluNove(chapter.Id, false)">
+									@onclick="() => EnableNewChapter(chapter.Id, false)">
 									<?xml version="1.0" encoding="iso-8859-1"?>
 									<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24"  x="0px" y="0px"
 									viewBox="0 0 460.775 460.775" style="enable-background:new 0 0 460 460;" xml:space="preserve">
@@ -59,7 +59,7 @@
 									l171.117-171.12l171.118,171.12c2.913,2.911,6.866,4.55,10.993,4.55c4.128,0,8.081-1.639,10.992-4.55l32.709-32.719
 									c6.074-6.075,6.074-15.909,0-21.986L285.08,230.397z"/></svg></fluent-button></td>
 								<td><fluent-button appearance="accent" Disabled="@clicked" 
-									@onclick="() => PovolKapitoluNove(chapter.Id, true)">
+									@onclick="() => EnableNewChapter(chapter.Id, true)">
 									<svg width="28" height="28" stroke="white" stroke-width="2" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 										<path d="m8.5 16.586-3.793-3.793a1 1 0 0 0-1.414 1.414l4.5 4.5a1 1 0 0 0 1.414 0l11-11a1 1 0 0 0-1.414-1.414L8.5 16.586Z" fill="#ffffff" /></svg></fluent-button></td>
 							}
@@ -75,7 +75,7 @@
 									l171.117-171.12l171.118,171.12c2.913,2.911,6.866,4.55,10.993,4.55c4.128,0,8.081-1.639,10.992-4.55l32.709-32.719
 									c6.074-6.075,6.074-15.909,0-21.986L285.08,230.397z"/></svg></fluent-button></td>
 								<td><fluent-button appearance="accent" Disabled="@clicked" 
-									@onclick="() => OpravaKapitoly(chapter.Id)">
+									@onclick="() => RepairChapter(chapter.Id)">
 									<svg width="28" height="28" stroke="white" stroke-width="2" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 										<path d="m8.5 16.586-3.793-3.793a1 1 0 0 0-1.414 1.414l4.5 4.5a1 1 0 0 0 1.414 0l11-11a1 1 0 0 0-1.414-1.414L8.5 16.586Z" fill="#ffffff" /></svg></fluent-button></td>
 							}
@@ -182,24 +182,29 @@ else {
 		}
 	}
 	//vytvoření nového splnění pro studenta
-	private async Task PovolKapitoluNove(int IdKapitoly, bool uspech) {
+	private async Task EnableNewChapter(int IdKapitoly, bool uspech) {
 		clicked = true;
 		StudentSplneni studentSplneni = new StudentSplneni() {splneni = new Splneni()};
 		studentSplneni.StudentID = student.Id;
 		studentSplneni.Uspech = uspech;
 		studentSplneni.splneni.KapitolaID = IdKapitoly;
 		studentSplneni.splneni.SkupinaID = group.Id;
-		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/splneni", studentSplneni);
+		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/splneni",studentSplneni);
 		student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/{group.Id}/{id}");
-		notice.ShowSuccess("Nepovoleno.", "Úspěch!");
+		if(uspech) {
+			notice.ShowSuccess("Povoleno.", "Úspěch!");
+		}
+		else {
+			notice.ShowSuccess("Nepovoleno.", "Úspěch!");
+		}	
 		clicked = false;
 		await InvokeAsync(StateHasChanged);
-
 	}
 	//povolení neúspěšné kapitoly  
-	private async Task OpravaKapitoly(int IdKapitoly) {
+	private async Task RepairChapter(int IdKapitoly) {
 		clicked = true;
-		StudentSplneni studentSplneniV2 = student.StudentSplneni.Where(x => x.splneni.KapitolaID == IdKapitoly && x.splneni.SkupinaID == group.Id).SingleOrDefault();
+		StudentSplneni studentSplneniV2 = student.StudentSplneni
+		.Where(x => x.splneni.KapitolaID == IdKapitoly && x.splneni.SkupinaID == group.Id).SingleOrDefault();
 		studentSplneniV2.Uspech = true;	
 		await Http.PutAsJsonAsync<StudentSplneni>($"{MyNavigationManager.BaseUri}api/studenti", studentSplneniV2);
 		student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/{group.Id}/{id}");

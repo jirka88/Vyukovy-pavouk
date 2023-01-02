@@ -11,6 +11,6 @@ namespace vyukovy_pavouk.Interface
         //vytvoří uvodní prerekvizitu --> u splnění o hodnotě ID --> 0
         public void CreateUvodniPrerekvizita(Splneni splneni);
         //resetuje danou skupinu (jednoduše odebere předmět + splnění studentů z té dané skupiny)
-        public void ResetSkupina(int Id);
+        public void ResetGroup(int Id);
     }
 }

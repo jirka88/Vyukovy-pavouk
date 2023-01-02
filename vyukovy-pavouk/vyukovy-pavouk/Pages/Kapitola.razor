@@ -170,6 +170,7 @@ else {
 				if(kapitola == null) {
 					await CallApiKapitola();
 				}
+				//slouží pouze pro učitele --> získavají se zde prerekvizity, které se pak používají při kontrole u mazání kapitoly  
 				if(UserToken.Profile.JobTitle == null) {
 					skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 					prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.PredmetID));
@@ -187,6 +188,7 @@ else {
 	
 	private void OpenDialog()  {
 		bool NelzeSmazat = false;
+		//kontrola zdali kapitola lze smazat --> pokud je samotná kapitola potřeba pro odemčení jiné --> nelze ji smazat 
 		foreach (KapitolaPrerekvizita Kprerekvizita in prerekvizity)
 		{
 			if(Kprerekvizita.prerekvizita.PrerekvizityID == kapitola.Id) {
@@ -197,7 +199,6 @@ else {
 		}
 		if(!NelzeSmazat) {
 			ModelHidden = false;
-
 		}
 	}
 
