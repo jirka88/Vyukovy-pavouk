@@ -22,14 +22,14 @@ namespace vyukovy_pavouk.Services
         }
 
         //vrátí počet všech kapitol v daném předmětu 
-        public int GetCountKapitoly(int IDPredmetu)
+        public int GetCountChapters(int IDPredmetu)
         {
             return _dbContext.Kapitoly.Where(idPredmetu => idPredmetu.PredmetID == IDPredmetu).Count();
         }
         //vrátí všechny předměty na začátku při vytváření 
-        public List<Predmet> GetSubjects()
+        public async Task <List<Predmet>> GetSubjects()
         {
-            return _dbContext.Predmet.ToList();
+            return await _dbContext.Predmet.ToListAsync();
         }
         //uloží daný předmět 
         public async Task SaveSubject(Predmet predmet)
@@ -37,32 +37,32 @@ namespace vyukovy_pavouk.Services
             _dbContext.Predmet.Add(predmet);
             await _dbContext.SaveChangesAsync();
         }
-        public void DeleteSubject(int IdPredmetu)
+        //vymaže strukturu (předmět) 
+        public async Task DeleteSubject(int IdPredmetu)
         {
-            Predmet predmet = _dbContext.Predmet.Where(x => x.Id == IdPredmetu)
+            Predmet subject = await _dbContext.Predmet.Where(x => x.Id == IdPredmetu)
                                                 .Include(x => x.Skupiny.Where(x => x.PredmetID == IdPredmetu))
                                                 .Include(x => x.Kapitoly.Where(x => x.PredmetID == IdPredmetu))
-                                                .SingleOrDefault();
+                                                .SingleOrDefaultAsync();
 
-            _dbContext.Remove(predmet);
-            //vymazání všech splnění 
-            foreach (Skupina item in predmet.Skupiny)
+            _dbContext.Remove(subject);
+            //vymaže všechny možné splnění v tabulce splnění i s navazaním 
+            foreach (Skupina group in subject.Skupiny)
             {
-                List <Splneni> splneni = _dbContext.Splneni.Where(x => x.SkupinaID == item.Id)
-                                                           .Include(x => x.StudentSplneni).ToList();
-                //vymaže všechny možné splnění v tabulce splnění i s navazaním 
+                List <Splneni> splneni = await _dbContext.Splneni.Where(x => x.SkupinaID == group.Id)
+                                                           .Include(x => x.StudentSplneni).ToListAsync();               
                 _dbContext.RemoveRange(splneni);        
             }
             //vymaže všechny prerekvizity kapitol
-            foreach(vyukovy_pavouk.Data.Kapitola kapitola in predmet.Kapitoly)
+            foreach(vyukovy_pavouk.Data.Kapitola kapitola in subject.Kapitoly)
             {
-                List<Prerekvizity> prerekvizizy = _dbContext.Prerekvizity.Where(x => x.PrerekvizityID == kapitola.Id || x.PrerekvizityID == 0).ToList();             
+                List<Prerekvizity> prerekvizizy = await _dbContext.Prerekvizity.Where(x => x.PrerekvizityID == kapitola.Id || x.PrerekvizityID == 0).ToListAsync();             
                 _dbContext.RemoveRange(prerekvizizy);
             }
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
         }
-
+        //úprava viditelnosti předmětu
         public async Task EditSubject(Skupina skupina)
         {
             _dbContext.Entry(skupina.predmet).State = EntityState.Modified;

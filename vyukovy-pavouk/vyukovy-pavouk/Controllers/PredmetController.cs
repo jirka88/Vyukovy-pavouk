@@ -18,13 +18,13 @@ public class PredmetController : ControllerBase
         [HttpGet]
         public async Task<List<Predmet>> Get()
         {
-            return await Task.FromResult(_IPredmet.GetSubjects());
+            return await _IPredmet.GetSubjects();
         }
         //získání počtů všech kapitol patřící pod jednotlivý předmět --> použití u souhrnu 
         [HttpGet("{IDPredmetu}")]
         public async Task<int> Get(int IDPredmetu)
         {
-            return await Task.FromResult(_IPredmet.GetCountKapitoly(IDPredmetu));
+            return await Task.FromResult(_IPredmet.GetCountChapters(IDPredmetu));
         }
         [HttpGet]
         [Route("skupiny/{IdPredmetu}")]
@@ -54,10 +54,9 @@ public class PredmetController : ControllerBase
         }
 
         [HttpDelete("{Id}")]
-        public IActionResult DeleteSubject(int Id)
+        public async Task DeleteSubject(int Id)
         {
-            _IPredmet.DeleteSubject(Id);
-            return Ok();
+            await _IPredmet.DeleteSubject(Id);
         }
     }
 }

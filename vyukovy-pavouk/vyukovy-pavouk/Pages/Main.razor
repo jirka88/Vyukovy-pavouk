@@ -17,7 +17,7 @@
 	<h1 class="text-center py-2 pb-4">Obsah</h1>
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
 		@if(chapters.Count() > 0) {
-			@if(UserToken.Profile.JobTitle != null || UserToken.Profile.JobTitle == "Administrátor") {
+			@if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle == "Administrátor") {
 				//zobrazení kapitol pro učitele 
 				@foreach (var chapter in chapters)
 				{										
@@ -125,23 +125,23 @@ else {
 
 		searchPrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
 
-		foreach(var prerekvizity in kapitola.KapitolaPrerekvizita) {
+		foreach(KapitolaPrerekvizita prerekvizity in kapitola.KapitolaPrerekvizita) {
 
 			searchPrerekvizity.Add(chapters.Find(x => x.Id == prerekvizity.prerekvizita.PrerekvizityID));
 			//CheckChapter je prerekvizita kapitoly --> uložíme jí jako kapitolu 
 			vyukovy_pavouk.Data.Kapitola CheckChapter = searchPrerekvizity.Find(x => x.Id == prerekvizity.prerekvizita.PrerekvizityID);
 
 			//pokud prerekvizita kapitoly je odkazána na prerekvizitu, která je také potřeba pro splnění kapitoly --> nezobrazí se 
-			foreach(var prerekvizita in kapitola.KapitolaPrerekvizita) {
+			foreach(KapitolaPrerekvizita Prerequisite in kapitola.KapitolaPrerekvizita) {
 				//pokud se shodujou Prerekvizity z kapitoly s prerekvizitami od CheckChapter  --> víme, že ji nepotřebujeme zobrazovat 
-				KapitolaPrerekvizita CheckChapterV2 = CheckChapter.KapitolaPrerekvizita.Where(x => x.prerekvizita.PrerekvizityID == prerekvizita.prerekvizita.PrerekvizityID).SingleOrDefault();
+				KapitolaPrerekvizita CheckChapterV2 = CheckChapter.KapitolaPrerekvizita.Where(x => x.prerekvizita.PrerekvizityID == Prerequisite.prerekvizita.PrerekvizityID).SingleOrDefault();
 				if (CheckChapterV2 != null) {
 					searchPrerekvizity.Remove(searchPrerekvizity.Find(x => x.Id == CheckChapterV2.prerekvizita.PrerekvizityID));
 				}
 			}
 		
 		}
-		//vymaže prerekvizity, které jsou už úspěšně splněné 
+		//vymaže prerekvizity, které jsou už úspěšně splněné pro studenta 
 		foreach(var splneni in student.StudentSplneni) {
 			searchPrerekvizity.Remove(chapters.Find(x => x.Id == splneni.splneni.KapitolaID && splneni.Uspech == true));
 		}
@@ -175,12 +175,13 @@ else {
 		}
 		//kontrola zdali je odemčena splněné prerekvizity pocet == celkovy pocet prerekvizit v kapitole 
 		if(Prerekvizity.Count() == kapitola.KapitolaPrerekvizita.Count()) {
+			//kontrola zdali není 
 			foreach (KapitolaPrerekvizita kapitolaPrerekvizita in kapitola.KapitolaPrerekvizita)
 			{
-				int IDKapitolyPrerekvizity = kapitolaPrerekvizita.prerekvizita.PrerekvizityID;
+				int IDChapterPrerequisite = kapitolaPrerekvizita.prerekvizita.PrerekvizityID;
 				StudentSplneni studentTestSplneni = new StudentSplneni();
 				studentTestSplneni = student.StudentSplneni
-				.Where(x => x.Uspech == false && x.splneni.KapitolaID == IDKapitolyPrerekvizity)
+				.Where(x => x.Uspech == false && x.splneni.KapitolaID == IDChapterPrerequisite)
 				.SingleOrDefault();
 				if(studentTestSplneni != null) {
 					return 4;

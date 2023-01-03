@@ -4,9 +4,9 @@ namespace vyukovy_pavouk.Interface
 {
     public interface IKapitoly
 {
-        public List<Kapitola> GetKapitoly(int IdPredmetu);
-        public List<Kapitola> GetKapitolyOnly(int IdPredmetu);
-        public List<KapitolaPrerekvizita> GetKapitolyPrerekvizity(int IdPredmetu);
+        public Task <List<Kapitola>> GetChapters(int IdPredmetu);
+        public Task <List<Kapitola>> GetChaptersOnly(int IdPredmetu);
+        public Task <List<KapitolaPrerekvizita>> GetChaptersPrerequisites(int IdPredmetu);
 
 }
 }

@@ -14,28 +14,28 @@ namespace vyukovy_pavouk.Services
         }
   
         //vrátí všechny kapitoly podle předmětu --> pouze v main zobrazení 
-        public List<Kapitola> GetKapitoly(int IdPredmetu)
+        public async Task <List<Kapitola>> GetChapters(int IdPredmetu)
         {
-            return _dbContext.Kapitoly
+            return await _dbContext.Kapitoly
                 .Where(p => p.PredmetID == IdPredmetu) 
                 .Include(p => p.KapitolaPrerekvizita)
                 .ThenInclude(p => p.prerekvizita)
-                .ToList();
+                .ToListAsync();
         }
         //vrátí pouze kapitoly --> použití u načtení kapitol (prerekvizit) při vytváření kapitoly 
-        public List<Kapitola> GetKapitolyOnly(int IdPredmetu)
+        public async Task <List<Kapitola>> GetChaptersOnly(int IdPredmetu)
         {
-            return _dbContext.Kapitoly
+            return await _dbContext.Kapitoly
                 .Where(p => p.PredmetID == IdPredmetu)
-                .ToList();
+                .ToListAsync();
         }
 
-        public List<KapitolaPrerekvizita> GetKapitolyPrerekvizity(int IdPredmetu)
+        public async Task <List<KapitolaPrerekvizita>> GetChaptersPrerequisites(int IdPredmetu)
         {
-            return _dbContext.kapitolaPrerekvizita
+            return await _dbContext.kapitolaPrerekvizita
                 .Include(p => p.prerekvizita)
                 .Include(k => k.kapitola).Where(x => x.kapitola.PredmetID == IdPredmetu)
-                .ToList();
+                .ToListAsync();
         }
     }
 }

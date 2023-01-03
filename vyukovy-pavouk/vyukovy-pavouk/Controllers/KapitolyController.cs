@@ -19,19 +19,19 @@ namespace vyukovy_pavouk.Controllers
         [HttpGet("{IDPredmetu}")]
         public async Task<List<Kapitola>> Get(int IDPredmetu)
         {
-            return await Task.FromResult(_IKapitola.GetKapitoly(IDPredmetu));
+            return await _IKapitola.GetChapters(IDPredmetu);
         }
         [HttpGet]
         [Route("nazvy/{idPredmetu}")]
         public async Task<List<Kapitola>> GetNames(int idPredmetu)
         {
-            return await Task.FromResult(_IKapitola.GetKapitolyOnly(idPredmetu));
+            return await _IKapitola.GetChaptersOnly(idPredmetu);
         }
         [HttpGet]
         [Route("prerekvizity/{idPredmetu}")]
         public async Task<List<KapitolaPrerekvizita>> GetPrerekvizity(int idPredmetu)
         {
-            return await Task.FromResult(_IKapitola.GetKapitolyPrerekvizity(idPredmetu));
+            return await _IKapitola.GetChaptersPrerequisites(idPredmetu);
         }
     }
     
