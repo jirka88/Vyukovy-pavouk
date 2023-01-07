@@ -10,6 +10,7 @@ namespace vyukovy_pavouk.EntityConfiguration
         {
             builder.Property(o => o.Odkaz).HasMaxLength(2048).IsRequired();
             builder.HasKey(id => id.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.HasOne(k => k.kapitola)
                 .WithMany(z => z.Zadani)
                 .HasForeignKey(id => id.KapitolaID);

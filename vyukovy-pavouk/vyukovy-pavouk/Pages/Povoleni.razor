@@ -129,7 +129,7 @@ else {
 				group = await Http.GetFromJsonAsync<Skupina>
 				($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>
-				($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.PredmetID)));
+				($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.predmet.Id)));
 				student = await Http.GetFromJsonAsync<Student>
 				($"{MyNavigationManager.BaseUri}api/studenti/progres/" + Convert.ToInt32(group.Id) + "/" + id);
 				IsLoaded = true;

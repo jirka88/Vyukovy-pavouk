@@ -91,12 +91,18 @@ namespace vyukovypavouk.Migrations
                     b.Property<bool>("Privatni")
                         .HasColumnType("bit");
 
+                    b.Property<int>("SkupinaID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Vytvoril")
                         .IsRequired()
                         .HasMaxLength(62)
                         .HasColumnType("nvarchar(62)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SkupinaID")
+                        .IsUnique();
 
                     b.ToTable("Predmet");
                 });
@@ -134,8 +140,6 @@ namespace vyukovypavouk.Migrations
                         .HasColumnType("nvarchar(2048)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PredmetID");
 
                     b.ToTable("Skupina");
                 });
@@ -294,15 +298,15 @@ namespace vyukovypavouk.Migrations
                     b.Navigation("prerekvizita");
                 });
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.Skupina", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.Predmet", b =>
                 {
-                    b.HasOne("vyukovy_pavouk.Data.Predmet", "predmet")
-                        .WithMany("Skupiny")
-                        .HasForeignKey("PredmetID")
+                    b.HasOne("vyukovy_pavouk.Data.Skupina", "Skupina")
+                        .WithOne("predmet")
+                        .HasForeignKey("vyukovy_pavouk.Data.Predmet", "SkupinaID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("predmet");
+                    b.Navigation("Skupina");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.SkupinaStudent", b =>
@@ -377,8 +381,6 @@ namespace vyukovypavouk.Migrations
             modelBuilder.Entity("vyukovy_pavouk.Data.Predmet", b =>
                 {
                     b.Navigation("Kapitoly");
-
-                    b.Navigation("Skupiny");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.Prerekvizity", b =>
@@ -389,6 +391,8 @@ namespace vyukovypavouk.Migrations
             modelBuilder.Entity("vyukovy_pavouk.Data.Skupina", b =>
                 {
                     b.Navigation("Student");
+
+                    b.Navigation("predmet");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.Splneni", b =>

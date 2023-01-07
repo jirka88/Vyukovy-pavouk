@@ -41,18 +41,18 @@ namespace vyukovy_pavouk.Services
         public async Task DeleteSubject(int IdPredmetu)
         {
             Predmet subject = await _dbContext.Predmet.Where(x => x.Id == IdPredmetu)
-                                                .Include(x => x.Skupiny.Where(x => x.PredmetID == IdPredmetu))
+                                                .Include(x => x.Skupina)
                                                 .Include(x => x.Kapitoly.Where(x => x.PredmetID == IdPredmetu))
                                                 .SingleOrDefaultAsync();
 
             _dbContext.Remove(subject);
             //vymaže všechny možné splnění v tabulce splnění i s navazaním 
-            foreach (Skupina group in subject.Skupiny)
-            {
-                List <Splneni> splneni = await _dbContext.Splneni.Where(x => x.SkupinaID == group.Id)
+           /* foreach (Skupina group in subject.Skupina)
+            {*/
+                List <Splneni> splneni = await _dbContext.Splneni.Where(x => x.SkupinaID == subject.SkupinaID)
                                                            .Include(x => x.StudentSplneni).ToListAsync();               
                 _dbContext.RemoveRange(splneni);        
-            }
+            //}
             //vymaže všechny prerekvizity kapitol
             foreach(vyukovy_pavouk.Data.Kapitola kapitola in subject.Kapitoly)
             {
@@ -72,7 +72,7 @@ namespace vyukovy_pavouk.Services
         public async Task<Predmet> GetSubjectWithConnectedGroups(int IDSubject)
         {
             Predmet subject = await _dbContext.Predmet.Where(x => x.Id == IDSubject)
-                               .Include(x => x.Skupiny).SingleOrDefaultAsync();
+                               .Include(x => x.Skupina).SingleOrDefaultAsync();
             return subject;                          
         }
     }

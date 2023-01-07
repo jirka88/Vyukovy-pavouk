@@ -278,10 +278,10 @@
 			else
 			{
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.PredmetID));
+				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.predmet.Id));
 				//vymazání upravované kapitoly --> jinak by se dala navázat kapitola sama na sebe
 				kapitoly.RemoveAt(kapitoly.FindIndex(x => x.Id == kapitola.Id));
-				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.PredmetID));		
+				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.predmet.Id));		
 				EditContext = new EditContext(kapitola);
 				IsLoaded = true;
 				nacti = true;
@@ -310,7 +310,7 @@
 		if (EditContext.Validate())
 		{
 			kapitola.Kontent = await this.QuillHtml.GetHTML();
-			kapitola.PredmetID = skupina.PredmetID;
+			kapitola.PredmetID = skupina.predmet.Id;
 			//kontrola proti vytvoření smyčky --> nesmí vzniknout to, aby jedna a druhou kapitola měli na sebe navzájem propojené prerekvizity --> nelze to pak splnit
 			if (!uvodniKapitola)
 			{

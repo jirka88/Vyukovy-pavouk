@@ -10,9 +10,9 @@ namespace vyukovy_pavouk.EntityConfiguration
         {
             builder.HasKey(id => id.Id);
             builder.Property(TM => TM.TmSkupina).HasMaxLength(2048).IsRequired();
-            builder.HasOne(p => p.predmet)
-                .WithMany(s => s.Skupiny)
-                .HasForeignKey(Id => Id.PredmetID);
+            builder.HasOne(x => x.predmet)
+                    .WithOne(x => x.Skupina)
+                    .HasForeignKey<Predmet>(y => y.SkupinaID); 
         }
     }
 }

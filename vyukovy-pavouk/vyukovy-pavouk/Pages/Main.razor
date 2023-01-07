@@ -17,7 +17,7 @@
 	<h1 class="text-center py-2 pb-4">Obsah</h1>
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
 		@if(chapters.Count() > 0) {
-			@if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle == "Administrátor") {
+			@if(UserToken.Profile.JobTitle != null || UserToken.Profile.JobTitle == "Administrátor") {
 				//zobrazení kapitol pro učitele 
 				@foreach (var chapter in chapters)
 				{										
@@ -105,7 +105,7 @@ else {
 				}
 
 				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>
-				($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.PredmetID)));
+				($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.predmet.Id)));
 
 				//pokud je studenta, zjistí informace o progresu atd..
 				if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle == "Žák školy") {

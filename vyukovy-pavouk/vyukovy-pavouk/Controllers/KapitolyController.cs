@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using vyukovy_pavouk.Data;
 using vyukovy_pavouk.Interface;
 
@@ -22,6 +23,12 @@ namespace vyukovy_pavouk.Controllers
             return await _IKapitola.GetChapters(IDPredmetu);
         }
         [HttpGet]
+        [Route("vsechno/{IDPredmetu}")] 
+        public async Task<List<Kapitola>> GetAllInfo(int IDPredmetu)
+        {
+            return await _IKapitola.GetChaptersWithAll(IDPredmetu);
+        }
+        [HttpGet]
         [Route("nazvy/{idPredmetu}")]
         public async Task<List<Kapitola>> GetNames(int idPredmetu)
         {
@@ -33,6 +40,12 @@ namespace vyukovy_pavouk.Controllers
         {
             return await _IKapitola.GetChaptersPrerequisites(idPredmetu);
         }
+        [HttpPost]
+        public async Task CreateCopyOfChapters([FromBody] List<Kapitola> chapters)
+        {
+            await _IKapitola.CreateCopyOfChapters(chapters);
+        }
+       
     }
     
 }

@@ -9,6 +9,7 @@ namespace vyukovy_pavouk.EntityConfiguration
             public void Configure(EntityTypeBuilder<Prerekvizity> builder)
             {
                 builder.HasKey(id => id.Id);
-            }
+                builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        }
         }
     }

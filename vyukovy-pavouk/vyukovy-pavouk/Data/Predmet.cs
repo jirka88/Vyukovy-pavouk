@@ -8,7 +8,8 @@ namespace vyukovy_pavouk.Data
         public string Vytvoril { get; set; }
         public bool Privatni { get; set; }
         public ICollection<Kapitola> Kapitoly { get; set; }
-        public List<Skupina> Skupiny { get; set; }
+        public int SkupinaID { get; set; }
+        public Skupina Skupina { get; set; }
     }
     //Kontrola příchozích dat 
     public class PredmetValidator : AbstractValidator<Predmet>

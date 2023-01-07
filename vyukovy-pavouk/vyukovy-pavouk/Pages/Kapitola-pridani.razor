@@ -257,8 +257,8 @@
 			else
 			{
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.PredmetID));
-				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.PredmetID));
+				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.predmet.Id));
+				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.predmet.Id));
 				EditContext = new EditContext(kapitola);
 				//vytvoření prvního vstupu pro prerekvizitu
 				kapitola.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() { prerekvizita = new Prerekvizity() });
@@ -275,7 +275,7 @@
 		kapitola.Kontent = await this.QuillHtml.GetText();
 		if (EditContext.Validate())
 		{
-			kapitola.PredmetID = skupina.PredmetID;
+			kapitola.PredmetID = skupina.predmet.Id;
 			kapitola.Kontent = await this.QuillHtml.GetHTML();
 			//pokud je úvod --> nastavím na 0 protože to je ID pro úvodní kapitolu
 			if (kapitola.KapitolaPrerekvizita[0].prerekvizita.PrerekvizityID == -1)

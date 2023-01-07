@@ -9,6 +9,7 @@ namespace vyukovy_pavouk.EntityConfiguration
         public void Configure(EntityTypeBuilder<Kapitola> builder)
         {
             builder.HasKey(i => i.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(n => n.Název).HasMaxLength(30).IsRequired();
             builder.Property(p => p.Perex).HasMaxLength(255);
             builder.Property(c => c.Kontent).IsRequired();
