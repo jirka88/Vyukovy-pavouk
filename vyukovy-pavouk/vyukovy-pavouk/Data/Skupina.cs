@@ -6,7 +6,6 @@ namespace vyukovy_pavouk.Data
 {
         public int Id { get; set; }
         public string TmSkupina { get; set; }
-        public int PredmetID { get; set; } //vymazat
         public Predmet predmet { get; set; }
         public ICollection<SkupinaStudent> Student { get; set; }
     }

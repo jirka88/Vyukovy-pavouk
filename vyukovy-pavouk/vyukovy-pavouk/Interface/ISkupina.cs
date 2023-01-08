@@ -10,7 +10,7 @@ namespace vyukovy_pavouk.Interface
         public Task AddGroup(Skupina skupina);
         //vytvoří uvodní prerekvizitu --> u splnění o hodnotě ID --> 0
         public Task CreateIntroductionPrerequisite(Splneni splneni);
-        //resetuje danou skupinu (jednoduše odebere předmět + splnění studentů z té dané skupiny)
-        public Task ResetGroup(int Id);
+        //vymaže danou skupinu se strukturou 
+        public Task DeleteGroup(int Id);
     }
 }

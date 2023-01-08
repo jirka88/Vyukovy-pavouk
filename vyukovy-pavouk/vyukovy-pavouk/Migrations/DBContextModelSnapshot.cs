@@ -131,9 +131,6 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("PredmetID")
-                        .HasColumnType("int");
-
                     b.Property<string>("TmSkupina")
                         .IsRequired()
                         .HasMaxLength(2048)

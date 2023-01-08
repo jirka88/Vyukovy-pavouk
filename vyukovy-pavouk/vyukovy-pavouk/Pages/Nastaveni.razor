@@ -311,9 +311,11 @@
 		switchDelete = true;
 		StartTimer(10);
 	}
+	//vymaže skupinu (s napojenémi studentami a splněníma) se struktrutou (předmětem) --> vymaže kapitoly atd..
 	private async void DeleteSubject() {
-		await Http.DeleteAsync
-		($"{MyNavigationManager.BaseUri}api/predmet/" + group.predmet.Id);	
+		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/skupina/vymaz/" + group.Id);
+		/*await Http.DeleteAsync
+		($"{MyNavigationManager.BaseUri}api/predmet/" + group.predmet.Id);	*/
 		notice.ShowSuccess("Struktura byla smazaná.", "Úspěch!");
 		await Task.Delay(1000);
 		MyNavigationManager.NavigateTo("/tab");

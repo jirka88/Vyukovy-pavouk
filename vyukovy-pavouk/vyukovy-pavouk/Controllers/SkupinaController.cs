@@ -37,10 +37,10 @@ namespace vyukovy_pavouk.Controllers
         }
         //resetuje danou skupinu
         [HttpDelete]
-        [Route("reset/{Id}")]
-        public async Task ResetGroup(int Id)
+        [Route("vymaz/{Id}")]
+        public async Task DeleteGroup(int Id)
         {
-            await _ISkupina.ResetGroup(Id);
+            await _ISkupina.DeleteGroup(Id);
         }
        
 
