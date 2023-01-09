@@ -53,10 +53,10 @@ public class PredmetController : ControllerBase
             await _IPredmet.ChangeVisibilitySubject(predmet);
         }
 
-        [HttpDelete("{Id}")]
+        /*[HttpDelete("{Id}")]
         public async Task DeleteSubject(int Id)
         {
             await _IPredmet.DeleteSubject(Id);
-        }
+        }*/
     }
 }

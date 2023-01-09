@@ -12,5 +12,7 @@ namespace vyukovy_pavouk.Interface
         public Task CreateIntroductionPrerequisite(Splneni splneni);
         //vymaže danou skupinu se strukturou 
         public Task DeleteGroup(int Id);
+        public Task ResetGroup(int Id);
+        public Task ConnectGroup(Skupina group);
     }
 }

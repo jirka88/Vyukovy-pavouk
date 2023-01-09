@@ -38,7 +38,7 @@ namespace vyukovy_pavouk.Services
             await _dbContext.SaveChangesAsync();
         }
         //vymaže strukturu (předmět) 
-        public async Task DeleteSubject(int IdPredmetu)
+        /*public async Task DeleteSubject(int IdPredmetu)
         {
             Predmet subject = await _dbContext.Predmet.Where(x => x.Id == IdPredmetu)
                                                 .Include(x => x.Skupina)
@@ -47,8 +47,8 @@ namespace vyukovy_pavouk.Services
 
             _dbContext.Remove(subject);
             //vymaže všechny možné splnění v tabulce splnění i s navazaním 
-           /* foreach (Skupina group in subject.Skupina)
-            {*/
+            foreach (Skupina group in subject.Skupina)
+            {
                 List <Splneni> splneni = await _dbContext.Splneni.Where(x => x.SkupinaID == subject.SkupinaID)
                                                            .Include(x => x.StudentSplneni).ToListAsync();               
                 _dbContext.RemoveRange(splneni);        
@@ -61,7 +61,7 @@ namespace vyukovy_pavouk.Services
             }
             await _dbContext.SaveChangesAsync();
 
-        }
+        }*/
         //úprava viditelnosti předmětu
         public async Task EditSubject(Skupina skupina)
         {

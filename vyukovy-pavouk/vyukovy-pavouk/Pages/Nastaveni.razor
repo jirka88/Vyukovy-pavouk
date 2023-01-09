@@ -263,11 +263,7 @@
 			{
 				//získání skupiny z databáze a jeho navazaného předmětu 
 				group = await Http.GetFromJsonAsync<Skupina>
-				($"{MyNavigationManager.BaseUri}api/Skupina/{(GroupToken.teamsContext.TeamId).ToString()}");		
-				if(UserToken.Profile.Mail == group.predmet.Vytvoril) {
-				//získání struktury (předmětu) s jeho navázanéma skupinama --> slouží při pokusu o mazání struktury 
-				//subject = await Http.GetFromJsonAsync<Predmet>($"{MyNavigationManager.BaseUri}api/predmet/skupiny/{group.PredmetID}");	
-				}
+				($"{MyNavigationManager.BaseUri}api/Skupina/{(GroupToken.teamsContext.TeamId).ToString()}");				
 				//získání všech předmětu --> pro kontrolu 
 				subjects = await Http.GetFromJsonAsync<List<Predmet>>($"{MyNavigationManager.BaseUri}api/predmet");
 				IsLoaded = true;

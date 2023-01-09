@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vyukovy_pavouk.Data;
 using vyukovy_pavouk.DBContexts;
 using vyukovy_pavouk.Interface;
@@ -12,11 +13,25 @@ namespace vyukovy_pavouk.Services
         {
             _dbContext = dbContext;
         }
+        //připojí resetovaný předmět k nové skupině 
+        public async Task ConnectGroup(Skupina group)
+        {
+     
+            Predmet SubjectWithGroup = await _dbContext.Predmet.Where(x => x.Nazev == group.predmet.Nazev)
+                                                               .Include(x => x.Skupina)
+                                                               .SingleOrDefaultAsync();
+            if(SubjectWithGroup.Skupina.TmSkupina == "")
+            {
+                SubjectWithGroup.Skupina.TmSkupina = group.TmSkupina;
+                _dbContext.Entry(SubjectWithGroup).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+            }
+        }
         //vytvoří Teams skupinu pod existující předmět v databázi 
         public async Task AddGroup(Skupina skupina)
-        {         
-                _dbContext.Skupina.Add(skupina);
-                await _dbContext.SaveChangesAsync();                
+        {        
+            _dbContext.Skupina.Add(skupina);   
+            await _dbContext.SaveChangesAsync();                
         }
 
         public async Task CreateIntroductionPrerequisite(Splneni splneni)
@@ -59,6 +74,7 @@ namespace vyukovy_pavouk.Services
             //vymaže samostaně prerekvizity krom úvodní - úvod má ID 0 
             foreach (vyukovy_pavouk.Data.Kapitola kapitola in subject.Kapitoly)
             {
+                //potřeba dotáhnout navazování prerekvizit 
                 Prerekvizity prerekvizizy = await _dbContext.Prerekvizity.Where(x => x.PrerekvizityID == kapitola.Id).SingleOrDefaultAsync();
                 if(prerekvizizy != null)
                 {
@@ -81,5 +97,26 @@ namespace vyukovy_pavouk.Services
             _dbContext.Skupina.Remove(group);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task ResetGroup(int Id)
+        {
+            //vymazání skupiny
+            Skupina skupina = await _dbContext.Skupina.Where(x => x.Id == Id)
+                                                      .Include(x => x.predmet).SingleOrDefaultAsync();
+            skupina.predmet.Privatni = true;
+            skupina.TmSkupina = "";
+            _dbContext.Entry(skupina).State = EntityState.Modified;
+
+            //vymazání napojení
+            List<SkupinaStudent> SkupinaStudent = await _dbContext.SkupinaStudent.Where(x => x.SkupinaID == Id).ToListAsync();    
+           _dbContext.RemoveRange(SkupinaStudent);
+            //vymazání splnění 
+            List<Splneni> splneni = await _dbContext.Splneni.Where(x => x.SkupinaID == Id).ToListAsync();
+            _dbContext.RemoveRange(splneni);    
+ 
+            await _dbContext.SaveChangesAsync();
+        }
+
+        
     }
 }

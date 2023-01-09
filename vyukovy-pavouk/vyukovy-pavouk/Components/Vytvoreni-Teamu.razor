@@ -154,28 +154,35 @@
 		//získání kapitol, které patří pod předmět 
 		List<Kapitola> chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>
 				($"{MyNavigationManager.BaseUri}api/Kapitoly/vsechno/" + searchSubject.Id);
-
-		//přidání příjmení učitela za název předmětu
-		group.predmet.Nazev = $"{searchSubject.Nazev.ToString()} - {UserToken.Profile.Surname.ToString()}";
-		//vlastnictví skupiny 
+		//vlastnictví skupiny
 		group.predmet.Vytvoril = UserToken.Profile.Mail;
 		//viditelnost předmětu --> vždy defaultně nastaveno na privátní
 		group.predmet.Privatni = true;
-		//dosazení ID předmětu
-		//group.PredmetID = searchSubject.Id;
+		group.predmet.Nazev = searchSubject.Nazev.ToString();
+		//pokud předmět byl pouze resetovaný zpátky ho naváže 
+		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina/pripoj", group);
+		//získání ID nově navázané skupiny --> pokud neexistuje musí se struktura (předmět) překopírovat 
+		Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
 
-
+		if(Getskupina.TmSkupina == null) {
+		//přidání příjmení učitela za název předmětu
+		group.predmet.Nazev = $"{searchSubject.Nazev.ToString()} - {UserToken.Profile.Surname.ToString()}";
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", group);
 		//získání ID nově vytvořené skupiny
-		Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
+		Skupina GetGroup = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
 		//vytvoření úvodní prerekvizity navazané na skupinu --> 0
-		await VytvorUvodniSplneni(Getskupina);
+		await VytvorUvodniSplneni(GetGroup);
 
 		foreach (Kapitola chapter in chapters)
 		{
-			chapter.PredmetID = Getskupina.Id;
+			chapter.PredmetID = GetGroup.predmet.Id;
 		}
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitoly/", chapters);
+		}
+		else {
+		//vytvoří úvodní splnění pro navázanou skupinu s předmětem 
+		await VytvorUvodniSplneni(Getskupina);
+		}
 		MyNavigationManager.NavigateTo("/");
 	}
 	public void CloseDialog() => modelHidden = true;

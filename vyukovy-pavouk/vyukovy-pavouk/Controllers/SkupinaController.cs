@@ -42,6 +42,19 @@ namespace vyukovy_pavouk.Controllers
         {
             await _ISkupina.DeleteGroup(Id);
         }
+        //vymaže všechny splnění a napojení studentů --> odstraní ID Teamu a strukturu nastaví na privátní 
+        [HttpDelete]
+        [Route("reset/{IdSkupiny}")]
+        public async Task ResetGroup(int IdSkupiny)
+        {
+            await _ISkupina.ResetGroup(IdSkupiny);
+        }
+        [Route("pripoj")]
+        [HttpPost]
+        public async Task TryConnectGroup(Skupina group)
+        {
+            await _ISkupina.ConnectGroup(group);
+        }
        
 
 }
