@@ -17,6 +17,7 @@ namespace vyukovy_pavouk.Services
         {
             List<int> OldId = new List<int>();
             List<int> NewId = new List<int>();
+            List<int> NewKapitolaPrerekvizitaId = new List<int>();
             for (int i = 0; i < chapters.Count(); i++)
             {
                 //OldIdNewId[0,i] = chapters[i].Id;
@@ -36,18 +37,46 @@ namespace vyukovy_pavouk.Services
                     zadani.KapitolaID = 0;
                 }
                 //Změna ID u prerekvizit --> rovnou se uloží v DB
+               
                 foreach (KapitolaPrerekvizita kapitolaPrerekvizita in chapters[i].KapitolaPrerekvizita)
                 {
+                    bool pass = true;
                     Prerekvizity prerekvizita = await _dbContext.Prerekvizity.Where(x => x.Id == kapitolaPrerekvizita.PrerekvizitaID).SingleOrDefaultAsync();
                     if (prerekvizita != null)
                     {
-                        prerekvizita.Id = 0;
-                        _dbContext.Add(prerekvizita);
-                        await _dbContext.SaveChangesAsync();
-                        //změna starého id za nové ID 
-                        kapitolaPrerekvizita.PrerekvizitaID = prerekvizita.Id;
+                        //kontrola zdali v mezitabulce (kapitola-Prerekvizita) nelze navázat na nově existující prerekvizitu (jinak by vznikaly duplicitní prerekvizity)
+                        for (int j = 0; j < OldId.Count; j++)
+                        {
+                            //pokud se prerekvizita rovná starému ID, víme, že už jsme ho zakladáli
+                            if(prerekvizita.PrerekvizityID == OldId[j] && NewKapitolaPrerekvizitaId.Count != 0)
+                            {
+                                //projíždíme nově vytvořené prerekvizity 
+                                for (int k = 0; k < NewKapitolaPrerekvizitaId.Count; k++)
+                                {
+                                    //zjistíme prerekvizitu, podle starého PrerekvizitaId a nového ID --> ted to stačí propojit v mezitabulce 
+                                    Prerekvizity prerekvizitaForConnect = await _dbContext.Prerekvizity.Where(x => x.PrerekvizityID == OldId[j] && x.Id == NewKapitolaPrerekvizitaId[k])
+                                        .SingleOrDefaultAsync();
+                                    if (prerekvizitaForConnect != null)
+                                    {
+                                        //propojí s existující prerekvizitu                
+                                        kapitolaPrerekvizita.PrerekvizitaID = prerekvizitaForConnect.Id;
+                                        pass = false;
+                                        break;
+                                    }
+                                }                                        
+                            }
+                        }
+                        if (pass) {
+                            prerekvizita.Id = 0;
+                            _dbContext.Add(prerekvizita);
+                            await _dbContext.SaveChangesAsync();
+                            //změna starého id za nové ID 
+                            NewKapitolaPrerekvizitaId.Add(prerekvizita.Id);
+                            kapitolaPrerekvizita.PrerekvizitaID = prerekvizita.Id;
+                        }                     
+                        
                     }
-                    kapitolaPrerekvizita.Id = 0;                 
+                        kapitolaPrerekvizita.Id = 0;                                       
                 }
                 _dbContext.Add(chapters[i]);
                 await _dbContext.SaveChangesAsync();
