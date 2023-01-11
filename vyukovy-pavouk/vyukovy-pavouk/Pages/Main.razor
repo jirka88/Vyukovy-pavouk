@@ -107,7 +107,7 @@ else {
 				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>
 				($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.predmet.Id)));
 
-				//pokud je studenta, zjistí informace o progresu atd..
+				//pokud je student, zjistí informace o progresu atd..
 				if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle == "Žák školy") {
 					student = await Http.GetFromJsonAsync<Student>
 					($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(group.Id)
