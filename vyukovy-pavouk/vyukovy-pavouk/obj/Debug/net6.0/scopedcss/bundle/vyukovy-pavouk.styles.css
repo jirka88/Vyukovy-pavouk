@@ -300,6 +300,65 @@ h1[b-f2udu77d7l] {
 	font-weight: bold;
 	font-size: 4em;
 }
+fluent-button[b-f2udu77d7l] {
+	width: 100px;
+	height: 50px;
+}
+
+fluent-dialog[b-f2udu77d7l] {
+	position: sticky;
+	z-index: 11;
+}
+
+svg[b-f2udu77d7l] {
+	width: 50%;
+}
+
+.circle[b-f2udu77d7l] {
+	height: 4em;
+	width: 4em;
+	border: 2px solid black;
+	border-radius: 50%;
+	box-shadow: 6px 3px gray;
+	cursor: pointer;
+}
+
+.circle:hover[b-f2udu77d7l] {
+	box-shadow: 6px 3px #464EB8;
+}
+
+.circle p[b-f2udu77d7l] {
+	font-size: 2em;
+	font-weight: bold;
+}
+.name[b-f2udu77d7l] {
+	width: 75%;
+}
+@media only screen and (max-width: 1080px) {
+	.setting[b-f2udu77d7l] {
+		flex-direction: column;
+		height: 15em;
+		gap: 1.5em;
+	}
+	.title[b-f2udu77d7l] {
+		justify-content: center;
+		width: 100%;
+	}
+	.btns[b-f2udu77d7l] {
+		justify-content: center;
+	}
+	.col-2[b-f2udu77d7l] {
+		width: unset;
+	}
+	.enter[b-f2udu77d7l] {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+	.name[b-f2udu77d7l] {
+		width: 100% !important;
+	}
+}
 /* _content/vyukovy-pavouk/Pages/Povoleni.razor.rz.scp.css */
 h1[b-hom6uf2ehd] {
 	font-weight: bold;

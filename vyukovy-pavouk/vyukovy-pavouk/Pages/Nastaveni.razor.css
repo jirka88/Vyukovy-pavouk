@@ -2,3 +2,63 @@
 	font-weight: bold;
 	font-size: 4em;
 }
+fluent-button {
+	width: 100px;
+	height: 50px;
+}
+
+fluent-dialog {
+	position: sticky;
+	z-index: 11;
+}
+
+svg {
+	width: 50%;
+}
+
+.circle {
+	height: 4em;
+	width: 4em;
+	border: 2px solid black;
+	border-radius: 50%;
+	box-shadow: 6px 3px gray;
+	cursor: pointer;
+}
+
+.circle:hover {
+	box-shadow: 6px 3px #464EB8;
+}
+
+.circle p {
+	font-size: 2em;
+	font-weight: bold;
+}
+.name {
+	width: 75%;
+}
+@media only screen and (max-width: 1080px) {
+	.setting {
+		flex-direction: column;
+		height: 15em;
+		gap: 1.5em;
+	}
+	.title {
+		justify-content: center;
+		width: 100%;
+	}
+	.btns {
+		justify-content: center;
+	}
+	.col-2 {
+		width: unset;
+	}
+	.enter {
+		display: flex;
+		flex-direction: column;
+		align-items:center;
+		justify-content: center;
+	}
+	.name {
+		width: 100% !important;
+	}
+}

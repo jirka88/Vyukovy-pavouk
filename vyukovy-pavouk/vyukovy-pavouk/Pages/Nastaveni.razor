@@ -79,38 +79,39 @@
 					</div>
 			   }
 				}
-				
-					
+			
 				</fluent-dialog>
 			<Dialog @bind-ModelHiddenInfo=modelHiddenInfo1 Info="Znamená, že tuto skupinu resetuje tím páde vymažete veškeré splnění studentů a samotné napojení jednotlivých studentů. Struktura (předmět s kapitolamy) zůstavá a lze jí znovu napojit se skupinou."></Dialog>
 			<Dialog @bind-ModelHiddenInfo=modelHiddenInfo2 Info="Znamená, že tuto strukturu (předmět) vymažete a s tím veškeré kapitoly, které pod tuto strukturu patří. Všechny skupiny, kde je tato struktura použita, budou patřičně resetovány."></Dialog>
 			<Dialog @bind-ModelHiddenInfo=modelHiddenInfo3 Info="Znamená, že změníte viditelnost struktury (předmětu). Privátní znamená, že je viditelná pouze pro Vás a pouze vy jí můžete použít. Veřejná znamená, že je viditelná pro všechny učitelé a tím pádem je můžou libovolně použít a upravovat."></Dialog>
 			<div class="nastaveni">
 					<hr>
-	<div class="row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
-		<div class="col-2 d-flex align-items-center fw-bold">
+	<div class="setting row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
+		<div class="title col-2 d-flex align-items-center fw-bold">
 			Změnit název struktury: 
 		</div>
 	
 		<div class="col-8">
-				<EditForm Model="@group" OnValidSubmit="@ChangeName" class="d-flex gap-4">
+				<EditForm Model="@group" OnValidSubmit="@ChangeName">
+					<div class="enter d-flex gap-4">
 				<FluentValidationValidator />
 				<InputText class="w-75" type="text" placeholder="Název předmětu" maxlength="30" @bind-Value="@group.predmet.Nazev"></InputText>
 				<ValidationMessage For="@(()=>group.predmet.Nazev)" />		
-				<div class="d-flex align-items-center">
-			<fluent-button appearance="accent" type="submit" disabled="@turnOffBtns">Upravit</fluent-button>		
-			</div>
+				<div class="btns d-flex align-items-center">
+			<fluent-button appearance="accent" type="submit" disabled="@turnOffBtns">Upravit</fluent-button>	
+				</div>
+				</div>
 				</EditForm>
 	</div>
 </div>
 	<hr>
-	<div class="row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
-		<div class="col-2 d-flex align-items-center fw-bold">
+	<div class="setting row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
+		<div class="title col-2 d-flex align-items-center fw-bold">
 			Resetovat skupinu: 
 		</div>
 	
 		<div class="col-6">	
-				<div class="d-flex align-items-center">
+				<div class="btns d-flex align-items-center">
 			<fluent-button appearance="accent" disabled="@turnOffBtns" @onclick="@ShowResetDialog">Resetovat</fluent-button>		
 			</div>
 	</div>
@@ -122,12 +123,12 @@
 		</div>
 </div>
 			<hr>			
-				<div class="row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
-				<div class="col-2 d-flex align-items-center fw-bold">
+				<div class="setting row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
+				<div class="title col-2 d-flex align-items-center fw-bold">
 					Smazat strukturu:
 				</div>
 				<div class="col-6">
-					<div class="d-flex align-items-center">
+					<div class="btns d-flex align-items-center">
 						<fluent-button appearance="accent" disabled="@turnOffBtns" 
 						@onclick="@ShowDeleteDialog">Smazat</fluent-button>
 					</div>
@@ -140,70 +141,39 @@
 		</div>
 			</div>
 			<hr>
-			<div class="row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
+			<div class="setting row d-flex justify-content-center align-items-center pt-2 pb-2 w-100">
 				@if(group.predmet.Privatni) {
-						<div class="col-2 d-flex align-items-center fw-bold">
+						<div class="title col-2 d-flex align-items-center fw-bold">
 							Zveřejnit strukturu: 
 						</div>
 						
 				<div class="col-6">	
-				<div class="d-flex align-items-center">
+				<div class="btns d-flex align-items-center">
 			<fluent-button appearance="accent" disabled="@turnOffBtns" @onclick="() => ChangeVisibility(false)">Zveřejnit!</fluent-button>		
 			</div>
 				</div>
 				}
 				else {
-					<div class="col-2 d-flex align-items-center fw-bold">
+					<div class="title col-2 d-flex align-items-center fw-bold">
 							Zprivátnit strukturu: 
 						</div>
 						
 				<div class="col-6">	
-				<div class="d-flex align-items-center">
+				<div class="btns d-flex align-items-center">
 			<fluent-button appearance="accent" disabled="@turnOffBtns" @onclick="() => ChangeVisibility(true)">Zprivátnit!</fluent-button>		
 			</div>
 				</div>
 				}
-	
-	
 		<div class="col-2 d-flex align-items-center justify-content-center">
 			<div class="circle d-flex align-items-center justify-content-center" id="anchor1" @onclick="() => modelHiddenInfo3 = false">
 				<p class="mb-0">?</p>
 				</div>
-				<!--<fluent-tooltip Anchor="anchor1" Position=TooltipPosition.Bottom>Znamená, že tuto skupinu resetuje tím páde vymaže veškeré splnění studentů a samotné napojení jednotlivých studentů. Struktura (předmět s kapitolamy) zůstavá a lze jí znovu napojit se skupinou. </fluent-tooltip>-->
 		</div>
 </div>				
 	
 </div>
 	}
 </div>
-	<style>
-	fluent-button {
-		width: 100px;
-		height: 50px;
-	}
-	fluent-dialog {
-		position: sticky;
-		z-index: 11;
-	}
-	svg {
-	width: 50%;
-	}
-	.circle {
-		height: 4em;
-		width: 4em;
-		border: 2px solid black;
-		border-radius: 50%; 
-		box-shadow: 6px 3px gray;
-		cursor: pointer;
-	}
-	.circle:hover {
-		box-shadow: 6px 3px #464EB8;
-	}
-	.circle p {
-		font-size: 2em;
-		font-weight: bold;
-	}
-</style>
 @code {
 	int count;
 	bool IsLoaded = false;
@@ -230,7 +200,6 @@
 	{
 		if (firstRender)
 		{
-
 			await UserToken.GetUserAsync(sessionStorage);
 			await GroupToken.GetGroupAsync(MicrosoftTeams);
 			if (UserToken.Profile == null || UserToken.Profile.JobTitle == "žák školy")
@@ -288,8 +257,6 @@
 	//vymaže skupinu (s napojenémi studentami a splněníma) se struktrutou (předmětem) --> vymaže kapitoly atd..
 	private async void DeleteSubject() {
 		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/skupina/vymaz/" + group.Id);
-		/*await Http.DeleteAsync
-		($"{MyNavigationManager.BaseUri}api/predmet/" + group.predmet.Id);	*/
 		notice.ShowSuccess("Struktura byla smazaná.", "Úspěch!");
 		await Task.Delay(1000);
 		MyNavigationManager.NavigateTo("/tab");
