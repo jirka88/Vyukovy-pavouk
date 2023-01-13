@@ -9,7 +9,7 @@
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 @if (isLoaded)
 {
-	<h1 class="text-center py-2 pb-4">Souhrn</h1>
+	<h1 class="text-center py-2 pb-4 @(dark ? "text-white" : "")">Souhrn</h1>
 	<fluent-dialog Hidden="@modelHidden">
 		<div class="d-flex justify-content-center align-items-center h-100 w-100 flex-column">
 			<svg id="Layer_1" style="width: 20%" class="pb-5" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 105.16 122.88">
@@ -32,14 +32,14 @@
 	</fluent-dialog>
 	<table class="table table-md my-4">
 		<thead>
-			<tr>
+			<tr class="@(dark ? "text-white" : "")">
 				<th></th>
 				<th>Jméno a příjmení</th>
 				<th>
-					Splněno <button id="anchor1">?</button>
+					Splněno <button class="d-none d-lg-inline-block" id="anchor1">?</button>
 					<fluent-tooltip Anchor="anchor1" Position=TooltipPosition.Bottom>Počet splněných kapitol/Počet všech možných kapitol.</fluent-tooltip>
 				</th>
-				<th>
+				<th class="d-none d-lg-table-cell">
 					Procent
 					<button id="anchor2">?</button>
 					<fluent-tooltip Anchor="anchor2" Position=TooltipPosition.Bottom>Zobrazuje procentuální splnění.</fluent-tooltip>
@@ -47,7 +47,7 @@
 				<th>Více info</th>
 				<th>
 					Povolení
-					<button id="anchor3">?</button>
+					<button class="d-none d-lg-inline-block" id="anchor3">?</button>
 					<fluent-tooltip Anchor="anchor3" Position=TooltipPosition.Bottom>Slouží k odemykání kapitol pro studenta.</fluent-tooltip>
 				</th>
 			</tr>
@@ -58,7 +58,7 @@
 			{
 				@foreach (var student in students)
 				{
-					<tr class="usr">
+					<tr class="usr @(dark ? "text-white" : "")">
 						<th>
 							<fluent-button appearance="accent" @onclick="() => ShowDialog(student.Student.Id)">
 								<?xml version="1.0" encoding="iso-8859-1" ?>
@@ -82,7 +82,7 @@
 						@if (maxCountChapter > 0)
 						{
 							<td><p class="d-flex align-items-center mt-1 mb-0">@student.Student.StudentSplneni.Where(x => x.Uspech == true).Count()/@maxCountChapter</p></td>
-							<td><p class="d-flex align-items-center mt-1 mb-0">@CalculateAVG(student.Student.StudentSplneni.Where(x => x.Uspech == true).Count())%</p></td>
+							<td class="d-none d-lg-table-cell"><p class="d-flex align-items-center mt-1 mb-0">@CalculateAVG(student.Student.StudentSplneni.Where(x => x.Uspech == true).Count())%</p></td>
 							<td><fluent-button appearance="accent" class="d-grid align-items-center" @onclick="() => ShowResult(student.Student.Id)"><svg width="28" height="28" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.296 16.294a1 1 0 1 0 1.415 1.414l4.997-5.004a1 1 0 0 0 0-1.413L15.71 6.293a1 1 0 0 0-1.415 1.414L17.59 11H11a8 8 0 0 0-7.996 7.75L3 19a1 1 0 1 0 2 0 6 6 0 0 1 5.775-5.996L11 13h6.586l-3.29 3.294Z" fill="#ffffff" /></svg></fluent-button></td>
 							<td><fluent-button appearance="accent" class="d-grid align-items-center" @onclick="() => Transfer(student.Student.Id)"><svg width="28" height="28" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button></td>
 						}
@@ -90,7 +90,6 @@
 						{
 							<td colspan="4"><p class="d-flex align-items-center mt-1 mb-0">V teamu není žádná kapitola!</p></td>
 						}
-
 					</tr>
 				}
 			}
@@ -122,6 +121,7 @@ else
 	private Skupina group = new Skupina();
 	private int maxCountChapter = 0;
 	private Student selectedStudent = new Student();
+	private bool dark = false;
 	@inject IToastService notice;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -135,6 +135,9 @@ else
 			}
 			else
 			{
+				if(GroupToken.teamsContext.Theme == "dark") {
+					dark = true;
+				}
 				//získání skupiny z databáze
 				group = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/{GroupToken.teamsContext.TeamId}");
 				// získání uživatelů a jejich progres v plnění kapitol

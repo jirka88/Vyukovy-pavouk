@@ -2,16 +2,17 @@
 @inject NavigationManager MyNavigationManager
 @inject MicrosoftTeams MicrosoftTeams
 @inject IUserToken UserToken
+@inject IGroupToken GroupToken
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 <div class="container">
-    <nav class="sticky-top w-100">
+    <nav class="sticky-top w-100 @(dark ? "dark" : "")">
     @if(IsLoaded) {
         <fluent-tabs class="py-4">
-        	<fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/")'>Pavouk</fluent-tab>
+        	<fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/")' class="@(dark ? "text-white" : "")">Pavouk</fluent-tab>
     @if(UserToken.Profile.JobTitle == null) {
-            <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/add")'>Přidání</fluent-tab>
-            <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/souhrn")'>Souhrn</fluent-tab>
-             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/nastaveni")'>Nastavení</fluent-tab>
+            <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/add")' class="@(dark ? "text-white" : "")">Přidání</fluent-tab>
+            <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/souhrn")' class="@(dark ? "text-white" : "")">Souhrn</fluent-tab>
+             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/nastaveni")' class="@(dark ? "text-white" : "")">Nastavení</fluent-tab>
     }   
 	    <fluent-tab-panel>
         </fluent-tab-panel>
@@ -42,23 +43,34 @@
         background: #edeeee;
         z-index: 10 !important;
     }
+    .dark {
+        background: #1f1f1f !important;
+    }
     .blazored-toast-container{
         z-index: 999 !important;
     }
 </style>
 @code {
     public bool IsLoaded = false;
+    private bool dark = false;
+    [Inject]
+    public IJSRuntime JSRuntime { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             await UserToken.GetUserAsync(sessionStorage);
+            await GroupToken.GetGroupAsync(MicrosoftTeams);
             if (UserToken.Profile == null)
             {
                 MyNavigationManager.NavigateTo("/tab");
             }
             else
             {
+                if(GroupToken.teamsContext.Theme == "dark") {
+                    await JSRuntime.InvokeVoidAsync("SetBodyStyle");
+                    dark = true;
+                }
                 IsLoaded = true;
             }
             StateHasChanged();

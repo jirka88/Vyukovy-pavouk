@@ -14,7 +14,7 @@
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 
 @if (IsLoaded) {
-	<h1 class="text-center py-2 pb-4">Obsah</h1>
+	<h1 class="text-center py-2 pb-4 @(dark ? "text-white" : "")">Obsah</h1>
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
 		@if(chapters.Count() > 0) {
 			@if(UserToken.Profile.JobTitle != null || UserToken.Profile.JobTitle == "Administrátor") {
@@ -87,6 +87,7 @@ else {
 	private List<vyukovy_pavouk.Data.Kapitola> chapters;
 	private List<KapitolaPrerekvizita> Prerekvizity = new List<KapitolaPrerekvizita>();
 	private List<vyukovy_pavouk.Data.Kapitola> searchPrerekvizity = new List<vyukovy_pavouk.Data.Kapitola>();
+	private bool dark = false;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if(firstRender) {
@@ -103,7 +104,9 @@ else {
 				if(group.TmSkupina == null) {
 					MyNavigationManager.NavigateTo("/tab");
 				}
-
+				if(GroupToken.teamsContext.Theme == "dark") {
+					dark = true;
+				}
 				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>
 				($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.predmet.Id)));
 

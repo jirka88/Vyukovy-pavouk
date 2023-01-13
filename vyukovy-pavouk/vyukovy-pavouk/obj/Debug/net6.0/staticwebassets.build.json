@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ov0E1cX84hAgpzWEYj09QrVhDdg/nkRvPDGNilArwHA=",
+  "Hash": "fE5kgJVnaP3qg40xXYYFoE+QlIW7lv+/kXLObnk3Vgw=",
   "Source": "vyukovy-pavouk",
   "BasePath": "_content/vyukovy-pavouk",
   "Mode": "Default",
@@ -440,6 +440,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\hello.png"
+    },
+    {
+      "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\js\\Javascript.js",
+      "SourceId": "vyukovy-pavouk",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\",
+      "BasePath": "_content/vyukovy-pavouk",
+      "RelativePath": "js/Javascript.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\Javascript.js"
     },
     {
       "Identity": "D:\\Develop\\Vyukovy-pavouk\\vyukovy-pavouk\\vyukovy-pavouk\\wwwroot\\js\\TeamsJsBlazorInterop.js",
