@@ -22,7 +22,27 @@ input[type=text]:focus {
     background: #f9f9f9 !important;
     box-shadow: 6px 5px #464EB8;
 }
-
+.darkInput input[type=text] {
+    background: #292929;
+    color: white;
+}
+.darkInput input[type=text]:focus {
+    background: #303030 !important;
+}
+.darkInput textarea:focus, .darkInput select:focus {
+    background: #303030 !important;
+    box-shadow: 6px 5px #464EB8;
+}
+.darkInput input[type=text]:hover {
+    background: #303030 !important;
+}
+.darkInput select:hover,.darkInput textarea:hover {
+    background: #303030;
+}
+.darkInput select {
+    background: #292929;
+    color: white;
+}
 textarea {
     height: 20vh;
     background: #f9f9f9;
