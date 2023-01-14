@@ -11,8 +11,8 @@ namespace vyukovy_pavouk.Controllers
     public class KapitolyController : ControllerBase
     {
 
-        private readonly IKapitoly _IKapitola;
-        public KapitolyController(IKapitoly iKapitola)
+        private readonly IChapters _IKapitola;
+        public KapitolyController(IChapters iKapitola)
         {
             _IKapitola = iKapitola;
         }

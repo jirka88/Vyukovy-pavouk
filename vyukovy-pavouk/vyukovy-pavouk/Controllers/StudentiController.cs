@@ -9,8 +9,8 @@ namespace vyukovy_pavouk.Controllers
     [ApiController]
     public class StudentiController : ControllerBase
     {
-        private readonly IStudenti _IStudenti;
-        public StudentiController(IStudenti iStudent)
+        private readonly IStudents _IStudenti;
+        public StudentiController(IStudents iStudent)
         {
             _IStudenti = iStudent;
         }

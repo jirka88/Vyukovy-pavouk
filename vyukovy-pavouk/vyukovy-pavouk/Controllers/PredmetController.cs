@@ -9,8 +9,8 @@ namespace vyukovy_pavouk.Controllers
 [ApiController]
 public class PredmetController : ControllerBase
 {
-        private readonly IPredmet _IPredmet;
-        public PredmetController(IPredmet iPredmet)
+        private readonly ISubject _IPredmet;
+        public PredmetController(ISubject iPredmet)
         {
             _IPredmet = iPredmet;
         }

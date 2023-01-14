@@ -11,8 +11,8 @@
 
 
 @if(@IsLoaded) {
-	<h1 class="text-center py-2 pb-2">Progres</h1>
-	<h4 class="text-center pb-2">@student.Jmeno @student.Prijmeni</h4>
+	<h1 class="text-center py-2 pb-2 @(dark ? "text-white" : "")">Progres</h1>
+	<h4 class="text-center pb-2 @(dark ? "text-white" : "")">@student.Jmeno @student.Prijmeni</h4>
 	<hr />
 	@if (student.StudentSplneni.Count() - 1 != 0)
 	{
@@ -51,6 +51,7 @@ else
 	public int id { get; set; }
 
 	private bool IsLoaded = false;
+	private bool dark = false;
 	private Skupina skupina = new Skupina();
 	private Student student = new Student();
 	private List<vyukovy_pavouk.Data.Kapitola> kapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
@@ -67,6 +68,10 @@ else
 			}
 			else
 			{
+				if (GroupToken.teamsContext.Theme == "dark")
+				{
+					dark = true;
+				}
 				//získání skupiny z databáze
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 				// získání uživatelů a jejich progres v plnění kapitol

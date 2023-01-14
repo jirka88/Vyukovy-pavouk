@@ -9,8 +9,8 @@ namespace vyukovy_pavouk.Controllers
     [ApiController]
     public class KapitolaController : ControllerBase
     {
-        private readonly IKapitola _IKapitola;
-        public KapitolaController(IKapitola iKapitola)
+        private readonly IChapter _IKapitola;
+        public KapitolaController(IChapter iKapitola)
         {
             _IKapitola = iKapitola;
         }

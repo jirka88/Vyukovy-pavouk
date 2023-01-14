@@ -25,11 +25,11 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddScoped<IUserToken, UserToken>();
 builder.Services.AddScoped<IGroupToken, GroupToken>();
-builder.Services.AddScoped<IPredmet, PredmetManager>();
-builder.Services.AddScoped<ISkupina, SkupinaManager>();
-builder.Services.AddScoped<IStudenti, StudentiManager>();
-builder.Services.AddScoped<IKapitoly, KapitolyManager>();
-builder.Services.AddScoped<IKapitola, KapitolaManager>();
+builder.Services.AddScoped<ISubject, SubjectManager>();
+builder.Services.AddScoped<IGroup, GroupManager>();
+builder.Services.AddScoped<IStudents, StudentsManager>();
+builder.Services.AddScoped<IChapters, ChaptersManager>();
+builder.Services.AddScoped<IChapter, ChapterManager>();
 builder.Services.AddBlazoredToast();
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
