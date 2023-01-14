@@ -21,7 +21,7 @@
 				//zobrazení kapitol pro učitele 
 				@foreach (var chapter in chapters)
 				{										
-					<Kapitola_ucitel ID="@chapter.Id" Nazev="@chapter.Název" Perex="@chapter.Perex" />			
+					<Kapitola_ucitel ID="@chapter.Id" Nazev="@chapter.Název" Perex="@chapter.Perex" Theme="@dark" />			
 				}
 			}
 			//zobrazení kapitol pro studenta 
@@ -34,14 +34,16 @@
 						<Kapitola_splneno ID="@chapter.Id" 
 						Nazev="@chapter.Název" 
 						Perex="@chapter.Perex" 
-						Prerekvizita="@chapter.KapitolaPrerekvizita[0]"/>
+						Prerekvizita="@chapter.KapitolaPrerekvizita[0]"
+						Theme="@dark"/>
 					}
 					else if(status == 2) {
 						<Kapitola_odemceno ID="@chapter.Id" 
 						Nazev="@chapter.Název" 
 						Perex="@chapter.Perex" 
 						Prerekvizita="@chapter.KapitolaPrerekvizita[0]" 
-						Uspech="false"  />
+						Uspech="false"
+						Theme="@dark"/>
 					}
 					else if (status == 3)
 					{
@@ -49,7 +51,8 @@
 						Nazev="@chapter.Název" 
 						Perex="@chapter.Perex" 
 						Prerekvizita="@chapter.KapitolaPrerekvizita[0]" 
-						Uspech="true"  />
+						Uspech="true" 
+						Theme="@dark"/>
 					}				
 					else
 					{				
@@ -57,7 +60,8 @@
 						<Kapitola_uzavreno ID="@chapter.Id" 
 						Nazev="@chapter.Název" 
 						Perex="@chapter.Perex"
-						Prerekvizity="@searchPrerekvizity" />
+						Prerekvizity="@searchPrerekvizity"
+						Theme="@dark"/>
 						
 					}
 				}

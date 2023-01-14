@@ -52,8 +52,12 @@ svg[b-yxcngcz929] {
     height: 320px !important;
     width: 100%;
 }
+.darkTheme[b-95mo1ckv8l] {
+    background: #303030 !important;
+    border: dashed 1px white !important;
+}
 .main-box .card .card-body[b-95mo1ckv8l] {
-    display: flex; 
+    display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;

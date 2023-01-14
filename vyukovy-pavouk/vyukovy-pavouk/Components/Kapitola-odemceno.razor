@@ -1,7 +1,7 @@
 ﻿@using vyukovy_pavouk.Data
 @inject NavigationManager MyNavigationManager
 
-<div class="card d-grid" id="@ID" @onclick=zobraz>
+<div class="card d-grid @(Theme ? "darkTheme text-white" : "")" id="@ID" @onclick=zobraz>
 	<div class="d-flex align-items-center main-body w-100">
 		<div class="icon px-4">
 			<div class="circle orange d-flex justify-content-center align-items-center">
@@ -47,6 +47,9 @@
 
 	[Parameter]
 	public bool Uspech { get; set; }
+
+	[Parameter]
+	public bool Theme { get; set; }
 
 	public void zobraz()
 	{

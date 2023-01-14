@@ -23,11 +23,11 @@
 		</fluent-dialog>
 		}
 		<!--vytvoření nového předmětu -->
-		<h1 class="py-5 text-center">Je potřeba vytvořit strukturu</h1>
+		<h1 class="py-5 text-center @(theme ? "text-white" : "")">Je potřeba vytvořit strukturu</h1>
 		<EditForm Model="@subject" OnValidSubmit="@Create" class="editForm d-flex justify-content-center">
 			 <FluentValidationValidator />
-			<div class="card">
-				<div class="card-body gap-4">
+			<div class="card @(theme ? "darkTheme" : "")">
+				<div class="card-body gap-4 @(theme ? "text-white darkInput" : "")">
 					<h2 class="card-title text-center">Vytvořit novou strukturu</h2>
 					<InputText id="nazev" type="text" placeholder="Název předmětu" @bind-Value="@subject.Nazev"></InputText>
 					<ValidationMessage For="@(()=>subject.Nazev)" />
@@ -43,10 +43,10 @@
 		@if (subjects.Count() != 0)
 		{
 			if(!IfAllPrivate()) {
-				<h2 class="py-4">Nebo</h2>
+				<h2 class="py-4 @(theme ? "text-white" : "")">Nebo</h2>
 				<EditForm Model="@group" OnValidSubmit="@CreateIfExist" class="editForm d-flex justify-content-center">
-					<div class="card">
-						<div class="card-body gap-4">
+					<div class="card @(theme ? "darkTheme" : "")">
+						<div class="card-body gap-4 @(theme ? "text-white darkInput" : "")">
 							<h2 class="card-title pt-2 text-center">Použít existující strukturu</h2>
 							<select @bind-Value="@subjectSelect" @bind-Value:event="onchange">
 								@foreach (var item in subjects)
@@ -96,14 +96,14 @@
 	//parametr, který přijímá od Tab
 	[Parameter]
 	public List<Predmet> subjects { get; set; }
-
-	string subjectSelect { get; set; }
-
+	[Parameter]
+	public bool theme { get; set; }
 	[Inject]
 	NavigationManager MyNavigationManager { get; set; }
 	Predmet searchSubject { get; set; } = new Predmet();
 	Skupina group = new Skupina() {predmet = new Predmet()};
 	Predmet subject { get; set; } = new Predmet {Skupina = new Skupina()};
+	string subjectSelect;
 	bool modelHidden = true;
 	bool offBtn = false;
 	protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -1,5 +1,5 @@
 ﻿@using vyukovy_pavouk.Data
-<div class="card locked d-grid" id="@ID">
+<div class="card locked d-grid @(Theme ? "darkTheme text-white" : "")" id="@ID">
 	<div class="d-flex align-items-center justify-content-center main-body">
 		<div class="icon px-4">
 			<div class="circle red d-flex justify-content-center align-items-center">
@@ -33,5 +33,8 @@
 
 	[Parameter]
 	public List<Kapitola> Prerekvizity { get; set; }
+
+	[Parameter]
+	public bool Theme { get; set; }
 
 }

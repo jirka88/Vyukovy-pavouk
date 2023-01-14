@@ -11,7 +11,12 @@ input[type=number] {
     box-shadow: none !important;
     -moz-appearance: textfield
 }
-
+.darkTheme {
+    background: #292929;
+}
+.darkTheme a {
+    color: white;
+}
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -67,7 +72,9 @@ select {
 option {
     padding: 24px;
 }
-
+#editor svg {
+    vertical-align: unset !important;
+}
 .ql-toolbar.ql-snow {
     border: 1px solid gray;
     background: white;
@@ -82,7 +89,15 @@ option {
 .ql-editor:focus {
     box-shadow: 6px 5px #464EB8;
 }
-
+.darkTheme .ql-editor.ql-blank::before {
+    color: gray !important;
+}
+.darkTheme .ql-toolbar.ql-snow {
+    background: #292929 !important;
+}
+.darkTheme .ql-container.ql-snow {
+    background: #292929 !important;
+}
 textarea:focus, select:focus {
     background: #f9f9f9 !important;
     box-shadow: 6px 5px #464EB8;

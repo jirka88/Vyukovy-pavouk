@@ -53,7 +53,7 @@
 		//pokud je učitel
 		@if (UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle == "Administrátor")
 		{
-			<Vytvoreni_Teamu subjects="@predmety" />
+			<Vytvoreni_Teamu subjects="@predmety" Theme="@dark" />
 		}
 		//pokud je student
 		else
@@ -87,6 +87,7 @@
 	private readonly string _scope = "User.Read";
 	public List<Predmet> predmety;
 	private bool isInTeams;
+	private bool dark = false;
 	private bool isInTeamsShow = true;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -104,7 +105,11 @@
 					if (UserToken.Profile == null || UserToken.Profile.DisplayName == null)
 					{
 						await ShowProfile();
-						await UserToken.SetLocalUser(sessionStorage);
+						await UserToken.SetLocalUser(sessionStorage);						
+					}		
+					if (GroupToken.teamsContext.Theme == "dark")
+					{
+						dark = true;
 					}
 					//získání skupiny z databáze
 					skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());

@@ -12,7 +12,7 @@
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 
 <div class="container">
-	<h1 class="text-center py-2">Úprava kapitoly</h1>
+	
 	@if (!IsLoaded)
 	{
 		<div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
@@ -21,11 +21,12 @@
 	}
 	else
 	{
+		<h1 class="text-center py-2 @(dark ? "text-white" : "")">Úprava kapitoly</h1>
 		<EditForm EditContext="@EditContext" OnSubmit="@Uprav">
 			<FluentValidationValidator />
-			<label class="fw-bold">*Nutno splnit</label>
+			<label class="fw-bold @(dark ? "text-white" : "")">*Nutno splnit</label>
 			<br />
-			<div class="form d-flex flex-column gap-4">
+			<div class="form d-flex flex-column gap-4 @(dark ? "text-white" : "")">
 
 				<div class="d-flex gap-4 justify-content-center align-items-center flex-column">
 
@@ -39,7 +40,7 @@
 
 							AddSelect(index, prerekvizita);
 
-							<div class="prerekvizity d-flex w-100 justify-content-center align-items-center flex-wrap">
+							<div class="prerekvizity d-flex w-100 justify-content-center align-items-center flex-wrap @(dark ? "darkInput" : "")">
 								@if (kapitola.KapitolaPrerekvizita.Count() - 1 != index)
 								{
 									<InputText type="text" class="flex-grow-1" @bind-Value="@VybraneKapitoly[index].Název" disabled="true">
@@ -90,19 +91,18 @@
 
 				</div>
 
-				<div class="d-flex flex-column">
+				<div class="d-flex flex-column @(dark ? "darkInput" : "")">
 					<label for="NazevKapitoly" class="fw-bold">*Název Kapitoly</label>
 					<InputText type="text" id="NazevKapitoly" @bind-Value="@kapitola.Název" />
 					<ValidationMessage For="@(()=>@kapitola.Název)" />
 				</div>
-				<div class="d-flex flex-column">
+				<div class="d-flex flex-column @(dark ? "darkInput" : "")">
 					<label for="perex" class="fw-bold">Perex</label>
 					<InputText type="text" id="perex" @bind-Value="@kapitola.Perex" />
 					<ValidationMessage For="@(()=>@kapitola.Perex)" />
 				</div>
-				<div class="d-flex flex-column">
-					<label for="obsah" class="fw-bold">*Obsah</label>
-				
+				<div class="d-flex flex-column @(dark ? "darkTheme" : "")">
+					<label for="obsah" class="fw-bold bg-transparent">*Obsah</label>
 					<BlazoredTextEditor @ref="@QuillHtml" Placeholder="Obsah kapitoly">
 						<ToolbarContent>
 							<select class="ql-header">
@@ -159,12 +159,12 @@
 						var video = kapitola.Videa[i];
 
 						<label class="w-100">Popis odkazu @PocetOdkazu</label>
-						<div class="nazvy-odkazy d-flex w-100 justify-content-center align-items-center flex-wrap">
+						<div class="nazvy-odkazy d-flex w-100 justify-content-center align-items-center flex-wrap @(dark ? "darkInput" : "")">
 							<InputText type="text" class="flex-grow-1" @bind-Value="video.Nazev" />
 							<ValidationMessage For="@(() => @video.Nazev)" />
 						</div>
 						<label class="w-100">*Odkaz</label>
-						<div class="odkazy d-flex w-100 justify-content-center align-items-center flex-wrap">
+						<div class="odkazy d-flex w-100 justify-content-center align-items-center flex-wrap @(dark ? "darkInput" : "")">
 							<InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" placeholder="https://..." />
 							<fluent-button class="cancel" appearance="accent" @onclick="@(() => kapitola.Videa.RemoveAt(index))"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="18" height="18"  x="0px" y="0px"
 									viewBox="0 0 460.775 460.775" style="enable-background:new 0 0 460 460;" xml:space="preserve">
@@ -189,7 +189,7 @@
 					}
 				</div>
 				<label class="First-label">*Testy</label>
-				<div class="odkazy d-flex justify-content-center align-items-center w-100 flex-wrap">
+				<div class="odkazy d-flex justify-content-center align-items-center w-100 flex-wrap @(dark ? "darkInput" : "")">
 					<InputText type="text" class="flex-grow-1 w-100" @bind-Value="@kapitola.Zadani[0].Odkaz">
 						<div class="d-flex gap-2">
 							<!--<fluent-button class="cancel" appearance="accent">X</fluent-button>-->
@@ -264,6 +264,7 @@
 	@inject IToastService upozorneni;
 	bool vypnutiTlacitka = false;
 	bool IsLoaded = false;
+	private bool dark = false;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -277,6 +278,9 @@
 			}
 			else
 			{
+				if(GroupToken.teamsContext.Theme == "dark") {
+					dark = true;
+				}
 				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.predmet.Id));
 				//vymazání upravované kapitoly --> jinak by se dala navázat kapitola sama na sebe
