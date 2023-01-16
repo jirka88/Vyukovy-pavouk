@@ -16,6 +16,7 @@ public interface IGroupToken
 public class GroupToken : IGroupToken
 {
     public TeamsContext teamsContext { get; set; }
+    //získání z SDK informace o MS skupině (ID, Theme...) 
     public async Task GetGroupAsync(MicrosoftTeams microsoftTeams)
     {
         await microsoftTeams.InitializeAsync();

@@ -29,7 +29,8 @@ namespace vyukovy_pavouk.Services
         }
         //vytvoří Teams skupinu pod existující předmět v databázi 
         public async Task AddGroup(Skupina skupina)
-        {        
+        {
+            Predmet subject = _dbContext.Predmet.Where(x => x.Nazev == skupina.predmet.Nazev).SingleOrDefault();            
             _dbContext.Skupina.Add(skupina);   
             await _dbContext.SaveChangesAsync();                
         }
@@ -74,14 +75,14 @@ namespace vyukovy_pavouk.Services
             //vymaže samostaně prerekvizity krom úvodní - úvod má ID 0 
             foreach (vyukovy_pavouk.Data.Kapitola kapitola in subject.Kapitoly)
             {
-                //potřeba dotáhnout navazování prerekvizit 
+               
                 Prerekvizity prerekvizizy = await _dbContext.Prerekvizity.Where(x => x.PrerekvizityID == kapitola.Id).SingleOrDefaultAsync();
                 if(prerekvizizy != null)
                 {
                     _dbContext.Remove(prerekvizizy);
                 }              
             }
-            //vymaže úvodní kapitolu
+            //vymaže úvodní prerekvizitu patřící pod určitou skupinou 
             foreach (vyukovy_pavouk.Data.Kapitola kapitola in subject.Kapitoly)
             {
                 KapitolaPrerekvizita kapitolaPrerekvizita = await _dbContext.kapitolaPrerekvizita
@@ -92,7 +93,7 @@ namespace vyukovy_pavouk.Services
                     break;
                 }
             }
-                //vymaže skupinu s předmětem --> to následně vymaže veškeré navázané prerevizity, videa, zadání...
+                //vymaže skupinu s předmětem --> to následně vymaže veškeré kaptitoly navázané prerevizity, videa, zadání...
                 Skupina group = _dbContext.Skupina.Find(Id);
             _dbContext.Skupina.Remove(group);
             await _dbContext.SaveChangesAsync();
@@ -101,19 +102,21 @@ namespace vyukovy_pavouk.Services
         public async Task ResetGroup(int Id)
         {
             //vymazání skupiny
-            Skupina skupina = await _dbContext.Skupina.Where(x => x.Id == Id)
-                                                      .Include(x => x.predmet).SingleOrDefaultAsync();
+            Skupina skupina = await _dbContext.Skupina
+                .Where(x => x.Id == Id)
+                .Include(x => x.predmet).SingleOrDefaultAsync();
             skupina.predmet.Privatni = true;
             skupina.TmSkupina = "";
             _dbContext.Entry(skupina).State = EntityState.Modified;
 
             //vymazání napojení
-            List<SkupinaStudent> SkupinaStudent = await _dbContext.SkupinaStudent.Where(x => x.SkupinaID == Id).ToListAsync();    
+            List<SkupinaStudent> SkupinaStudent = await _dbContext.SkupinaStudent
+            .Where(x => x.SkupinaID == Id).ToListAsync();    
            _dbContext.RemoveRange(SkupinaStudent);
             //vymazání splnění 
-            List<Splneni> splneni = await _dbContext.Splneni.Where(x => x.SkupinaID == Id).ToListAsync();
+            List<Splneni> splneni = await _dbContext.Splneni
+                .Where(x => x.SkupinaID == Id).ToListAsync();
             _dbContext.RemoveRange(splneni);    
- 
             await _dbContext.SaveChangesAsync();
         }
 

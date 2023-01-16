@@ -7,12 +7,30 @@
 <div class="container">
 	<div class="main-box py-2 d-flex flex-column align-items-center">
 		<!--vyskakovací okno pokud najde schodu názvu předmětu při vytváření nového předmětu -->
-		@if(searchSubject != null) {		
+		@if(searchSubject != null) {	
+			<fluent-dialog Hidden="@modelHidden2">
+
+						 <div class="d-flex justify-content-center align-items-center h-100 w-100 flex-column">
+						<svg fill="#000000" style="width: 30%" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.94 5 19 10.06 9.062 20a2.25 2.25 0 0 1-.999.58l-5.116 1.395a.75.75 0 0 1-.92-.921l1.395-5.116a2.25 2.25 0 0 1 .58-.999L13.938 5Zm7.09-2.03a3.578 3.578 0 0 1 0 5.06l-.97.97L15 3.94l.97-.97a3.578 3.578 0 0 1 5.06 0Z"/></svg>
+					<h5 class="text-center pb-3 text-danger">Vytvořte nový název struktury</h5>
+					<EditForm Model="@group.predmet" OnValidSubmit="@CreateIfExistRename">
+						<FluentValidationValidator />
+					<input type="text" class="mb-3" 
+					@bind-value="@group.predmet.Nazev" @bind-value:event="oninput">
+					<ValidationMessage class="text-center" For="@(()=>group.predmet.Nazev)" />
+					<div class="pt-3">
+						<fluent-button class="dialog-btn" @onclick="(() => modelHidden2 = true)">Zavřít</fluent-button>
+						<fluent-button type="submit" appearance="accent" class="dialog-btn">Vytvořit</fluent-button>
+					</div>
+					</EditForm>
+					</div>			
+			  
+			   </fluent-dialog>
 			<fluent-dialog Hidden="@modelHidden">
 			<div class="d-flex justify-content-center align-items-center h-100 w-100 flex-column">
-				<h5 class="text-center">Předmět s názvem @searchSubject.Nazev už existuje. Zkuste jiný název!</h5>
+				<h5 class="text-center">Struktura s názvem @searchSubject.Nazev už existuje. Zkuste jiný název!</h5>
 				<?xml version="1.0" encoding="utf-8" ?>	
-				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+				<svg version="1.1" style="width: 40%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
 				<metadata> Svg Vector Icons : http://www.onlinewebfonts.com/icon </metadata>
 				<g><path d="M939.4,906.7H60.6c-31.7,0-50.6-25.9-50.6-50.9V144.2c0-31.9,25.8-50.9,50.6-50.9h878.7c31.7,0,50.6,25.9,50.6,50.9v711.7C990,887.7,964.3,906.7,939.4,906.7z M84.3,832h831.4V168H84.3V832z" /><path d="M327.8,405.9c-7.9,0-15.8-3-21.9-9.1l-80.5-81c-12.1-12.2-12.1-31.9,0-44c12.1-12.2,31.7-12.2,43.8,0l80.5,81c12.1,12.2,12.1,31.9,0,44C343.6,402.9,335.7,405.9,327.8,405.9z" /><path d="M247.3,405.9c-7.9,0-15.8-3-21.9-9.1c-12.1-12.2-12.1-31.9,0-44l80.5-81c12.1-12.2,31.7-12.2,43.8,0c12.1,12.2,12.1,31.9,0,44l-80.5,81C263.1,402.9,255.2,405.9,247.3,405.9z" /><path d="M752.7,406c-7.9,0-15.8-3-21.9-9.1l-80.5-81c-12.1-12.2-12.1-31.9,0-44c12.1-12.2,31.7-12.2,43.8,0l80.5,81c12.1,12.2,12.1,31.9,0,44C768.6,402.9,760.6,406,752.7,406z" /><path d="M672.2,405.9c-7.9,0-15.8-3-21.9-9.1c-12.1-12.2-12.1-31.9,0-44l80.5-81c12.1-12.2,31.7-12.2,43.8,0c12.1,12.2,12.1,31.9,0,44l-80.5,81C688.1,402.9,680.1,405.9,672.2,405.9z" /><path d="M772.4,711.1H227.6c-17.1,0-31-13.9-31-31.1c0-17.2,13.9-31.1,31-31.1h544.8c17.1,0,31,13.9,31,31.1C803.3,697.2,789.5,711.1,772.4,711.1z" /><path d="M542.1,711.1v58.7c0,0,0,42.2,61.9,42.2h66.6c0,0,61.9,0,61.9-42.2v-58.7H542.1z" /></g>
 				</svg>
@@ -21,7 +39,8 @@
 				</div>
 			</div>
 		</fluent-dialog>
-		}
+		
+	}
 		<!--vytvoření nového předmětu -->
 		<h1 class="py-5 text-center @(theme ? "text-white" : "")">Je potřeba vytvořit strukturu</h1>
 		<EditForm Model="@subject" OnValidSubmit="@Create" class="editForm d-flex justify-content-center">
@@ -88,6 +107,12 @@
 		position: sticky;
 		z-index: 999;
 	}
+
+	fluent-dialog fluent-button {
+	width: 100px !important;
+	height: 50px !important;
+	}
+
 	.validation-message {
 		margin: -10px;
 	}
@@ -101,10 +126,12 @@
 	[Inject]
 	NavigationManager MyNavigationManager { get; set; }
 	Predmet searchSubject { get; set; } = new Predmet();
+	Predmet controlSubject { get; set; } = new Predmet();
 	Skupina group = new Skupina() {predmet = new Predmet()};
 	Predmet subject { get; set; } = new Predmet {Skupina = new Skupina()};
 	string subjectSelect;
 	bool modelHidden = true;
+	bool modelHidden2 = true;
 	bool offBtn = false;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -144,16 +171,39 @@
 		splneni.KapitolaID = 0;
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina/uvod", splneni);
 	}
+	private async Task CreateIfExistRename() {
+		controlSubject = subjects.Find(x => x.Nazev.ToLower() == group.predmet.Nazev.ToLower());
+		if(controlSubject == null) {	
+			//získání kapitol, které patří pod předmět 
+			List<Kapitola> chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>
+					($"{MyNavigationManager.BaseUri}api/Kapitoly/vsechno/" + searchSubject.Id);
+			//vytvoření skupiny s přejmenovanou kopií struktury 
+			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", group);
+			//získání ID nově vytvořené skupiny
+			Skupina GetGroup = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
+			//vytvoření úvodní prerekvizity navazané na skupinu --> 0
+			await VytvorUvodniSplneni(GetGroup);
+
+			foreach (Kapitola chapter in chapters)
+			{
+				chapter.PredmetID = GetGroup.predmet.Id;
+			}
+			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitoly/", chapters);
+			MyNavigationManager.NavigateTo("/");
+		}
+		else {
+			modelHidden = false;
+		}
+			
+		
+		
+	}
 	//překopíruje na novou skupinu existující předmět s kapitolami -->
 	public async Task CreateIfExist() {
-		offBtn = true;
 		//přidání ID skupiny 
 		group.TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
 		//získání ID předmětu, který si učitel vybral 
-		searchSubject = subjects.Find(x => x.Nazev == subjectSelect);
-		//získání kapitol, které patří pod předmět 
-		List<Kapitola> chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>
-				($"{MyNavigationManager.BaseUri}api/Kapitoly/vsechno/" + searchSubject.Id);
+		searchSubject = subjects.Find(x => x.Nazev == subjectSelect);	
 		//vlastnictví skupiny
 		group.predmet.Vytvoril = UserToken.Profile.Mail;
 		//viditelnost předmětu --> vždy defaultně nastaveno na privátní
@@ -167,7 +217,8 @@
 		if(Getskupina.TmSkupina == null) {
 		//přidání příjmení učitela za název předmětu
 		group.predmet.Nazev = $"{searchSubject.Nazev.ToString()} - {UserToken.Profile.Surname.ToString()}";
-		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", group);
+		modelHidden2 = false;
+		/*await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", group);
 		//získání ID nově vytvořené skupiny
 		Skupina GetGroup = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
 		//vytvoření úvodní prerekvizity navazané na skupinu --> 0
@@ -177,13 +228,14 @@
 		{
 			chapter.PredmetID = GetGroup.predmet.Id;
 		}
-		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitoly/", chapters);
+		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitoly/", chapters);*/
 		}
 		else {
 		//vytvoří úvodní splnění pro navázanou skupinu s předmětem 
 		await VytvorUvodniSplneni(Getskupina);
-		}
 		MyNavigationManager.NavigateTo("/");
+		}
+
 	}
 	public void CloseDialog() => modelHidden = true;
 	private bool IfAllPrivate() {

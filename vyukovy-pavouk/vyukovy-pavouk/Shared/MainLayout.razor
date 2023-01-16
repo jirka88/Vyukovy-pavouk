@@ -1,30 +1,6 @@
 @inherits LayoutComponentBase
-@inject IGroupToken GroupToken
-@inject MicrosoftTeams MicrosoftTeams
 <div class="container">
 @Body
 </div>
 <link rel="stylesheet" href="css/main-styly-inputs.css" />
-@code {
-    public bool IsLoaded = false;
-    private bool dark = false;
-    [Inject]
-    public IJSRuntime JSRuntime { get; set; }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await GroupToken.GetGroupAsync(MicrosoftTeams);
-       
-             if(GroupToken.teamsContext.Theme == "dark") {
-                    await JSRuntime.InvokeVoidAsync("SetBodyStyle");
-                    dark = true;
-             }
-            IsLoaded = true;
-            
-            StateHasChanged();
-        }
 
-	}	
-
-}

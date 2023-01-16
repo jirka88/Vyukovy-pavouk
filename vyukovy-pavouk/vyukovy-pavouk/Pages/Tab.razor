@@ -89,6 +89,8 @@
 	private bool isInTeams;
 	private bool dark = false;
 	private bool isInTeamsShow = true;
+	[Inject]
+    public IJSRuntime JSRuntime { get; set; }
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -109,6 +111,7 @@
 					}		
 					if (GroupToken.teamsContext.Theme == "dark")
 					{
+						await JSRuntime.InvokeVoidAsync("SetBodyStyle");
 						dark = true;
 					}
 					//získání skupiny z databáze
