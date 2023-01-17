@@ -29,6 +29,10 @@ namespace vyukovy_pavouk.Services
                .Include(p => p.KapitolaPrerekvizita)
                .ThenInclude(p => p.prerekvizita)
                .FirstOrDefaultAsync();
+                if(Kapitola == null)
+                {
+                    Kapitola = new Kapitola();
+                }
                 return Kapitola;       
         }
 

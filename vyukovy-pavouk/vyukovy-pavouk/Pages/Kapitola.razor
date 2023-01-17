@@ -21,7 +21,7 @@ else {
 		<div class="kapitola">
 			<div class="d-flex pt-5 pb-3 align-items-center main-title">
 				<h1 class="text-left font-weight-bold flex-grow-1 @(dark ? "text-white" : "")">@kapitola.Název</h1>
-				@if (UserToken.Profile.JobTitle == null)
+				@if (UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "učitel")
 			   {
 				   <div class="admin-btn d-flex gap-3">
 				<fluent-button class="btn-set" appearance="accent" @onclick=edit><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.94 5 19 10.06 9.062 20a2.25 2.25 0 0 1-.999.58l-5.116 1.395a.75.75 0 0 1-.92-.921l1.395-5.116a2.25 2.25 0 0 1 .58-.999L13.938 5Zm7.09-2.03a3.578 3.578 0 0 1 0 5.06l-.97.97L15 3.94l.97-.97a3.578 3.578 0 0 1 5.06 0Z" fill="#ffffff" /></svg></fluent-button>
@@ -106,7 +106,9 @@ else {
 			<hr class="pb-3" />
 				   }
 			<div class="d-flex justify-content-center align-items-center flex-column w-100">
-			<fluent-button class="main-btn" Disabled="@status" appearance="accent">Vzít cvičení</fluent-button>
+				<a href="@kapitola.Zadani[0].Odkaz" target="_blank">
+			<fluent-button  class="main-btn" Disabled="@status" appearance="accent">Vzít cvičení</fluent-button>
+			</a>
 			<div class="popis text-center pb-3">
 				<!--<p class="h5">0/1</p>-->
 				<p>Při potvrzení tlačítka Vám bude odesláno cvičení na dané téma ve formě testu. Po následné korekci Vašeho testu bude zpřístupněna další kapitola.</p>
@@ -178,12 +180,21 @@ else {
 				if(kapitola == null) {
 					await CallApiKapitola();
 				}
-				//slouží pouze pro učitele --> získavají se zde prerekvizity, které se pak používají při kontrole u mazání kapitoly  
-				if(UserToken.Profile.JobTitle == null) {
-					skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-					prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.predmet.Id));
+				//kontrola zdali došlo k smazání skupiny/kapitoly či resetu skupiny vrátí studenta na úvodní stránku
+				if (kapitola.Id != 0)
+				{
+					//slouží pouze pro učitele --> získavají se zde prerekvizity, které se pak používají při kontrole u mazání kapitoly  
+					if (UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "administrator")
+					{
+						skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
+						prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.predmet.Id));
+					}	
+					IsLoaded = true;
 				}
-				IsLoaded = true;
+				else {
+					MyNavigationManager.NavigateTo("/");
+				}
+				
 			}
 			StateHasChanged();
 		}

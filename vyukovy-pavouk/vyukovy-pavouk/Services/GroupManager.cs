@@ -29,8 +29,7 @@ namespace vyukovy_pavouk.Services
         }
         //vytvoří Teams skupinu pod existující předmět v databázi 
         public async Task AddGroup(Skupina skupina)
-        {
-            Predmet subject = _dbContext.Predmet.Where(x => x.Nazev == skupina.predmet.Nazev).SingleOrDefault();            
+        {        
             _dbContext.Skupina.Add(skupina);   
             await _dbContext.SaveChangesAsync();                
         }

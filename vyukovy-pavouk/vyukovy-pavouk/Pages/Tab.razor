@@ -51,7 +51,7 @@
 	else if (IsLoaded)
 	{
 		//pokud je učitel
-		@if (UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle == "Administrátor")
+		@if (UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "administrátor")
 		{
 			<Vytvoreni_Teamu subjects="@predmety" Theme="@dark" />
 		}
@@ -122,10 +122,11 @@
 						predmety = await Http.GetFromJsonAsync<List<Predmet>>($"{MyNavigationManager.BaseUri}api/predmet");
 						IsLoaded = true;
 					}
+					else if(UserToken.Profile.JobTitle == null) {
+						MyNavigationManager.NavigateTo("/zamitnuti");
+					}
 					//pokud existuje přesměrujeme na kapitoly + vytvoříme do databáze studenta patřící pod danou skupinu pokud v ní není
-					// u podmínky bude JobTitle != Učitel --> učitel se nebude vytvářet v databázi
-
-					else if (UserToken.Profile.JobTitle != null || UserToken.Profile.JobTitle == null)
+					else if (UserToken.Profile.JobTitle.ToLower() == "žák školy")
 					{
 						student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/{skupina.Id}/{UserToken.Profile.Mail}");
 						//pokud student neexistuje v databázi vytvoří se a propojí se skupinou
@@ -138,7 +139,7 @@
 							studentInfo.SkupinaStudent[0].SkupinaID = skupina.Id;
 							await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti", studentInfo);
 						}
-						//pokud student už existuje v databázi, ale není navázán v naší skupině
+						//pokud student už existuje v databázi, ale není navázán v naší skupině v DB 
 						else if (student.SkupinaStudent.Find(x => x.SkupinaID == skupina.Id) == null)
 						{
 							skupinaStudentConnect.SkupinaID = skupina.Id;
@@ -146,6 +147,12 @@
 							await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/connect", skupinaStudentConnect);
 						}
 						MyNavigationManager.NavigateTo("/");
+					}
+					else if (UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "administrator") {
+						MyNavigationManager.NavigateTo("/");
+					}
+					else {
+						MyNavigationManager.NavigateTo("/zamitnuti");
 					}
 				}
 			}

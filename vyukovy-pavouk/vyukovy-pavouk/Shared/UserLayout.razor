@@ -9,14 +9,14 @@
     @if(IsLoaded) {
         <fluent-tabs class="py-4">
         	<fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/")' class="@(dark ? "text-white" : "")">Pavouk</fluent-tab>
-    @if(UserToken.Profile.JobTitle == null) {
+    @if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "učitel") {
             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/add")' class="@(dark ? "text-white" : "")">Přidání</fluent-tab>
             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/souhrn")' class="@(dark ? "text-white" : "")">Souhrn</fluent-tab>
              <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/nastaveni")' class="@(dark ? "text-white" : "")">Nastavení</fluent-tab>
     }   
 	    <fluent-tab-panel>
         </fluent-tab-panel>
-    @if(UserToken.Profile.JobTitle == null) {
+    @if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "učitel") {
         <fluent-tab-panel>
         </fluent-tab-panel>
         <fluent-tab-panel>

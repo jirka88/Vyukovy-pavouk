@@ -17,7 +17,7 @@
 	<h1 class="text-center py-2 pb-4 @(dark ? "text-white" : "")">Obsah</h1>
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
 		@if(chapters.Count() > 0) {
-			@if(UserToken.Profile.JobTitle != null || UserToken.Profile.JobTitle == "Administrátor") {
+			@if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "administrátor" || UserToken.Profile.JobTitle.ToLower() == "učitel") {
 				//zobrazení kapitol pro učitele 
 				@foreach (var chapter in chapters)
 				{										
@@ -104,10 +104,9 @@ else {
 			else {
 				group = await Http.GetFromJsonAsync<Skupina>
 				($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				//pokud by skupina byla resetovaná či smazaná --> vrátí studenta k úvodní stránce 
-				if(group.TmSkupina == null) {
-					MyNavigationManager.NavigateTo("/tab");
-				}
+				//kontrola zdali skupina byla resetovaná či smazaná --> vrátí studenta k úvodní stránce 
+				if(group.TmSkupina != null) {
+
 				if(GroupToken.teamsContext.Theme == "dark") {
 					dark = true;
 				}
@@ -115,13 +114,16 @@ else {
 				($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.predmet.Id)));
 
 				//pokud je student, zjistí informace o progresu atd..
-				if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle == "Žák školy") {
+				if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "žák školy") {
 					student = await Http.GetFromJsonAsync<Student>
 					($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(group.Id)
 					+ "/" + UserToken.Profile.Mail);
 				}
-
 				IsLoaded = true;
+				}
+				else {
+					MyNavigationManager.NavigateTo("/tab");
+				}	
 			}
 		}
 		StateHasChanged();
