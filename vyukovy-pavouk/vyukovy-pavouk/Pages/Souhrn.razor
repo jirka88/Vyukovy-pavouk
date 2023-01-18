@@ -88,7 +88,7 @@
 						}
 						else
 						{
-							<td colspan="4"><p class="d-flex align-items-center mt-1 mb-0">V teamu není žádná kapitola!</p></td>
+							<td colspan="4"><p class="d-flex align-items-center mt-1 mb-0 @(dark ? "text-white" : "")">V teamu není žádná kapitola!</p></td>
 						}
 					</tr>
 				}
@@ -96,7 +96,7 @@
 			else
 			{
 				<tr>
-					<td colspan="6">Čekáme na připojení studentů do Teamu.</td>
+					<td colspan="6" class="@(dark ? "text-white" : "")">Čekáme na připojení studentů do Teamu.</td>
 				</tr>
 			}
 		</tbody>

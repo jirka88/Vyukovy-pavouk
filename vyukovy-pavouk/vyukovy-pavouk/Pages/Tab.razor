@@ -51,14 +51,14 @@
 	else if (IsLoaded)
 	{
 		//pokud je učitel
-		@if (UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "administrátor")
+		@if (UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě")
 		{
 			<Vytvoreni_Teamu subjects="@predmety" Theme="@dark" />
 		}
 		//pokud je student
 		else
 		{
-			<Vytvoreni_teamu_student />
+			<Vytvoreni_teamu_student Theme="@dark"/>
 		}
 	}
 </div>
@@ -148,7 +148,7 @@
 						}
 						MyNavigationManager.NavigateTo("/");
 					}
-					else if (UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "administrator") {
+					else if (UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
 						MyNavigationManager.NavigateTo("/");
 					}
 					else {

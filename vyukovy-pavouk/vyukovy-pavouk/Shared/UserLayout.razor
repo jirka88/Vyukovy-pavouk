@@ -1,6 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using vyukovy_pavouk.Data
+@inherits LayoutComponentBase
 @inject NavigationManager MyNavigationManager
 @inject MicrosoftTeams MicrosoftTeams
+@inject HttpClient Http
 @inject IUserToken UserToken
 @inject IGroupToken GroupToken
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
@@ -9,20 +11,26 @@
     @if(IsLoaded) {
         <fluent-tabs class="py-4">
         	<fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/")' class="@(dark ? "text-white" : "")">Pavouk</fluent-tab>
-    @if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "učitel") {
+    @if(UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě"){
+        @if(UserToken.Profile.Mail == group.predmet.Vytvoril || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/add")' class="@(dark ? "text-white" : "")">Přidání</fluent-tab>
             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/souhrn")' class="@(dark ? "text-white" : "")">Souhrn</fluent-tab>
-             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/nastaveni")' class="@(dark ? "text-white" : "")">Nastavení</fluent-tab>
+            <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/nastaveni")' class="@(dark ? "text-white" : "")">Nastavení</fluent-tab>   
+        }             
     }   
 	    <fluent-tab-panel>
         </fluent-tab-panel>
-    @if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "učitel") {
-        <fluent-tab-panel>
+    @if(UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
+        @if(UserToken.Profile.Mail == group.predmet.Vytvoril || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
+             <fluent-tab-panel>
         </fluent-tab-panel>
         <fluent-tab-panel>
+     
         </fluent-tab-panel>
             <fluent-tab-panel>
-        </fluent-tab-panel>
+        </fluent-tab-panel>        
+        }
+              
     }
         </fluent-tabs>
     }
@@ -53,6 +61,7 @@
 @code {
     public bool IsLoaded = false;
     private bool dark = false;
+    private Skupina group;
     [Inject]
     public IJSRuntime JSRuntime { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -71,6 +80,8 @@
                     await JSRuntime.InvokeVoidAsync("SetBodyStyle");
                     dark = true;
                 }
+                group = await Http.GetFromJsonAsync<Skupina>
+				($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
                 IsLoaded = true;
             }
             StateHasChanged();
