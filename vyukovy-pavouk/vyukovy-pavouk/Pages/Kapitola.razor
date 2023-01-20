@@ -176,7 +176,7 @@ else {
 			}
 			else
 			{
-				if(GroupToken.teamsContext.Theme == "dark") {
+				if(GroupToken.teamsContext.Theme == "dark" || GroupToken.teamsContext.Theme == "contrast") {
 					dark = true;
 				}
 				//pokud by se náhodou nevyvolala dřív OnParametersSetAsync vyvolám ho zde 
@@ -187,7 +187,7 @@ else {
 				if (kapitola.Id != 0)
 				{
 					//slouží pouze pro učitele --> získavají se zde prerekvizity, které se pak používají při kontrole u mazání kapitoly  
-					if (UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "administrator")
+					if (UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě")
 					{
 						skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 						prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.predmet.Id));

@@ -35,7 +35,7 @@ else {
         if (firstRender)
         {
             await GroupToken.GetGroupAsync(MicrosoftTeams);                   
-                if(GroupToken.teamsContext.Theme == "dark") {
+                if(GroupToken.teamsContext.Theme == "dark" || GroupToken.teamsContext.Theme == "contrast") {
                     dark = true;
                 }
                 IsLoaded = true;

@@ -5,7 +5,7 @@
     "id": "{{state.fx-resource-appstudio.teamsAppId}}",
     "packageName": "com.microsoft.teams.extension",
     "developer": {
-        "name": "Teams App, Inc",
+        "name": "Jiří Navrátil",
         "websiteUrl": "{{state.fx-resource-frontend-hosting.endpoint}}",
         "privacyUrl": "{{state.fx-resource-frontend-hosting.endpoint}}{{state.fx-resource-frontend-hosting.indexPath}}/privacy",
         "termsOfUseUrl": "{{state.fx-resource-frontend-hosting.endpoint}}{{state.fx-resource-frontend-hosting.indexPath}}/termsofuse"
@@ -19,7 +19,7 @@
         "full": "{{config.manifest.appName.full}}"
     },
     "description": {
-        "short": "Short description of {{config.manifest.appName.short}}",
+        "short": "Aplikace sloužící k podpoře výuce na školách.",
         "full": "Full description of {{config.manifest.appName.short}}"
     },
     "accentColor": "#FFFFFF",

@@ -107,7 +107,7 @@ else {
 				//kontrola zdali skupina byla resetovaná či smazaná --> vrátí studenta k úvodní stránce 
 				if(group.TmSkupina != null) {
 
-				if(GroupToken.teamsContext.Theme == "dark") {
+				if(GroupToken.teamsContext.Theme == "dark" || GroupToken.teamsContext.Theme == "contrast") {
 					dark = true;
 				}
 				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>

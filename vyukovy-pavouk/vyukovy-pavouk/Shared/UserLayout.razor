@@ -7,15 +7,15 @@
 @inject IGroupToken GroupToken
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 <div class="container">
-    <nav class="sticky-top w-100 @(dark ? "dark" : "")">
+    <nav class="sticky-top w-100 @(dark ? "dark" : "") @(contrast ? "contrast" : "")">
     @if(IsLoaded) {
         <fluent-tabs class="py-4">
-        	<fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/")' class="@(dark ? "text-white" : "")">Pavouk</fluent-tab>
+                <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Pavouk</fluent-tab>
     @if(UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě"){
         @if(UserToken.Profile.Mail == group.predmet.Vytvoril || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
-            <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/add")' class="@(dark ? "text-white" : "")">Přidání</fluent-tab>
-            <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/souhrn")' class="@(dark ? "text-white" : "")">Souhrn</fluent-tab>
-            <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/nastaveni")' class="@(dark ? "text-white" : "")">Nastavení</fluent-tab>   
+            <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/add")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Přidání</fluent-tab>
+            <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/souhrn")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Souhrn</fluent-tab>
+            <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/nastaveni")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Nastavení</fluent-tab>   
         }             
     }   
 	    <fluent-tab-panel>
@@ -54,13 +54,20 @@
     .dark {
         background: #1f1f1f !important;
     }
+    .contrast {
+        background: #000000 !important;
+    }
+    .contrast-text {
+        color: #feff01;
+    }
     .blazored-toast-container{
         z-index: 999 !important;
     }
 </style>
 @code {
-    public bool IsLoaded = false;
+    private bool IsLoaded = false;
     private bool dark = false;
+    private bool contrast = false;
     private Skupina group;
     [Inject]
     public IJSRuntime JSRuntime { get; set; }
@@ -76,10 +83,18 @@
             }
             else
             {
-                if(GroupToken.teamsContext.Theme == "dark") {
-                    await JSRuntime.InvokeVoidAsync("SetBodyStyle");
-                    dark = true;
-                }
+                if (GroupToken.teamsContext.Theme == "dark" || GroupToken.teamsContext.Theme == "contrast")
+					{
+						if(GroupToken.teamsContext.Theme == "dark") {
+							await JSRuntime.InvokeVoidAsync("SetBodyStyle");
+                            dark = true;
+						}
+						else {
+							await JSRuntime.InvokeVoidAsync("SetBodyStyleContrast");
+                            contrast = true;
+						}
+						
+					}
                 group = await Http.GetFromJsonAsync<Skupina>
 				($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
                 IsLoaded = true;

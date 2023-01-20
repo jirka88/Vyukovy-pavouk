@@ -90,7 +90,7 @@
 	private bool dark = false;
 	private bool isInTeamsShow = true;
 	[Inject]
-    public IJSRuntime JSRuntime { get; set; }
+	public IJSRuntime JSRuntime { get; set; }
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -109,9 +109,14 @@
 						await ShowProfile();
 						await UserToken.SetLocalUser(sessionStorage);						
 					}		
-					if (GroupToken.teamsContext.Theme == "dark")
+					if (GroupToken.teamsContext.Theme == "dark" || GroupToken.teamsContext.Theme == "contrast")
 					{
-						await JSRuntime.InvokeVoidAsync("SetBodyStyle");
+						if(GroupToken.teamsContext.Theme == "dark") {
+							await JSRuntime.InvokeVoidAsync("SetBodyStyle");
+						}
+						else {
+							await JSRuntime.InvokeVoidAsync("SetBodyStyleContrast");
+						}
 						dark = true;
 					}
 					//získání skupiny z databáze
