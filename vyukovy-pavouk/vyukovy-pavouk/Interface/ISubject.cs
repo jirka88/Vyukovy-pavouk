@@ -4,11 +4,11 @@ namespace vyukovy_pavouk.Interface
     public interface ISubject
 {
         public Task <List<Predmet>> GetSubjects();
-        public int GetCountChapters(int IDPredmetu);
-        public Task SaveSubject(Predmet predmet);
-        public Task EditSubject(Skupina skupina);
-        public Task ChangeVisibilitySubject(Predmet predmet);
-        public Task<Predmet> GetSubjectWithConnectedGroups(int IDSubject);
+        public int GetCountChapters(int IdSubject);
+        public Task SaveSubject(Predmet Subject);
+        public Task EditSubject(Skupina group);
+        public Task ChangeVisibilitySubject(Predmet subject);
+        public Task<Predmet> GetSubjectWithConnectedGroups(int IdSubject);
         //public Task DeleteSubject(int Id);
     }
 }

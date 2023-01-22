@@ -9,31 +9,31 @@ namespace vyukovy_pavouk.Controllers
     [ApiController]
     public class KapitolaController : ControllerBase
     {
-        private readonly IChapter _IKapitola;
-        public KapitolaController(IChapter iKapitola)
+        private readonly IChapter _IChapter;
+        public KapitolaController(IChapter IChapter)
         {
-            _IKapitola = iKapitola;
+            _IChapter = IChapter;
         }
         [HttpGet("{IdChapter}")]
         public async Task<Kapitola> Get(int IdChapter)
         {
-            return await _IKapitola.GetKapitolaDetail(IdChapter);
+            return await _IChapter.GetKapitolaDetail(IdChapter);
         }
         [HttpPost]
         public async Task Create([FromBody] Kapitola Chapter)
         {
-            await _IKapitola.CreateKapitola(Chapter);
+            await _IChapter.CreateKapitola(Chapter);
         }
         [HttpPut]
         public async Task Update(Kapitola Chapter)
         {
-            await _IKapitola.UpdateKapitola(Chapter);
+            await _IChapter.UpdateKapitola(Chapter);
         }
         [HttpDelete]
         [Route("delete/{IdChapter}")]
         public async Task Delete(int IdChapter)
         {
-          await _IKapitola.DeleteKapitola(IdChapter);
+          await _IChapter.DeleteKapitola(IdChapter);
         }
     }
 }

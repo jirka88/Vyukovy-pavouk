@@ -11,9 +11,9 @@ namespace vyukovy_pavouk.Controllers
     public class SkupinaController : ControllerBase
     {
         private readonly IGroup _IGroup;
-        public SkupinaController(IGroup iGroup)
+        public SkupinaController(IGroup IGroup)
         {
-            _IGroup = iGroup;
+            _IGroup = IGroup;
         }
         //prvotní kontrola zda-li team existuje, pak následně se používá pro získání ID skupiny a předmětu 
         [HttpGet("{IDTeam}")]

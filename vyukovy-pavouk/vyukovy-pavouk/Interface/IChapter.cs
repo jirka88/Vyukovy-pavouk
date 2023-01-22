@@ -5,10 +5,10 @@ namespace vyukovy_pavouk.Interface
 {
     public interface IChapter
     {
-        public Task <Kapitola> GetKapitolaDetail(int IdKapitoly);
-        public Task CreateKapitola(Kapitola kapitola);
-        public Task UpdateKapitola(Kapitola kapitola);  
-        public Task DeleteKapitola(int IdKapitoly);
+        public Task <Kapitola> GetKapitolaDetail(int IdChapter);
+        public Task CreateKapitola(Kapitola chapter);
+        public Task UpdateKapitola(Kapitola chapter);  
+        public Task DeleteKapitola(int IdChapter);
 
     }
 }
