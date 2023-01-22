@@ -13,14 +13,14 @@ namespace vyukovy_pavouk.Services
             _dbContext = dbContext;
         }
 
-        public async Task CreateNewConnect(SkupinaStudent skupinaStudent)
+        public async Task CreateNewConnect(SkupinaStudent groupStudent)
         {         
-                _dbContext.SkupinaStudent.Add(skupinaStudent);
+                _dbContext.SkupinaStudent.Add(groupStudent);
                 //vytvoří spojení mezi úvodní kapitolou a studentem 
                 StudentSplneni studentSplneni = new StudentSplneni();
-                studentSplneni.StudentID = skupinaStudent.StudentID;
+                studentSplneni.StudentID = groupStudent.StudentID;
                 //získá uvodní prerekvizitu
-                Splneni splneni = await _dbContext.Splneni.Where(x => x.SkupinaID == skupinaStudent.SkupinaID && x.KapitolaID == 0).SingleOrDefaultAsync();
+                Splneni splneni = await _dbContext.Splneni.Where(x => x.SkupinaID == groupStudent.SkupinaID && x.KapitolaID == 0).SingleOrDefaultAsync();
                 studentSplneni.SplneniID = splneni.Id;
                 studentSplneni.Uspech = true;
                 _dbContext.StudentSplneni.Add(studentSplneni);
@@ -43,21 +43,21 @@ namespace vyukovy_pavouk.Services
                 await _dbContext.SaveChangesAsync();
         }
         //zjistí progres (plnění jeho kapitol) u určitého studenta 
-        public Student GetStudentProgres(int Id, int IdSkupiny)
+        public Student GetStudentProgres(int Id, int IdGroup)
         {
             return _dbContext.Student
                 .Where(id => id.Id == Id)
-                .Include(s => s.StudentSplneni.Where(id => id.splneni.SkupinaID == IdSkupiny))
+                .Include(s => s.StudentSplneni.Where(id => id.splneni.SkupinaID == IdGroup))
                 .ThenInclude(s => s.splneni)
                 .SingleOrDefault();
         }
         //získa studenta zda-li v dané skupině je 
-        public Student GetStudent(int IdSkupiny, string EmailStudenta)
+        public Student GetStudent(int IdGroup, string EmailStudent)
         {
            return _dbContext.Student
-                .Where(e => e.Email == EmailStudenta)
+                .Where(e => e.Email == EmailStudent)
                 .Include(s => s.SkupinaStudent)
-                .Include(s => s.StudentSplneni.Where(id => id.splneni.SkupinaID == IdSkupiny))
+                .Include(s => s.StudentSplneni.Where(id => id.splneni.SkupinaID == IdGroup))
                     .ThenInclude(s => s.splneni)
                 .SingleOrDefault();                             
         }
@@ -74,10 +74,10 @@ namespace vyukovy_pavouk.Services
                     .ToList();                         
         }
         //vrátí všechny splnění studentů v dané skupině 
-        public List<StudentSplneni> GetSplneni(int IdSkupiny)
+        public List<StudentSplneni> GetSplneni(int IdGroup)
         {
             return _dbContext.StudentSplneni
-                .Include(s => s.splneni).Where(s => s.splneni.SkupinaID == IdSkupiny)
+                .Include(s => s.splneni).Where(s => s.splneni.SkupinaID == IdGroup)
                 .ToList();
         }
         //vymaže studentům splnění kapitoly --> při mazání kapitoly 
@@ -98,20 +98,20 @@ namespace vyukovy_pavouk.Services
                 _dbContext.SaveChanges();                 
         }
 
-        public async Task DeleteStudent(int IdStudenta, int IdSkupiny)
+        public async Task DeleteStudent(int IdStudent, int IdGroup)
         {
             //vymaže studentoho navázaní na skupinu
-            SkupinaStudent SkupinaStudent = await _dbContext.SkupinaStudent.Where(x => x.StudentID == IdStudenta && x.SkupinaID == IdSkupiny).SingleOrDefaultAsync();
-            _dbContext.Remove(SkupinaStudent);
+            SkupinaStudent groupStudent = await _dbContext.SkupinaStudent.Where(x => x.StudentID == IdStudent && x.SkupinaID == IdGroup).SingleOrDefaultAsync();
+            _dbContext.Remove(groupStudent);
             //vymaže jeho progres 
-            List<StudentSplneni> StudentSplneni = await _dbContext.StudentSplneni.Where(x => x.StudentID == IdStudenta && x.splneni.SkupinaID == IdSkupiny).ToListAsync();
+            List<StudentSplneni> StudentSplneni = await _dbContext.StudentSplneni.Where(x => x.StudentID == IdStudent && x.splneni.SkupinaID == IdGroup).ToListAsync();
             _dbContext.RemoveRange(StudentSplneni);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task CreateSplneni(StudentSplneni studentSplneni)
         {
-            bool pokracuj = true;
+            bool continues = true;
             Splneni splneni = await _dbContext.Splneni.Where(x => x.KapitolaID == studentSplneni.splneni.KapitolaID && x.SkupinaID == studentSplneni.splneni.SkupinaID).SingleOrDefaultAsync();
             //vytvoří nové splnění 
             if (splneni == null)
@@ -126,11 +126,11 @@ namespace vyukovy_pavouk.Services
                 studentSplneniPropoj.StudentID = studentSplneni.StudentID;
                 studentSplneniPropoj.Uspech = studentSplneni.Uspech;
                 _dbContext.StudentSplneni.Add(studentSplneniPropoj);
-                pokracuj = false;
+                continues = false;
             }
             await _dbContext.SaveChangesAsync();
             //nové splnění připojí 
-            if(pokracuj)
+            if(continues)
             {
                 splneni = await _dbContext.Splneni.Where(x => x.KapitolaID == studentSplneni.splneni.KapitolaID && x.SkupinaID == studentSplneni.splneni.SkupinaID).SingleOrDefaultAsync();
                 studentSplneni.SplneniID = splneni.Id;

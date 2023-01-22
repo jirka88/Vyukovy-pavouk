@@ -24,9 +24,9 @@ namespace vyukovy_pavouk.Controllers
         }
         //vytvoří Teams skupinu pod existující předmět v databázi 
         [HttpPost]
-        public async Task Create([FromBody] Skupina skupina)
+        public async Task Create([FromBody] Skupina group)
         {
-            await _IGroup.AddGroup(skupina);
+            await _IGroup.AddGroup(group);
         }
         //vytvoří úvodní prerekvizitu patřící pod skupinu 
         [Route("uvod")]
@@ -44,10 +44,10 @@ namespace vyukovy_pavouk.Controllers
         }
         //vymaže všechny splnění a napojení studentů --> odstraní ID Teamu a strukturu nastaví na privátní 
         [HttpDelete]
-        [Route("reset/{IdSkupiny}")]
-        public async Task ResetGroup(int IdSkupiny)
+        [Route("reset/{IdGroup}")]
+        public async Task ResetGroup(int IdGroup)
         {
-            await _IGroup.ResetGroup(IdSkupiny);
+            await _IGroup.ResetGroup(IdGroup);
         }
         [Route("pripoj")]
         [HttpPost]

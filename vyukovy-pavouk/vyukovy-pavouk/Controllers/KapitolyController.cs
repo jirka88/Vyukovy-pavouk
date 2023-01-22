@@ -17,28 +17,28 @@ namespace vyukovy_pavouk.Controllers
             _IKapitola = iKapitola;
         }
         //získání všech kapitol a prerekvizit u mainu podle předmětu 
-        [HttpGet("{IDPredmetu}")]
-        public async Task<List<Kapitola>> Get(int IDPredmetu)
+        [HttpGet("{IdSubject}")]
+        public async Task<List<Kapitola>> Get(int IdSubject)
         {
-            return await _IKapitola.GetChapters(IDPredmetu);
+            return await _IKapitola.GetChapters(IdSubject);
         }
         [HttpGet]
-        [Route("vsechno/{IDPredmetu}")] 
-        public async Task<List<Kapitola>> GetAllInfo(int IDPredmetu)
+        [Route("vsechno/{IdSubject}")] 
+        public async Task<List<Kapitola>> GetAllInfo(int IdSubject)
         {
-            return await _IKapitola.GetChaptersWithAll(IDPredmetu);
+            return await _IKapitola.GetChaptersWithAll(IdSubject);
         }
         [HttpGet]
-        [Route("nazvy/{idPredmetu}")]
-        public async Task<List<Kapitola>> GetNames(int idPredmetu)
+        [Route("nazvy/{IdSubject}")]
+        public async Task<List<Kapitola>> GetNames(int IdSubject)
         {
-            return await _IKapitola.GetChaptersOnly(idPredmetu);
+            return await _IKapitola.GetChaptersOnly(IdSubject);
         }
         [HttpGet]
-        [Route("prerekvizity/{idPredmetu}")]
-        public async Task<List<KapitolaPrerekvizita>> GetPrerekvizity(int idPredmetu)
+        [Route("prerekvizity/{IdSubject}")]
+        public async Task<List<KapitolaPrerekvizita>> GetPrerekvizity(int IdSubject)
         {
-            return await _IKapitola.GetChaptersPrerequisites(idPredmetu);
+            return await _IKapitola.GetChaptersPrerequisites(IdSubject);
         }
         [HttpPost]
         public async Task CreateCopyOfChapters([FromBody] List<Kapitola> chapters)

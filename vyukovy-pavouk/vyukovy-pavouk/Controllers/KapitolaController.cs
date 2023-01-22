@@ -14,26 +14,26 @@ namespace vyukovy_pavouk.Controllers
         {
             _IKapitola = iKapitola;
         }
-        [HttpGet("{IdKapitola}")]
-        public async Task<Kapitola> Get(int IdKapitola)
+        [HttpGet("{IdChapter}")]
+        public async Task<Kapitola> Get(int IdChapter)
         {
-            return await _IKapitola.GetKapitolaDetail(IdKapitola);
+            return await _IKapitola.GetKapitolaDetail(IdChapter);
         }
         [HttpPost]
-        public async Task Create([FromBody] Kapitola kapitola)
+        public async Task Create([FromBody] Kapitola Chapter)
         {
-            await _IKapitola.CreateKapitola(kapitola);
+            await _IKapitola.CreateKapitola(Chapter);
         }
         [HttpPut]
-        public async Task Update(Kapitola kapitola)
+        public async Task Update(Kapitola Chapter)
         {
-            await _IKapitola.UpdateKapitola(kapitola);
+            await _IKapitola.UpdateKapitola(Chapter);
         }
         [HttpDelete]
-        [Route("delete/{IdKapitoly}")]
-        public async Task Delete(int Idkapitoly)
+        [Route("delete/{IdChapter}")]
+        public async Task Delete(int IdChapter)
         {
-          await _IKapitola.DeleteKapitola(Idkapitoly);
+          await _IKapitola.DeleteKapitola(IdChapter);
         }
     }
 }

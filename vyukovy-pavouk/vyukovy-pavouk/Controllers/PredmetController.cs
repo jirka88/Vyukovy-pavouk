@@ -21,42 +21,37 @@ public class PredmetController : ControllerBase
             return await _IPredmet.GetSubjects();
         }
         //získání počtů všech kapitol patřící pod jednotlivý předmět --> použití u souhrnu 
-        [HttpGet("{IDPredmetu}")]
-        public async Task<int> Get(int IDPredmetu)
+        [HttpGet("{IdSubject}")]
+        public async Task<int> Get(int IdSubject)
         {
-            return await Task.FromResult(_IPredmet.GetCountChapters(IDPredmetu));
+            return await Task.FromResult(_IPredmet.GetCountChapters(IdSubject));
         }
         [HttpGet]
-        [Route("skupiny/{IdPredmetu}")]
-        public async Task<Predmet> GetPredmetWithGroups(int IdPredmetu)
+        [Route("skupiny/{IdSubject}")]
+        public async Task<Predmet> GetPredmetWithGroups(int IdSubject)
         {
-            return await _IPredmet.GetSubjectWithConnectedGroups(IdPredmetu);
+            return await _IPredmet.GetSubjectWithConnectedGroups(IdSubject);
         }
 
         //vytvoří Teams skupinu s novým předmětem 
         [HttpPost]
-        public async Task CreateNew([FromBody] Predmet predmet)
+        public async Task CreateNew([FromBody] Predmet subject)
         {
-            await _IPredmet.SaveSubject(predmet);
+            await _IPredmet.SaveSubject(subject);
         }
 
         [HttpPut]
-        public async Task EditSubject(Skupina skupina)
+        public async Task EditSubject(Skupina group)
         {
-             await _IPredmet.EditSubject(skupina);
+             await _IPredmet.EditSubject(group);
         }
         //změna viditelnosti předmětu --> veřejná x privátní
         [Route("visibility")]
         [HttpPut]
-        public async Task ChangeVisibilitySubject(Predmet predmet)
+        public async Task ChangeVisibilitySubject(Predmet subject)
         {
-            await _IPredmet.ChangeVisibilitySubject(predmet);
+            await _IPredmet.ChangeVisibilitySubject(subject);
         }
 
-        /*[HttpDelete("{Id}")]
-        public async Task DeleteSubject(int Id)
-        {
-            await _IPredmet.DeleteSubject(Id);
-        }*/
     }
 }

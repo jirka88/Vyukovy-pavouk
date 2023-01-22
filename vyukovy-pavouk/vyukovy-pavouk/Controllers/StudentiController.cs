@@ -21,29 +21,23 @@ namespace vyukovy_pavouk.Controllers
             return await Task.FromResult(_IStudenti.GetStudents(Id));
         }
         //zjistí jednotlivého studenta a jeho stav plnění kapitol --> u progresu 
-        [HttpGet("progres/{IdSkupiny}/{Id}")]
-        public async Task<Student> GetStudentProgres (int IdSkupiny, int Id)
+        [HttpGet("progres/{IdGroup}/{Id}")]
+        public async Task<Student> GetStudentProgres (int IdGroup, int Id)
         {
-            Student student = await Task.FromResult(_IStudenti.GetStudentProgres(Id, IdSkupiny));
+            Student student = await Task.FromResult(_IStudenti.GetStudentProgres(Id, IdGroup));
             return student;
         }
         //získa studenta zda-li v dané skupině je a pokud není vrátí null
-        [HttpGet("{IdSkupiny}/{EmailStudenta}")]
-        public async Task<Student> GetStudent(int IdSkupiny, string EmailStudenta)
+        [HttpGet("{IdGroup}/{EmailStudent}")]
+        public async Task<Student> GetStudent(int IdGroup, string EmailStudent)
         {
-            Student student = await Task.FromResult(_IStudenti.GetStudent(IdSkupiny, EmailStudenta));
+            Student student = await Task.FromResult(_IStudenti.GetStudent(IdGroup, EmailStudent));
             if(student == null)
             {
                 return new Student();
             }
             return student;
         }
-        //získá všechny splnění 
-        /*[HttpGet("allSplneni/{IdSkupiny}")] 
-        public async Task<List<StudentSplneni>> GetSplneni(int IdSkupiny)
-        {
-            return await Task.FromResult(_IStudenti.GetSplneni(IdSkupiny));
-        }*/
         //vytvoří studenta pod patřící skupinu 
         [HttpPost]
         public async Task CreateNewStudent([FromBody] Student student)
@@ -53,9 +47,9 @@ namespace vyukovy_pavouk.Controllers
         //vytvoří navázaní studenta ke skupině 
         [Route("connect")]
         [HttpPost]
-        public async Task CreateNewConnect([FromBody] SkupinaStudent skupinaStudent)
+        public async Task CreateNewConnect([FromBody] SkupinaStudent groupStudent)
         {
-            await _IStudenti.CreateNewConnect(skupinaStudent);
+            await _IStudenti.CreateNewConnect(groupStudent);
         }
         [Route("splneni")]
         [HttpPost]
@@ -63,21 +57,12 @@ namespace vyukovy_pavouk.Controllers
         {
             await _IStudenti.CreateSplneni(studentSplneni);
         }
-     
-        /*[HttpDelete]
-        [Route("deleteSplneni/{Id}")] 
-        //TO DO 
-        public IActionResult deleteSplneni(int Id)
-        {
-            _IStudenti.DeleteSplneni(Id);
-            return Ok();
-        }*/
         //vymaže studenta u určité skupiny 
         [HttpDelete]
-        [Route("deleteStudent/{IdStudenta}/{IdSkupiny}")]
-        public async Task deleteStudenta(int IdStudenta, int IdSkupiny)
+        [Route("deleteStudent/{IdStudent}/{IdGroup}")]
+        public async Task deleteStudenta(int IdStudent, int IdGroup)
         {
-            await _IStudenti.DeleteStudent(IdStudenta, IdSkupiny);
+            await _IStudenti.DeleteStudent(IdStudent, IdGroup);
         }
         [HttpPut]
         public async Task OpravSplneni(StudentSplneni studentSplneni)

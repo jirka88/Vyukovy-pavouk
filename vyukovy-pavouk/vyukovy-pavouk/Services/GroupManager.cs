@@ -28,9 +28,9 @@ namespace vyukovy_pavouk.Services
             }
         }
         //vytvoří Teams skupinu pod existující předmět v databázi 
-        public async Task AddGroup(Skupina skupina)
+        public async Task AddGroup(Skupina group)
         {        
-            _dbContext.Skupina.Add(skupina);   
+            _dbContext.Skupina.Add(group);   
             await _dbContext.SaveChangesAsync();                
         }
 
@@ -41,17 +41,17 @@ namespace vyukovy_pavouk.Services
         }
 
         //zeptá se zda-li náš Teams v MS Teamu je v databázi --> pokud není, učitel ho bude muset založit s názvem předmetu v Tab 
-        public async Task<Skupina> GetGroup(string IDTeamu)
+        public async Task<Skupina> GetGroup(string IDTeam)
         {           
-                Skupina skupina = await _dbContext.Skupina
-                    .Where(s => s.TmSkupina == IDTeamu)
+                Skupina group = await _dbContext.Skupina
+                    .Where(s => s.TmSkupina == IDTeam)
                     .Include(p => p.predmet)
                     .FirstOrDefaultAsync();
-            if(skupina == null)
+            if(group == null)
             {
-                skupina = new Skupina();
+                group = new Skupina();
             }
-            return skupina;           
+            return group;           
       
         }
    
@@ -72,20 +72,20 @@ namespace vyukovy_pavouk.Services
                                                    .ToListAsync();
             _dbContext.RemoveRange(SkupinaStudent);
             //vymaže samostaně prerekvizity krom úvodní - úvod má ID 0 
-            foreach (vyukovy_pavouk.Data.Kapitola kapitola in subject.Kapitoly)
+            foreach (vyukovy_pavouk.Data.Kapitola chapter in subject.Kapitoly)
             {
                
-                Prerekvizity prerekvizizy = await _dbContext.Prerekvizity.Where(x => x.PrerekvizityID == kapitola.Id).SingleOrDefaultAsync();
+                Prerekvizity prerekvizizy = await _dbContext.Prerekvizity.Where(x => x.PrerekvizityID == chapter.Id).SingleOrDefaultAsync();
                 if(prerekvizizy != null)
                 {
                     _dbContext.Remove(prerekvizizy);
                 }              
             }
             //vymaže úvodní prerekvizitu patřící pod určitou skupinou 
-            foreach (vyukovy_pavouk.Data.Kapitola kapitola in subject.Kapitoly)
+            foreach (vyukovy_pavouk.Data.Kapitola chapter in subject.Kapitoly)
             {
                 KapitolaPrerekvizita kapitolaPrerekvizita = await _dbContext.kapitolaPrerekvizita
-                    .Include(x => x.prerekvizita).Where(x => x.prerekvizita.PrerekvizityID == 0 && x.KapitolaID == kapitola.Id).SingleOrDefaultAsync();
+                    .Include(x => x.prerekvizita).Where(x => x.prerekvizita.PrerekvizityID == 0 && x.KapitolaID == chapter.Id).SingleOrDefaultAsync();
                 if(kapitolaPrerekvizita != null)
                 {
                     _dbContext.Remove(kapitolaPrerekvizita.prerekvizita);
@@ -101,12 +101,12 @@ namespace vyukovy_pavouk.Services
         public async Task ResetGroup(int Id)
         {
             //vymazání skupiny
-            Skupina skupina = await _dbContext.Skupina
+            Skupina group = await _dbContext.Skupina
                 .Where(x => x.Id == Id)
                 .Include(x => x.predmet).SingleOrDefaultAsync();
-            skupina.predmet.Privatni = true;
-            skupina.TmSkupina = "";
-            _dbContext.Entry(skupina).State = EntityState.Modified;
+            group.predmet.Privatni = true;
+            group.TmSkupina = "";
+            _dbContext.Entry(group).State = EntityState.Modified;
 
             //vymazání napojení
             List<SkupinaStudent> SkupinaStudent = await _dbContext.SkupinaStudent

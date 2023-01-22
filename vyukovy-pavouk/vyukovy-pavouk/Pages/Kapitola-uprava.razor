@@ -22,7 +22,7 @@
 	else
 	{
 		<h1 class="text-center py-2 @(dark ? "text-white" : "")">Úprava kapitoly</h1>
-		<EditForm EditContext="@EditContext" OnSubmit="@Uprav">
+		<EditForm EditContext="@EditContext" OnSubmit="@Edit">
 			<FluentValidationValidator />
 			<label class="fw-bold @(dark ? "text-white" : "")">*Nutno splnit</label>
 			<br />
@@ -30,9 +30,9 @@
 
 				<div class="d-flex gap-4 justify-content-center align-items-center flex-column">
 
-					@for (int i = 0; i < @kapitola.KapitolaPrerekvizita.Count(); i++)
+					@for (int i = 0; i < chapter.KapitolaPrerekvizita.Count(); i++)
 					{
-						Prerekvizity prerekvizita = kapitola.KapitolaPrerekvizita[i].prerekvizita;
+						Prerekvizity prerekvizita = chapter.KapitolaPrerekvizita[i].prerekvizita;
 						if (prerekvizita != null)
 						{
 							int index = i;
@@ -41,9 +41,9 @@
 							AddSelect(index, prerekvizita);
 
 							<div class="prerekvizity d-flex w-100 justify-content-center align-items-center flex-wrap @(dark ? "darkInput" : "")">
-								@if (kapitola.KapitolaPrerekvizita.Count() - 1 != index)
+								@if (chapter.KapitolaPrerekvizita.Count() - 1 != index)
 								{
-									<InputText type="text" class="flex-grow-1" @bind-Value="@VybraneKapitoly[index].Název" disabled="true">
+									<InputText type="text" class="flex-grow-1" @bind-Value="@selectedChapters[index].Název" disabled="true">
 									</InputText>
 									CreatePrerequisiteReadOnly();
 								}
@@ -52,9 +52,9 @@
 									<InputSelect class="flex-grow-1" @bind-Value="@prerekvizita.PrerekvizityID">
 										<!-- podmínka pro kontrolu jestli se nejedná o úvodní kapitolu -1 je při našem výběru 0 při načtení a celkový počet prerekvizit dané kapitoly je jedna-->
 										<option value="0" selected disabled hidden>Vyberte Prerekvizitu</option>
-										@if (!uvodniKapitola)
+										@if (!startChapter)
 										{
-											@foreach (var kapitola in kapitoly)
+											@foreach (var kapitola in chapters)
 											{
 												<option value="@kapitola.Id">@kapitola.Název</option>
 											}
@@ -66,9 +66,9 @@
 
 									</InputSelect>
 								}
-								@if (@kapitola.KapitolaPrerekvizita.Count > 1)
+								@if (chapter.KapitolaPrerekvizita.Count > 1)
 								{
-									<Fluent-Button class="cancel" appearance="accent" @onclick="() => SmazPrerekvizitu(index)">
+									<Fluent-Button class="cancel" appearance="accent" @onclick="() => DeletePrerequisite(index)">
 										<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18" x="0px" y="0px"
 									viewBox="0 0 460.775 460.775" style="enable-background:new 0 0 460 460;" xml:space="preserve">
 									<path d="M285.08,230.397L456.218,59.27c6.076-6.077,6.076-15.911,0-21.986L423.511,4.565c-2.913-2.911-6.866-4.55-10.992-4.55
@@ -79,11 +79,11 @@
 									c6.074-6.075,6.074-15.909,0-21.986L285.08,230.397z"/></svg></Fluent-Button>
 								}
 								<!-- zobrazení + tlačítka u aktualního vstupu && maximální počet 4 prerekvizity && pokud máme mín prerekvizit vstupů může být maximální počet prerekvizit-->
-								@if (@kapitola.KapitolaPrerekvizita.Count() - 1 == i && i < 3 && i < prerekvizity.Select(x => x.KapitolaID).Distinct().Count() - 2 && prerekvizita.PrerekvizityID != 0 && prerekvizita.PrerekvizityID != -1)
+								@if (chapter.KapitolaPrerekvizita.Count() - 1 == i && i < 3 && i < prerekvizity.Select(x => x.KapitolaID).Distinct().Count() - 2 && prerekvizita.PrerekvizityID != 0 && prerekvizita.PrerekvizityID != -1)
 								{
-									<Fluent-button appearance="accent" class="create" @onclick="@VytvorPrerekvizitu"><svg width="24" height="24" stroke="white" stroke-width="1" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
+									<Fluent-button appearance="accent" class="create" @onclick="@CreatePrerequisite"><svg width="24" height="24" stroke="white" stroke-width="1" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
 								}
-								<ValidationMessage For="@(()=>@kapitola.KapitolaPrerekvizita[index].prerekvizita.PrerekvizityID)" />
+								<ValidationMessage For="@(()=>chapter.KapitolaPrerekvizita[index].prerekvizita.PrerekvizityID)" />
 
 							</div>
 						}
@@ -93,13 +93,13 @@
 
 				<div class="d-flex flex-column @(dark ? "darkInput" : "")">
 					<label for="NazevKapitoly" class="fw-bold">*Název Kapitoly</label>
-					<InputText type="text" id="NazevKapitoly" @bind-Value="@kapitola.Název" />
-					<ValidationMessage For="@(()=>@kapitola.Název)" />
+					<InputText type="text" id="NazevKapitoly" @bind-Value="@chapter.Název" />
+					<ValidationMessage For="@(()=>chapter.Název)" />
 				</div>
 				<div class="d-flex flex-column @(dark ? "darkInput" : "")">
 					<label for="perex" class="fw-bold">Perex</label>
-					<InputText type="text" id="perex" @bind-Value="@kapitola.Perex" />
-					<ValidationMessage For="@(()=>@kapitola.Perex)" />
+					<InputText type="text" id="perex" @bind-Value="@chapter.Perex" />
+					<ValidationMessage For="@(()=>chapter.Perex)" />
 				</div>
 				<div class="d-flex flex-column @(dark ? "darkTheme" : "")">
 					<label for="obsah" class="fw-bold bg-transparent">*Obsah</label>
@@ -145,18 +145,18 @@
 					</BlazoredTextEditor>
 					
 
-					<ValidationMessage For="@(()=>@kapitola.Kontent)" /> 
+					<ValidationMessage For="@(()=>chapter.Kontent)" /> 
 				</div>
 				<!--Odkazy na videa-->
 				<label class="First-label">Odkazy na videa</label>
 
 				<div class="d-flex gap-2 justify-content-center align-items-center flex-column">
-					@for (int i = 0; i < @kapitola.Videa.Count; i++)
+					@for (int i = 0; i < chapter.Videa.Count; i++)
 					{
 						int index = i;
 						int PocetOdkazu = i + 1;
 						globalIndex = i;
-						var video = kapitola.Videa[i];
+						var video = chapter.Videa[i];
 
 						<label class="w-100">Popis odkazu @PocetOdkazu</label>
 						<div class="nazvy-odkazy d-flex w-100 justify-content-center align-items-center flex-wrap @(dark ? "darkInput" : "")">
@@ -166,7 +166,7 @@
 						<label class="w-100">*Odkaz</label>
 						<div class="odkazy d-flex w-100 justify-content-center align-items-center flex-wrap @(dark ? "darkInput" : "")">
 							<InputText type="text" class="flex-grow-1" @bind-Value="video.Odkaz" placeholder="https://..." />
-							<fluent-button class="cancel" appearance="accent" @onclick="@(() => kapitola.Videa.RemoveAt(index))"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="18" height="18"  x="0px" y="0px"
+							<fluent-button class="cancel" appearance="accent" @onclick="@(() => chapter.Videa.RemoveAt(index))"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="18" height="18"  x="0px" y="0px"
 									viewBox="0 0 460.775 460.775" style="enable-background:new 0 0 460 460;" xml:space="preserve">
 									<path d="M285.08,230.397L456.218,59.27c6.076-6.077,6.076-15.911,0-21.986L423.511,4.565c-2.913-2.911-6.866-4.55-10.992-4.55
 									c-4.127,0-8.08,1.639-10.993,4.55l-171.138,171.14L59.25,4.565c-2.913-2.911-6.866-4.55-10.993-4.55
@@ -177,26 +177,26 @@
 							<ValidationMessage For="@(() => @video.Odkaz)" />
 						</div>
 					}
-					@if (globalIndex < maximalniPocetOdkazu)
+					@if (globalIndex < maxCountLink)
 					{
-						<fluent-button class="create mt-2" appearance="accent" @onclick="@VytvorOdkaz"><svg width="24" height="24" stroke="white" stroke-width="1" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
-						ukazToast = false;
+						<fluent-button class="create mt-2" appearance="accent" @onclick="@CreateLink"><svg width="24" height="24" stroke="white" stroke-width="1" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
+						showToast = false;
 					}
-					else if (globalIndex == 11 && !ukazToast)
+					else if (globalIndex == 11 && !showToast)
 					{
-						upozorneni.ShowInfo("Kapitola dosáhla maximalního počtu vložených odkazů.", "Info");
-						ukazToast = true;
+						notice.ShowInfo("Kapitola dosáhla maximalního počtu vložených odkazů.", "Info");
+						showToast = true;
 					}
 				</div>
 				<label class="First-label">*Testy</label>
 				<div class="odkazy d-flex justify-content-center align-items-center w-100 flex-wrap @(dark ? "darkInput" : "")">
-					<InputText type="text" class="flex-grow-1 w-100" @bind-Value="@kapitola.Zadani[0].Odkaz">
+					<InputText type="text" class="flex-grow-1 w-100" @bind-Value="@chapter.Zadani[0].Odkaz">
 						<div class="d-flex gap-2">
 							<!--<fluent-button class="cancel" appearance="accent">X</fluent-button>-->
 							<fluent-button appearance="accent" class="create"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></fluent-button>
 						</div>
 					</InputText>
-					<ValidationMessage For="@(() => @kapitola.Zadani[0].Odkaz)" />
+					<ValidationMessage For="@(() => chapter.Zadani[0].Odkaz)" />
 				</div>
 
 				<!--<div class="d-flex gap-2 justify-content-center align-items-center counter flex-column">
@@ -208,7 +208,7 @@
 					<p class="text-center mb-0">Počet testů, který je potřeba splnit.</p>
 				</div> -->
 				<div class="d-flex justify-content-center align-center w-100">
-					<fluent-button class="main-btn" type="submit" Disabled="@vypnutiTlacitka" appearance="accent">Upravit</fluent-button>
+					<fluent-button class="main-btn" type="submit" Disabled="@turnOffBtn" appearance="accent">Upravit</fluent-button>
 				</div>
 			</div>
 		</EditForm>
@@ -232,39 +232,38 @@
 
 </style>
 @code {
-	//int PocetSplneni = 1;
-	int globalIndex = 0;
-	int globalIndexPrerekvizita = 0;
-	int globalIndexControl = 0;
-	int maximalniPocetOdkazu = 11;
-	bool uvodniKapitola = false;
-	bool nacti = false;
-	bool ukazToast = false;
-
 	[Parameter]
 	public int IdKapitola { get; set; }
 
-	vyukovy_pavouk.Data.Kapitola kapitola = new vyukovy_pavouk.Data.Kapitola();
+	int globalIndex = 0;
+	int globalIndexPrerekvizita = 0;
+	int globalIndexControl = 0;
+	int maxCountLink = 11;
+	bool startChapter = false;
+	bool load = false;
+	bool showToast = false;
+	bool turnOffBtn = false;
+	bool IsLoaded = false;
+	bool dark = false;
+
+	vyukovy_pavouk.Data.Kapitola chapter = new vyukovy_pavouk.Data.Kapitola();
 
 	protected override async Task OnParametersSetAsync()
 	{
-		kapitola = await Http.GetFromJsonAsync<vyukovy_pavouk.Data.Kapitola>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdKapitola);
-		if (kapitola.KapitolaPrerekvizita[0].prerekvizita.PrerekvizityID == 0)
+		chapter = await Http.GetFromJsonAsync<vyukovy_pavouk.Data.Kapitola>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdKapitola);
+		if (chapter.KapitolaPrerekvizita[0].prerekvizita.PrerekvizityID == 0)
 		{
-			uvodniKapitola = true;
+			startChapter = true;
 		}
 	}
-	public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
 
-	Skupina skupina = new Skupina();
+	public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
+	Skupina group = new Skupina();
 	List<KapitolaPrerekvizita> prerekvizity = new List<KapitolaPrerekvizita>();
 	EditContext EditContext;
-	List<vyukovy_pavouk.Data.Kapitola> kapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
-	List<vyukovy_pavouk.Data.Kapitola> VybraneKapitoly = new List<vyukovy_pavouk.Data.Kapitola>();
-	@inject IToastService upozorneni;
-	bool vypnutiTlacitka = false;
-	bool IsLoaded = false;
-	private bool dark = false;
+	List<vyukovy_pavouk.Data.Kapitola> chapters = new List<vyukovy_pavouk.Data.Kapitola>();
+	List<vyukovy_pavouk.Data.Kapitola> selectedChapters = new List<vyukovy_pavouk.Data.Kapitola>();
+	@inject IToastService notice;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -281,24 +280,24 @@
 				if(GroupToken.teamsContext.Theme == "dark" || GroupToken.teamsContext.Theme == "contrast") {
 					dark = true;
 				}
-				skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				kapitoly = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (skupina.predmet.Id));
+				group = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
+				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (group.predmet.Id));
 				//vymazání upravované kapitoly --> jinak by se dala navázat kapitola sama na sebe
-				kapitoly.RemoveAt(kapitoly.FindIndex(x => x.Id == kapitola.Id));
-				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.predmet.Id));		
-				EditContext = new EditContext(kapitola);
+				chapters.RemoveAt(chapters.FindIndex(x => x.Id == chapter.Id));
+				prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (group.predmet.Id));		
+				EditContext = new EditContext(chapter);
 				IsLoaded = true;
-				nacti = true;
+				load = true;
 			}
 			StateHasChanged();
 		}
 
-		while (nacti)
+		while (load)
 		{
 			try
 			{
-				await QuillHtml.LoadHTMLContent(kapitola.Kontent);
-				nacti = false;
+				await QuillHtml.LoadHTMLContent(chapter.Kontent);
+				load = false;
 				StateHasChanged();
 			}
 			catch
@@ -307,80 +306,80 @@
 			}
 		}
 	}
-	private async Task Uprav()
+	private async Task Edit()
 	{
-		vypnutiTlacitka = true;
-		kapitola.Kontent = await this.QuillHtml.GetText();
+		turnOffBtn = true;
+		chapter.Kontent = await this.QuillHtml.GetText();
 		if (EditContext.Validate())
 		{
-			kapitola.Kontent = await this.QuillHtml.GetHTML();
-			kapitola.PredmetID = skupina.predmet.Id;
+			chapter.Kontent = await this.QuillHtml.GetHTML();
+			chapter.PredmetID = group.predmet.Id;
 			//kontrola proti vytvoření smyčky --> nesmí vzniknout to, aby jedna a druhou kapitola měli na sebe navzájem propojené prerekvizity --> nelze to pak splnit
-			if (!uvodniKapitola)
+			if (!startChapter)
 			{
-				int IDChapter = kapitola.Id; 
+				int IDChapter = chapter.Id; 
 				foreach (KapitolaPrerekvizita prerekvizita in prerekvizity)
 				{	
 					//zjistí zdali IDPrerekvizity upravované kapitoly se rovná nějaké načtené prerekvizitě ID kapitole && ID upravované kapitoly se rovná prerekvizitě ID 
-					KapitolaPrerekvizita searchLoopChapter = kapitola.KapitolaPrerekvizita.Where(x => x.prerekvizita.PrerekvizityID == prerekvizita.kapitola.Id && IDChapter == prerekvizita.prerekvizita.PrerekvizityID).SingleOrDefault();
+					KapitolaPrerekvizita searchLoopChapter = chapter.KapitolaPrerekvizita.Where(x => x.prerekvizita.PrerekvizityID == prerekvizita.kapitola.Id && IDChapter == prerekvizita.prerekvizita.PrerekvizityID).SingleOrDefault();
 					if (searchLoopChapter != null)
 					{
-						upozorneni.ShowError("Nelze navázat s prerekvizitou, která vyžaduje splnění této kapitoly.", "Neúspěch!");
-						vypnutiTlacitka = false;
+						notice.ShowError("Nelze navázat s prerekvizitou, která vyžaduje splnění této kapitoly.", "Neúspěch!");
+						turnOffBtn = false;
 						return;
 					}
 				}
 			}
 			//pokud je úvod --> nastavám na 0 protože to je ID pro úvodní kapitolu
-			if (kapitola.KapitolaPrerekvizita[0].prerekvizita.PrerekvizityID == -1)
+			if (chapter.KapitolaPrerekvizita[0].prerekvizita.PrerekvizityID == -1)
 			{
-				kapitola.KapitolaPrerekvizita[0].prerekvizita.PrerekvizityID = 0;
+				chapter.KapitolaPrerekvizita[0].prerekvizita.PrerekvizityID = 0;
 			}
 			//kontrola zda-li se dané prerekvizity už nenachzejí v DB
 			foreach (var prerekvizita in prerekvizity)
 			{
-				if (globalIndexControl == kapitola.KapitolaPrerekvizita.Count)
+				if (globalIndexControl == chapter.KapitolaPrerekvizita.Count)
 				{
 					break;
 				}
-				for (var i = globalIndexControl; i < kapitola.KapitolaPrerekvizita.Count; i++)
+				for (var i = globalIndexControl; i < chapter.KapitolaPrerekvizita.Count; i++)
 				{
-					if (prerekvizita.prerekvizita.PrerekvizityID == kapitola.KapitolaPrerekvizita[i].prerekvizita.PrerekvizityID)
+					if (prerekvizita.prerekvizita.PrerekvizityID == chapter.KapitolaPrerekvizita[i].prerekvizita.PrerekvizityID)
 					{
 						//vymaže stejnou hodnotu u nově vytvořené instance kapitoly
-						int id = kapitola.KapitolaPrerekvizita[i].Id;
-						kapitola.KapitolaPrerekvizita.RemoveAt(i);
+						int id = chapter.KapitolaPrerekvizita[i].Id;
+						chapter.KapitolaPrerekvizita.RemoveAt(i);
 						globalIndexControl++;
 						//přidá existujicí vztah mezi KapitolaPrerekvizita - Prerekvizita --> díky tomu nebudou vznikat duplicitní hodnoty
 						KapitolaPrerekvizita existujiciPrerekvizita = new KapitolaPrerekvizita();
 						existujiciPrerekvizita.PrerekvizitaID = prerekvizita.PrerekvizitaID;
 						existujiciPrerekvizita.Id = id;
-						kapitola.KapitolaPrerekvizita.Insert(0, existujiciPrerekvizita);
+						chapter.KapitolaPrerekvizita.Insert(0, existujiciPrerekvizita);
 					}
 				}
 			}
 
 			
-			await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", kapitola);
+			await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", chapter);
 			MyNavigationManager.NavigateTo("/");
-			upozorneni.ShowSuccess("Kapitola byla úspěšně upravena.", "Úspěch!");
+			notice.ShowSuccess("Kapitola byla úspěšně upravena.", "Úspěch!");
 		}
 		else {
-			vypnutiTlacitka = false;
+			turnOffBtn = false;
 		}
 
 	}
-	private void VytvorOdkaz()
+	private void CreateLink()
 	{
-		if (kapitola.Videa.Count() == 0 || kapitola.Videa[globalIndex].Odkaz != null)
+		if (chapter.Videa.Count() == 0 || chapter.Videa[globalIndex].Odkaz != null)
 		{
-			kapitola.Videa.Add(new Videa());
+			chapter.Videa.Add(new Videa());
 		}
 	}
-	private void VytvorPrerekvizitu()
+	private void CreatePrerequisite()
 	{
 		bool vytvor = true;
-		foreach (KapitolaPrerekvizita item in kapitola.KapitolaPrerekvizita)
+		foreach (KapitolaPrerekvizita item in chapter.KapitolaPrerekvizita)
 		{
 			if (item.prerekvizita.PrerekvizityID == 0)
 			{
@@ -393,12 +392,12 @@
 			//najde třídu prerekvizity, kterou jsme si vybrali
 			vyukovy_pavouk.Data.Kapitola hledanaPrerekvizita = new vyukovy_pavouk.Data.Kapitola();
 
-			hledanaPrerekvizita = kapitoly.Find(x => x.Id == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.PrerekvizityID);
+			hledanaPrerekvizita = chapters.Find(x => x.Id == chapter.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.PrerekvizityID);
 			//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
-			kapitoly.Remove(hledanaPrerekvizita);
+			chapters.Remove(hledanaPrerekvizita);
 
 			//VybraneKapitoly.Add(hledanaPrerekvizita);
-			kapitola.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() { prerekvizita = new Prerekvizity() });
+			chapter.KapitolaPrerekvizita.Add(new KapitolaPrerekvizita() { prerekvizita = new Prerekvizity() });
 		}
 
 
@@ -408,55 +407,55 @@
 		//najde třídu prerekvizity, kterou jsme si vybrali
 		vyukovy_pavouk.Data.Kapitola hledanaPrerekvizita = new vyukovy_pavouk.Data.Kapitola();
 
-		hledanaPrerekvizita = kapitoly.Find(x => x.Id == kapitola.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.PrerekvizityID);
+		hledanaPrerekvizita = chapters.Find(x => x.Id == chapter.KapitolaPrerekvizita[globalIndexPrerekvizita].prerekvizita.PrerekvizityID);
 		//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
-		kapitoly.Remove(hledanaPrerekvizita);
+		chapters.Remove(hledanaPrerekvizita);
 
 	}
-	private void SmazPrerekvizitu(int index)
+	private void DeletePrerequisite(int index)
 	{
-		kapitola.KapitolaPrerekvizita.RemoveAt(index);
+		chapter.KapitolaPrerekvizita.RemoveAt(index);
 		//pokud se jedná o defaultní výběr pouze vymaže select, ale žádnou hodnotu z listu neodebere
-		if (kapitola.KapitolaPrerekvizita.Count() > index)
+		if (chapter.KapitolaPrerekvizita.Count() > index)
 		{
 			//pokud je poslední musíme ji přidat zde protože už nebude vyvolaná eventem VytvorPrerekvizitu() ==> pokud by to tu nebylo vznikali by duplicitni hodnoty u výběru
-			if (index == kapitola.KapitolaPrerekvizita.Count())
+			if (index == chapter.KapitolaPrerekvizita.Count())
 			{
 				//protože už jsme jí předtím smazali musíme jí zpátky přidat, pokud bychom to neudělali hodnota zmizí při smazání posledního selectu
-				kapitoly.Add(VybraneKapitoly[index - 1]);
+				chapters.Add(selectedChapters[index - 1]);
 			}
 			else
 			{
 				//přidá zpázky kapitolu a odebere z listu, který pak zobrazujeme v inputech co už máme zvolené
-				kapitoly.Add(VybraneKapitoly[index]);
+				chapters.Add(selectedChapters[index]);
 			}
 			//seřadí kapitoly podle ID
-			kapitoly = kapitoly.OrderBy(x => x.Id).ToList();
+			chapters = chapters.OrderBy(x => x.Id).ToList();
 			//vymaže vybranou kapitolu z určitého selectu
-			VybraneKapitoly.RemoveAt(index);
+			selectedChapters.RemoveAt(index);
 		}
 		else
 		{
-			kapitoly.Add(VybraneKapitoly[index - 1]);
+			chapters.Add(selectedChapters[index - 1]);
 		}
-		kapitoly = kapitoly.OrderBy(x => x.Id).ToList();
+		chapters = chapters.OrderBy(x => x.Id).ToList();
 
 	}
 	public void AddSelect(int index, Prerekvizity prerekvizita)
 	{
 		//vyhledá kapitolu po výběru prerekvizity
 		vyukovy_pavouk.Data.Kapitola HledanaKapitola = new vyukovy_pavouk.Data.Kapitola();
-		HledanaKapitola = kapitoly.Find(x => x.Id == prerekvizita.PrerekvizityID);
+		HledanaKapitola = chapters.Find(x => x.Id == prerekvizita.PrerekvizityID);
 		//test jestli se nejedná o načtení
 		if (HledanaKapitola != null)
 		{
 			//funguje jako přepis jednotlivého výběru př: vyberu kapitola1 a pak se rozhodnu pro jinou kapitolu vymažu kapitolu1 z listu výběr
-			if (VybraneKapitoly.Count() > index)
+			if (selectedChapters.Count() > index)
 			{
-				VybraneKapitoly.RemoveAt(index);
+				selectedChapters.RemoveAt(index);
 			}
 			//vložím aktuální výběr na svůj index
-			VybraneKapitoly.Insert(index, HledanaKapitola);
+			selectedChapters.Insert(index, HledanaKapitola);
 		}
 
 	}

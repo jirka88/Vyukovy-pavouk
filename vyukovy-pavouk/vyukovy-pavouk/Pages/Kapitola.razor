@@ -20,10 +20,10 @@ else {
 	<div class="container">
 		<div class="kapitola">
 			<div class="d-flex pt-5 pb-3 align-items-center main-title">
-				<h1 class="text-left font-weight-bold flex-grow-1 @(dark ? "text-white" : "")">@kapitola.Název</h1>
+				<h1 class="text-left font-weight-bold flex-grow-1 @(dark ? "text-white" : "")">@chapter.Název</h1>
 				@if (UserToken.Profile.JobTitle.ToLower() == "správce sítě" || UserToken.Profile.JobTitle.ToLower() == "učitel")
 				{
-					@if (UserToken.Profile.Mail == skupina.predmet.Vytvoril || UserToken.Profile.JobTitle.ToLower() == "správce sítě")
+					@if (UserToken.Profile.Mail == group.predmet.Vytvoril || UserToken.Profile.JobTitle.ToLower() == "správce sítě")
 					{
 						<div class="admin-btn d-flex gap-3">
 							<fluent-button class="btn-set" appearance="accent" @onclick=edit><svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.94 5 19 10.06 9.062 20a2.25 2.25 0 0 1-.999.58l-5.116 1.395a.75.75 0 0 1-.92-.921l1.395-5.116a2.25 2.25 0 0 1 .58-.999L13.938 5Zm7.09-2.03a3.578 3.578 0 0 1 0 5.06l-.97.97L15 3.94l.97-.97a3.578 3.578 0 0 1 5.06 0Z" fill="#ffffff" /></svg></fluent-button>
@@ -32,10 +32,10 @@ else {
 							<fluent-dialog Hidden="@ModelHidden">
 								<div class="d-flex justify-content-center align-items-center h-100 w-100 flex-column">
 									<svg id="Layer_1" style="width: 20%" class="pb-5" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 105.16 122.88"><defs><style>.cls-1{fill-rule:evenodd;}</style></defs><title>delete</title><path class="cls-1" d="M11.17,37.16H94.65a8.4,8.4,0,0,1,2,.16,5.93,5.93,0,0,1,2.88,1.56,5.43,5.43,0,0,1,1.64,3.34,7.65,7.65,0,0,1-.06,1.44L94,117.31v0l0,.13,0,.28v0a7.06,7.06,0,0,1-.2.9v0l0,.06v0a5.89,5.89,0,0,1-5.47,4.07H17.32a6.17,6.17,0,0,1-1.25-.19,6.17,6.17,0,0,1-1.16-.48h0a6.18,6.18,0,0,1-3.08-4.88l-7-73.49a7.69,7.69,0,0,1-.06-1.66,5.37,5.37,0,0,1,1.63-3.29,6,6,0,0,1,3-1.58,8.94,8.94,0,0,1,1.79-.13ZM5.65,8.8H37.12V6h0a2.44,2.44,0,0,1,0-.27,6,6,0,0,1,1.76-4h0A6,6,0,0,1,43.09,0H62.46l.3,0a6,6,0,0,1,5.7,6V6h0V8.8h32l.39,0a4.7,4.7,0,0,1,4.31,4.43c0,.18,0,.32,0,.5v9.86a2.59,2.59,0,0,1-2.59,2.59H2.59A2.59,2.59,0,0,1,0,23.62V13.53H0a1.56,1.56,0,0,1,0-.31v0A4.72,4.72,0,0,1,3.88,8.88,10.4,10.4,0,0,1,5.65,8.8Zm42.1,52.7a4.77,4.77,0,0,1,9.49,0v37a4.77,4.77,0,0,1-9.49,0v-37Zm23.73-.2a4.58,4.58,0,0,1,5-4.06,4.47,4.47,0,0,1,4.51,4.46l-2,37a4.57,4.57,0,0,1-5,4.06,4.47,4.47,0,0,1-4.51-4.46l2-37ZM25,61.7a4.46,4.46,0,0,1,4.5-4.46,4.58,4.58,0,0,1,5,4.06l2,37a4.47,4.47,0,0,1-4.51,4.46,4.57,4.57,0,0,1-5-4.06l-2-37Z"/></svg>
-									<h5 class="text-center pb-3">Opravdu si přejete smazat kapitolu @kapitola.Název ?</h5>
+									<h5 class="text-center pb-3">Opravdu si přejete smazat kapitolu @chapter.Název ?</h5>
 									<div>
 										<fluent-button class="dialog-btn" @onclick="CloseDialog">Zavřít</fluent-button>
-										<fluent-button appearance="accent" class="dialog-btn" Disabled="@vypnutiTlacitka" @onclick="DeleteKapitola">Smazat</fluent-button>
+										<fluent-button appearance="accent" class="dialog-btn" Disabled="@turnOffBtn" @onclick="DeleteKapitola">Smazat</fluent-button>
 									</div>
 								</div>
 							</fluent-dialog>
@@ -51,7 +51,7 @@ else {
 	c-35.413,0-64.223-28.811-64.223-64.224c0-13.324,4.081-25.711,11.054-35.983L124.511,141.696z"/>
 									</svg>
 
-									<h5 class="text-center">Kapitola @kapitola.Název nelze smazat!</h5>
+									<h5 class="text-center">Kapitola @chapter.Název nelze smazat!</h5>
 									<p class="text-center">Kapitola je již použita jako prerekvizita pro jiné kapitoly!<br> Nejdřív vymažte navázané kapitoly!</p>
 									<div>
 										<fluent-button appearance="accent" class="dialog-btn" @onclick="CloseDialog2">Zavřít</fluent-button>
@@ -62,21 +62,21 @@ else {
 					}
 				}
 			</div>
-			<h5 class="pb-3 @(dark ? "text-white" : "")">@kapitola.Perex</h5>
-			<p class="pb-3 obsah @(dark ? "text-white" : "")">@((MarkupString)kapitola.Kontent)</p>
-			@if (@kapitola.Videa.Count() > 0)
+			<h5 class="pb-3 @(dark ? "text-white" : "")">@chapter.Perex</h5>
+			<p class="pb-3 obsah @(dark ? "text-white" : "")">@((MarkupString)chapter.Kontent)</p>
+			@if (chapter.Videa.Count() > 0)
 				   {
 			<h3 class="pb-3 @(dark ? "text-white" : "")">Videa:</h3>		
 				<div class="row">	
-					@if (rozstridOdkazy > 0)
+					@if (sortLink > 0)
 				   {
-					   resetOdkazy();
+					   resetLinks();
 				   }				
-					   @foreach (Videa video in @kapitola.Videa)				
+					   @foreach (Videa video in chapter.Videa)				
 					{
-						rozstridOdkazy++;
+						sortLink++;
 						if(video.Nazev == null) {
-							switch(rozstridOdkazy) {
+							switch(sortLink) {
 								case 1:
 								<div class="col col-md-4"><a href="@video.Odkaz" target="_blank">odkaz</a></div>
 								break;								
@@ -85,12 +85,12 @@ else {
 								break;
 								case 3:
 									<div class="col col-md-4 text-end"><a href="@video.Odkaz" target="_blank">odkaz</a></div>
-									rozstridOdkazy = 0;
+									sortLink = 0;
 									break;
 							}							
 						}
 						else {						
-							switch(rozstridOdkazy) {
+							switch(sortLink) {
 								case 1:
 								<div class="col col-md-4"><a href="@video.Odkaz" target="_blank">@video.Nazev</a></div>
 								break;								
@@ -99,7 +99,7 @@ else {
 								break;
 								case 3:
 									<div class="col col-md-4 text-end"><a href="@video.Odkaz" target="_blank">@video.Nazev</a></div>
-									rozstridOdkazy = 0;
+									sortLink = 0;
 									break;
 							}
 						}
@@ -109,7 +109,7 @@ else {
 			<hr class="pb-3" />
 				   }
 			<div class="d-flex justify-content-center align-items-center flex-column w-100">
-				<a href="@kapitola.Zadani[0].Odkaz" target="_blank">
+				<a href="@chapter.Zadani[0].Odkaz" target="_blank">
 			<fluent-button  class="main-btn" Disabled="@status" appearance="accent">Vzít cvičení</fluent-button>
 			</a>
 			<div class="popis text-center pb-3">
@@ -149,18 +149,18 @@ else {
 	[Parameter]
 	public bool status { get; set; }
 
-	private Skupina skupina = new Skupina();
-	private vyukovy_pavouk.Data.Kapitola kapitola { get; set; }
+	private Skupina group = new Skupina();
+	private vyukovy_pavouk.Data.Kapitola chapter { get; set; }
 	private List<KapitolaPrerekvizita> prerekvizity = new List<KapitolaPrerekvizita>();
 	private List<StudentSplneni> splneni = new List<StudentSplneni>();
 	private bool IsLoaded = false;
 	private bool ModelHidden { get; set; } = true;
 	private bool ModelHiddenError { get; set; } = true;
-	private bool vypnutiTlacitka = false;
+	private bool turnOffBtn = false;
 	private bool dark = false;
-	private int rozstridOdkazy = 0;
+	private int sortLink = 0;
 
-	@inject IToastService upozorneni;
+	@inject IToastService notice;
 	protected override async Task OnParametersSetAsync() {
 		await CallApiKapitola();
 	}
@@ -180,17 +180,17 @@ else {
 					dark = true;
 				}
 				//pokud by se náhodou nevyvolala dřív OnParametersSetAsync vyvolám ho zde 
-				if(kapitola == null) {
+				if(chapter == null) {
 					await CallApiKapitola();
 				}
 				//kontrola zdali došlo k smazání skupiny/kapitoly či resetu skupiny vrátí studenta na úvodní stránku
-				if (kapitola.Id != 0)
+				if (chapter.Id != 0)
 				{
 					//slouží pouze pro učitele --> získavají se zde prerekvizity, které se pak používají při kontrole u mazání kapitoly  
 					if (UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě")
 					{
-						skupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-						prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (skupina.predmet.Id));
+						group = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
+						prerekvizity = await Http.GetFromJsonAsync<List<KapitolaPrerekvizita>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (group.predmet.Id));
 					}	
 					IsLoaded = true;
 				}
@@ -203,7 +203,7 @@ else {
 		}
 	}
 	private async Task CallApiKapitola() {
-		kapitola = await Http.GetFromJsonAsync<vyukovy_pavouk.Data.Kapitola>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdKapitola);
+		chapter = await Http.GetFromJsonAsync<vyukovy_pavouk.Data.Kapitola>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdKapitola);
 	}
 	private void CloseDialog() => ModelHidden = true;
 	private void CloseDialog2() => ModelHiddenError = true;
@@ -213,7 +213,7 @@ else {
 		//kontrola zdali kapitola lze smazat --> pokud je samotná kapitola potřeba pro odemčení jiné --> nelze ji smazat 
 		foreach (KapitolaPrerekvizita Kprerekvizita in prerekvizity)
 		{
-			if(Kprerekvizita.prerekvizita.PrerekvizityID == kapitola.Id) {
+			if(Kprerekvizita.prerekvizita.PrerekvizityID == chapter.Id) {
 				NelzeSmazat = true;
 				ModelHiddenError = false;
 				break;					
@@ -225,18 +225,18 @@ else {
 	}
 
 	private void edit() {
-		MyNavigationManager.NavigateTo($"edit/{kapitola.Id}");
+		MyNavigationManager.NavigateTo($"edit/{chapter.Id}");
 	}
 	private async Task DeleteKapitola() {
-		vypnutiTlacitka = true;
+		turnOffBtn = true;
 		//smazání samotné kapitoly 
-		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/kapitola/delete/{kapitola.Id}");	
+		await Http.DeleteAsync($"{MyNavigationManager.BaseUri}api/kapitola/delete/{chapter.Id}");	
 
 		MyNavigationManager.NavigateTo("/");
-		upozorneni.ShowSuccess("Kapitola byla úspěšně vymazaná.", "Smazáno!");
+		notice.ShowSuccess("Kapitola byla úspěšně vymazaná.", "Smazáno!");
 
 	}
-	private void resetOdkazy() {
-		rozstridOdkazy = 0;
+	private void resetLinks() {
+		sortLink = 0;
 	}
 }

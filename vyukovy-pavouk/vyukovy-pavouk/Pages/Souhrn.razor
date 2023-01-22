@@ -114,14 +114,16 @@ else
 	}
 </style>
 @code {
-	private bool isLoaded = false;
-	private bool modelHidden = true;
-	private bool turnBtnDelete = false;
-	private List<SkupinaStudent> students { get; set; }
-	private Skupina group = new Skupina();
-	private int maxCountChapter = 0;
-	private Student selectedStudent = new Student();
-	private bool dark = false;
+	bool isLoaded = false;
+	bool modelHidden = true;
+	bool turnBtnDelete = false;
+	int maxCountChapter = 0;
+	bool dark = false;
+
+	Student selectedStudent = new Student();
+	List<SkupinaStudent> students { get; set; }
+	Skupina group = new Skupina();
+
 	@inject IToastService notice;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{

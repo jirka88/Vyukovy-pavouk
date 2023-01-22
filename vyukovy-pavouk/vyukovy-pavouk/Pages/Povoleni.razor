@@ -106,14 +106,15 @@ else {
 @code {
 	[Parameter]
 	public int id { get; set; }
-	private bool NotEmpty = false;
-	private bool clicked = false;
-	private bool IsLoaded = false;
-	private bool dark = false;
-	private Skupina group = new Skupina();
-	private Student student = new Student();
-	private List<vyukovy_pavouk.Data.Kapitola> chapters;
-	private List<KapitolaPrerekvizita> Prerekvizity = new List<KapitolaPrerekvizita>();
+
+	bool NotEmpty = false;
+	bool clicked = false;
+	bool IsLoaded = false;
+	bool dark = false;
+	Skupina group = new Skupina();
+	Student student = new Student();
+	List<vyukovy_pavouk.Data.Kapitola> chapters;
+	List<KapitolaPrerekvizita> Prerekvizity = new List<KapitolaPrerekvizita>();
 	@inject IToastService notice;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
