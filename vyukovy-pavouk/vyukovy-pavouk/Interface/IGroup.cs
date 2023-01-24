@@ -5,14 +5,14 @@ namespace vyukovy_pavouk.Interface
     public interface IGroup
 {
         //vrátí skupinu s předmětem
-        public Task<Skupina> GetGroup (string IDTeam);
+        public Task<Data.Group> GetGroup (string IDTeam);
         //uloží skupinu s předmětem do databáze 
-        public Task AddGroup(Skupina group);
+        public Task AddGroup(Data.Group group);
         //vytvoří uvodní prerekvizitu --> u splnění o hodnotě ID --> 0
-        public Task CreateIntroductionPrerequisite(Splneni splneni);
+        public Task CreateIntroductionPrerequisite(Completion splneni);
         //vymaže danou skupinu se strukturou 
         public Task DeleteGroup(int Id);
         public Task ResetGroup(int Id);
-        public Task ConnectGroup(Skupina group);
+        public Task ConnectGroup(Data.Group group);
     }
 }

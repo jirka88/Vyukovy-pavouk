@@ -77,15 +77,15 @@
 	string ErrorMessage { get; set; }
 	bool IsLoaded = false;
 	bool NeedConsent { get; set; }
-	Skupina group { get; set; } = new();
+        Data.Group group { get; set; } = new();
 	//pro načtení studenta
 	Student student { get; set; }
 	//pro vytvoření nového studenta s připojení se skupinou
-	Student studentInfo { get; set; } = new Student { SkupinaStudent = new List<SkupinaStudent>() };
+	Student studentInfo { get; set; } = new Student { GroupStudents = new List<GroupStudent>() };
 	//pouze pro připojení studenta se skupinou
-	SkupinaStudent skupinaStudentConnect { get; set; } = new SkupinaStudent();
+	GroupStudent skupinaStudentConnect { get; set; } = new GroupStudent();
 	readonly string _scope = "User.Read";
-	public List<Predmet> subjects;
+	public List<Subject> subjects;
 	bool isInTeams;
 	bool dark = false;
 	bool isInTeamsShow = true;
@@ -120,12 +120,12 @@
 						}
 						dark = true;
 					}
-					//získání skupiny z databáze
-					group = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
+                        //získání skupiny z databáze
+                        group = await Http.GetFromJsonAsync<Data.Group>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 					//pokud skupina neexistuje v databázi načteme úvodní stránku pro její vytvoření (vytvoří se jak Skupina tak i předmět, který navazuje na skupinu)
-					if (group.TmSkupina == null)
+					if (group.TmGroup == null)
 					{
-						subjects = await Http.GetFromJsonAsync<List<Predmet>>($"{MyNavigationManager.BaseUri}api/predmet");
+						subjects = await Http.GetFromJsonAsync<List<Subject>>($"{MyNavigationManager.BaseUri}api/predmet");
 						IsLoaded = true;
 					}
 					else if(UserToken.Profile.JobTitle == null) {
@@ -138,17 +138,17 @@
 						//pokud student neexistuje v databázi vytvoří se a propojí se skupinou
 						if (student.Email == null)
 						{
-							studentInfo.Jmeno = UserToken.Profile.GivenName;
-							studentInfo.Prijmeni = UserToken.Profile.Surname;
+							studentInfo.Name = UserToken.Profile.GivenName;
+							studentInfo.Surname = UserToken.Profile.Surname;
 							studentInfo.Email = UserToken.Profile.Mail;
-							studentInfo.SkupinaStudent.Add(new SkupinaStudent());
-							studentInfo.SkupinaStudent[0].SkupinaID = group.Id;
+							studentInfo.GroupStudents.Add(new GroupStudent());
+							studentInfo.GroupStudents[0].GroupID = group.Id;
 							await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti", studentInfo);
 						}
 						//pokud student už existuje v databázi, ale není navázán v naší skupině v DB 
-						else if (student.SkupinaStudent.Find(x => x.SkupinaID == group.Id) == null)
+						else if (student.GroupStudents.Find(x => x.GroupID == group.Id) == null)
 						{
-							skupinaStudentConnect.SkupinaID = group.Id;
+							skupinaStudentConnect.GroupID = group.Id;
 							skupinaStudentConnect.StudentID = student.Id;
 							await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/connect", skupinaStudentConnect);
 						}

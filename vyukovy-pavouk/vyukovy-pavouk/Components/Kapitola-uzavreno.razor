@@ -14,7 +14,7 @@
 
 				@foreach (var prerekvizita in Prerekvizity)
 				{
-					<a href="#@prerekvizita.Id">@prerekvizita.Název</a>
+					<a href="#@prerekvizita.Id">@prerekvizita.Name</a>
 				}
 
 			</div>
@@ -32,7 +32,7 @@
 	public string Perex { get; set; }
 
 	[Parameter]
-	public List<Kapitola> Prerekvizity { get; set; }
+	public List<Chapter> Prerekvizity { get; set; }
 
 	[Parameter]
 	public bool Theme { get; set; }

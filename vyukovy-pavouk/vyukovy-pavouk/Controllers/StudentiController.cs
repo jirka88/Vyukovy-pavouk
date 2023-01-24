@@ -16,7 +16,7 @@ namespace vyukovy_pavouk.Controllers
         }
         [HttpGet("{Id}")]
         //vrátí všechny studenty z dané skupiny 
-        public async Task<List<SkupinaStudent>> Get(int Id)
+        public async Task<List<GroupStudent>> Get(int Id)
         {
             return await Task.FromResult(_IStudents.GetStudents(Id));
         }
@@ -47,13 +47,13 @@ namespace vyukovy_pavouk.Controllers
         //vytvoří navázaní studenta ke skupině 
         [Route("connect")]
         [HttpPost]
-        public async Task CreateNewConnect([FromBody] SkupinaStudent groupStudent)
+        public async Task CreateNewConnect([FromBody] GroupStudent groupStudent)
         {
             await _IStudents.CreateNewConnect(groupStudent);
         }
         [Route("splneni")]
         [HttpPost]
-        public async Task PripojSplneni([FromBody] StudentSplneni studentSplneni)
+        public async Task PripojSplneni([FromBody] StudentCompletion studentSplneni)
         {
             await _IStudents.CreateSplneni(studentSplneni);
         }
@@ -65,7 +65,7 @@ namespace vyukovy_pavouk.Controllers
             await _IStudents.DeleteStudent(IdStudent, IdGroup);
         }
         [HttpPut]
-        public async Task OpravSplneni(StudentSplneni studentSplneni)
+        public async Task OpravSplneni(StudentCompletion studentSplneni)
         {
             await _IStudents.OpravaSplneni(studentSplneni);
         }

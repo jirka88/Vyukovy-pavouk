@@ -13,11 +13,11 @@
 						 <div class="d-flex justify-content-center align-items-center h-100 w-100 flex-column">
 						<svg fill="#000000" style="width: 30%" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.94 5 19 10.06 9.062 20a2.25 2.25 0 0 1-.999.58l-5.116 1.395a.75.75 0 0 1-.92-.921l1.395-5.116a2.25 2.25 0 0 1 .58-.999L13.938 5Zm7.09-2.03a3.578 3.578 0 0 1 0 5.06l-.97.97L15 3.94l.97-.97a3.578 3.578 0 0 1 5.06 0Z"/></svg>
 					<h5 class="text-center pb-3 text-danger">Vytvořte nový název struktury</h5>
-					<EditForm Model="@group.predmet" OnValidSubmit="@CreateIfExistRename">
+					<EditForm Model="@group.Subject" OnValidSubmit="@CreateIfExistRename">
 						<FluentValidationValidator />
 					<input type="text" class="mb-3" 
-					@bind-value="@group.predmet.Nazev" @bind-value:event="oninput">
-					<ValidationMessage class="text-center" For="@(()=>group.predmet.Nazev)" />
+					@bind-value="@group.Subject.Name" @bind-value:event="oninput">
+					<ValidationMessage class="text-center" For="@(()=>group.Subject.Name)" />
 					<div class="pt-3">
 						<fluent-button class="dialog-btn" @onclick="(() => modelHidden2 = true)">Zavřít</fluent-button>
 						<fluent-button type="submit" appearance="accent" class="dialog-btn">Vytvořit</fluent-button>
@@ -28,7 +28,7 @@
 			   </fluent-dialog>
 			<fluent-dialog Hidden="@modelHidden">
 			<div class="d-flex justify-content-center align-items-center h-100 w-100 flex-column">
-				<h5 class="text-center">Struktura s názvem @searchSubject.Nazev už existuje. Zkuste jiný název!</h5>
+				<h5 class="text-center">Struktura s názvem @searchSubject.Name už existuje. Zkuste jiný název!</h5>
 				<?xml version="1.0" encoding="utf-8" ?>	
 				<svg version="1.1" style="width: 40%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
 				<metadata> Svg Vector Icons : http://www.onlinewebfonts.com/icon </metadata>
@@ -48,11 +48,11 @@
 			<div class="card @(theme ? "darkTheme" : "")">
 				<div class="card-body gap-4 @(theme ? "text-white darkInput" : "")">
 					<h2 class="card-title text-center">Vytvořit novou strukturu</h2>
-					<InputText id="nazev" type="text" placeholder="Název předmětu" @bind-Value="@subject.Nazev"></InputText>
-					<ValidationMessage For="@(()=>subject.Nazev)" />
+					<InputText id="nazev" type="text" placeholder="Název předmětu" @bind-Value="@subject.Name"></InputText>
+					<ValidationMessage For="@(()=>subject.Name)" />
 						<div class="d-flex flex-column align-items-center">
 						<label for="private" class="fw-bold">Privátní</label>
-						<FluentCheckbox id="private" @bind-Value="@subject.Privatni"></FluentCheckbox>
+						<FluentCheckbox id="private" @bind-Value="@subject.Private"></FluentCheckbox>
 						</div>
 					<fluent-button appearance="accent" type="submit" disabled="@(!context.IsModified() || !context.Validate())">Vytvořit</fluent-button>
 				</div>
@@ -70,15 +70,15 @@
 							<select @bind-Value="@subjectSelect" @bind-Value:event="onchange">
 								@foreach (var item in subjects)
 								{
-									if (item.Privatni == false)
+									if (item.Private == false)
 									{
-										<option>@item.Nazev</option>
+										<option>@item.Name</option>
 									}
 									else
 									{
-										if (item.Vytvoril == UserToken.Profile.Mail)
+										if (item.Created == UserToken.Profile.Mail)
 										{
-											<option>@item.Nazev</option>
+											<option>@item.Name</option>
 										}
 										
 									}
@@ -120,15 +120,15 @@
 @code {
 	//parametr, který přijímá od Tab
 	[Parameter]
-	public List<Predmet> subjects { get; set; }
+	public List<Subject> subjects { get; set; }
 	[Parameter]
 	public bool theme { get; set; }
 	[Inject]
 	NavigationManager MyNavigationManager { get; set; }
-	Predmet searchSubject { get; set; } = new Predmet();
-	Predmet controlSubject { get; set; } = new Predmet();
-	Skupina group = new Skupina() {predmet = new Predmet()};
-	Predmet subject { get; set; } = new Predmet {Skupina = new Skupina()};
+	Subject searchSubject { get; set; } = new Subject();
+	Subject controlSubject { get; set; } = new Subject();
+	Group group = new Group() {Subject = new Subject()};
+	Subject subject { get; set; } = new Subject {Group = new Group()};
 	string subjectSelect;
 	bool modelHidden = true;
 	bool modelHidden2 = true;
@@ -139,7 +139,7 @@
 		if (firstRender)
 		{
 			if(subjects.Count() > 0) {
-				subjectSelect = subjects[0].Nazev.ToString();
+				subjectSelect = subjects[0].Name.ToString();
 			}	 
 			StateHasChanged();
 		}
@@ -148,14 +148,14 @@
 
 	public async Task Create()
 	{
-		searchSubject = subjects.Find(x => x.Nazev.ToLower() == subject.Nazev.ToLower());
+		searchSubject = subjects.Find(x => x.Name.ToLower() == subject.Name.ToLower());
 		if(searchSubject == null) {
-			subject.Vytvoril = UserToken.Profile.Mail;
-			subject.Skupina.TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
+			subject.Created = UserToken.Profile.Mail;
+			subject.Group.TmGroup = (GroupToken.teamsContext.TeamId).ToString();
 			//vytvoření nového předmětu se skupinou
 			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", subject);
 			//získání ID nově vytvořené skupiny
-			Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + subject.Skupina.TmSkupina);
+			Group Getskupina = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/Skupina/" + subject.Group.TmGroup);
 			//vytvoření úvodní prerekvizity navazané na skupinu --> 0
 			await VytvorUvodniSplneni(Getskupina);	
 			MyNavigationManager.NavigateTo("/");
@@ -165,28 +165,28 @@
 		}
 
 	}
-	public async Task VytvorUvodniSplneni(Skupina skupina) {
-		Splneni splneni = new Splneni();
-		splneni.SkupinaID = skupina.Id;
-		splneni.KapitolaID = 0;
+	public async Task VytvorUvodniSplneni(Group skupina) {
+		Completion splneni = new Completion();
+		splneni.GroupID = skupina.Id;
+		splneni.ChapterID = 0;
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina/uvod", splneni);
 	}
 	private async Task CreateIfExistRename() {
-		controlSubject = subjects.Find(x => x.Nazev.ToLower() == group.predmet.Nazev.ToLower());
+		controlSubject = subjects.Find(x => x.Name.ToLower() == group.Subject.Name.ToLower());
 		if(controlSubject == null) {	
 			//získání kapitol, které patří pod předmět 
-			List<Kapitola> chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>
+			List<Chapter> chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Chapter>>
 					($"{MyNavigationManager.BaseUri}api/Kapitoly/vsechno/" + searchSubject.Id);
 			//vytvoření skupiny s přejmenovanou kopií struktury 
 			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", group);
 			//získání ID nově vytvořené skupiny
-			Skupina GetGroup = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
+			Group GetGroup = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
 			//vytvoření úvodní prerekvizity navazané na skupinu --> 0
 			await VytvorUvodniSplneni(GetGroup);
 
-			foreach (Kapitola chapter in chapters)
+			foreach (Chapter chapter in chapters)
 			{
-				chapter.PredmetID = GetGroup.predmet.Id;
+				chapter.SubjectID = GetGroup.Subject.Id;
 			}
 			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitoly/", chapters);
 			MyNavigationManager.NavigateTo("/");
@@ -201,22 +201,22 @@
 	//překopíruje na novou skupinu existující předmět s kapitolami -->
 	public async Task CreateIfExist() {
 		//přidání ID skupiny 
-		group.TmSkupina = (GroupToken.teamsContext.TeamId).ToString();
+		group.TmGroup = (GroupToken.teamsContext.TeamId).ToString();
 		//získání ID předmětu, který si učitel vybral 
-		searchSubject = subjects.Find(x => x.Nazev == subjectSelect);	
+		searchSubject = subjects.Find(x => x.Name == subjectSelect);	
 		//vlastnictví skupiny
-		group.predmet.Vytvoril = UserToken.Profile.Mail;
+		group.Subject.Created = UserToken.Profile.Mail;
 		//viditelnost předmětu --> vždy defaultně nastaveno na privátní
-		group.predmet.Privatni = true;
-		group.predmet.Nazev = searchSubject.Nazev.ToString();
+		group.Subject.Private = true;
+		group.Subject.Name = searchSubject.Name.ToString();
 		//pokud předmět byl pouze resetovaný zpátky ho naváže 
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina/pripoj", group);
 		//získání ID nově navázané skupiny --> pokud neexistuje musí se struktura (předmět) překopírovat 
-		Skupina Getskupina = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
+		Group Getskupina = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
 
-		if(Getskupina.TmSkupina == null) {
+		if(Getskupina.TmGroup == null) {
 		//přidání příjmení učitela za název předmětu
-		group.predmet.Nazev = $"{searchSubject.Nazev.ToString()} - {UserToken.Profile.Surname.ToString()}";
+		group.Subject.Name = $"{searchSubject.Name.ToString()} - {UserToken.Profile.Surname.ToString()}";
 		modelHidden2 = false;
 		/*await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", group);
 		//získání ID nově vytvořené skupiny
@@ -239,7 +239,7 @@
 	}
 	public void CloseDialog() => modelHidden = true;
 	private bool IfAllPrivate() {
-		if(subjects.Where(x => x.Privatni == true && x.Vytvoril != UserToken.Profile.Mail).Count() != subjects.Count()) {
+		if(subjects.Where(x => x.Private == true && x.Created != UserToken.Profile.Mail).Count() != subjects.Count()) {
 			return false;
 		}
 		return true;

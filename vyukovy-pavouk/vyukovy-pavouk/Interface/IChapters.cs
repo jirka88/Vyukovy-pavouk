@@ -4,11 +4,11 @@ namespace vyukovy_pavouk.Interface
 {
     public interface IChapters
 {
-        public Task <List<Kapitola>> GetChapters(int IdSubject);
-        public Task <List<Kapitola>> GetChaptersOnly(int IdSubject);
-        public Task <List<KapitolaPrerekvizita>> GetChaptersPrerequisites(int IdSubject);
-        public Task CreateCopyOfChapters(List<Kapitola> chapters);
-        public Task <List<Kapitola>> GetChaptersWithAll(int IdSubject);
+        public Task <List<Chapter>> GetChapters(int IdSubject);
+        public Task <List<Chapter>> GetChaptersOnly(int IdSubject);
+        public Task <List<ChapterPrerequisite>> GetChaptersPrerequisites(int IdSubject);
+        public Task CreateCopyOfChapters(List<Chapter> chapters);
+        public Task <List<Chapter>> GetChaptersWithAll(int IdSubject);
 
 }
 }

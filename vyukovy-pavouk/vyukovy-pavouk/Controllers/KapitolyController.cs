@@ -18,30 +18,30 @@ namespace vyukovy_pavouk.Controllers
         }
         //získání všech kapitol a prerekvizit u mainu podle předmětu 
         [HttpGet("{IdSubject}")]
-        public async Task<List<Kapitola>> Get(int IdSubject)
+        public async Task<List<Chapter>> Get(int IdSubject)
         {
             return await _IChapter.GetChapters(IdSubject);
         }
         [HttpGet]
         [Route("vsechno/{IdSubject}")] 
-        public async Task<List<Kapitola>> GetAllInfo(int IdSubject)
+        public async Task<List<Chapter>> GetAllInfo(int IdSubject)
         {
             return await _IChapter.GetChaptersWithAll(IdSubject);
         }
         [HttpGet]
         [Route("nazvy/{IdSubject}")]
-        public async Task<List<Kapitola>> GetNames(int IdSubject)
+        public async Task<List<Chapter>> GetNames(int IdSubject)
         {
             return await _IChapter.GetChaptersOnly(IdSubject);
         }
         [HttpGet]
         [Route("prerekvizity/{IdSubject}")]
-        public async Task<List<KapitolaPrerekvizita>> GetPrerekvizity(int IdSubject)
+        public async Task<List<ChapterPrerequisite>> GetPrerekvizity(int IdSubject)
         {
             return await _IChapter.GetChaptersPrerequisites(IdSubject);
         }
         [HttpPost]
-        public async Task CreateCopyOfChapters([FromBody] List<Kapitola> chapters)
+        public async Task CreateCopyOfChapters([FromBody] List<Chapter> chapters)
         {
             await _IChapter.CreateCopyOfChapters(chapters);
         }

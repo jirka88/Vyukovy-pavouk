@@ -36,7 +36,7 @@
 				@if(searchSubject != null) {
 					<fluent-dialog Hidden="@conformityDialog">
 			<div class="d-flex justify-content-center align-items-center h-100 w-100 flex-column">
-				<h5 class="text-center">Předmět s názvem @searchSubject.Nazev už existuje. Zkuste jiný název!</h5>
+				<h5 class="text-center">Předmět s názvem @searchSubject.Name už existuje. Zkuste jiný název!</h5>
 				<?xml version="1.0" encoding="utf-8" ?>	
 				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
 				<metadata> Svg Vector Icons : http://www.onlinewebfonts.com/icon </metadata>
@@ -92,8 +92,8 @@
 				<EditForm Model="@group" OnValidSubmit="@ChangeName">
 					<div class="enter d-flex gap-4 @(dark ? "darkInput" : "")">
 				<FluentValidationValidator />
-				<InputText class="w-75" type="text" placeholder="Název předmětu" maxlength="30" @bind-Value="@group.predmet.Nazev"></InputText>
-				<ValidationMessage For="@(()=>group.predmet.Nazev)" />		
+				<InputText class="w-75" type="text" placeholder="Název předmětu" maxlength="30" @bind-Value="@group.Subject.Name"></InputText>
+				<ValidationMessage For="@(()=>group.Subject.Name)" />		
 				<div class="btns d-flex align-items-center">
 			<fluent-button appearance="accent" type="submit" disabled="@turnOffBtns">Upravit</fluent-button>	
 				</div>
@@ -139,7 +139,7 @@
 			</div>
 			<hr class="@(dark ? "text-light" : "")">
 			<div class="setting row d-flex justify-content-center align-items-center pt-2 pb-2 w-100 @(dark ? "text-white" : "")">
-				@if(group.predmet.Privatni) {
+				@if(group.Subject.Private) {
 						<div class="title col-2 d-flex align-items-center fw-bold">
 							Zveřejnit strukturu: 
 						</div>
@@ -190,10 +190,10 @@
 	string emailVerification = "";
 	private bool dark = false;
 	private System.Timers.Timer timer;
-	Skupina group = new Skupina();
-	Predmet subject = new Predmet();
-	List<Predmet> subjects = new List<Predmet>();
-	Predmet searchSubject = new Predmet();
+        Data.Group group = new Data.Group();
+	Subject subject = new Subject();
+	List<Subject> subjects = new List<Subject>();
+	Subject searchSubject = new Subject();
 	[Inject]
 	public IJSRuntime JSRuntime { get; set; }
 
@@ -216,11 +216,11 @@
 					switchDelete = true;
 					TurnOffBtnDelete = false;
 				}
-				//získání skupiny z databáze a jeho navazaného předmětu 
-				group = await Http.GetFromJsonAsync<Skupina>
+                    //získání skupiny z databáze a jeho navazaného předmětu 
+                    group = await Http.GetFromJsonAsync<Data.Group>
 				($"{MyNavigationManager.BaseUri}api/Skupina/{(GroupToken.teamsContext.TeamId).ToString()}");				
 				//získání všech předmětu --> pro kontrolu 
-				subjects = await Http.GetFromJsonAsync<List<Predmet>>
+				subjects = await Http.GetFromJsonAsync<List<Subject>>
 				($"{MyNavigationManager.BaseUri}api/predmet");
 				IsLoaded = true;
 			}
@@ -229,14 +229,14 @@
 	}
 	private async void ChangeName() {
 		turnOffBtns = true;
-		searchSubject = subjects.Where(x => x.Nazev == group.predmet.Nazev)
+		searchSubject = subjects.Where(x => x.Name == group.Subject.Name)
 								.FirstOrDefault();
 		if(searchSubject != null) {
 			conformityDialog = false;
 			return;
 		}
 		await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", group);
-		subjects = await Http.GetFromJsonAsync<List<Predmet>>
+		subjects = await Http.GetFromJsonAsync<List<Subject>>
 		($"{MyNavigationManager.BaseUri}api/predmet");
 		await InvokeAsync(StateHasChanged);
 		notice.ShowSuccess("Předmět byl úspěšně přejmenován.", "Úspěch!");
@@ -253,7 +253,7 @@
 		turnOffBtns = true;
 	}
 	private void CheckEmail() {
-		if(group.predmet.Vytvoril != emailVerification) {
+		if(group.Subject.Created != emailVerification) {
 			turnOffBtnContinue = true;
 			return;
 		}
@@ -326,8 +326,8 @@
 	}
 	private async void ChangeVisibility(bool IsPrivate) {
 		turnOffBtns = true;
-		group.predmet.Privatni = IsPrivate;
-		await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet/visibility", group.predmet);
+		group.Subject.Private = IsPrivate;
+		await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet/visibility", group.Subject);
 		notice.ShowSuccess("Viditelnost předmětu byla změněna.", "Úspěch!");
 		turnOffBtns = false;
 	}

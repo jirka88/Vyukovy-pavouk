@@ -9,8 +9,8 @@ namespace vyukovy_pavouk.EntityConfiguration
         public void Configure(EntityTypeBuilder<Student> builder)
         {
             builder.HasKey(id => id.Id);
-            builder.Property(j => j.Jmeno).HasMaxLength(48).IsRequired();
-            builder.Property(p => p.Prijmeni).HasMaxLength(48).IsRequired();
+            builder.Property(j => j.Name).HasMaxLength(48).IsRequired();
+            builder.Property(p => p.Surname).HasMaxLength(48).IsRequired();
             builder.Property(e => e.Email).HasMaxLength(62).IsRequired();
         }
     }

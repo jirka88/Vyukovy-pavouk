@@ -21,7 +21,7 @@ namespace vyukovypavouk.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.Kapitola", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.Assignment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -29,11 +29,86 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Kontent")
+                    b.Property<int>("ChapterID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChapterID");
+
+                    b.ToTable("Assignment");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.Completion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ChapterID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Completion");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.Group", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("TmGroup")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Group");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.GroupStudent", b =>
+                {
+                    b.Property<int>("GroupID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
+
+                    b.HasKey("GroupID", "StudentID");
+
+                    b.HasIndex("StudentID");
+
+                    b.ToTable("GroupStudent");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.Chapter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Název")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
@@ -42,17 +117,17 @@ namespace vyukovypavouk.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("PredmetID")
+                    b.Property<int>("SubjectID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PredmetID");
+                    b.HasIndex("SubjectID");
 
-                    b.ToTable("Kapitoly");
+                    b.ToTable("Chapters");
                 });
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.KapitolaPrerekvizita", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.ChapterPrerequisite", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,22 +135,22 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("KapitolaID")
+                    b.Property<int>("ChapterID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PrerekvizitaID")
+                    b.Property<int>("PrerequisiteID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("KapitolaID");
+                    b.HasIndex("ChapterID");
 
-                    b.HasIndex("PrerekvizitaID");
+                    b.HasIndex("PrerequisiteID");
 
-                    b.ToTable("kapitolaPrerekvizita");
+                    b.ToTable("ChapterPrerequisite");
                 });
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.Predmet", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.Link", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,80 +158,26 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Nazev")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<bool>("Privatni")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SkupinaID")
+                    b.Property<int>("ChapterID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Vytvoril")
-                        .IsRequired()
-                        .HasMaxLength(62)
-                        .HasColumnType("nvarchar(62)");
+                    b.Property<string>("Name")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("SkupinaID")
-                        .IsUnique();
-
-                    b.ToTable("Predmet");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.Prerekvizity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("PrerekvizityID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Prerekvizity");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.Skupina", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("TmSkupina")
+                    b.Property<string>("Reference")
                         .IsRequired()
                         .HasMaxLength(2048)
                         .HasColumnType("nvarchar(2048)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Skupina");
+                    b.HasIndex("ChapterID");
+
+                    b.ToTable("Link");
                 });
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.SkupinaStudent", b =>
-                {
-                    b.Property<int>("SkupinaID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentID")
-                        .HasColumnType("int");
-
-                    b.HasKey("SkupinaID", "StudentID");
-
-                    b.HasIndex("StudentID");
-
-                    b.ToTable("SkupinaStudent");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.Splneni", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.Prerequisite", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -164,15 +185,12 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("KapitolaID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SkupinaID")
+                    b.Property<int>("PrerequisiteID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Splneni");
+                    b.ToTable("Prerequisite");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.Student", b =>
@@ -186,10 +204,10 @@ namespace vyukovypavouk.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Jmeno")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Prijmeni")
+                    b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -197,25 +215,25 @@ namespace vyukovypavouk.Migrations
                     b.ToTable("Student");
                 });
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.StudentSplneni", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.StudentCompletion", b =>
                 {
                     b.Property<int>("StudentID")
                         .HasColumnType("int");
 
-                    b.Property<int>("SplneniID")
+                    b.Property<int>("CompletionID")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Uspech")
+                    b.Property<bool>("Success")
                         .HasColumnType("bit");
 
-                    b.HasKey("StudentID", "SplneniID");
+                    b.HasKey("StudentID", "CompletionID");
 
-                    b.HasIndex("SplneniID");
+                    b.HasIndex("CompletionID");
 
-                    b.ToTable("StudentSplneni");
+                    b.ToTable("StudentCompletion");
                 });
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.Videa", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.Subject", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -223,185 +241,167 @@ namespace vyukovypavouk.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("KapitolaID")
+                    b.Property<string>("Created")
+                        .IsRequired()
+                        .HasMaxLength(62)
+                        .HasColumnType("nvarchar(62)");
+
+                    b.Property<int>("GroupID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Nazev")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("Odkaz")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<bool>("Private")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("KapitolaID");
+                    b.HasIndex("GroupID")
+                        .IsUnique();
 
-                    b.ToTable("Videa");
+                    b.ToTable("Subject");
                 });
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.Zadani", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.Assignment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("KapitolaID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Odkaz")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("KapitolaID");
-
-                    b.ToTable("Zadani");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.Kapitola", b =>
-                {
-                    b.HasOne("vyukovy_pavouk.Data.Predmet", "predmet")
-                        .WithMany("Kapitoly")
-                        .HasForeignKey("PredmetID")
+                    b.HasOne("vyukovy_pavouk.Data.Chapter", "Chapter")
+                        .WithMany("Assignments")
+                        .HasForeignKey("ChapterID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("predmet");
+                    b.Navigation("Chapter");
                 });
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.KapitolaPrerekvizita", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.GroupStudent", b =>
                 {
-                    b.HasOne("vyukovy_pavouk.Data.Kapitola", "kapitola")
-                        .WithMany("KapitolaPrerekvizita")
-                        .HasForeignKey("KapitolaID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("vyukovy_pavouk.Data.Prerekvizity", "prerekvizita")
-                        .WithMany("KapitolaPrerekvizita")
-                        .HasForeignKey("PrerekvizitaID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("kapitola");
-
-                    b.Navigation("prerekvizita");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.Predmet", b =>
-                {
-                    b.HasOne("vyukovy_pavouk.Data.Skupina", "Skupina")
-                        .WithOne("predmet")
-                        .HasForeignKey("vyukovy_pavouk.Data.Predmet", "SkupinaID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Skupina");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.SkupinaStudent", b =>
-                {
-                    b.HasOne("vyukovy_pavouk.Data.Skupina", "Skupina")
-                        .WithMany("Student")
-                        .HasForeignKey("SkupinaID")
+                    b.HasOne("vyukovy_pavouk.Data.Group", "Group")
+                        .WithMany("GroupStudents")
+                        .HasForeignKey("GroupID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("vyukovy_pavouk.Data.Student", "Student")
-                        .WithMany("SkupinaStudent")
+                        .WithMany("GroupStudents")
                         .HasForeignKey("StudentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Skupina");
+                    b.Navigation("Group");
 
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.StudentSplneni", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.Chapter", b =>
                 {
-                    b.HasOne("vyukovy_pavouk.Data.Splneni", "splneni")
-                        .WithMany("StudentSplneni")
-                        .HasForeignKey("SplneniID")
+                    b.HasOne("vyukovy_pavouk.Data.Subject", "Subject")
+                        .WithMany("Chapters")
+                        .HasForeignKey("SubjectID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("vyukovy_pavouk.Data.Student", "student")
-                        .WithMany("StudentSplneni")
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.ChapterPrerequisite", b =>
+                {
+                    b.HasOne("vyukovy_pavouk.Data.Chapter", "Chapter")
+                        .WithMany("ChapterPrerequisites")
+                        .HasForeignKey("ChapterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("vyukovy_pavouk.Data.Prerequisite", "Prerequisite")
+                        .WithMany("ChapterPrerequisites")
+                        .HasForeignKey("PrerequisiteID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chapter");
+
+                    b.Navigation("Prerequisite");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.Link", b =>
+                {
+                    b.HasOne("vyukovy_pavouk.Data.Chapter", "Chapter")
+                        .WithMany("Links")
+                        .HasForeignKey("ChapterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chapter");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.StudentCompletion", b =>
+                {
+                    b.HasOne("vyukovy_pavouk.Data.Completion", "Completion")
+                        .WithMany("StudentCompletions")
+                        .HasForeignKey("CompletionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("vyukovy_pavouk.Data.Student", "Student")
+                        .WithMany("StudentCompletion")
                         .HasForeignKey("StudentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("splneni");
+                    b.Navigation("Completion");
 
-                    b.Navigation("student");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.Videa", b =>
-                {
-                    b.HasOne("vyukovy_pavouk.Data.Kapitola", "kapitola")
-                        .WithMany("Videa")
-                        .HasForeignKey("KapitolaID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("kapitola");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.Zadani", b =>
-                {
-                    b.HasOne("vyukovy_pavouk.Data.Kapitola", "kapitola")
-                        .WithMany("Zadani")
-                        .HasForeignKey("KapitolaID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("kapitola");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.Kapitola", b =>
-                {
-                    b.Navigation("KapitolaPrerekvizita");
-
-                    b.Navigation("Videa");
-
-                    b.Navigation("Zadani");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.Predmet", b =>
-                {
-                    b.Navigation("Kapitoly");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.Prerekvizity", b =>
-                {
-                    b.Navigation("KapitolaPrerekvizita");
-                });
-
-            modelBuilder.Entity("vyukovy_pavouk.Data.Skupina", b =>
-                {
                     b.Navigation("Student");
-
-                    b.Navigation("predmet");
                 });
 
-            modelBuilder.Entity("vyukovy_pavouk.Data.Splneni", b =>
+            modelBuilder.Entity("vyukovy_pavouk.Data.Subject", b =>
                 {
-                    b.Navigation("StudentSplneni");
+                    b.HasOne("vyukovy_pavouk.Data.Group", "Group")
+                        .WithOne("Subject")
+                        .HasForeignKey("vyukovy_pavouk.Data.Subject", "GroupID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.Completion", b =>
+                {
+                    b.Navigation("StudentCompletions");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.Group", b =>
+                {
+                    b.Navigation("GroupStudents");
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.Chapter", b =>
+                {
+                    b.Navigation("Assignments");
+
+                    b.Navigation("ChapterPrerequisites");
+
+                    b.Navigation("Links");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.Prerequisite", b =>
+                {
+                    b.Navigation("ChapterPrerequisites");
                 });
 
             modelBuilder.Entity("vyukovy_pavouk.Data.Student", b =>
                 {
-                    b.Navigation("SkupinaStudent");
+                    b.Navigation("GroupStudents");
 
-                    b.Navigation("StudentSplneni");
+                    b.Navigation("StudentCompletion");
+                });
+
+            modelBuilder.Entity("vyukovy_pavouk.Data.Subject", b =>
+                {
+                    b.Navigation("Chapters");
                 });
 #pragma warning restore 612, 618
         }

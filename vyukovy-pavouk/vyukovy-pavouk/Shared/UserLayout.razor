@@ -12,7 +12,7 @@
         <fluent-tabs class="py-4">
                 <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Pavouk</fluent-tab>
     @if(UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě"){
-        @if(UserToken.Profile.Mail == group.predmet.Vytvoril || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
+        @if(UserToken.Profile.Mail == group.Subject.Created || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/add")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Přidání</fluent-tab>
             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/souhrn")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Souhrn</fluent-tab>
             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/nastaveni")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Nastavení</fluent-tab>   
@@ -21,7 +21,7 @@
 	    <fluent-tab-panel>
         </fluent-tab-panel>
     @if(UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
-        @if(UserToken.Profile.Mail == group.predmet.Vytvoril || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
+        @if(UserToken.Profile.Mail == group.Subject.Created || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
              <fluent-tab-panel>
         </fluent-tab-panel>
         <fluent-tab-panel>
@@ -68,7 +68,7 @@
     private bool IsLoaded = false;
     private bool dark = false;
     private bool contrast = false;
-    private Skupina group;
+    private Group group;
     [Inject]
     public IJSRuntime JSRuntime { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -95,7 +95,7 @@
 						}
 						
 					}
-                group = await Http.GetFromJsonAsync<Skupina>
+                group = await Http.GetFromJsonAsync<Group>
 				($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
                 IsLoaded = true;
             }

@@ -4,13 +4,13 @@ namespace vyukovy_pavouk.Interface
 {
     public interface IStudents
 {
-        public List<SkupinaStudent> GetStudents(int Id);
+        public List<GroupStudent> GetStudents(int Id);
         public Student GetStudentProgres(int Id, int IdGroup);
         public Student GetStudent(int IdGroup, string EmailStudent);
         public Task CreateNewStudent(Student student);
-        public Task CreateNewConnect(SkupinaStudent groupStudent);
+        public Task CreateNewConnect(GroupStudent groupStudent);
         public Task DeleteStudent(int IdStudent, int IdGroup);
-        public Task CreateSplneni(StudentSplneni studentSplneni);
-        public Task OpravaSplneni(StudentSplneni studentSplneni);
+        public Task CreateSplneni(StudentCompletion studentSplneni);
+        public Task OpravaSplneni(StudentCompletion studentSplneni);
 }
 }

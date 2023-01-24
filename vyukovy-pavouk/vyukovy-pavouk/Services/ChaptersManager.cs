@@ -13,7 +13,7 @@ namespace vyukovy_pavouk.Services
             _dbContext = dbContext;
         }
         //vytvoří kopie kapitol z existující struktury (předmětu) 
-        public async Task CreateCopyOfChapters(List<Kapitola> chapters)
+        public async Task CreateCopyOfChapters(List<Chapter> chapters)
         {
             List<int> OldId = new List<int>();
             List<int> NewId = new List<int>();
@@ -25,41 +25,41 @@ namespace vyukovy_pavouk.Services
                 //resetování starého id u skopírované kapitoly 
                 chapters[i].Id = 0;
                 //resetování starého id u skopírováného videa
-                foreach (Videa video in chapters[i].Videa)
+                foreach (Link video in chapters[i].Links)
                 {
                     video.Id = 0;
-                    video.KapitolaID = 0;
+                    video.ChapterID = 0;
                 }
                 //resetování starého id u zadaná
-                foreach (Zadani assignment in chapters[i].Zadani)
+                foreach (Assignment assignment in chapters[i].Assignments)
                 {
                     assignment.Id = 0;
-                    assignment.KapitolaID = 0;
+                    assignment.ChapterID = 0;
                 }
                 //Změna ID u prerekvizit --> rovnou se uloží v DB
                
-                foreach (KapitolaPrerekvizita kapitolaPrerekvizita in chapters[i].KapitolaPrerekvizita)
+                foreach (ChapterPrerequisite kapitolaPrerekvizita in chapters[i].ChapterPrerequisites)
                 {
                     bool pass = true;
-                    Prerekvizity prerequisite = await _dbContext.Prerekvizity.Where(x => x.Id == kapitolaPrerekvizita.PrerekvizitaID).SingleOrDefaultAsync();
+                    Prerequisite prerequisite = await _dbContext.Prerequisite.Where(x => x.Id == kapitolaPrerekvizita.PrerequisiteID).SingleOrDefaultAsync();
                     if (prerequisite != null)
                     {
                         //kontrola zdali v mezitabulce (kapitola-Prerekvizita) nelze navázat na nově existující prerekvizitu (jinak by vznikaly duplicitní prerekvizity)
                         for (int j = 0; j < OldId.Count; j++)
                         {
                             //pokud se prerekvizita rovná starému ID, víme, že už jsme ho zakladáli
-                            if(prerequisite.PrerekvizityID == OldId[j] && NewKapitolaPrerekvizitaId.Count != 0)
+                            if(prerequisite.PrerequisiteID == OldId[j] && NewKapitolaPrerekvizitaId.Count != 0)
                             {
                                 //projíždíme nově vytvořené prerekvizity 
                                 for (int k = 0; k < NewKapitolaPrerekvizitaId.Count; k++)
                                 {
                                     //zjistíme prerekvizitu, podle starého PrerekvizitaId a nového ID --> ted to stačí propojit v mezitabulce 
-                                    Prerekvizity prerequisiteForConnect = await _dbContext.Prerekvizity.Where(x => x.PrerekvizityID == OldId[j] && x.Id == NewKapitolaPrerekvizitaId[k])
+                                    Prerequisite prerequisiteForConnect = await _dbContext.Prerequisite.Where(x => x.PrerequisiteID == OldId[j] && x.Id == NewKapitolaPrerekvizitaId[k])
                                         .SingleOrDefaultAsync();
                                     if (prerequisiteForConnect != null)
                                     {
                                         //propojí s existující prerekvizitu                
-                                        kapitolaPrerekvizita.PrerekvizitaID = prerequisiteForConnect.Id;
+                                        kapitolaPrerekvizita.PrerequisiteID = prerequisiteForConnect.Id;
                                         pass = false;
                                         break;
                                     }
@@ -72,7 +72,7 @@ namespace vyukovy_pavouk.Services
                             await _dbContext.SaveChangesAsync();
                             //změna starého id za nové ID 
                             NewKapitolaPrerekvizitaId.Add(prerequisite.Id);
-                            kapitolaPrerekvizita.PrerekvizitaID = prerequisite.Id;
+                            kapitolaPrerekvizita.PrerequisiteID = prerequisite.Id;
                         }                     
                         
                     }
@@ -84,18 +84,18 @@ namespace vyukovy_pavouk.Services
             }
         
             //ted je potreba změnit ID prerekvizit v tabulce prerekvizity 
-            foreach (Prerekvizity prerekvizita in _dbContext.Prerekvizity.Include(x => x.KapitolaPrerekvizita))
+            foreach (Prerequisite prerekvizita in _dbContext.Prerequisite.Include(x => x.ChapterPrerequisites))
             {
                 for (int i = 0; i < chapters.Count; i++)
                 {
-                    KapitolaPrerekvizita TempPrerekvizita = prerekvizita.KapitolaPrerekvizita.Where(x => x.KapitolaID == NewId[i]).SingleOrDefault();
+                    ChapterPrerequisite TempPrerekvizita = prerekvizita.ChapterPrerequisites.Where(x => x.ChapterID == NewId[i]).SingleOrDefault();
                     if(TempPrerekvizita != null)
                     {
                         for (int j = 0; j < chapters.Count; j++)
                         {
-                            if (OldId[j] == prerekvizita.PrerekvizityID)
+                            if (OldId[j] == prerekvizita.PrerequisiteID)
                             {
-                                prerekvizita.PrerekvizityID = NewId[j];
+                                prerekvizita.PrerequisiteID = NewId[j];
                                 _dbContext.Entry(prerekvizita).State = EntityState.Modified;                           
                                 break;
                             }                        
@@ -108,37 +108,37 @@ namespace vyukovy_pavouk.Services
         }
 
         //vrátí všechny kapitoly podle předmětu --> pouze v main zobrazení 
-        public async Task <List<Kapitola>> GetChapters(int IdSubject)
+        public async Task <List<Chapter>> GetChapters(int IdSubject)
         {
-            return await _dbContext.Kapitoly
-                .Where(p => p.PredmetID == IdSubject) 
-                .Include(p => p.KapitolaPrerekvizita)
-                .ThenInclude(p => p.prerekvizita)
+            return await _dbContext.Chapters
+                .Where(p => p.SubjectID == IdSubject) 
+                .Include(p => p.ChapterPrerequisites)
+                .ThenInclude(p => p.Prerequisite)
                 .ToListAsync();
         }
-        public async Task<List<Kapitola>> GetChaptersWithAll(int IdSubject)
+        public async Task<List<Chapter>> GetChaptersWithAll(int IdSubject)
         {
-            return await _dbContext.Kapitoly
-                .Where(p => p.PredmetID == IdSubject)
-                .Include(p => p.Zadani)
-                .Include(p => p.Videa)
-                .Include(p => p.KapitolaPrerekvizita)
+            return await _dbContext.Chapters
+                .Where(p => p.SubjectID == IdSubject)
+                .Include(p => p.Assignments)
+                .Include(p => p.Links)
+                .Include(p => p.ChapterPrerequisites)
                 /*.ThenInclude(p => p.prerekvizita)*/
                 .ToListAsync();
         }
         //vrátí pouze kapitoly --> použití u načtení kapitol (prerekvizit) při vytváření kapitoly 
-        public async Task <List<Kapitola>> GetChaptersOnly(int IdSubject)
+        public async Task <List<Chapter>> GetChaptersOnly(int IdSubject)
         {
-            return await _dbContext.Kapitoly
-                .Where(p => p.PredmetID == IdSubject)
+            return await _dbContext.Chapters
+                .Where(p => p.SubjectID == IdSubject)
                 .ToListAsync();
         }
 
-        public async Task <List<KapitolaPrerekvizita>> GetChaptersPrerequisites(int IdSubject)
+        public async Task <List<ChapterPrerequisite>> GetChaptersPrerequisites(int IdSubject)
         {
-            return await _dbContext.kapitolaPrerekvizita
-                .Include(p => p.prerekvizita)
-                .Include(k => k.kapitola).Where(x => x.kapitola.PredmetID == IdSubject)
+            return await _dbContext.ChapterPrerequisite
+                .Include(p => p.Prerequisite)
+                .Include(k => k.Chapter).Where(x => x.Chapter.SubjectID == IdSubject)
                 .ToListAsync();
         }
     }

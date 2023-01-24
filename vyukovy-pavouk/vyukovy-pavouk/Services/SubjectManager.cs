@@ -15,7 +15,7 @@ namespace vyukovy_pavouk.Services
             _dbContext = dbContext;
         }
 
-        public async Task ChangeVisibilitySubject(Predmet subject)
+        public async Task ChangeVisibilitySubject(Subject subject)
         {
             _dbContext.Entry(subject).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
@@ -24,30 +24,30 @@ namespace vyukovy_pavouk.Services
         //vrátí počet všech kapitol v daném předmětu 
         public int GetCountChapters(int IdSubject)
         {
-            return _dbContext.Kapitoly.Where(idPredmetu => idPredmetu.PredmetID == IdSubject).Count();
+            return _dbContext.Chapters.Where(idPredmetu => idPredmetu.SubjectID == IdSubject).Count();
         }
         //vrátí všechny předměty na začátku při vytváření 
-        public async Task <List<Predmet>> GetSubjects()
+        public async Task <List<Subject>> GetSubjects()
         {
-            return await _dbContext.Predmet.ToListAsync();
+            return await _dbContext.Subject.ToListAsync();
         }
         //uloží daný předmět 
-        public async Task SaveSubject(Predmet subject)
+        public async Task SaveSubject(Subject subject)
         {
-            _dbContext.Predmet.Add(subject);
+            _dbContext.Subject.Add(subject);
             await _dbContext.SaveChangesAsync();
         }
         //úprava viditelnosti předmětu
-        public async Task EditSubject(Skupina group)
+        public async Task EditSubject(Group group)
         {
-            _dbContext.Entry(group.predmet).State = EntityState.Modified;
+            _dbContext.Entry(group.Subject).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Predmet> GetSubjectWithConnectedGroups(int IdSubject)
+        public async Task<Subject> GetSubjectWithConnectedGroups(int IdSubject)
         {
-            Predmet subject = await _dbContext.Predmet.Where(x => x.Id == IdSubject)
-                               .Include(x => x.Skupina).SingleOrDefaultAsync();
+            Subject subject = await _dbContext.Subject.Where(x => x.Id == IdSubject)
+                               .Include(x => x.Group).SingleOrDefaultAsync();
             return subject;                          
         }
     }

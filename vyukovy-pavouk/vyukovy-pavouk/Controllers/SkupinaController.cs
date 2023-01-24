@@ -17,21 +17,21 @@ namespace vyukovy_pavouk.Controllers
         }
         //prvotní kontrola zda-li team existuje, pak následně se používá pro získání ID skupiny a předmětu 
         [HttpGet("{IDTeam}")]
-        public async Task<Skupina> Get(string IDTeam)
+        public async Task<Group> Get(string IDTeam)
         {
-            Skupina group = await _IGroup.GetGroup(IDTeam);            
+            Group group = await _IGroup.GetGroup(IDTeam);            
             return group;
         }
         //vytvoří Teams skupinu pod existující předmět v databázi 
         [HttpPost]
-        public async Task Create([FromBody] Skupina group)
+        public async Task Create([FromBody] Group group)
         {
             await _IGroup.AddGroup(group);
         }
         //vytvoří úvodní prerekvizitu patřící pod skupinu 
         [Route("uvod")]
         [HttpPost]
-        public async Task CreateIntroductionPrerequisite([FromBody] Splneni splneni)
+        public async Task CreateIntroductionPrerequisite([FromBody] Completion splneni)
         {
             await _IGroup.CreateIntroductionPrerequisite(splneni);
         }
@@ -51,7 +51,7 @@ namespace vyukovy_pavouk.Controllers
         }
         [Route("pripoj")]
         [HttpPost]
-        public async Task TryConnectGroup(Skupina group)
+        public async Task TryConnectGroup(Group group)
         {
             await _IGroup.ConnectGroup(group);
         }

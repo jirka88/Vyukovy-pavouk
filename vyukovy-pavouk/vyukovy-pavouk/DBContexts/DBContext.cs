@@ -10,17 +10,17 @@ namespace vyukovy_pavouk.DBContexts
         {
          
         }
-        public DbSet<Kapitola> Kapitoly { get; set; }
-        public DbSet<Predmet> Predmet { get; set; }
-        public DbSet<Videa> Videa { get; set; }
-        public DbSet<Zadani> Zadani { get; set; }
-        public DbSet<Skupina> Skupina { get; set; }
-        public DbSet<SkupinaStudent> SkupinaStudent { get; set; }
+        public DbSet<Chapter> Chapters { get; set; }
+        public DbSet<Subject> Subject { get; set; }
+        public DbSet<Link> Link { get; set; }
+        public DbSet<Assignment> Assignment { get; set; }
+        public DbSet<Group> Group { get; set; }
+        public DbSet<GroupStudent> GroupStudent { get; set; }
         public DbSet<Student> Student { get; set; }
-        public DbSet<StudentSplneni> StudentSplneni { get; set; }
-        public DbSet<Splneni> Splneni { get; set; }
-        public DbSet<KapitolaPrerekvizita> kapitolaPrerekvizita { get; set; }
-        public DbSet<Prerekvizity> Prerekvizity { get; set; }
+        public DbSet<StudentCompletion> StudentCompletion { get; set; }
+        public DbSet<Completion> Completion { get; set; }
+        public DbSet<ChapterPrerequisite> ChapterPrerequisite { get; set; }
+        public DbSet<Prerequisite> Prerequisite { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

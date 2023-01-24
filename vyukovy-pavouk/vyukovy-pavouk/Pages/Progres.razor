@@ -12,18 +12,18 @@
 
 @if(@IsLoaded) {
 	<h1 class="text-center py-2 pb-2 @(dark ? "text-white" : "")">Progres</h1>
-	<h4 class="text-center pb-2 @(dark ? "text-white" : "")">@student.Jmeno @student.Prijmeni</h4>
+	<h4 class="text-center pb-2 @(dark ? "text-white" : "")">@student.Name @student.Surname</h4>
 	<hr />
-	@if (student.StudentSplneni.Count() - 1 != 0)
+	@if (student.StudentCompletion.Count() - 1 != 0)
 	{
 		<div class="d-flex flex-column justify-content-center align-items-center gap-3 py-2">
-		@foreach (StudentSplneni studentSplneni in student.StudentSplneni)
+		@foreach (StudentCompletion studentSplneni in student.StudentCompletion)
 		{
-			vyukovy_pavouk.Data.Kapitola chapter = new vyukovy_pavouk.Data.Kapitola();
-			chapter = chapters.Where(id => id.Id == studentSplneni.splneni.KapitolaID && studentSplneni.Uspech == true).SingleOrDefault();
+			vyukovy_pavouk.Data.Chapter chapter = new vyukovy_pavouk.Data.Chapter();
+			chapter = chapters.Where(id => id.Id == studentSplneni.Completion.ChapterID && studentSplneni.Success == true).SingleOrDefault();
 			@if (chapter != null)
 			{
-				<Kapitola_splneno ID="@chapter.Id" Nazev="@chapter.Název" Perex="@chapter.Perex" Prerekvizita="@chapter.KapitolaPrerekvizita[0]" Theme="@dark" />
+				<Kapitola_splneno ID="@chapter.Id" Nazev="@chapter.Name" Perex="@chapter.Perex" Prerekvizita="@chapter.ChapterPrerequisites[0]" Theme="@dark" />
 			}
 		}
 		</div>
@@ -52,9 +52,9 @@ else
 
 	private bool IsLoaded = false;
 	private bool dark = false;
-	private Skupina group = new Skupina();
+	private Group group = new Group();
 	private Student student = new Student();
-	private List<vyukovy_pavouk.Data.Kapitola> chapters = new List<vyukovy_pavouk.Data.Kapitola>();
+	private List<vyukovy_pavouk.Data.Chapter> chapters = new List<vyukovy_pavouk.Data.Chapter>();
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)
@@ -73,11 +73,11 @@ else
 					dark = true;
 				}
 				//získání skupiny z databáze
-				group = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
+				group = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
 				// získání uživatelů a jejich progres v plnění kapitol
 				student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/" + Convert.ToInt32(group.Id) + "/" + id);
 				//získání všech kapitol 
-				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.predmet.Id)));
+				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Chapter>>($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.Subject.Id)));
 				IsLoaded = true;
 			}
 		}

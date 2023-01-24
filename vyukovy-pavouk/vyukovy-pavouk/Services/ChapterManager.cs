@@ -12,98 +12,104 @@ namespace vyukovy_pavouk.Services
         {
             _dbContext = dbContext;
         }
-
-        public async Task CreateKapitola(Kapitola chapter)
+        public async Task CreateChapter(Chapter chapter)
         {         
-                _dbContext.Kapitoly.Add(chapter);
+                _dbContext.Chapters.Add(chapter);
                 await _dbContext.SaveChangesAsync();           
-         
         }
-
-        public async Task<Kapitola> GetKapitolaDetail(int IdChapter)
+        public async Task<Chapter> GetChapterDetail(int IdChapter)
         {           
-                Kapitola Chapter = await _dbContext.Kapitoly
+                Chapter Chapter = await _dbContext.Chapters
                .Where(id => id.Id == IdChapter)
-               .Include(v => v.Videa)
-               .Include(z => z.Zadani)
-               .Include(p => p.KapitolaPrerekvizita)
-               .ThenInclude(p => p.prerekvizita)
+               .Include(v => v.Links)
+               .Include(z => z.Assignments)
+               .Include(p => p.ChapterPrerequisites)
+               .ThenInclude(p => p.Prerequisite)
                .FirstOrDefaultAsync();
                 if(Chapter == null)
                 {
-                    Chapter = new Kapitola();
+                    Chapter = new Chapter();
                 }
                 return Chapter;       
         }
 
-        public async Task DeleteKapitola(int IdChapter)
+        public async Task DeleteChapter(int IdChapter)
         {
-            Kapitola chapter = _dbContext.Kapitoly.Find(IdChapter);
+            Chapter chapter = _dbContext.Chapters.Where(x => x.Id == IdChapter).Include(x => x.ChapterPrerequisites).SingleOrDefault();
             if (chapter != null)
             {
-                _dbContext.Kapitoly.Remove(chapter);
-                //vymazání prerekvizity, která mohla být navazána 
-                Prerekvizity prerekvizita = await _dbContext.Prerekvizity.Where(x => x.PrerekvizityID == IdChapter).SingleOrDefaultAsync();
-                if (prerekvizita != null)
+                _dbContext.Chapters.Remove(chapter);
+                //vymazání prerekvizity, kde byla použita tato kapitola 
+                Prerequisite prerequisite = await _dbContext.Prerequisite.Where(x => x.PrerequisiteID == IdChapter).SingleOrDefaultAsync();
+                if (prerequisite != null)
                 {
-                    _dbContext.Prerekvizity.Remove(prerekvizita);
+                    _dbContext.Prerequisite.Remove(prerequisite);
                 }
-                //vymazání splnění a navázaní splnění na studentech 
-                List <Splneni> splneni = await _dbContext.Splneni.Where(x => x.KapitolaID == IdChapter).ToListAsync();
-                if(splneni.Count != 0)
+                //vymazání prerekvizit, které nenavazují na nic 
+                foreach (ChapterPrerequisite chapterPrerequisite in chapter.ChapterPrerequisites)
                 {
-                    _dbContext.Splneni.RemoveRange(splneni);
+                   List<ChapterPrerequisite> chapterPrerequisites = await _dbContext.ChapterPrerequisite.Where(x => x.PrerequisiteID == chapterPrerequisite.PrerequisiteID).Include(x => x.Prerequisite).ToListAsync();
+                   if(chapterPrerequisites.Count() == 1)
+                    {
+                        _dbContext.Prerequisite.Remove(chapterPrerequisites.Select(x => x.Prerequisite).SingleOrDefault());
+                    }
+                   }
+                //vymazání splnění a navázaní splnění na studentech 
+                List <Completion> completion = await _dbContext.Completion.Where(x => x.ChapterID == IdChapter).ToListAsync();
+                if(completion.Count != 0)
+                {
+                    _dbContext.Completion.RemoveRange(completion);
                 }           
                 await _dbContext.SaveChangesAsync();
             }
         }
-        public async Task UpdateKapitola(Kapitola chapter)
+        public async Task UpdateChapter(Chapter chapter)
         {
 
             List<int> prerekvizityProtiSmazani = new List<int>();
             _dbContext.Entry(chapter).State = EntityState.Modified;
-            foreach (KapitolaPrerekvizita kapitolaPrerekvizita in chapter.KapitolaPrerekvizita)
+            foreach (ChapterPrerequisite chapterPrerequisite in chapter.ChapterPrerequisites)
             {
                 //pokud se jedná o změněnou hodnotu 
-                if (kapitolaPrerekvizita.Id != 0)
+                if (chapterPrerequisite.Id != 0)
                 {
                     //pokud je prerekvizita null víme, že už je v databázi a pouze upravíme vztah
-                    if (kapitolaPrerekvizita.prerekvizita != null)
+                    if (chapterPrerequisite.Prerequisite != null)
                     {
-                        VyresVztahy(kapitolaPrerekvizita);
+                        VyresVztahy(chapterPrerequisite);
                     }
-                    _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Modified;
+                    _dbContext.Entry(chapterPrerequisite).State = EntityState.Modified;
                     //ukládádám změněné kapitolyPrerekvizity id --> u mazání se pak tyto id nevyberou a tím pádem nesmažou, protože se jedná pouze o změnu 
-                    prerekvizityProtiSmazani.Add(kapitolaPrerekvizita.Id);
+                    prerekvizityProtiSmazani.Add(chapterPrerequisite.Id);
                 }
                 //pokud to je přidaná hodnota 
                 else
                 {
-                    if (kapitolaPrerekvizita.prerekvizita != null)
+                    if (chapterPrerequisite.Prerequisite != null)
                     {
-                        VyresVztahy(kapitolaPrerekvizita);
+                        VyresVztahy(chapterPrerequisite);
                     }
-                    _dbContext.Entry(kapitolaPrerekvizita).State = EntityState.Added;
+                    _dbContext.Entry(chapterPrerequisite).State = EntityState.Added;
                 }
             }
-            void VyresVztahy(KapitolaPrerekvizita kapitolaPrerekvizita)
+            void VyresVztahy(ChapterPrerequisite chapterPrerequisite)
             {
                 //jdeme zjistit zda-li se naše prerekvizita nenachází v DB
-                Prerekvizity prerekvizita = _dbContext.Prerekvizity.Where(id => id.PrerekvizityID == kapitolaPrerekvizita.prerekvizita.PrerekvizityID).SingleOrDefault();
+                Prerequisite prerequisite = _dbContext.Prerequisite.Where(id => id.PrerequisiteID == chapterPrerequisite.Prerequisite.PrerequisiteID).SingleOrDefault();
                 //pokud prerekvizita není musíme ji vytvořit 
-                if (prerekvizita == null)
+                if (prerequisite == null)
                 {
-                    kapitolaPrerekvizita.prerekvizita.Id = 0;
-                    _dbContext.Entry(kapitolaPrerekvizita.prerekvizita).State = EntityState.Added;
+                    chapterPrerequisite.Prerequisite.Id = 0;
+                    _dbContext.Entry(chapterPrerequisite.Prerequisite).State = EntityState.Added;
                 }
                 //pokud je nastavíme u kapitolaPrerekvizita propojení s existující prerekvizitou 
                 else
                 {
-                    kapitolaPrerekvizita.PrerekvizitaID = prerekvizita.Id;
+                    chapterPrerequisite.PrerequisiteID = prerequisite.Id;
                 }
             }
             //zjištění změn u videí 
-            foreach (Videa link in chapter.Videa)
+            foreach (Link link in chapter.Links)
             {
                 //pokud nastala změna
                 if (link.Id != 0)
@@ -119,13 +125,13 @@ namespace vyukovy_pavouk.Services
             //pokud nastalo smazání učitého odkazu 
             List<int> links = new List<int>();
             //zjištění jaké ID se nachází v naší kapitole po změně dat 
-            links = chapter.Videa.Select(x => x.Id).ToList();
+            links = chapter.Links.Select(x => x.Id).ToList();
             //načtení dat z databáze a porovnání naších změněných dat, ty co se zde uloží půjdou k smazání 
-            List<Videa> linkForDelete = new List<Videa>();
-            linkForDelete = await _dbContext.Videa.Where(x => !links.Contains(x.Id) && x.KapitolaID == chapter.Id).ToListAsync();
+            List<Link> linkForDelete = new List<Link>();
+            linkForDelete = await _dbContext.Link.Where(x => !links.Contains(x.Id) && x.ChapterID == chapter.Id).ToListAsync();
 
             //zjištění změn/y u zadaní
-            foreach (Zadani assignment in chapter.Zadani)
+            foreach (Assignment assignment in chapter.Assignments)
             {
                 if (assignment.Id != 0)
                 {
@@ -139,19 +145,19 @@ namespace vyukovy_pavouk.Services
 
             List<int> assignmentList = new List<int>();
             //zjištění jaké ID se nachází v naší kapitole po změně dat 
-            assignmentList = chapter.Zadani.Select(x => x.Id).ToList();
+            assignmentList = chapter.Assignments.Select(x => x.Id).ToList();
             //načtení dat z databáze a porovnání naších změněných dat ty co se zde uloží půjdou k smazání 
-            List<Zadani> assignmentForDelete = new List<Zadani>();
-            assignmentForDelete = await _dbContext.Zadani.Where(x => !assignmentList.Contains(x.Id) && x.KapitolaID == chapter.Id).ToListAsync();
+            List<Assignment> assignmentForDelete = new List<Assignment>();
+            assignmentForDelete = await _dbContext.Assignment.Where(x => !assignmentList.Contains(x.Id) && x.ChapterID == chapter.Id).ToListAsync();
 
             //pokud nastalo smazání učitého odkazu 
             List<int> prerequisite = new List<int>();
             //zjištění jaké ID se nachází v naší kapitole po změně dat 
-            prerequisite = chapter.KapitolaPrerekvizita.Select(x => x.PrerekvizitaID).ToList();
+            prerequisite = chapter.ChapterPrerequisites.Select(x => x.PrerequisiteID).ToList();
             //načtení dat z databáze a porovnání naších změněných dat ty co se zde uloží půjdou k smazání 
-            List<KapitolaPrerekvizita> prerequisiteForDelete = new List<KapitolaPrerekvizita>();
+            List<ChapterPrerequisite> prerequisiteForDelete = new List<ChapterPrerequisite>();
 
-            prerequisiteForDelete = await _dbContext.kapitolaPrerekvizita.Where(x => !prerequisite.Contains(x.PrerekvizitaID) && !prerekvizityProtiSmazani.Contains(x.Id) && x.KapitolaID == chapter.Id).ToListAsync();
+            prerequisiteForDelete = await _dbContext.ChapterPrerequisite.Where(x => !prerequisite.Contains(x.PrerequisiteID) && !prerekvizityProtiSmazani.Contains(x.Id) && x.ChapterID == chapter.Id).ToListAsync();
 
             _dbContext.RemoveRange(linkForDelete);
             _dbContext.RemoveRange(assignmentForDelete);

@@ -16,7 +16,7 @@ public class PredmetController : ControllerBase
         }
         //získání všech předmětu --> proběhne při prvotním vytvoření Teamu 
         [HttpGet]
-        public async Task<List<Predmet>> Get()
+        public async Task<List<Subject>> Get()
         {
             return await _ISubject.GetSubjects();
         }
@@ -28,27 +28,27 @@ public class PredmetController : ControllerBase
         }
         [HttpGet]
         [Route("skupiny/{IdSubject}")]
-        public async Task<Predmet> GetPredmetWithGroups(int IdSubject)
+        public async Task<Subject> GetPredmetWithGroups(int IdSubject)
         {
             return await _ISubject.GetSubjectWithConnectedGroups(IdSubject);
         }
 
         //vytvoří Teams skupinu s novým předmětem 
         [HttpPost]
-        public async Task CreateNew([FromBody] Predmet subject)
+        public async Task CreateNew([FromBody] Subject subject)
         {
             await _ISubject.SaveSubject(subject);
         }
 
         [HttpPut]
-        public async Task EditSubject(Skupina group)
+        public async Task EditSubject(Group group)
         {
              await _ISubject.EditSubject(group);
         }
         //změna viditelnosti předmětu --> veřejná x privátní
         [Route("visibility")]
         [HttpPut]
-        public async Task ChangeVisibilitySubject(Predmet subject)
+        public async Task ChangeVisibilitySubject(Subject subject)
         {
             await _ISubject.ChangeVisibilitySubject(subject);
         }

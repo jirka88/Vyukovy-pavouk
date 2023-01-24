@@ -11,7 +11,7 @@
 
 @if(IsLoaded) {
 	<h1 class="text-center py-2 pb-2 @(dark ? "text-white" : "")">Povolení</h1>
-	<h4 class="text-center pb-2 @(dark ? "text-white" : "")">@student.Jmeno @student.Prijmeni</h4>
+	<h4 class="text-center pb-2 @(dark ? "text-white" : "")">@student.Name @student.Surname</h4>
 	<hr />
 
 	<table class="table table-md my-4 @(dark ? "text-white" : "")">
@@ -27,7 +27,7 @@
 			</tr>
 		</thead>
 		<tbody class="@(dark ? "text-white" : "")">
-				@foreach (vyukovy_pavouk.Data.Kapitola chapter in chapters)
+				@foreach (vyukovy_pavouk.Data.Chapter chapter in chapters)
 					{
 						int status = ShowOnlyUnlocked(chapter);
 						if(status == 3 || status == 2) {
@@ -37,13 +37,13 @@
 					}
 				@if(NotEmpty) {
 					NotEmpty = false;
-					@foreach (vyukovy_pavouk.Data.Kapitola chapter in chapters)
+					@foreach (vyukovy_pavouk.Data.Chapter chapter in chapters)
 					{					
 						int status = ShowOnlyUnlocked(chapter);
 						@if (status == 3 || status == 2)
 						{
 							<tr>
-							<td><p class="d-flex align-items-center mt-1 mb-0">@chapter.Název</p></td>
+							<td><p class="d-flex align-items-center mt-1 mb-0">@chapter.Name</p></td>
 							@if (status == 3)
 							{
 								<td><fluent-button appearance="accent" Disabled="@clicked" 
@@ -111,10 +111,10 @@ else {
 	bool clicked = false;
 	bool IsLoaded = false;
 	bool dark = false;
-	Skupina group = new Skupina();
+	Group group = new Group();
 	Student student = new Student();
-	List<vyukovy_pavouk.Data.Kapitola> chapters;
-	List<KapitolaPrerekvizita> Prerekvizity = new List<KapitolaPrerekvizita>();
+	List<vyukovy_pavouk.Data.Chapter> chapters;
+	List<ChapterPrerequisite> Prerekvizity = new List<ChapterPrerequisite>();
 	@inject IToastService notice;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -130,10 +130,10 @@ else {
 				{
 					dark = true;
 				}
-				group = await Http.GetFromJsonAsync<Skupina>
+				group = await Http.GetFromJsonAsync<Group>
 				($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Kapitola>>
-				($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.predmet.Id)));
+				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Chapter>>
+				($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.Subject.Id)));
 				student = await Http.GetFromJsonAsync<Student>
 				($"{MyNavigationManager.BaseUri}api/studenti/progres/" + Convert.ToInt32(group.Id) + "/" + id);
 				IsLoaded = true;
@@ -141,39 +141,39 @@ else {
 		}
 		StateHasChanged();
 	}
-	private int ShowOnlyUnlocked(vyukovy_pavouk.Data.Kapitola kapitola) {
+	private int ShowOnlyUnlocked(vyukovy_pavouk.Data.Chapter kapitola) {
 		if(Prerekvizity.Count() > 0) {
 			Prerekvizity.Clear();
 		}
-		KapitolaPrerekvizita save = new KapitolaPrerekvizita();
-		foreach (var splneni in student.StudentSplneni.Select(x => x.splneni))
+		ChapterPrerequisite save = new ChapterPrerequisite();
+		foreach (var splneni in student.StudentCompletion.Select(x => x.Completion))
 		{
 			//pokud je splněno 
-			if(splneni.KapitolaID == kapitola.Id && student.StudentSplneni.Find(x => x.splneni.Id == splneni.Id).Uspech == true) {
+			if(splneni.ChapterID == kapitola.Id && student.StudentCompletion.Find(x => x.Completion.Id == splneni.Id).Success == true) {
 				return 1;
 			}
 			// neúspěšně splněno 
-			else if (splneni.KapitolaID == kapitola.Id && student.StudentSplneni.Find(x => x.SplneniID == splneni.Id).Uspech == false)
+			else if (splneni.ChapterID == kapitola.Id && student.StudentCompletion.Find(x => x.CompletionID == splneni.Id).Success == false)
 			{
 				return 2;
 			}
 			//ukládání pokud je odemčena
-			save = kapitola.KapitolaPrerekvizita.Find(x => x.prerekvizita.PrerekvizityID == splneni.KapitolaID);
+			save = kapitola.ChapterPrerequisites.Find(x => x.Prerequisite.PrerequisiteID == splneni.ChapterID);
 			if (save != null) {
 				Prerekvizity.Add(save);
 			}
 		}
 		//kontrola zdali je odemčena splněné prerekvizity pocet == celkovy pocet prerekvizit v kapitole 
-		if(Prerekvizity.Count() == kapitola.KapitolaPrerekvizita.Count()) {
+		if(Prerekvizity.Count() == kapitola.ChapterPrerequisites.Count()) {
 			//kontroluje prerekvizitu kapitoly a studenta (neúspěšného splnění) 
 			// ==> pokud nastane nezobrazí další kapitoly pro odemčení a může se odemknout (na úspěšný stav)
 			//pouze ta neúspěšná 
-			foreach (KapitolaPrerekvizita kapitolaPrerekvizita in kapitola.KapitolaPrerekvizita)
+			foreach (ChapterPrerequisite kapitolaPrerekvizita in kapitola.ChapterPrerequisites)
 			{
-				int IDChapterPrerequisite = kapitolaPrerekvizita.prerekvizita.PrerekvizityID;
-				StudentSplneni studentTestSplneni = new StudentSplneni();
-				studentTestSplneni = student.StudentSplneni
-				.Where(x => x.Uspech == false && x.splneni.KapitolaID == IDChapterPrerequisite)
+				int IDChapterPrerequisite = kapitolaPrerekvizita.Prerequisite.PrerequisiteID;
+				StudentCompletion studentTestSplneni = new StudentCompletion();
+				studentTestSplneni = student.StudentCompletion
+				.Where(x => x.Success == false && x.Completion.ChapterID == IDChapterPrerequisite)
 				.SingleOrDefault();
 				if(studentTestSplneni != null) {
 					return 1;
@@ -188,11 +188,11 @@ else {
 	//vytvoření nového splnění pro studenta
 	private async Task EnableNewChapter(int IdKapitoly, bool uspech) {
 		clicked = true;
-		StudentSplneni studentSplneni = new StudentSplneni() {splneni = new Splneni()};
+		StudentCompletion studentSplneni = new StudentCompletion() {Completion = new Completion()};
 		studentSplneni.StudentID = student.Id;
-		studentSplneni.Uspech = uspech;
-		studentSplneni.splneni.KapitolaID = IdKapitoly;
-		studentSplneni.splneni.SkupinaID = group.Id;
+		studentSplneni.Success = uspech;
+		studentSplneni.Completion.ChapterID = IdKapitoly;
+		studentSplneni.Completion.GroupID = group.Id;
 		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/splneni",studentSplneni);
 		student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/{group.Id}/{id}");
 		if(uspech) {
@@ -207,10 +207,10 @@ else {
 	//povolení neúspěšné kapitoly  
 	private async Task RepairChapter(int IdKapitoly) {
 		clicked = true;
-		StudentSplneni studentSplneniV2 = student.StudentSplneni
-		.Where(x => x.splneni.KapitolaID == IdKapitoly && x.splneni.SkupinaID == group.Id).SingleOrDefault();
-		studentSplneniV2.Uspech = true;	
-		await Http.PutAsJsonAsync<StudentSplneni>($"{MyNavigationManager.BaseUri}api/studenti", studentSplneniV2);
+		StudentCompletion studentSplneniV2 = student.StudentCompletion
+		.Where(x => x.Completion.ChapterID == IdKapitoly && x.Completion.GroupID == group.Id).SingleOrDefault();
+		studentSplneniV2.Success = true;	
+		await Http.PutAsJsonAsync<StudentCompletion>($"{MyNavigationManager.BaseUri}api/studenti", studentSplneniV2);
 		student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/{group.Id}/{id}");
 		notice.ShowSuccess("Povoleno.", "Úspěch!");
 		clicked = false;
