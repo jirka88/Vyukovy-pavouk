@@ -23,8 +23,8 @@ namespace vyukovy_pavouk.Services
                .Where(id => id.Id == IdChapter)
                .Include(v => v.Links)
                .Include(z => z.Assignments)
-               .Include(p => p.ChapterPrerequisites)
-               .ThenInclude(p => p.Prerequisite)
+               .Include(p => p.ChapterPrerequisites.OrderBy(x => x.Prerequisite.PrerequisiteID))
+               .ThenInclude(p => p.Prerequisite)        
                .FirstOrDefaultAsync();
                 if(Chapter == null)
                 {
@@ -68,28 +68,51 @@ namespace vyukovy_pavouk.Services
 
             List<int> prerekvizityProtiSmazani = new List<int>();
             _dbContext.Entry(chapter).State = EntityState.Modified;
-            foreach (ChapterPrerequisite chapterPrerequisite in chapter.ChapterPrerequisites)
+            foreach (ChapterPrerequisite chapterPrerequisite in chapter.ChapterPrerequisites.ToList())
             {
                 //pokud se jedná o změněnou hodnotu 
                 if (chapterPrerequisite.Id != 0)
                 {
-                    //pokud je prerekvizita null víme, že už je v databázi a pouze upravíme vztah
+                    //pokud není prerekvizita null víme, že už je v databázi a pouze upravíme vztah
                     if (chapterPrerequisite.Prerequisite != null)
                     {
                         VyresVztahy(chapterPrerequisite);
                     }
-                    _dbContext.Entry(chapterPrerequisite).State = EntityState.Modified;
                     //ukládádám změněné kapitolyPrerekvizity id --> u mazání se pak tyto id nevyberou a tím pádem nesmažou, protože se jedná pouze o změnu 
                     prerekvizityProtiSmazani.Add(chapterPrerequisite.Id);
+                    _dbContext.Entry(chapterPrerequisite).State = EntityState.Modified;
+
                 }
                 //pokud to je přidaná hodnota 
                 else
                 {
-                    if (chapterPrerequisite.Prerequisite != null)
+                    //složí k uložení prerekvizity
+                    Prerequisite prerequisitePre = new Prerequisite();
+                    //slouží k uložení existujícího vztahu v DB mezi chapterPrerequisite a Prerequisite 
+                    Prerequisite TestIfPrerequisiteExistInDb = new Prerequisite();
+                    //pokud ChapterPrerequisite nemá načtenou svojí Prerequisite 
+                    if (chapterPrerequisite.Prerequisite == null)
                     {
-                        VyresVztahy(chapterPrerequisite);
+                        prerequisitePre = await _dbContext.Prerequisite.Where(x => x.Id == chapterPrerequisite.PrerequisiteID).SingleOrDefaultAsync();
+                        TestIfPrerequisiteExistInDb = await _dbContext.Prerequisite.Where(x => x.PrerequisiteID == prerequisitePre.PrerequisiteID).SingleOrDefaultAsync();
                     }
-                    _dbContext.Entry(chapterPrerequisite).State = EntityState.Added;
+                    //pokud jí už má 
+                    else
+                    {                
+                        TestIfPrerequisiteExistInDb = await _dbContext.Prerequisite.Where(x => x.PrerequisiteID == chapterPrerequisite.Prerequisite.PrerequisiteID).SingleOrDefaultAsync();
+                    }      
+                    ChapterPrerequisite test = _dbContext.ChapterPrerequisite.Where(x => x.ChapterID == chapter.Id && x.Prerequisite.PrerequisiteID == TestIfPrerequisiteExistInDb.PrerequisiteID).SingleOrDefault();
+                    //pokud je test null --> je potřeba navázat na kapitolu chapterPrerequisite s prerequisite, pokud není null --> je v DB a nic se nevytváří
+                    if (test == null)
+                    {
+                        if (chapterPrerequisite.Prerequisite != null)
+                        {
+                            VyresVztahy(chapterPrerequisite);
+                        }
+                        _dbContext.Entry(chapterPrerequisite).State = EntityState.Added;
+                    }
+                      
+
                 }
             }
             void VyresVztahy(ChapterPrerequisite chapterPrerequisite)
@@ -162,6 +185,8 @@ namespace vyukovy_pavouk.Services
             _dbContext.RemoveRange(linkForDelete);
             _dbContext.RemoveRange(assignmentForDelete);
             _dbContext.RemoveRange(prerequisiteForDelete);
+            //vymazání duplicitních prerekvizit 
+
             await _dbContext.SaveChangesAsync();
         }
     }

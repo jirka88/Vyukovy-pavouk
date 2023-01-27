@@ -133,7 +133,6 @@ else {
 	private void PrerekvizityShow(vyukovy_pavouk.Data.Chapter kapitola) {
 
 		searchPrerekvizity = new List<vyukovy_pavouk.Data.Chapter>();
-
 		foreach(ChapterPrerequisite prerekvizity in kapitola.ChapterPrerequisites) {
 
 			searchPrerekvizity.Add(chapters.Find(x => x.Id == prerekvizity.Prerequisite.PrerequisiteID));

@@ -1,5 +1,6 @@
 ﻿@page "/edit"
 @page "/edit/{IdKapitola:int}"
+@using Newtonsoft.Json
 @using vyukovy_pavouk.Data
 @using Microsoft.JSInterop;
 @inject IJSRuntime jsRuntime
@@ -79,7 +80,7 @@
 									c6.074-6.075,6.074-15.909,0-21.986L285.08,230.397z"/></svg></Fluent-Button>
 								}
 								<!-- zobrazení + tlačítka u aktualního vstupu && maximální počet 4 prerekvizity && pokud máme mín prerekvizit vstupů může být maximální počet prerekvizit-->
-								@if (chapter.ChapterPrerequisites.Count() - 1 == i && i < 3 && i < prerekvizity.Select(x => x.ChapterID).Distinct().Count() - 2 && prerekvizita.PrerequisiteID != 0 && prerekvizita.PrerequisiteID != -1)
+								@if (chapter.ChapterPrerequisites.Count() - 1 == i && i < 3 && i < prerequisites.Select(x => x.ChapterID).Distinct().Count() - 2 && prerekvizita.PrerequisiteID != 0 && prerekvizita.PrerequisiteID != -1)
 								{
 									<Fluent-button appearance="accent" class="create" @onclick="@CreatePrerequisite"><svg width="24" height="24" stroke="white" stroke-width="1" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
 								}
@@ -255,14 +256,18 @@
 		{
 			startChapter = true;
 		}
+		else {
+			loadedPrerequisitesId = JsonConvert.DeserializeObject<ChapterPrerequisite>(JsonConvert.SerializeObject(chapter.ChapterPrerequisites[0]));
+		}
 	}
 
 	public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
 	Group group = new Group();
-	List<ChapterPrerequisite> prerekvizity = new List<ChapterPrerequisite>();
+	List<ChapterPrerequisite> prerequisites = new List<ChapterPrerequisite>();
 	EditContext EditContext;
-	List<vyukovy_pavouk.Data.Chapter> chapters = new List<vyukovy_pavouk.Data.Chapter>();
-	List<vyukovy_pavouk.Data.Chapter> selectedChapters = new List<vyukovy_pavouk.Data.Chapter>();
+	List<Chapter> chapters = new List<Chapter>();
+	List<Chapter> selectedChapters = new List<Chapter>();
+	ChapterPrerequisite loadedPrerequisitesId = new ChapterPrerequisite();
 	@inject IToastService notice;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -281,10 +286,10 @@
 					dark = true;
 				}
 				group = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Chapter>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (group.Subject.Id));
+				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Chapter>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (group.Subject.Id));	
 				//vymazání upravované kapitoly --> jinak by se dala navázat kapitola sama na sebe
 				chapters.RemoveAt(chapters.FindIndex(x => x.Id == chapter.Id));
-				prerekvizity = await Http.GetFromJsonAsync<List<ChapterPrerequisite>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (group.Subject.Id));		
+				prerequisites = await Http.GetFromJsonAsync<List<ChapterPrerequisite>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (group.Subject.Id));		
 				EditContext = new EditContext(chapter);
 				IsLoaded = true;
 				load = true;
@@ -318,7 +323,7 @@
 			if (!startChapter)
 			{
 				int IDChapter = chapter.Id; 
-				foreach (ChapterPrerequisite prerekvizita in prerekvizity)
+				foreach (ChapterPrerequisite prerekvizita in prerequisites)
 				{	
 					//zjistí zdali IDPrerekvizity upravované kapitoly se rovná nějaké načtené prerekvizitě ID kapitole && ID upravované kapitoly se rovná prerekvizitě ID 
 					ChapterPrerequisite searchLoopChapter = chapter.ChapterPrerequisites.Where(x => x.Prerequisite.PrerequisiteID == prerekvizita.Chapter.Id && IDChapter == prerekvizita.Prerequisite.PrerequisiteID).SingleOrDefault();
@@ -335,31 +340,33 @@
 			{
 				chapter.ChapterPrerequisites[0].Prerequisite.PrerequisiteID = 0;
 			}
+
 			//kontrola zda-li se dané prerekvizity už nenachzejí v DB
-			foreach (var prerekvizita in prerekvizity)
+			foreach (var prerequisite in prerequisites)
 			{
 				if (globalIndexControl == chapter.ChapterPrerequisites.Count)
 				{
 					break;
-				}
-				for (var i = globalIndexControl; i < chapter.ChapterPrerequisites.Count; i++)
+				}			
+					for (var i = globalIndexControl; i < chapter.ChapterPrerequisites.Count; i++)
 				{
-					if (prerekvizita.Prerequisite.PrerequisiteID == chapter.ChapterPrerequisites[i].Prerequisite.PrerequisiteID)
-					{
-						//vymaže stejnou hodnotu u nově vytvořené instance kapitoly
-						int id = chapter.ChapterPrerequisites[i].Id;
-						chapter.ChapterPrerequisites.RemoveAt(i);
-						globalIndexControl++;
-						//přidá existujicí vztah mezi KapitolaPrerekvizita - Prerekvizita --> díky tomu nebudou vznikat duplicitní hodnoty
+					//ChapterPrerequisite test = loadedPrerequisitesId.Where(x => x.Prerequisite.PrerequisiteID == prerequisite.Prerequisite.PrerequisiteID).FirstOrDefault();				
+					//porovnává zdali upravená kapitola neobsahuje stejnou prerekvizitu jako  před úpravou  
+					if (prerequisite.Prerequisite.PrerequisiteID == chapter.ChapterPrerequisites[i].Prerequisite.PrerequisiteID)
+					{		
 						ChapterPrerequisite existujiciPrerekvizita = new ChapterPrerequisite();
-						existujiciPrerekvizita.PrerequisiteID = prerekvizita.PrerequisiteID;
+						//vymaže stejnou hodnotu u nově vytvořené instance kapitoly
+						int id = chapter.ChapterPrerequisites[i].Id;			
 						existujiciPrerekvizita.Id = id;
-						chapter.ChapterPrerequisites.Insert(0, existujiciPrerekvizita);
+						chapter.ChapterPrerequisites.RemoveAt(i);
+						//přidá existujicí vztah mezi KapitolaPrerekvizita - Prerekvizita --> díky tomu nebudou vznikat duplicitní hodnoty
+						existujiciPrerekvizita.PrerequisiteID = prerequisite.PrerequisiteID;
+						chapter.ChapterPrerequisites.Insert(0, existujiciPrerekvizita);						
+						globalIndexControl++;
+						break;
 					}
-				}
-			}
-
-			
+				}	
+			}	
 			await Http.PutAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitola", chapter);
 			MyNavigationManager.NavigateTo("/");
 			notice.ShowSuccess("Kapitola byla úspěšně upravena.", "Úspěch!");
@@ -396,7 +403,6 @@
 			//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
 			chapters.Remove(hledanaPrerekvizita);
 
-			//VybraneKapitoly.Add(hledanaPrerekvizita);
 			chapter.ChapterPrerequisites.Add(new ChapterPrerequisite() { Prerequisite = new Prerequisite() });
 		}
 
@@ -443,8 +449,15 @@
 	}
 	public void AddSelect(int index, Prerequisite prerekvizita)
 	{
+		//resetuje ID u prvního výběru pokud je změněn (u prvního výběru nedojde k jeho smazání)
+		if(chapter.ChapterPrerequisites.Count() == 1) {
+
+			if(chapter.ChapterPrerequisites[0].Prerequisite.PrerequisiteID != loadedPrerequisitesId.Prerequisite.PrerequisiteID && chapter.ChapterPrerequisites[0].Id != 0) {
+				chapter.ChapterPrerequisites[0].Id = 0;
+			}
+		}
 		//vyhledá kapitolu po výběru prerekvizity
-		vyukovy_pavouk.Data.Chapter HledanaKapitola = new vyukovy_pavouk.Data.Chapter();
+		Chapter HledanaKapitola = new Chapter();
 		HledanaKapitola = chapters.Find(x => x.Id == prerekvizita.PrerequisiteID);
 		//test jestli se nejedná o načtení
 		if (HledanaKapitola != null)

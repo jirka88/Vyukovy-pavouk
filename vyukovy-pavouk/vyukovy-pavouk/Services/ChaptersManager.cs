@@ -112,7 +112,7 @@ namespace vyukovy_pavouk.Services
         {
             return await _dbContext.Chapters
                 .Where(p => p.SubjectID == IdSubject) 
-                .Include(p => p.ChapterPrerequisites)
+                .Include(p => p.ChapterPrerequisites.OrderBy(x => x.Prerequisite.PrerequisiteID))
                 .ThenInclude(p => p.Prerequisite)
                 .ToListAsync();
         }
