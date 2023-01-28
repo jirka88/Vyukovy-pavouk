@@ -1,5 +1,5 @@
 ﻿@page "/Kapitola"
-@page "/Kapitola/{IdKapitola:int}/{status:bool}"
+@page "/Kapitola/{IdChapter:int}/{status:bool}"
 @using vyukovy_pavouk.Components;
 @using vyukovy_pavouk.Data
 @inject HttpClient Http
@@ -145,13 +145,13 @@ else {
 @code {
 
 	[Parameter]
-	public int IdKapitola { get; set; }
+	public int IdChapter { get; set; }
 	[Parameter]
 	public bool status { get; set; }
 
 	private Data.Group group = new Data.Group();
 	private Chapter chapter { get; set; }
-	private List<ChapterPrerequisite> prerequisite = new List<ChapterPrerequisite>();
+	private List<ChapterPrerequisite> prerequisites = new List<ChapterPrerequisite>();
 	private List<StudentCompletion> completion = new List<StudentCompletion>();
 	private bool IsLoaded = false;
 	private bool ModelHidden { get; set; } = true;
@@ -189,8 +189,8 @@ else {
 					//slouží pouze pro učitele --> získavají se zde prerekvizity, které se pak používají při kontrole u mazání kapitoly  
 					if (UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě")
 					{
-                            group = await Http.GetFromJsonAsync<Data.Group>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-						prerequisite = await Http.GetFromJsonAsync<List<ChapterPrerequisite>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (group.Subject.Id));
+                        group = await Http.GetFromJsonAsync<Data.Group>($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
+						prerequisites = await Http.GetFromJsonAsync<List<ChapterPrerequisite>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (group.Subject.Id));
 					}	
 					IsLoaded = true;
 				}
@@ -203,7 +203,7 @@ else {
 		}
 	}
 	private async Task CallApiKapitola() {
-		chapter = await Http.GetFromJsonAsync<vyukovy_pavouk.Data.Chapter>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdKapitola);
+		chapter = await Http.GetFromJsonAsync<Chapter>($"{MyNavigationManager.BaseUri}api/kapitola/" + IdChapter);
 	}
 	private void CloseDialog() => ModelHidden = true;
 	private void CloseDialog2() => ModelHiddenError = true;
@@ -211,7 +211,7 @@ else {
 	private void OpenDialog()  {
 		bool NelzeSmazat = false;
 		//kontrola zdali kapitola lze smazat --> pokud je samotná kapitola potřeba pro odemčení jiné --> nelze ji smazat 
-		foreach (ChapterPrerequisite Kprerekvizita in prerequisite)
+		foreach (ChapterPrerequisite Kprerekvizita in prerequisites)
 		{
 			if(Kprerekvizita.Prerequisite.PrerequisiteID == chapter.Id) {
 				NelzeSmazat = true;

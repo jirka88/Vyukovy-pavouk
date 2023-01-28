@@ -13,8 +13,18 @@
 @inject IGroupToken GroupToken
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 
+@if(!isInTeamsShow) {
+	<div class="info d-flex justify-content-center flex-column align-items-center w-100">
+			<p class="text-center fw-bold">
+				Aplikace pro&nbsp;MS Teams pravděpodobně neběží v&nbsp;MS Teams. Pokud aplikace běží v&nbsp;MS Teams prosím obnovte tuto stránku!
+				<br>Pokud chyba přetrvává kontaktujte administrátora!
+			</p>
+			<FluentButton Appearance="Appearance.Accent" @onclick='() => MyNavigationManager.NavigateTo("/tab",true)'>Obnovit</FluentButton>
+		</div>
+}
 @if (IsLoaded) {
-	<h1 class="text-center py-2 pb-4 @(dark ? "text-white" : "")">Obsah</h1>
+	@if(isInTeamsShow) {
+		<h1 class="text-center py-2 pb-4 @(dark ? "text-white" : "")">Obsah</h1>
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
 		@if(chapters.Count() > 0) {
 			@if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "správce sítě" || UserToken.Profile.JobTitle.ToLower() == "učitel") {
@@ -75,6 +85,7 @@
 		
 
 	</div>
+	}
 }
 else {
 	<div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
@@ -82,7 +93,16 @@ else {
 	</div>
 }
 <link rel="stylesheet" href="css/Main-Kapitoly.css" />
+<style>
+	.info {
+		height: 100vh;
+	}
 
+	fluent-button {
+		width: 100px;
+		height: 50px;
+	}
+</style>
 @code {
 
 	private bool IsLoaded = false;
@@ -92,38 +112,53 @@ else {
 	private List<ChapterPrerequisite> Prerekvizity = new List<ChapterPrerequisite>();
 	private List<vyukovy_pavouk.Data.Chapter> searchPrerekvizity = new List<vyukovy_pavouk.Data.Chapter>();
 	private bool dark = false;
+	bool isInTeams;
+	bool isInTeamsShow = true;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if(firstRender) {
+			isInTeams = await MicrosoftTeams.IsInTeams();
+			if (isInTeams)
+			{
+				await UserToken.GetUserAsync(sessionStorage);
+				await GroupToken.GetGroupAsync(MicrosoftTeams);
+				if (UserToken.Profile == null)
+				{
+					MyNavigationManager.NavigateTo("/tab");
+				}
+				else
+				{
+					group = await Http.GetFromJsonAsync<Data.Group>
+				($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
+					//kontrola zdali skupina byla resetovaná či smazaná --> vrátí studenta k úvodní stránce 
+					if (group.TmGroup != null)
+					{
 
-			await UserToken.GetUserAsync(sessionStorage);
-			await GroupToken.GetGroupAsync(MicrosoftTeams);
-			if(UserToken.Profile == null)  {
-				MyNavigationManager.NavigateTo("/tab");
+						if (GroupToken.teamsContext.Theme == "dark" || GroupToken.teamsContext.Theme == "contrast")
+						{
+							dark = true;
+						}
+						chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Chapter>>
+						($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.Subject.Id)));
+
+						//pokud je student, zjistí informace o progresu atd..
+						if (UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "žák školy")
+						{
+							student = await Http.GetFromJsonAsync<Student>
+							($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(group.Id)
+							+ "/" + UserToken.Profile.Mail);
+						}
+						IsLoaded = true;
+					}
+					else
+					{
+						MyNavigationManager.NavigateTo("/tab");
+					}
+				}
 			}
 			else {
-                    group = await Http.GetFromJsonAsync<Data.Group>
-				($"{MyNavigationManager.BaseUri}api/Skupina/" + (GroupToken.teamsContext.TeamId).ToString());
-				//kontrola zdali skupina byla resetovaná či smazaná --> vrátí studenta k úvodní stránce 
-				if(group.TmGroup != null) {
-
-				if(GroupToken.teamsContext.Theme == "dark" || GroupToken.teamsContext.Theme == "contrast") {
-					dark = true;
-				}
-				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Chapter>>
-				($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.Subject.Id)));
-
-				//pokud je student, zjistí informace o progresu atd..
-				if(UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "žák školy") {
-					student = await Http.GetFromJsonAsync<Student>
-					($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(group.Id)
-					+ "/" + UserToken.Profile.Mail);
-				}
+				isInTeamsShow = false;
 				IsLoaded = true;
-				}
-				else {
-					MyNavigationManager.NavigateTo("/tab");
-				}	
 			}
 		}
 		StateHasChanged();
