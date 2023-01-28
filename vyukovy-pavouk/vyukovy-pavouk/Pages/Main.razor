@@ -114,6 +114,7 @@ else {
 	private bool dark = false;
 	bool isInTeams;
 	bool isInTeamsShow = true;
+	bool cancelLoading = false;
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if(firstRender) {
@@ -133,7 +134,6 @@ else {
 					//kontrola zdali skupina byla resetovaná či smazaná --> vrátí studenta k úvodní stránce 
 					if (group.TmGroup != null)
 					{
-
 						if (GroupToken.teamsContext.Theme == "dark" || GroupToken.teamsContext.Theme == "contrast")
 						{
 							dark = true;
@@ -142,13 +142,19 @@ else {
 						($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.Subject.Id)));
 
 						//pokud je student, zjistí informace o progresu atd..
-						if (UserToken.Profile.JobTitle == null || UserToken.Profile.JobTitle.ToLower() == "žák školy")
+						if (UserToken.Profile.JobTitle.ToLower() == "žák školy")
 						{
 							student = await Http.GetFromJsonAsync<Student>
 							($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(group.Id)
 							+ "/" + UserToken.Profile.Mail);
+							if(student.GroupStudents.Where(x => x.GroupID == group.Id).SingleOrDefault() == null) {
+							MyNavigationManager.NavigateTo("/tab");
+							cancelLoading = true;
+							}
 						}
-						IsLoaded = true;
+						if(!cancelLoading) {
+							IsLoaded = true;
+						}	
 					}
 					else
 					{
@@ -165,17 +171,16 @@ else {
 	}
 
 	//pokud je kapitola uzamčena vypíše prerekvizity, které je nutno splnit i s jejím názvem (v databázi je pouze ID kapitoly)
-	private void PrerekvizityShow(vyukovy_pavouk.Data.Chapter kapitola) {
+	private void PrerekvizityShow(Chapter chapter) {
 
-		searchPrerekvizity = new List<vyukovy_pavouk.Data.Chapter>();
-		foreach(ChapterPrerequisite prerekvizity in kapitola.ChapterPrerequisites) {
+		searchPrerekvizity = new List<Chapter>();
+		foreach(ChapterPrerequisite chapterPrerequisite in chapter.ChapterPrerequisites) {
 
-			searchPrerekvizity.Add(chapters.Find(x => x.Id == prerekvizity.Prerequisite.PrerequisiteID));
+			searchPrerekvizity.Add(chapters.Find(x => x.Id == chapterPrerequisite.Prerequisite.PrerequisiteID));
 			//CheckChapter je prerekvizita kapitoly --> uložíme jí jako kapitolu 
-			vyukovy_pavouk.Data.Chapter CheckChapter = searchPrerekvizity.Find(x => x.Id == prerekvizity.Prerequisite.PrerequisiteID);
-
+			Chapter CheckChapter = searchPrerekvizity.Find(x => x.Id == chapterPrerequisite.Prerequisite.PrerequisiteID);
 			//pokud prerekvizita kapitoly je odkazána na prerekvizitu, která je také potřeba pro splnění kapitoly --> nezobrazí se 
-			foreach(ChapterPrerequisite Prerequisite in kapitola.ChapterPrerequisites) {
+			foreach(ChapterPrerequisite Prerequisite in chapter.ChapterPrerequisites) {
 				//pokud se shodujou Prerekvizity z kapitoly s prerekvizitami od CheckChapter  --> víme, že ji nepotřebujeme zobrazovat 
 				ChapterPrerequisite CheckChapterV2 = CheckChapter.ChapterPrerequisites.Where(x => x.Prerequisite.PrerequisiteID == Prerequisite.Prerequisite.PrerequisiteID).SingleOrDefault();
 				if (CheckChapterV2 != null) {
