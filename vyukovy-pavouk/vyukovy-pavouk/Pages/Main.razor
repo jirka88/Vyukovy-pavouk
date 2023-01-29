@@ -108,9 +108,9 @@ else {
 	private bool IsLoaded = false;
 	private Data.Group group = new Data.Group();
 	private Student student = new Student();
-	private List<vyukovy_pavouk.Data.Chapter> chapters;
-	private List<ChapterPrerequisite> Prerekvizity = new List<ChapterPrerequisite>();
-	private List<vyukovy_pavouk.Data.Chapter> searchPrerekvizity = new List<vyukovy_pavouk.Data.Chapter>();
+	private List<Chapter> chapters;
+	private List<ChapterPrerequisite> prerequisites = new List<ChapterPrerequisite>();
+	private List<Chapter> searchPrerekvizity = new List<Chapter>();
 	private bool dark = false;
 	bool isInTeams;
 	bool isInTeamsShow = true;
@@ -138,7 +138,7 @@ else {
 						{
 							dark = true;
 						}
-						chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Chapter>>
+						chapters = await Http.GetFromJsonAsync<List<Chapter>>
 						($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.Subject.Id)));
 
 						//pokud je student, zjistí informace o progresu atd..
@@ -195,43 +195,43 @@ else {
 		}
 	}
 	//řeší jestli daná kapitola je pro studenta splněna, odemčena či uzamnčena 
-	private int Check(vyukovy_pavouk.Data.Chapter kapitola) {
+	private int Check(Chapter chapter) {
 
-		if(Prerekvizity.Count() > 0) {
-			Prerekvizity.Clear();
+		if(prerequisites.Count() > 0) {
+			prerequisites.Clear();
 		}
 		ChapterPrerequisite save = new ChapterPrerequisite();
-		foreach (var splneni in student.StudentCompletion
+		foreach (var completion in student.StudentCompletion
 			.Select(x => x.Completion))
 		{
 			//pokud je splněno 
-			if(splneni.ChapterID == kapitola.Id && student.StudentCompletion
-				.Find(x => x.Completion.Id == splneni.Id).Success == true) {
+			if(completion.ChapterID == chapter.Id && student.StudentCompletion
+				.Find(x => x.Completion.Id == completion.Id).Success == true) {
 				return 1;
 			}
 			// neúspěšně splněno
-			else if (splneni.ChapterID == kapitola.Id && student.StudentCompletion
-				.Find(x => x.CompletionID == splneni.Id).Success == false)
+			else if (completion.ChapterID == chapter.Id && student.StudentCompletion
+				.Find(x => x.CompletionID == completion.Id).Success == false)
 			{
 				return 2; 
 			}
 			//ukládání pokud je odemčena
-			save = kapitola.ChapterPrerequisites.Find(x => x.Prerequisite.PrerequisiteID == splneni.ChapterID);
+			save = chapter.ChapterPrerequisites.Find(x => x.Prerequisite.PrerequisiteID == completion.ChapterID);
 			if (save != null) {
-				Prerekvizity.Add(save);
+				prerequisites.Add(save);
 			}
 		}
 		//kontrola zdali je odemčena splněné prerekvizity pocet == celkovy pocet prerekvizit v kapitole 
-		if(Prerekvizity.Count() == kapitola.ChapterPrerequisites.Count()) {
+		if(prerequisites.Count() == chapter.ChapterPrerequisites.Count()) {
 			//kontrola zdali není 
-			foreach (ChapterPrerequisite kapitolaPrerekvizita in kapitola.ChapterPrerequisites)
+			foreach (ChapterPrerequisite chapterPrerequisite in chapter.ChapterPrerequisites)
 			{
-				int IDChapterPrerequisite = kapitolaPrerekvizita.Prerequisite.PrerequisiteID;
-				StudentCompletion studentTestSplneni = new StudentCompletion();
-				studentTestSplneni = student.StudentCompletion
+				int IDChapterPrerequisite = chapterPrerequisite.Prerequisite.PrerequisiteID;
+				StudentCompletion studentTestCompletion = new StudentCompletion();
+				studentTestCompletion = student.StudentCompletion
 				.Where(x => x.Success == false && x.Completion.ChapterID == IDChapterPrerequisite)
 				.SingleOrDefault();
-				if(studentTestSplneni != null) {
+				if(studentTestCompletion != null) {
 					return 4;
 				}
 			}

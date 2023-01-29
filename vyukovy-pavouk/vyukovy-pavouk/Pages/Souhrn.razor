@@ -141,13 +141,16 @@ else
 					dark = true;
 				}
 				//získání skupiny z databáze
-				group = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/Skupina/{GroupToken.teamsContext.TeamId}");
+				group = await Http.GetFromJsonAsync<Group>
+				($"{MyNavigationManager.BaseUri}api/Skupina/{GroupToken.teamsContext.TeamId}");
 				// získání uživatelů a jejich progres v plnění kapitol
-				students = await Http.GetFromJsonAsync<List<GroupStudent>>($"{MyNavigationManager.BaseUri}api/studenti/{group.Id}");
+				students = await Http.GetFromJsonAsync<List<GroupStudent>>
+				($"{MyNavigationManager.BaseUri}api/studenti/{group.Id}");
 				//získání počtů všech dostupných kapitol
 				if (students.Count() > 0)
 				{
-					maxCountChapter = await Http.GetFromJsonAsync<int>($"{MyNavigationManager.BaseUri}api/predmet/{group.Subject.Id}");
+					maxCountChapter = await Http.GetFromJsonAsync<int>
+					($"{MyNavigationManager.BaseUri}api/predmet/{group.Subject.Id}");
 				}
 				isLoaded = true;
 			}

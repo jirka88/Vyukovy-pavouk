@@ -157,7 +157,7 @@
 			//získání ID nově vytvořené skupiny
 			Group Getskupina = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/Skupina/" + subject.Group.TmGroup);
 			//vytvoření úvodní prerekvizity navazané na skupinu --> 0
-			await VytvorUvodniSplneni(Getskupina);	
+			await CreateIntroductionCompletion(Getskupina);	
 			MyNavigationManager.NavigateTo("/");
 		}
 		else {
@@ -165,11 +165,11 @@
 		}
 
 	}
-	public async Task VytvorUvodniSplneni(Group skupina) {
-		Completion splneni = new Completion();
-		splneni.GroupID = skupina.Id;
-		splneni.ChapterID = 0;
-		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina/uvod", splneni);
+	private async Task CreateIntroductionCompletion(Group group) {
+		Completion completion = new Completion();
+		completion.GroupID = group.Id;
+		completion.ChapterID = 0;
+		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina/uvod", completion);
 	}
 	private async Task CreateIfExistRename() {
 		controlSubject = subjects.Find(x => x.Name.ToLower() == group.Subject.Name.ToLower());
@@ -182,7 +182,7 @@
 			//získání ID nově vytvořené skupiny
 			Group GetGroup = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
 			//vytvoření úvodní prerekvizity navazané na skupinu --> 0
-			await VytvorUvodniSplneni(GetGroup);
+			await CreateIntroductionCompletion(GetGroup);
 
 			foreach (Chapter chapter in chapters)
 			{
@@ -199,7 +199,7 @@
 		
 	}
 	//překopíruje na novou skupinu existující předmět s kapitolami -->
-	public async Task CreateIfExist() {
+	private async Task CreateIfExist() {
 		//přidání ID skupiny 
 		group.TmGroup = (GroupToken.teamsContext.TeamId).ToString();
 		//získání ID předmětu, který si učitel vybral 
@@ -210,36 +210,29 @@
 		group.Subject.Private = true;
 		group.Subject.Name = searchSubject.Name.ToString();
 		//pokud předmět byl pouze resetovaný zpátky ho naváže 
-		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina/pripoj", group);
+		await Http.PostAsJsonAsync
+		($"{MyNavigationManager.BaseUri}api/skupina/pripoj", group);
 		//získání ID nově navázané skupiny --> pokud neexistuje musí se struktura (předmět) překopírovat 
-		Group Getskupina = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
+		Group Getskupina = await Http.GetFromJsonAsync<Group>
+		($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
 
 		if(Getskupina.TmGroup == null) {
 		//přidání příjmení učitela za název předmětu
-		group.Subject.Name = $"{searchSubject.Name.ToString()} - {UserToken.Profile.Surname.ToString()}";
+		group.Subject.Name = 
+		$"{searchSubject.Name.ToString()} - {UserToken.Profile.Surname.ToString()}";
 		modelHidden2 = false;
-		/*await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/skupina", group);
-		//získání ID nově vytvořené skupiny
-		Skupina GetGroup = await Http.GetFromJsonAsync<Skupina>($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
-		//vytvoření úvodní prerekvizity navazané na skupinu --> 0
-		await VytvorUvodniSplneni(GetGroup);
-
-		foreach (Kapitola chapter in chapters)
-		{
-			chapter.PredmetID = GetGroup.predmet.Id;
-		}
-		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/kapitoly/", chapters);*/
 		}
 		else {
 		//vytvoří úvodní splnění pro navázanou skupinu s předmětem 
-		await VytvorUvodniSplneni(Getskupina);
+		await CreateIntroductionCompletion(Getskupina);
 		MyNavigationManager.NavigateTo("/");
 		}
 
 	}
 	public void CloseDialog() => modelHidden = true;
 	private bool IfAllPrivate() {
-		if(subjects.Where(x => x.Private == true && x.Created != UserToken.Profile.Mail).Count() != subjects.Count()) {
+		if(subjects.Where(x => x.Private == true 
+			&& x.Created != UserToken.Profile.Mail).Count() != subjects.Count()) {
 			return false;
 		}
 		return true;

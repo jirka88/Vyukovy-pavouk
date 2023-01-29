@@ -138,7 +138,8 @@
 					//pokud existuje přesměrujeme na kapitoly + vytvoříme do databáze studenta patřící pod danou skupinu pokud v ní není
 					else if (UserToken.Profile.JobTitle.ToLower() == "žák školy")
 					{
-						student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/{group.Id}/{UserToken.Profile.Mail}");
+						student = await Http.GetFromJsonAsync<Student>
+						($"{MyNavigationManager.BaseUri}api/studenti/{group.Id}/{UserToken.Profile.Mail}");
 						//pokud student neexistuje v databázi vytvoří se a propojí se skupinou
 						if (student.Email == null)
 						{
@@ -147,14 +148,16 @@
 							studentInfo.Email = UserToken.Profile.Mail;
 							studentInfo.GroupStudents.Add(new GroupStudent());
 							studentInfo.GroupStudents[0].GroupID = group.Id;
-							await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti", studentInfo);
+							await Http.PostAsJsonAsync
+							($"{MyNavigationManager.BaseUri}api/studenti", studentInfo);
 						}
 						//pokud student už existuje v databázi, ale není navázán v naší skupině v DB
 						else if (student.GroupStudents.Find(x => x.GroupID == group.Id) == null)
 						{
 							skupinaStudentConnect.GroupID = group.Id;
 							skupinaStudentConnect.StudentID = student.Id;
-							await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/connect", skupinaStudentConnect);
+							await Http.PostAsJsonAsync
+							($"{MyNavigationManager.BaseUri}api/studenti/connect", skupinaStudentConnect);
 						}
 						MyNavigationManager.NavigateTo("/");
 					}
