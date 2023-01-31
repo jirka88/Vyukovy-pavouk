@@ -87,9 +87,6 @@
 					<td colspan="3" class="text-center @(dark ? "text-white" : "")">Není co povolit!</td>
 					</tr>
 				}
-				
-				
-			
 		</tbody>
 	</table>
 }
@@ -186,16 +183,19 @@ else {
 		}
 	}
 	//vytvoření nového splnění pro studenta
-	private async Task EnableNewChapter(int IdKapitoly, bool uspech) {
+	private async Task EnableNewChapter(int IdChapter, bool success) {
 		clicked = true;
-		StudentCompletion studentSplneni = new StudentCompletion() {Completion = new Completion()};
-		studentSplneni.StudentID = student.Id;
-		studentSplneni.Success = uspech;
-		studentSplneni.Completion.ChapterID = IdKapitoly;
-		studentSplneni.Completion.GroupID = group.Id;
-		await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/studenti/splneni",studentSplneni);
-		student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/{group.Id}/{id}");
-		if(uspech) {
+		StudentCompletion studentCompletion = new StudentCompletion()
+		{Completion = new Completion()};
+		studentCompletion.StudentID = student.Id;
+		studentCompletion.Success = success;
+		studentCompletion.Completion.ChapterID = IdChapter;
+		studentCompletion.Completion.GroupID = group.Id;
+		await Http.PostAsJsonAsync
+		($"{MyNavigationManager.BaseUri}api/studenti/splneni",studentCompletion);
+		student = await Http.GetFromJsonAsync<Student>
+		($"{MyNavigationManager.BaseUri}api/studenti/progres/{group.Id}/{id}");
+		if(success) {
 			notice.ShowSuccess("Povoleno.", "Úspěch!");
 		}
 		else {
@@ -205,12 +205,12 @@ else {
 		await InvokeAsync(StateHasChanged);
 	}
 	//povolení neúspěšné kapitoly  
-	private async Task RepairChapter(int IdKapitoly) {
+	private async Task RepairChapter(int IdChapter) {
 		clicked = true;
-		StudentCompletion studentSplneniV2 = student.StudentCompletion
-		.Where(x => x.Completion.ChapterID == IdKapitoly && x.Completion.GroupID == group.Id).SingleOrDefault();
-		studentSplneniV2.Success = true;	
-		await Http.PutAsJsonAsync<StudentCompletion>($"{MyNavigationManager.BaseUri}api/studenti", studentSplneniV2);
+		StudentCompletion studentCompletion = student.StudentCompletion
+		.Where(x => x.Completion.ChapterID == IdChapter && x.Completion.GroupID == group.Id).SingleOrDefault();
+		studentCompletion.Success = true;	
+		await Http.PutAsJsonAsync<StudentCompletion>($"{MyNavigationManager.BaseUri}api/studenti", studentCompletion);
 		student = await Http.GetFromJsonAsync<Student>($"{MyNavigationManager.BaseUri}api/studenti/progres/{group.Id}/{id}");
 		notice.ShowSuccess("Povoleno.", "Úspěch!");
 		clicked = false;

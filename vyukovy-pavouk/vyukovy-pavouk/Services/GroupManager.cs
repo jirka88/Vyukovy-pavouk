@@ -109,16 +109,12 @@ namespace vyukovy_pavouk.Services
             _dbContext.Entry(group).State = EntityState.Modified;
 
             //vymazání napojení
-            List<GroupStudent> SkupinaStudent = await _dbContext.GroupStudent
-            .Where(x => x.GroupID == Id).ToListAsync();    
+            List<GroupStudent> SkupinaStudent = await _dbContext.GroupStudent.Where(x => x.GroupID == Id).ToListAsync();    
            _dbContext.RemoveRange(SkupinaStudent);
             //vymazání splnění 
-            List<Completion> splneni = await _dbContext.Completion
-                .Where(x => x.GroupID == Id).ToListAsync();
+            List<Completion> splneni = await _dbContext.Completion.Where(x => x.GroupID == Id).ToListAsync();
             _dbContext.RemoveRange(splneni);    
             await _dbContext.SaveChangesAsync();
         }
-
-        
     }
 }

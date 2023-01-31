@@ -155,9 +155,9 @@
 			//vytvoření nového předmětu se skupinou
 			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", subject);
 			//získání ID nově vytvořené skupiny
-			Group Getskupina = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/Skupina/" + subject.Group.TmGroup);
+			Group GetGroup = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/Skupina/" + subject.Group.TmGroup);
 			//vytvoření úvodní prerekvizity navazané na skupinu --> 0
-			await CreateIntroductionCompletion(Getskupina);	
+			await CreateIntroductionCompletion(GetGroup);	
 			MyNavigationManager.NavigateTo("/");
 		}
 		else {
