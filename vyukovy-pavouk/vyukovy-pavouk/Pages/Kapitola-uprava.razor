@@ -385,23 +385,23 @@
 	}
 	private void CreatePrerequisite()
 	{
-		bool vytvor = true;
+		bool create = true;
 		foreach (ChapterPrerequisite item in chapter.ChapterPrerequisites)
 		{
 			if (item.Prerequisite.PrerequisiteID == 0)
 			{
-				vytvor = false;
+				create = false;
 				break;
 			}
 		}
-		if (vytvor)
+		if (create)
 		{
 			//najde třídu prerekvizity, kterou jsme si vybrali
-			vyukovy_pavouk.Data.Chapter hledanaPrerekvizita = new vyukovy_pavouk.Data.Chapter();
+			vyukovy_pavouk.Data.Chapter searchPrerequisite = new vyukovy_pavouk.Data.Chapter();
 
-			hledanaPrerekvizita = chapters.Find(x => x.Id == chapter.ChapterPrerequisites[globalIndexPrerekvizita].Prerequisite.PrerequisiteID);
+			searchPrerequisite = chapters.Find(x => x.Id == chapter.ChapterPrerequisites[globalIndexPrerekvizita].Prerequisite.PrerequisiteID);
 			//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
-			chapters.Remove(hledanaPrerekvizita);
+			chapters.Remove(searchPrerequisite);
 
 			chapter.ChapterPrerequisites.Add(new ChapterPrerequisite() { Prerequisite = new Prerequisite() });
 		}
@@ -411,11 +411,11 @@
 	private void CreatePrerequisiteReadOnly()
 	{
 		//najde třídu prerekvizity, kterou jsme si vybrali
-		vyukovy_pavouk.Data.Chapter hledanaPrerekvizita = new vyukovy_pavouk.Data.Chapter();
+		vyukovy_pavouk.Data.Chapter searchPrerequisite = new vyukovy_pavouk.Data.Chapter();
 
-		hledanaPrerekvizita = chapters.Find(x => x.Id == chapter.ChapterPrerequisites[globalIndexPrerekvizita].Prerequisite.PrerequisiteID);
+		searchPrerequisite = chapters.Find(x => x.Id == chapter.ChapterPrerequisites[globalIndexPrerekvizita].Prerequisite.PrerequisiteID);
 		//vymažeme ze zobrazení u selectů už vybranou prerekvizitu
-		chapters.Remove(hledanaPrerekvizita);
+		chapters.Remove(searchPrerequisite);
 
 	}
 	private void DeletePrerequisite(int index)
@@ -447,20 +447,23 @@
 		chapters = chapters.OrderBy(x => x.Id).ToList();
 
 	}
-	public void AddSelect(int index, Prerequisite prerekvizita)
+	public void AddSelect(int index, Prerequisite prerequisite)
 	{
 		//resetuje ID u prvního výběru pokud je změněn (u prvního výběru nedojde k jeho smazání)
 		if(chapter.ChapterPrerequisites.Count() == 1) {
-
-			if(chapter.ChapterPrerequisites[0].Prerequisite.PrerequisiteID != loadedPrerequisitesId.Prerequisite.PrerequisiteID && chapter.ChapterPrerequisites[0].Id != 0) {
-				chapter.ChapterPrerequisites[0].Id = 0;
+			//pokud je úvodní prerekvizita -> neřeší se to 
+				if(chapter.ChapterPrerequisites[0].Prerequisite.PrerequisiteID != 0 && chapter.ChapterPrerequisites[0].Prerequisite.PrerequisiteID != -1 ) {
+					if(chapter.ChapterPrerequisites[0].Prerequisite.PrerequisiteID != loadedPrerequisitesId.Prerequisite.PrerequisiteID && chapter.ChapterPrerequisites[0].Id != 0) {
+					chapter.ChapterPrerequisites[0].Id = 0;
+				}
 			}
+			
 		}
 		//vyhledá kapitolu po výběru prerekvizity
-		Chapter HledanaKapitola = new Chapter();
-		HledanaKapitola = chapters.Find(x => x.Id == prerekvizita.PrerequisiteID);
+		Chapter SearchChapter = new Chapter();
+		SearchChapter = chapters.Find(x => x.Id == prerequisite.PrerequisiteID);
 		//test jestli se nejedná o načtení
-		if (HledanaKapitola != null)
+		if (SearchChapter != null)
 		{
 			//funguje jako přepis jednotlivého výběru př: vyberu kapitola1 a pak se rozhodnu pro jinou kapitolu vymažu kapitolu1 z listu výběr
 			if (selectedChapters.Count() > index)
@@ -468,7 +471,7 @@
 				selectedChapters.RemoveAt(index);
 			}
 			//vložím aktuální výběr na svůj index
-			selectedChapters.Insert(index, HledanaKapitola);
+			selectedChapters.Insert(index, SearchChapter);
 		}
 
 	}

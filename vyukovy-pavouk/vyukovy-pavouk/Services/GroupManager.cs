@@ -43,16 +43,15 @@ namespace vyukovy_pavouk.Services
         //zeptá se zda-li náš Teams v MS Teamu je v databázi --> pokud není, učitel ho bude muset založit s názvem předmetu v Tab 
         public async Task<Group> GetGroup(string IDTeam)
         {           
-                Group group = await _dbContext.Group
-                    .Where(s => s.TmGroup == IDTeam)
-                    .Include(p => p.Subject)
-                    .FirstOrDefaultAsync();
+            Group group = await _dbContext.Group
+                .Where(s => s.TmGroup == IDTeam)
+                .Include(p => p.Subject)
+                .FirstOrDefaultAsync();
             if(group == null)
             {
                 group = new Group();
             }
             return group;           
-      
         }
    
         public async Task DeleteGroup(int Id)

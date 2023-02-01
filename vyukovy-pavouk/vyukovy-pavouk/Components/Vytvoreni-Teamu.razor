@@ -155,9 +155,9 @@
 			//vytvoření nového předmětu se skupinou
 			await Http.PostAsJsonAsync($"{MyNavigationManager.BaseUri}api/predmet", subject);
 			//získání ID nově vytvořené skupiny
-			Group GetGroup = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/Skupina/" + subject.Group.TmGroup);
+			Group getGroup = await Http.GetFromJsonAsync<Group>($"{MyNavigationManager.BaseUri}api/Skupina/" + subject.Group.TmGroup);
 			//vytvoření úvodní prerekvizity navazané na skupinu --> 0
-			await CreateIntroductionCompletion(GetGroup);	
+			await CreateIntroductionCompletion(getGroup);	
 			MyNavigationManager.NavigateTo("/");
 		}
 		else {
@@ -213,10 +213,10 @@
 		await Http.PostAsJsonAsync
 		($"{MyNavigationManager.BaseUri}api/skupina/pripoj", group);
 		//získání ID nově navázané skupiny --> pokud neexistuje musí se struktura (předmět) překopírovat 
-		Group Getskupina = await Http.GetFromJsonAsync<Group>
+		Group getGroup = await Http.GetFromJsonAsync<Group>
 		($"{MyNavigationManager.BaseUri}api/skupina/" + GroupToken.teamsContext.TeamId);
 
-		if(Getskupina.TmGroup == null) {
+		if(getGroup.TmGroup == null) {
 		//přidání příjmení učitela za název předmětu
 		group.Subject.Name = 
 		$"{searchSubject.Name.ToString()} - {UserToken.Profile.Surname.ToString()}";
@@ -224,7 +224,7 @@
 		}
 		else {
 		//vytvoří úvodní splnění pro navázanou skupinu s předmětem 
-		await CreateIntroductionCompletion(Getskupina);
+		await CreateIntroductionCompletion(getGroup);
 		MyNavigationManager.NavigateTo("/");
 		}
 
