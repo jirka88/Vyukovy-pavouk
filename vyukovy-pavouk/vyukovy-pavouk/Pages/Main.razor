@@ -24,7 +24,7 @@
 }
 @if (IsLoaded) {
 	@if(isInTeamsShow) {
-		<h1 class="text-center py-2 pb-4 @(dark ? "text-white" : "")">Obsah</h1>
+		<h1 class="text-center py-2 pb-4 @(dark ? "text-white" : "")" id="top">Obsah</h1>
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
 		@if(chapters.Count() > 0) {
 			@if(UserToken.Profile.JobTitle.ToLower() == "správce sítě" || UserToken.Profile.JobTitle.ToLower() == "učitel") {
@@ -76,7 +76,7 @@
 					}
 				}
 			}
-			
+			<FluentButton class="navigationTop" Appearance="Appearance.Accent" @onclick="scrollTop"><svg width="160" height="160" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m7.293 8.293 3.995-4a1 1 0 0 1 1.32-.084l.094.083 4.006 4a1 1 0 0 1-1.32 1.499l-.094-.083-2.293-2.291v11.584a1 1 0 0 1-.883.993L12 20a1 1 0 0 1-.993-.884L11 19.001V7.41L8.707 9.707a1 1 0 0 1-1.32.084l-.094-.084a1 1 0 0 1-.084-1.32l.084-.094 3.995-4-3.995 4Z" fill="#ffffff"/></svg></FluentButton>
 		}
 		else {
 			<h4 class="text-center py-2 pb-4 @(dark ? "text-white" : "")">Zatím není vytvořena žádná kapitola!</h4>
@@ -85,6 +85,7 @@
 		
 
 	</div>
+
 	}
 }
 else {
@@ -102,6 +103,15 @@ else {
 		width: 100px;
 		height: 50px;
 	}
+	.navigationTop {
+		position: sticky;
+		width: 4em;
+		height: 4em;
+		bottom: 10%;
+		left: 90%;
+		color: white;
+		cursor: pointer;
+	}
 </style>
 @code {
 
@@ -115,6 +125,8 @@ else {
 	bool isInTeams;
 	bool isInTeamsShow = true;
 	bool cancelLoading = false;
+	[Inject]
+	public IJSRuntime JSRuntime { get; set; }
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if(firstRender) {
@@ -169,7 +181,9 @@ else {
 		}
 		StateHasChanged();
 	}
-
+	private async void scrollTop() {
+		await JSRuntime.InvokeVoidAsync("ScrollTop");
+	}
 	//pokud je kapitola uzamčena vypíše prerekvizity, které je nutno splnit i s jejím názvem (v databázi je pouze ID kapitoly)
 	private void PrerekvizityShow(Chapter chapter) {
 

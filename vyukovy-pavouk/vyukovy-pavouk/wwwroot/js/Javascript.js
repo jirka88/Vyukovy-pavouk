@@ -7,3 +7,7 @@ function SetBodyStyleContrast() {
 function SetInputDark() {
     document.querySelector("input").style.background = "#292929";
 }
+function ScrollTop() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}

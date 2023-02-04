@@ -37,7 +37,7 @@
 					}
 				@if(NotEmpty) {
 					NotEmpty = false;
-					@foreach (vyukovy_pavouk.Data.Chapter chapter in chapters)
+					@foreach (Chapter chapter in chapters)
 					{					
 						int status = ShowOnlyUnlocked(chapter);
 						@if (status == 3 || status == 2)
@@ -163,8 +163,7 @@ else {
 		//kontrola zdali je odemčené splněné prerekvizity pocet == celkovy pocet prerekvizit v kapitole 
 		if(Prerequisites.Count() == chapter.ChapterPrerequisites.Count()) {
 			//kontroluje prerekvizitu kapitoly a studenta (neúspěšného splnění) 
-			// ==> pokud nastane nezobrazí další kapitoly pro odemčení a může se odemknout (na úspěšný stav)
-			//pouze ta neúspěšná 
+			// ==> pokud nastane nezobrazí další kapitoly pro odemčení a může se odemknout (na úspěšný stav) pouze ta neúspěšně splněná 
 			foreach (ChapterPrerequisite chapterPrerequisite in chapter.ChapterPrerequisites)
 			{
 				int IDChapterPrerequisite = chapterPrerequisite.Prerequisite.PrerequisiteID;
