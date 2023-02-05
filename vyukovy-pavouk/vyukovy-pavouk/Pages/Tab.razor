@@ -99,7 +99,7 @@
 		await base.OnAfterRenderAsync(firstRender);
 		if (firstRender)
 		{
-			isInTeams = await MicrosoftTeams.IsInTeams();
+			isInTeams = await MicrosoftTeams.IsInTeams();	
 			if (isInTeams)
 			{
 				if (await HasPermission(_scope))

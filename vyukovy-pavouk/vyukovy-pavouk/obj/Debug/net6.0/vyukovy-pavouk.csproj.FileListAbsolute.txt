@@ -119,3 +119,4 @@ D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\vyukovy
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\vyukovy-pavouk.genruntimeconfig.cache
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\ref\vyukovy-pavouk.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\System.Text.Json.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll

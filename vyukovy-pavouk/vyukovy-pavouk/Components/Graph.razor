@@ -14,7 +14,7 @@
     }
     @if (IsLoading)
     {
-        <ProfileCard IsLoading="true" />
+        //<ProfileCard IsLoading="true" />
     }
     else if (!string.IsNullOrEmpty(@ErrorMessage))
     {
@@ -22,7 +22,7 @@
     }
     else if (Profile != null)
     {
-        <ProfileCard IsLoading="false" Profile="@Profile" UserPhotoUri="@UserPhotoUri" />
+        //<ProfileCard IsLoading="false" Profile="@Profile" UserPhotoUri="@UserPhotoUri" />
     }
 </div>
 
