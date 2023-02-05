@@ -13,10 +13,9 @@
 @inject Solutaris.InfoWARE.ProtectedBrowserStorage.Services.IIWSessionStorageService sessionStorage
 
 <div class="container">
-	
 	@if (!IsLoaded)
 	{
-		<div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+		<div style="display: flex; justify-content: center; align-items: center; height: calc(90vh - 88px);">
 			<FluentProgressRing />
 		</div>
 	}

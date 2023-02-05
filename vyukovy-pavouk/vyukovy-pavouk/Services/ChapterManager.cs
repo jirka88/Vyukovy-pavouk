@@ -102,7 +102,7 @@ namespace vyukovy_pavouk.Services
                         TestIfPrerequisiteExistInDb = await _dbContext.Prerequisite.Where(x => x.PrerequisiteID == chapterPrerequisite.Prerequisite.PrerequisiteID).SingleOrDefaultAsync();
                     }      
                     ChapterPrerequisite test = _dbContext.ChapterPrerequisite.Where(x => x.ChapterID == chapter.Id && x.Prerequisite.PrerequisiteID == TestIfPrerequisiteExistInDb.PrerequisiteID).SingleOrDefault();
-                    //pokud je test null --> je potřeba navázat na kapitolu chapterPrerequisite s prerequisite, pokud není null --> je v DB a nic se nevytváří
+                    //pokud je test null --> je potřeba navázat na kapitolu chapterPrerequisite s prerequisite, pokud není null --> je v DB už propojena a nic se nevytváří
                     if (test == null)
                     {
                         if (chapterPrerequisite.Prerequisite != null)

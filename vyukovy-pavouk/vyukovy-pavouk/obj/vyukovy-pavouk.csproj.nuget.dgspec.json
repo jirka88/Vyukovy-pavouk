@@ -88,7 +88,7 @@
             },
             "Microsoft.Fast.Components.FluentUI": {
               "target": "Package",
-              "version": "[1.0.0, )"
+              "version": "[2.0.0, )"
             },
             "Microsoft.Graph": {
               "target": "Package",
@@ -96,7 +96,7 @@
             },
             "Microsoft.TeamsFx": {
               "target": "Package",
-              "version": "[1.1.0, )"
+              "version": "[1.2.1, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",

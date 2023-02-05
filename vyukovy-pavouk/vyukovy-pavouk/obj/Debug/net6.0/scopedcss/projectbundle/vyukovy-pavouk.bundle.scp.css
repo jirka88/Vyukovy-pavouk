@@ -1,32 +1,3 @@
-/* _content/vyukovy-pavouk/Components/ProfileCard.razor.rz.scp.css */
-.profile[b-sj3v1slksc] {
-    display: flex;
-    align-items: center;
-}
-
-    .profile .avatar[b-sj3v1slksc] {        
-        flex: 1 0 auto;
-    }
-
-    .profile .avatar img[b-sj3v1slksc] {
-        margin: 15px;
-        height: 64px;
-        width: 64px;
-        border-radius: 32px;
-    }
-
-    .profile .info[b-sj3v1slksc] {
-        margin: 0 2em;
-        flex: 4 0 auto;
-    }
-
-        .profile .info > h3[b-sj3v1slksc] {
-            margin: 0;
-        }
-
-        .profile .info > p[b-sj3v1slksc] {
-            margin: 0;
-        }
 /* _content/vyukovy-pavouk/Components/Vytvoreni-teamu-student.razor.rz.scp.css */
 h1[b-yxcngcz929], h5[b-yxcngcz929] {
 	font-weight: bold;
@@ -295,9 +266,6 @@ fluent-anchor[b-pkvnducani] {
 h1[b-5juggsglmn] {
 	font-weight: bold;
 	font-size: 4em;
-}
-svg[b-5juggsglmn] {
-	width: 40%;
 }
 .dark[b-5juggsglmn] {
 	background-color: #1f1f1f;
