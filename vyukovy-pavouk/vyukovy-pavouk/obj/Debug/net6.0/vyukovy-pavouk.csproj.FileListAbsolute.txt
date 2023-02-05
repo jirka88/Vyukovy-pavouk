@@ -45,6 +45,7 @@ D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microso
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Graph.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Graph.Core.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.Identity.Client.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.IdentityModel.Clients.ActiveDirectory.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
@@ -72,6 +73,7 @@ D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\System.
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\System.Runtime.Caching.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\System.Security.Permissions.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\System.Text.Json.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\System.Windows.Extensions.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
@@ -118,5 +120,3 @@ D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\refint\
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\vyukovy-pavouk.pdb
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\vyukovy-pavouk.genruntimeconfig.cache
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\ref\vyukovy-pavouk.dll
-D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\System.Text.Json.dll
-D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
