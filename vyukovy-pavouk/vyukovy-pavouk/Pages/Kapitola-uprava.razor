@@ -141,10 +141,7 @@
 							</span>
 
 						</ToolbarContent>
-
-					</BlazoredTextEditor>
-					
-
+					</BlazoredTextEditor>				
 					<ValidationMessage For="@(()=>chapter.Content)" /> 
 				</div>
 				<!--Odkazy na videa-->
@@ -225,11 +222,14 @@
 		gap: 0em 1.5em;
 	}
 
-		.odkazy .validation-message, .prerekvizity .validation-message, .nazvy-odkazy .validation-message {
-			width: 100%;
-			text-align: left;
-		}
-
+	.odkazy .validation-message, .prerekvizity .validation-message, .nazvy-odkazy .validation-message {
+		width: 100%;
+		text-align: left;
+	}
+	.darkTheme .ql-toolbar.ql-snow .ql-picker-label, .darkTheme .ql-snow .ql-stroke {
+		color: white;
+		stroke: white;
+	}
 </style>
 @code {
 	[Parameter]
