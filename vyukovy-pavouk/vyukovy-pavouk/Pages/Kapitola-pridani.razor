@@ -30,12 +30,12 @@
 
 					@for (int i = 0; i < chapter.ChapterPrerequisites.Count(); i++)
 					{
-						Prerequisite prerekvizita = chapter.ChapterPrerequisites[i].Prerequisite;
-						if (prerekvizita != null)
+						Prerequisite prerequisite = chapter.ChapterPrerequisites[i].Prerequisite;
+						if (prerequisite != null)
 						{
 							int index = i;
 							globalIndexPrerekvizita = i;
-							AddSelect(index, prerekvizita);
+							AddSelect(index, prerequisite);
 
 							<div class="prerekvizity d-flex w-100 justify-content-center align-items-center flex-wrap @(dark ? "darkInput" : "")">
 								@if (chapter.ChapterPrerequisites.Count() - 1 != index)
@@ -45,13 +45,13 @@
 								}
 								else
 								{
-									<InputSelect class="flex-grow-1" @bind-Value="@prerekvizita.PrerequisiteID">
+									<InputSelect class="flex-grow-1" @bind-Value="@prerequisite.PrerequisiteID">
 										<option value="0" selected disabled hidden>Vyberte Prerekvizitu</option>
 										@if (chapters.Count() != 0)
 										{
-											@foreach (var kapitola in chapters)
+											@foreach (Chapter chapter in chapters)
 											{
-												<option value="@kapitola.Id">@kapitola.Name</option>
+												<option value="@chapter.Id">@chapter.Name</option>
 											}
 										}
 										else

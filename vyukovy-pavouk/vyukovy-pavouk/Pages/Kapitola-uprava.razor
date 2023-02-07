@@ -323,10 +323,10 @@
 			//kontrola proti vytvoření smyčky --> nesmí vzniknout to, aby jedna a druhou kapitola měli na sebe navzájem propojené prerekvizity --> nelze to pak splnit
 			if (!startChapter)
 			{
-				int IDChapter = chapter.Id; 
+				int IDChapter = chapter.Id;
 				foreach (ChapterPrerequisite prerekvizita in prerequisites)
-				{	
-					//zjistí zdali IDPrerekvizity upravované kapitoly se rovná nějaké načtené prerekvizitě ID kapitole && ID upravované kapitoly se rovná prerekvizitě ID 
+				{
+					//hledá, aby nevznikla smyčka 
 					ChapterPrerequisite searchLoopChapter = chapter.ChapterPrerequisites.Where(x => x.Prerequisite.PrerequisiteID == prerekvizita.Chapter.Id && IDChapter == prerekvizita.Prerequisite.PrerequisiteID).SingleOrDefault();
 					if (searchLoopChapter != null)
 					{
@@ -335,7 +335,24 @@
 						return;
 					}
 				}
-			}
+			}		
+				//hledání proti smyčkám druhá vlna (potřeba vyřešit i možné ostatní vlny smyček --> možná implementace něčeho jako rekurze)
+				foreach (ChapterPrerequisite ChapterPrerequisite in chapter.ChapterPrerequisites)
+				{
+					Chapter Tchapter = await Http.GetFromJsonAsync<Chapter>($"{MyNavigationManager.BaseUri}api/kapitola/" + ChapterPrerequisite.Prerequisite.PrerequisiteID);
+					foreach (ChapterPrerequisite ChapterPrerequisiteTest in Tchapter.ChapterPrerequisites)
+					{
+						List<ChapterPrerequisite> TestLoopChapterPrerequisites = new List<ChapterPrerequisite>();
+						TestLoopChapterPrerequisites.AddRange(prerequisites.Where(x => x.ChapterID == ChapterPrerequisiteTest.Prerequisite.PrerequisiteID));
+						if(TestLoopChapterPrerequisites.Count() != 0) {
+							if(TestLoopChapterPrerequisites.Where(x => x.Prerequisite.PrerequisiteID == chapter.Id).SingleOrDefault() != null) {
+								notice.ShowError("Nelze navázat s prerekvizitou, která vyžaduje splnění této kapitoly.", "Neúspěch!");
+								turnOffBtn = false;
+								return;
+							}	
+						}
+					}
+				}
 			//pokud je úvod --> nastavám na 0 protože to je ID pro úvodní kapitolu
 			if (chapter.ChapterPrerequisites[0].Prerequisite.PrerequisiteID == -1)
 			{
@@ -350,9 +367,8 @@
 					break;
 				}			
 					for (var i = globalIndexControl; i < chapter.ChapterPrerequisites.Count; i++)
-				{
-					//ChapterPrerequisite test = loadedPrerequisitesId.Where(x => x.Prerequisite.PrerequisiteID == prerequisite.Prerequisite.PrerequisiteID).FirstOrDefault();				
-					//porovnává zdali upravená kapitola neobsahuje stejnou prerekvizitu jako  před úpravou  
+				{			
+					//porovnává zdali upravená kapitola neobsahuje stejnou prerekvizitu jako před úpravou  
 					if (prerequisite.Prerequisite.PrerequisiteID == chapter.ChapterPrerequisites[i].Prerequisite.PrerequisiteID)
 					{		
 						ChapterPrerequisite existujiciPrerekvizita = new ChapterPrerequisite();
