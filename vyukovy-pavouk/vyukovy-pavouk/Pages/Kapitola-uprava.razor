@@ -232,6 +232,13 @@
 	.darkTheme .ql-snow .ql-fill,.darkTheme .ql-snow .ql-stroke.ql-fill {
 		fill:white;
 	}
+	.darkTheme .ql-snow .ql-align .ql-picker-options .ql-stroke {
+		stroke: black;
+	}
+	.darkTheme .ql-snow .ql-tooltip {
+		background: #1f1f1f;
+		color: white;
+	}
 </style>
 @code {
 	[Parameter]
@@ -340,7 +347,8 @@
 				foreach (ChapterPrerequisite ChapterPrerequisite in chapter.ChapterPrerequisites)
 				{
 					Chapter Tchapter = await Http.GetFromJsonAsync<Chapter>($"{MyNavigationManager.BaseUri}api/kapitola/" + ChapterPrerequisite.Prerequisite.PrerequisiteID);
-					foreach (ChapterPrerequisite ChapterPrerequisiteTest in Tchapter.ChapterPrerequisites)
+					if(Tchapter.Id != 0) {
+						foreach (ChapterPrerequisite ChapterPrerequisiteTest in Tchapter.ChapterPrerequisites)
 					{
 						List<ChapterPrerequisite> TestLoopChapterPrerequisites = new List<ChapterPrerequisite>();
 						TestLoopChapterPrerequisites.AddRange(prerequisites.Where(x => x.ChapterID == ChapterPrerequisiteTest.Prerequisite.PrerequisiteID));
@@ -352,6 +360,8 @@
 							}	
 						}
 					}
+					}
+					
 				}
 			//pokud je úvod --> nastavám na 0 protože to je ID pro úvodní kapitolu
 			if (chapter.ChapterPrerequisites[0].Prerequisite.PrerequisiteID == -1)

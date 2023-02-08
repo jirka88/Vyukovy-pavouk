@@ -137,6 +137,7 @@
 								</span>
 								<span class="ql-formats">
 									<button class="ql-link"></button>
+									<!--<button class="ql-format-button ql-image"></button>-->
 								</span>
 							</ToolbarContent>
 						</BlazoredTextEditor>
@@ -232,6 +233,13 @@
 	.darkTheme .ql-snow .ql-fill,.darkTheme .ql-snow .ql-stroke.ql-fill {
 		fill:white;
 	}
+	.darkTheme .ql-snow .ql-align .ql-picker-options .ql-stroke {
+		stroke: black;
+	}
+	.darkTheme .ql-snow .ql-tooltip {
+		background: #1f1f1f;
+		color: white;
+	}
 		
 </style>
 @code {
@@ -256,6 +264,8 @@
 	bool IsLoaded = false;
 
 	@inject IToastService notice;
+	[Inject]
+	public IJSRuntime JSRuntime { get; set; }
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -282,6 +292,7 @@
 				//zatím řešeno, že je pouze jedno zadání
 				chapter.Assignments.Add(new Assignment());
 				IsLoaded = true;
+		
 			}
 			StateHasChanged();
 		}
@@ -294,6 +305,7 @@
 		{
 			chapter.SubjectID = group.Subject.Id;
 			chapter.Content = await this.QuillHtml.GetHTML();
+	
 			//pokud je úvod --> nastavím na 0 protože to je ID pro úvodní kapitolu
 			if (chapter.ChapterPrerequisites[0].Prerequisite.PrerequisiteID == -1)
 			{

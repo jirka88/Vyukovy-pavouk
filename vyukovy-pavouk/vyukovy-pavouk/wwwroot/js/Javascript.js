@@ -18,3 +18,4 @@ function scrollFunction() {
         document.getElementsByClassName("navigationTop")[0].style.display = "none";
     }
 }
+
