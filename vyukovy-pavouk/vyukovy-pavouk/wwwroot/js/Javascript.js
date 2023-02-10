@@ -18,4 +18,13 @@ function scrollFunction() {
         document.getElementsByClassName("navigationTop")[0].style.display = "none";
     }
 }
+function test() {
+    var quill = new Quill('#QuillEditor', {
+        modules: {
+            'toolbar': { container: 'QuillToolBar' },
+            'image-tooltip': true,
+        },
+        theme: 'snow'
+    });
+}
 

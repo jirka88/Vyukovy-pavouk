@@ -138,6 +138,7 @@
 								<span class="ql-formats">
 									<button class="ql-link"></button>
 									<!--<button class="ql-format-button ql-image"></button>-->
+									<button class="ql-video"></button>
 								</span>
 							</ToolbarContent>
 						</BlazoredTextEditor>
@@ -222,10 +223,10 @@
 		gap: 0em 1.5em;
 	}
 
-		.odkazy .validation-message, .prerekvizity .validation-message, .nazvy-odkazy .validation-message {
-			width: 100%;
-			text-align: left;
-		}
+	.odkazy .validation-message, .prerekvizity .validation-message, .nazvy-odkazy .validation-message {
+		width: 100%;
+		text-align: left;
+	}
 	.darkTheme .ql-toolbar.ql-snow .ql-picker-label, .darkTheme .ql-snow .ql-stroke {
 		color: white;
 		stroke: white;
@@ -287,6 +288,7 @@
 				chapters = await Http.GetFromJsonAsync<List<vyukovy_pavouk.Data.Chapter>>($"{MyNavigationManager.BaseUri}api/Kapitoly/nazvy/" + (group.Subject.Id));
 				prerequisites = await Http.GetFromJsonAsync<List<ChapterPrerequisite>>($"{MyNavigationManager.BaseUri}api/Kapitoly/prerekvizity/" + (group.Subject.Id));
 				EditContext = new EditContext(chapter);
+				await JSRuntime.InvokeVoidAsync("test");
 				//vytvoření prvního vstupu pro prerekvizitu
 				chapter.ChapterPrerequisites.Add(new ChapterPrerequisite() { Prerequisite = new Prerequisite() });
 				//zatím řešeno, že je pouze jedno zadání
