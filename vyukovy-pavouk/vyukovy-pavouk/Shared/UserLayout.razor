@@ -10,7 +10,7 @@
     <nav class="sticky-top w-100 @(dark ? "dark" : "") @(contrast ? "contrast" : "")">
     @if(IsLoaded) {
         <fluent-tabs class="py-4">
-                <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">List</fluent-tab>
+                <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Seznam</fluent-tab>
     @if(UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě"){
         @if(UserToken.Profile.Mail == group.Subject.Created || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/add")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Přidání</fluent-tab>

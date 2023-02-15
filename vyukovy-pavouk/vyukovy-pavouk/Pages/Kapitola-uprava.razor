@@ -32,13 +32,13 @@
 
 					@for (int i = 0; i < chapter.ChapterPrerequisites.Count(); i++)
 					{
-						Prerequisite prerekvizita = chapter.ChapterPrerequisites[i].Prerequisite;
-						if (prerekvizita != null)
+						Prerequisite prerequisite = chapter.ChapterPrerequisites[i].Prerequisite;
+						if (prerequisite != null)
 						{
 							int index = i;
 							globalIndexPrerekvizita = i;
 
-							AddSelect(index, prerekvizita);
+							AddSelect(index, prerequisite);
 
 							<div class="prerekvizity d-flex w-100 justify-content-center align-items-center flex-wrap @(dark ? "darkInput" : "")">
 								@if (chapter.ChapterPrerequisites.Count() - 1 != index)
@@ -49,14 +49,14 @@
 								}
 								else
 								{
-									<InputSelect class="flex-grow-1" @bind-Value="@prerekvizita.PrerequisiteID">
+									<InputSelect class="flex-grow-1" @bind-Value="@prerequisite.PrerequisiteID">
 										<!-- podmínka pro kontrolu jestli se nejedná o úvodní kapitolu -1 je při našem výběru 0 při načtení a celkový počet prerekvizit dané kapitoly je jedna-->
 										<option value="0" selected disabled hidden>Vyberte Prerekvizitu</option>
 										@if (!startChapter)
 										{
-											@foreach (var kapitola in chapters)
+											@foreach (var chapter in chapters)
 											{
-												<option value="@kapitola.Id">@kapitola.Name</option>
+												<option value="@chapter.Id">@chapter.Name</option>
 											}
 										}
 										else
@@ -79,7 +79,7 @@
 									c6.074-6.075,6.074-15.909,0-21.986L285.08,230.397z"/></svg></Fluent-Button>
 								}
 								<!-- zobrazení + tlačítka u aktualního vstupu && maximální počet 4 prerekvizity && pokud máme mín prerekvizit vstupů může být maximální počet prerekvizit-->
-								@if (chapter.ChapterPrerequisites.Count() - 1 == i && i < 3 && i < prerequisites.Select(x => x.ChapterID).Distinct().Count() - 2 && prerekvizita.PrerequisiteID != 0 && prerekvizita.PrerequisiteID != -1)
+								@if (chapter.ChapterPrerequisites.Count() - 1 == i && i < 3 && i < prerequisites.Select(x => x.ChapterID).Distinct().Count() - 2 && prerequisite.PrerequisiteID != 0 && prerequisite.PrerequisiteID != -1)
 								{
 									<Fluent-button appearance="accent" class="create" @onclick="@CreatePrerequisite"><svg width="24" height="24" stroke="white" stroke-width="1" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" fill="#ffffff" /></svg></Fluent-button>
 								}
