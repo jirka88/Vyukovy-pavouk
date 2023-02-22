@@ -68,9 +68,10 @@ namespace vyukovy_pavouk.Services
             //vrátí v souhrnu její studenty a jejich splnění kapitol (ID kapitol) krom prerekvizity u úvodní kapitoly - ta je automaticky daná studentovi
             return _dbContext.GroupStudent
                     .Where(s => s.GroupID == ID)
-                    .Include(s => s.Student)
+                    .Include(s => s.Student)                   
                     .ThenInclude(s => s.StudentCompletion.Where(id => id.Completion.GroupID == ID && id.Completion.ChapterID != 0))
-                        .ThenInclude(s => s.Completion)            
+                        .ThenInclude(s => s.Completion)
+                    .OrderBy(s => s.Student.Surname)
                     .ToList();                         
         }
         //vrátí všechny splnění studentů v dané skupině 
@@ -81,10 +82,10 @@ namespace vyukovy_pavouk.Services
                 .ToList();
         }
         //vymaže studentům splnění kapitoly --> při mazání kapitoly 
-        public void DeleteSplneni(int Id)
+        public async void DeleteSplneni(int Id)
         {          
                 List<StudentCompletion> studentiSplneni = new List<StudentCompletion>();
-                studentiSplneni = _dbContext.StudentCompletion.Where(id => id.CompletionID == Id).ToList();
+                studentiSplneni = await _dbContext.StudentCompletion.Where(id => id.CompletionID == Id).ToListAsync();
                 Completion splneni = _dbContext.Completion.Find(Id);
 
                 foreach (StudentCompletion studentSplneni in studentiSplneni)
@@ -95,7 +96,7 @@ namespace vyukovy_pavouk.Services
                     }
                 }
                 _dbContext.Completion.Remove(splneni);
-                _dbContext.SaveChanges();                 
+                await _dbContext.SaveChangesAsync();                 
         }
 
         public async Task DeleteStudent(int IdStudent, int IdGroup)
