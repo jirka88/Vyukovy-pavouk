@@ -51,7 +51,7 @@
 	else if (IsLoaded)
 	{
 		//pokud je učitel
-		@if (UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě")
+		@if (UserToken.Profile.JobTitle.ToLower() == Roles.RoleTeacher || UserToken.Profile.JobTitle.ToLower() == Roles.RoleAdministrator)
 		{
 			<Vytvoreni_Teamu subjects="@subjects" Theme="@dark" />
 		}
@@ -136,7 +136,7 @@
 						MyNavigationManager.NavigateTo("/zamitnuti");
 					}
 					//pokud existuje přesměrujeme na kapitoly + vytvoříme do databáze studenta patřící pod danou skupinu pokud v ní není
-					else if (UserToken.Profile.JobTitle.ToLower() == "žák školy")
+					else if (UserToken.Profile.JobTitle.ToLower() == Roles.RoleStudent)
 					{
 						student = await Http.GetFromJsonAsync<Student>
 						($"{MyNavigationManager.BaseUri}api/studenti/{group.Id}/{UserToken.Profile.Mail}");
@@ -161,7 +161,7 @@
 						}
 						MyNavigationManager.NavigateTo("/");
 					}
-					else if (UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě")
+					else if (UserToken.Profile.JobTitle.ToLower() == Roles.RoleTeacher || UserToken.Profile.JobTitle.ToLower() == Roles.RoleAdministrator)
 					{
 						MyNavigationManager.NavigateTo("/");
 					}

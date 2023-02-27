@@ -211,7 +211,7 @@
 				if(GroupToken.teamsContext.Theme == "dark" || GroupToken.teamsContext.Theme == "contrast") {
 					dark = true;
 				}
-				if(UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
+				if(UserToken.Profile.JobTitle.ToLower() == Roles.RoleAdministrator) {
 					switchDelete = true;
 					turnOffBtnDelete = false;
 				}
@@ -280,7 +280,7 @@
 		turnOffBtnDelete = true;
 		switchDelete = false;
 		emailVerification = "";
-		if(UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
+		if(UserToken.Profile.JobTitle.ToLower() == Roles.RoleAdministrator) {
 			switchDelete = true;
 			turnOffBtnDelete = false;
 		}

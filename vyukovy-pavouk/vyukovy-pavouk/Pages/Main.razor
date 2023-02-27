@@ -27,7 +27,7 @@
 		<h1 class="text-center py-2 pb-4 @(dark ? "text-white" : "")" id="top">Obsah</h1>
 	<div class="d-flex flex-column justify-content-center align-items-center gap-3">
 		@if(chapters.Count() > 0) {
-			@if(UserToken.Profile.JobTitle.ToLower() == "správce sítě" || UserToken.Profile.JobTitle.ToLower() == "učitel") {
+			@if(UserToken.Profile.JobTitle.ToLower() == Roles.RoleAdministrator || UserToken.Profile.JobTitle.ToLower() == Roles.RoleTeacher) {
 				//zobrazení kapitol pro učitele 
 				@foreach (var chapter in chapters)
 				{										
@@ -153,14 +153,14 @@ else {
 						($"{MyNavigationManager.BaseUri}api/Kapitoly/" + (Convert.ToInt32(group.Subject.Id)));
 
 						//pokud je student, zjistí informace o progresu atd..
-						if (UserToken.Profile.JobTitle.ToLower() == "žák školy")
+						if (UserToken.Profile.JobTitle.ToLower() == Roles.RoleStudent)
 						{
 							student = await Http.GetFromJsonAsync<Student>
 							($"{MyNavigationManager.BaseUri}api/studenti/" + Convert.ToInt32(group.Id)
 							+ "/" + UserToken.Profile.Mail);
 							if(student.GroupStudents.Where(x => x.GroupID == group.Id).SingleOrDefault() == null) {
-							MyNavigationManager.NavigateTo("/tab");
-							cancelLoading = true;
+								MyNavigationManager.NavigateTo("/tab");
+								cancelLoading = true;
 							}
 						}
 						if(!cancelLoading) {

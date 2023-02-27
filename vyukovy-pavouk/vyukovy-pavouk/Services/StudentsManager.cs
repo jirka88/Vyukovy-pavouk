@@ -74,31 +74,6 @@ namespace vyukovy_pavouk.Services
                     .OrderBy(s => s.Student.Surname)
                     .ToList();                         
         }
-        //vrátí všechny splnění studentů v dané skupině 
-        public List<StudentCompletion> GetSplneni(int IdGroup)
-        {
-            return _dbContext.StudentCompletion
-                .Include(s => s.Completion).Where(s => s.Completion.GroupID == IdGroup)
-                .ToList();
-        }
-        //vymaže studentům splnění kapitoly --> při mazání kapitoly 
-        public async void DeleteSplneni(int Id)
-        {          
-                List<StudentCompletion> studentiSplneni = new List<StudentCompletion>();
-                studentiSplneni = await _dbContext.StudentCompletion.Where(id => id.CompletionID == Id).ToListAsync();
-                Completion splneni = _dbContext.Completion.Find(Id);
-
-                foreach (StudentCompletion studentSplneni in studentiSplneni)
-                {
-                    if (studentSplneni != null)
-                    {
-                        _dbContext.StudentCompletion.Remove(studentSplneni);                    
-                    }
-                }
-                _dbContext.Completion.Remove(splneni);
-                await _dbContext.SaveChangesAsync();                 
-        }
-
         public async Task DeleteStudent(int IdStudent, int IdGroup)
         {
             //vymaže studentoho navázaní na skupinu

@@ -11,8 +11,8 @@
     @if(IsLoaded) {
         <fluent-tabs class="py-4">
                 <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Seznam</fluent-tab>
-    @if(UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě"){
-        @if(UserToken.Profile.Mail == group.Subject.Created || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
+    @if(UserToken.Profile.JobTitle.ToLower() == Roles.RoleTeacher || UserToken.Profile.JobTitle.ToLower() == Roles.RoleAdministrator){
+        @if(UserToken.Profile.Mail == group.Subject.Created || UserToken.Profile.JobTitle.ToLower() == Roles.RoleAdministrator) {
             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/add")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Přidání</fluent-tab>
             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/souhrn")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Souhrn</fluent-tab>
             <fluent-tab @onclick='() => MyNavigationManager.NavigateTo("/nastaveni")' class="@(dark ? "text-white" : "") @(contrast ? "contrast-text" : "")">Nastavení</fluent-tab>   
@@ -20,8 +20,8 @@
     }   
 	    <fluent-tab-panel>
         </fluent-tab-panel>
-    @if(UserToken.Profile.JobTitle.ToLower() == "učitel" || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
-        @if(UserToken.Profile.Mail == group.Subject.Created || UserToken.Profile.JobTitle.ToLower() == "správce sítě") {
+    @if(UserToken.Profile.JobTitle.ToLower() == Roles.RoleTeacher || UserToken.Profile.JobTitle.ToLower() == Roles.RoleAdministrator) {
+        @if(UserToken.Profile.Mail == group.Subject.Created || UserToken.Profile.JobTitle.ToLower() == Roles.RoleAdministrator) {
              <fluent-tab-panel>
         </fluent-tab-panel>
         <fluent-tab-panel>
