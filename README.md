@@ -1,2 +1,2 @@
 # Vyukovy-pavouk
-Maturitní práce
+Maturitní práce / SOČ projekt
