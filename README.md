@@ -1,2 +1,2 @@
 # Vyukovy-pavouk
-Maturitní práce / SOČ projekt
+Maturitní práce / projekt pro Středoškolskou odbornou činnost 2023
