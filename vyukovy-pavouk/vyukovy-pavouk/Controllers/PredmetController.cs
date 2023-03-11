@@ -28,7 +28,7 @@ public class PredmetController : ControllerBase
         }
         [HttpGet]
         [Route("skupiny/{IdSubject}")]
-        public async Task<Subject> GetPredmetWithGroups(int IdSubject)
+        public async Task<Subject> GetSubjectWithGroups(int IdSubject)
         {
             return await _ISubject.GetSubjectWithConnectedGroups(IdSubject);
         }

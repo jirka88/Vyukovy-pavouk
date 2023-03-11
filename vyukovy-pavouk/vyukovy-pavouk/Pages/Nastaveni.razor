@@ -151,12 +151,12 @@
 				}
 				else {
 					<div class="title col-2 d-flex align-items-center fw-bold">
-							Zprivátnit strukturu: 
+							Skrýt strukturu: 
 						</div>
 						
 				<div class="col-6">	
 				<div class="btns d-flex align-items-center">
-			<fluent-button appearance="accent" disabled="@turnOffBtns" @onclick="() => ChangeVisibility(true)">Zprivátnit!</fluent-button>		
+			<fluent-button appearance="accent" disabled="@turnOffBtns" @onclick="() => ChangeVisibility(true)">Skrýt!</fluent-button>		
 			</div>
 				</div>
 				}
@@ -228,7 +228,7 @@
 	}
 	private async void ChangeName() {
 		turnOffBtns = true;
-		searchSubject = subjects.Where(x => x.Name == group.Subject.Name)
+		searchSubject = subjects.Where(x => x.Name.ToLower() == group.Subject.Name.ToLower())
 								.FirstOrDefault();
 		if(searchSubject != null) {
 			conformityDialog = false;
