@@ -13,7 +13,7 @@ namespace vyukovy_pavouk.Data
     {
         public GroupValidator()
         {
-            RuleFor(skupina => skupina.Subject)
+            RuleFor(group => group.Subject)
                 .SetValidator(new SubjectValidator());
         }
     }

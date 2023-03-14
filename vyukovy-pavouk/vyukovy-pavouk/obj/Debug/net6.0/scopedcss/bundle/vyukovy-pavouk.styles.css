@@ -1,5 +1,47 @@
 @import '_content/Microsoft.Fast.Components.FluentUI/Microsoft.Fast.Components.FluentUI.bundle.scp.css';
 
+/* _content/vyukovy-pavouk/Components/.Welcome - nepouzivane.razor.rz.scp.css */
+.narrow[b-mfkgsf5gfz] {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.page-padding[b-mfkgsf5gfz] {
+    padding: 4rem;
+}
+
+.welcome.page > .narrow > img[b-mfkgsf5gfz] {
+    margin: 0 auto;
+    display: block;
+    width: 200px;
+}
+
+.welcome.page > .narrow > .menu[b-mfkgsf5gfz] {
+    width: 80%;
+    justify-content: space-between;
+    margin: 4rem auto;
+    border-bottom: none;
+}
+
+    .welcome.page > .narrow > .menu > .menu-item[b-mfkgsf5gfz] {
+        background-color: inherit;
+        margin: auto;
+        font-size: 14px;
+        min-height: 32px;
+        border-bottom-color: rgb(98, 100, 167);
+    }
+
+.center[b-mfkgsf5gfz] {
+    text-align: center;
+}
+
+.sections > *[b-mfkgsf5gfz] {
+    margin: 4rem auto;
+}
+
+.error[b-mfkgsf5gfz] {
+    color: red;
+}
 /* _content/vyukovy-pavouk/Components/Vytvoreni-teamu-student.razor.rz.scp.css */
 h1[b-yxcngcz929], h5[b-yxcngcz929] {
 	font-weight: bold;
@@ -57,48 +99,6 @@ fluent-button[b-95mo1ckv8l] {
     }
 }
  
-/* _content/vyukovy-pavouk/Components/Welcome.razor.rz.scp.css */
-.narrow[b-0stk77q098] {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.page-padding[b-0stk77q098] {
-    padding: 4rem;
-}
-
-.welcome.page > .narrow > img[b-0stk77q098] {
-    margin: 0 auto;
-    display: block;
-    width: 200px;
-}
-
-.welcome.page > .narrow > .menu[b-0stk77q098] {
-    width: 80%;
-    justify-content: space-between;
-    margin: 4rem auto;
-    border-bottom: none;
-}
-
-    .welcome.page > .narrow > .menu > .menu-item[b-0stk77q098] {
-        background-color: inherit;
-        margin: auto;
-        font-size: 14px;
-        min-height: 32px;
-        border-bottom-color: rgb(98, 100, 167);
-    }
-
-.center[b-0stk77q098] {
-    text-align: center;
-}
-
-.sections > *[b-0stk77q098] {
-    margin: 4rem auto;
-}
-
-.error[b-0stk77q098] {
-    color: red;
-}
 /* _content/vyukovy-pavouk/Pages/Kapitola-pridani.razor.rz.scp.css */
 h1[b-ummi2zx0lv] {
 	font-size: 4em;
@@ -312,6 +312,9 @@ svg[b-f2udu77d7l] {
 	width: 75%;
 }
 @media only screen and (max-width: 1080px) {
+	.title[b-f2udu77d7l] {
+		font-size: 1.2em;
+	}
 	.setting[b-f2udu77d7l] {
 		flex-direction: column;
 		height: 15em;

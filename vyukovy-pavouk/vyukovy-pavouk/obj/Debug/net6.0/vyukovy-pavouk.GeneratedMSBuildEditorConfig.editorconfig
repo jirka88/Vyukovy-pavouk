@@ -19,16 +19,16 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/CurrentUser.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDdXJyZW50VXNlci5yYXpvcg==
+[D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/.CurrentUser - nepouzivane.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1wuQ3VycmVudFVzZXIgLSBuZXBvdXppdmFuZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/.Graph - nepouzivane.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1wuR3JhcGggLSBuZXBvdXppdmFuZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/Dialog.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEaWFsb2cucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/Graph.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xHcmFwaC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/Kapitola-odemceno.razor]
@@ -45,10 +45,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/Kapitola-uzavreno.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xLYXBpdG9sYS11emF2cmVuby5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/Loading.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMb2FkaW5nLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/NotFound.razor]
@@ -71,6 +67,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/.Welcome - nepouzivane.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1wuV2VsY29tZSAtIG5lcG91eml2YW5lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-mfkgsf5gfz
+
 [D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/Vytvoreni-teamu-student.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xWeXR2b3JlbmktdGVhbXUtc3R1ZGVudC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-yxcngcz929
@@ -78,10 +78,6 @@ build_metadata.AdditionalFiles.CssScope = b-yxcngcz929
 [D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/Vytvoreni-Teamu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xWeXR2b3JlbmktVGVhbXUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-95mo1ckv8l
-
-[D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Components/Welcome.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xXZWxjb21lLnJhem9y
-build_metadata.AdditionalFiles.CssScope = b-0stk77q098
 
 [D:/Develop/Vyukovy-pavouk/vyukovy-pavouk/vyukovy-pavouk/Pages/Kapitola-pridani.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcS2FwaXRvbGEtcHJpZGFuaS5yYXpvcg==

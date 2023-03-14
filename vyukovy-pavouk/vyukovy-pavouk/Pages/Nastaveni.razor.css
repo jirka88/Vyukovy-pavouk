@@ -37,6 +37,9 @@ svg {
 	width: 75%;
 }
 @media only screen and (max-width: 1080px) {
+	.title {
+		font-size: 1.2em;
+	}
 	.setting {
 		flex-direction: column;
 		height: 15em;

@@ -37,6 +37,9 @@ svg[b-f2udu77d7l] {
 	width: 75%;
 }
 @media only screen and (max-width: 1080px) {
+	.title[b-f2udu77d7l] {
+		font-size: 1.2em;
+	}
 	.setting[b-f2udu77d7l] {
 		flex-direction: column;
 		height: 15em;

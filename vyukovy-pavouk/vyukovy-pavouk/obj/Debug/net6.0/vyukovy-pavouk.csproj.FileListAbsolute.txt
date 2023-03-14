@@ -99,7 +99,6 @@ D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\vyukovy
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\vyukovy-pavouk.RazorAssemblyInfo.cs
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\staticwebassets.build.json
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\staticwebassets.development.json
-D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Components\Welcome.razor.rz.scp.css
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Pages\Tab.razor.rz.scp.css
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Components\Vytvoreni-teamu-student.razor.rz.scp.css
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Components\Vytvoreni-Teamu.razor.rz.scp.css
@@ -121,3 +120,4 @@ D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\refint\
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\vyukovy-pavouk.pdb
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\vyukovy-pavouk.genruntimeconfig.cache
 D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\ref\vyukovy-pavouk.dll
+D:\Develop\Vyukovy-pavouk\vyukovy-pavouk\vyukovy-pavouk\obj\Debug\net6.0\scopedcss\Components\.Welcome - nepouzivane.razor.rz.scp.css
